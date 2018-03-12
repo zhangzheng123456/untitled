@@ -3,10 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<title>商品培训(FAB)</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20170105">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20170105"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <style>
+        .searchable-select{
+            min-width: 240px;
+            border: 1px solid #d7d7d7;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="content">
@@ -24,7 +32,7 @@
                                 <span class="icon-ishop_6-01"></span>
                                 新增
                             </a>
-                            
+
                         </li>
                         <li class="bg" id="remove">
                             <span class="icon-ishop_6-02"></span>
@@ -43,10 +51,14 @@
                     </ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="编号/名称/价格/发布时间/季度/波段/品牌/企业">
+                            <input type="text" class="input" id="search" placeholder="编号/名称/价格/发布时间/季度/波段/品牌/企业名称">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
+                    <div class="add">
+                        <div id="input_goods_num">输入商品编号</div>
+                        <div id="manually_add">手动添加商品</div>
+                    </div>
     			</div>
     			<div class="action_r">
     				<ul>
@@ -69,7 +81,7 @@
                                 <!--<div id="leading_out">导出</div>-->
                                 <!--<div id="guide_into">导入</div>-->
                             </div>
-                        </li>   
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -135,7 +147,7 @@
                     </div>
                 </div>
                 <div class="inputs">
-                    <ul>     
+                    <ul>
                     </ul>
                 </div>
             </div>
@@ -220,6 +232,14 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
+    <div class="tk" id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
     <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -228,10 +248,38 @@
             <span class="icon-ishop_4-04"></span>
         </div>
     </div>
+    <div class="batchbomb" style="height: 180px" >
+        <div class="x" id="close_batchbomb"><span class="icon-ishop_6-12"></span></div>
+        <div class="batchbomb_header">
+            <i></i>
+            <b>输入商品编号添加商品</b>
+        </div>
+        <div class="batchbomb_content" style="height:80px;margin-top:0;">
+           <div class="content_parent">
+               <span class="content_left">选择企业</span>
+               <div class="content_right">
+                   <select id="OWN_CORP">
+
+                   </select>
+               </div>
+           </div>
+            <div class="content_parent">
+                <span class="content_left" style="margin-top:10px">商品编号</span>
+                <div class="content_right" style="margin-top:10px">
+                    <input type="text" id="product_code">
+                </div>
+            </div>
+        </div>
+        <div class="batchbomb_footer">
+            <div class="left" id="batchbomb_return">取消</div>
+            <div class="right" id="batchbomb_que">确定</div>
+        </div>
+    </div>
 </body>
-    <script type="text/javascript" src="/js/insidePostRequire.js?20170105"></script>
-    <script src="/js/goods/fab.js?20170105"></script>
-    <script src="/js/silide.js?20170105"></script>
+    <script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <script src="/js/goods/fab.js?2017040170331"></script>
+    <script src="/js/silide.js?2017040170331"></script>
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
     <script>
         var timer=setInterval(function(){

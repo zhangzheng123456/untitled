@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>任务跟踪</title>
+    <link href="../css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link href="../table/css/inner.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/activity_details.css?20171118"/>
+    <link rel="stylesheet" href="../css/active_detailNew.css?t=2017040170809">
+    <script src="../js/laydate5.0.7/laydate.js"></script>
+    <link rel="stylesheet" href="../css/vip_task_track.css?t=20171211">
+</head>
+<body style="color:#434960;">
+<div id="page-wrapper"
+     class="gray-bg dashbard-1">
+    <div class="pre_title">
+        <span>会员营销</span><i
+            class="icon-ishop_8-03"></i><span id="return_back">会员任务</span><i class="icon-ishop_8-03"></i><label>任务跟踪</label>
+    </div>
+    <!--header-->
+    <div id="header">
+        <div class="header_l" style="width:39%;">
+            <div class="name_title">
+                <span class="title_l">加载中...</span>
+                <span class="icon-ishop_6-29 title_action"
+                      id="cancel_box" style="display: none">
+                    <div class="action_tip">
+                        <p class="action_btn" style="color: #bb5f77;">现在结束任务</p>
+                    </div>
+                </span>
+            </div>
+            <div class="time">
+                <span class="time_l">加载中...</span>
+                <span class="">至</span>
+                <span class="time_r">加载中...</span>
+            </div>
+            <div class="active_name">
+                <span class="name_l">加载中...</span>
+                <span class="name_m"></span>
+                <span class="name_r">加载中...</span>
+            </div>
+        </div>
+        <div class="header_m">
+            <div class="header_m_c" id="vip_count">
+                <p style="color: #dee2e8;">
+                    目标会员数</p>
+                <p class="p_2">加载中...</p>
+            </div>
+        </div>
+        <!--<div class="header_sm">-->
+            <!--<div class="header_sm_c">-->
+                <!--<p style="color: #dee2e8;">-->
+                    <!--参与门店数</p>-->
+                <!--<p class="p_2">3123213</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="header_m">
+            <div class="header_m_c" id="task_time_status">
+                <p class="p_3">
+                    距离任务结束还剩</p>
+                <p class="p_2">加载中...</p>
+            </div>
+        </div>
+        <div class="header_r">
+            <div class="btn" id="show_task_settings">
+                查看任务设置
+            </div>
+        </div>
+    </div>
+    <div class="noTaskStore_tip" id="noTaskStore_tip">检测到您有未分配的任务，<span style="color: #41c7db;cursor: pointer;" id="setTask">点此设置</span>
+        <span class="icon-ishop_6-12 noTaskStore_tip_close" id="noTaskStore_tip_close"></span>
+    </div>
+    <div id="analyze_wrap">
+        <div style="display: block">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="chartPie">
+                        <div class="task_detail_m task_block chartOneClass">
+                            <p class="chart_title" style="visibility: hidden">
+                                邀请注册率</p>
+                            <div style="height: 200px;visibility: hidden" id="chartClassOne"></div>
+                            <div class="chart_count" style="visibility: hidden">
+                                <div class="blank_2"></div>
+                                <div class="chart_count_l">
+                                    <div>
+                                        <p>分享人数</p>
+                                        <p class="shoppers">0</p>
+                                    </div>
+                                </div>
+                                <div class="blank_2"></div>
+                                <div class="chart_count_l">
+                                    <div>
+                                        <p>分享次数</p>
+                                        <p class="shoppers">0</p>
+                                    </div>
+                                </div>
+                                <div class="blank_2"></div>
+                                <div class="chart_count_r">
+                                    <div>
+                                        <p>注册人数</p>
+                                        <p class="target">0</p>
+                                    </div>
+                                </div>
+                                <div class="blank_2"></div>
+                            </div>
+                            <div class="listLoading_box" style="display:block;">
+                                <div>加载中，请稍候...</div>
+                            </div>
+                        </div>
+                        <div class="task_detail_m task_block chartTwoClass"   style="display: none">
+                        <p class="chart_title">
+                            意向客户占比</p>
+                        <div style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>目标会员数</p>
+                                    <p class="shoppers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>意向会员数</p>
+                                    <p class="shoppers" ></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>链接点击数</p>
+                                    <p class="target"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                        <div class="task_detail_m task_block chartThreeClass" style="display: none">
+                        <p class="chart_title">
+                            意向客户占比</p>
+                        <div style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>目标会员数</p>
+                                    <p class="shoppers" >0</p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>意向会员数</p>
+                                    <p class="shoppers" >0</p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>链接点击数</p>
+                                    <p class="target" >0</p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg" style="height: 300px">
+                        <div style="position: absolute;right: 10px;top: 10px;"><input type="text" id="search_date" placeholder="选择时间范围" readonly data-start="" data-end=""></div>
+                        <p class="chart_title" style="text-align: left;margin-left: 10px;height: 60px;display: none">
+                            注册人数统计</p>
+                        <div style="height: 231px;" id="chartLine"></div>
+                        <div class="listLoading_box" style="display:block;">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="doType_active" data-type="store">按会员查看</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty" style="background: #4a5f7c" id="select_list">查&nbsp;&nbsp;&nbsp;&nbsp;找</span>
+                    <span class="do empty" style="background: #c4c8d4" id="empty_select">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs select_invite_registration" style="display: none">
+                            <ul>
+                                <li data-key="vip_name">
+                                    <label>会员名称</label><input type="text"  placeholder="请输入会员名称">
+                                </li>
+                                <li data-key="vip_cardno">
+                                    <label>会员卡号</label><input type="text" placeholder="请输入会员卡号">
+                                </li>
+                                <li data-key="vip_phone">
+                                    <label>会员手机号</label><input type="text"  placeholder="请输入会员手机号">
+                                </li>
+                                <li data-key="share_count">
+                                    <label>分享次数</label><input type="text" style="width: 120px"> 至 <input style="width:120px;margin: 0" type="text">
+                                </li>
+                                <li data-key="register_count">
+                                    <label>注册人数</label><input type="text" style="width: 120px"> 至 <input style="width:120px;margin: 0" type="text">
+                                </li>
+                                <!--<li class="isActive_select" data-key="status">-->
+                                    <!--<label>是否达成</label>-->
+                                    <!--<input value="全部" type="text" data-code="" readonly="">-->
+                                    <!--<ul class="isActive_select_down" style="display: none;">-->
+                                        <!--<li data-code="">全部</li>-->
+                                        <!--<li data-code="1">是</li>-->
+                                        <!--<li data-code="0">否</li>-->
+                                    <!--</ul>-->
+                                <!--</li>-->
+                                <li data-key="complete_date" class="selectDate">
+                                    <label>完成时间</label><input type="text" readonly data-start="" data-end="">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="inputs select_improve_data" style="display: none">
+                            <ul>
+                                <li data-key="vip_name">
+                                    <label>会员名称</label><input type="text"  placeholder="请输入会员名称">
+                                </li>
+                                <li data-key="vip_cardno">
+                                    <label>会员卡号</label><input type="text" placeholder="请输入会员卡号">
+                                </li>
+                                <li data-key="vip_phone">
+                                    <label>会员手机号</label><input type="text"  placeholder="请输入会员手机号">
+                                </li>
+                                <li class="isActive_select" data-key="complete_value">
+                                    <label>完善内容</label><input value="全部" type="text" id="select_condition" data-code="" readonly="">
+                                </li>
+                                <li class="isActive_select" data-key="status">
+                                    <label>是否达成</label><input value="全部" type="text" data-code="" readonly="">
+                                <ul class="isActive_select_down" style="display: none;">
+                                    <li data-code="">全部</li>
+                                    <li data-code="1">是</li>
+                                    <li data-code="0">否</li>
+                                    </ul>
+                                </li>
+                                <li data-key="complete_date" class="selectDate">
+                                    <label>完成时间</label><input type="text" readonly data-start="" data-end="">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="inputs select_consume_count select_consume_money select_ticket_sales" style="display: none">
+                            <ul>
+                                <li data-key="vip_name">
+                                    <label>会员名称</label><input type="text"  placeholder="请输入会员名称">
+                                </li>
+                                <li data-key="vip_cardno">
+                                    <label>会员卡号</label><input type="text" placeholder="请输入会员卡号">
+                                </li>
+                                <li data-key="vip_phone">
+                                    <label>会员手机号</label><input type="text"  placeholder="请输入会员手机号">
+                                </li>
+                                <li class="isActive_select" data-key="vip_card_type">
+                                    <label>会员类型</label><input value="全部" type="text" data-code="" readonly="" onclick="selectCardType(this)">
+                                    <ul class="isActive_select_down" style="display: none;">
+                                        <div style="line-height: 30px;height: 30px;padding-left: 5px">加载中...</div>
+                                    </ul>
+                                </li>
+                                <li data-key="complete_date" class="selectDate">
+                                    <label>完成时间</label><input type="text" readonly data-start="" data-end="">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="inputs select_share_counts" style="display: none">
+                            <ul>
+                                <li data-key="vip_name">
+                                    <label>会员名称</label><input type="text"  placeholder="请输入会员名称">
+                                </li>
+                                <li data-key="vip_cardno">
+                                    <label>会员卡号</label><input type="text" placeholder="请输入会员卡号">
+                                </li>
+                                <li data-key="vip_phone">
+                                    <label>会员手机号</label><input type="text"  placeholder="请输入会员手机号">
+                                </li>
+                                <li class="isActive_select" data-key="status">
+                                    <label>是否达成</label><input value="全部" type="text" data-code="" readonly="">
+                                    <ul class="isActive_select_down" style="display: none;">
+                                        <li data-code="">全部</li>
+                                        <li data-code="1">是</li>
+                                        <li data-code="0">否</li>
+                                    </ul>
+                                </li>
+                                <li data-key="share_count">
+                                    <label>分享次数</label><input type="text" style="width: 120px"> 至 <input style="width:120px;margin: 0" type="text">
+                                </li>
+                                <!--<li data-key="click_num">-->
+                                    <!--<label>链接点击次数</label><input type="text" style="width: 120px"> 至 <input style="width:120px;margin: 0" type="text">-->
+                                <!--</li>-->
+                                <!--<li data-key="click_vip">-->
+                                    <!--<label>链接点击人数</label><input type="text" style="width: 120px"> 至 <input style="width:120px;margin: 0" type="text">-->
+                                <!--</li>-->
+                                <li data-key="complete_date" class="selectDate">
+                                    <label>完成时间</label><input type="text" readonly data-start="" data-end="">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="inputs select_questionnaire" style="display: none">
+                            <ul>
+                                <li data-key="vip_name">
+                                    <label>会员名称</label><input type="text"  placeholder="请输入会员名称">
+                                </li>
+                                <li data-key="vip_cardno">
+                                    <label>会员卡号</label><input type="text" placeholder="请输入会员卡号">
+                                </li>
+                                <li data-key="vip_phone">
+                                    <label>会员手机号</label><input type="text"  placeholder="请输入会员手机号">
+                                </li>
+                                <li class="isActive_select" data-key="vip_card_type">
+                                    <label>会员类型</label><input value="全部" type="text" data-code="" readonly="" onclick="selectCardType(this)">
+                                    <ul class="isActive_select_down" style="display: none;">
+                                       <div style="line-height: 30px;height: 30px;padding-left: 5px">加载中...</div>
+                                    </ul>
+                                </li>
+                                <li data-key="answer_num">
+                                    <label>答题数</label><input type="text" style="width: 120px"> 至 <input style="width:120px;margin: 0" type="text">
+                                </li>
+                                <li data-key="complete_date" class="selectDate">
+                                    <label>完成时间</label><input type="text" readonly data-start="" data-end="">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+              <div class="list_content" style="min-width: 100%;overflow: hidden;overflow-x:auto ">
+                  <ul class="people_head" style="min-width: 1200px;padding: 0">
+                    <li class="people_title">
+                        <table cellpadding="0" cellspacing="0" style="width:100%;table-layout: fixed;">
+                            <colgroup>
+                                <col width="50px">
+                            </colgroup>
+                            <thead>
+                            </thead>
+                        </table>
+                    </li>
+                </ul>
+                  <ul class="people" style="min-width:1200px;">
+                    <li class="peopleContent">
+                       <table cellpadding="0" cellspacing="0" style="width:100%;table-layout: fixed;line-height: 40px">
+                           <colgroup>
+                               <col width="50px">
+                           </colgroup>
+                           <tbody></tbody>
+                       </table>
+                    </li>
+                    <li class="peopleError" style="display:none;">
+                        <div style="line-height: 320px">
+                            未找到相关信息
+                        </div>
+                    </li>
+                </ul>
+              </div>
+                <div class="listLoading_box" style="display:block;">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 拉取公众号 -->
+<div id="screen_task_condition" class="screen_area" style="min-height:300px;">
+    <div class="screen_title">
+        <h4>筛选完善内容</h4>
+        <div class="screen_close" id="screen_close_task_condition"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s" style="display: none">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="task_condition_search">
+            <span class="icon-ishop_3-05" id="task_condition_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch" style="">
+            已添加<span>0</span>/<span>0</span>个
+        </div>
+    </div>
+    <div class="screen_content" style="margin-top: 20px">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_task_condition">确定</div>
+</div>
+<!--查看任务设置-->
+<div class="task_setting" id="task_setting">
+    <div class="task_setting_head">
+        <span class="line_vertical"></span><span class="task_setting_head_title">查看任务设置</span>
+    </div>
+    <div class="task_setting_content">
+        <!--<p class="task_setting_title">加载中...</p>-->
+
+        <p class="task_setting_subtitle">任务基本设置</p>
+        <div class="task_setting_part" id="task_basic_setting">
+            <div class="present_loading">加载中...</div>
+            <div class="task_setting_part_line" ><span class="task_setting_part_line_left">时间</span><span id="task_time">加载中...</span></div>
+            <div class="task_setting_part_line"><span class="task_setting_part_line_left">公众号</span><span id="app_name">加载中...</span></div>
+            <div style="overflow: hidden;" class="task_setting_part_line">
+                <span style="float:left;" class="task_setting_part_line_left">目标会员</span>
+                <span  class="target_key" id="target_key">
+                    <div>加载中...</div>
+                </span>
+            </div>
+        </div>
+
+        <p class="task_setting_subtitle">任务条件</p>
+        <div class="task_setting_part">
+            <div class="task_setting_part_line" id="task_condition"></div>
+        </div>
+        <p class="task_setting_subtitle">任务奖励</p>
+        <div class="task_setting_part" id="task_reward">
+            <div class="present_loading">加载中...</div>
+            <div class="task_setting_part_line" style="display: none"><span class="task_setting_part_line_left">积分</span><span id="present_point">加载中...</span></div>
+            <div style="overflow: hidden;display: none" class="task_setting_part_line">
+                <span style="float:left;" class="task_setting_part_line_left">优惠券</span>
+                <span  class="task_setting_present_coupon" id="task_setting_present_coupon">
+                    <div>加载中...</div>
+                </span>
+            </div>
+        </div>
+        <p class="task_setting_subtitle">任务描述</p>
+        <div class="task_setting_desc" id="task_setting_desc"></div>
+    </div>
+    <div class="task_setting_foot">
+        <span id="hide_task_settings" class="hide_task_settings">关闭</span>
+    </div>
+</div>
+<!--查看完善资料-->
+<div class="improve_data" id="improve_data">
+    <div class="improve_data_head">
+        <span class="line_vertical"></span><span class="improve_data_head_title">会员资料完善详情</span>
+    </div>
+    <div class="improve_data_content">
+        <!--<div class="improve_data_part_line"><span class="improve_data_part_line_left">积分</span><span id="">加载中...</span></div>-->
+    </div>
+    <div class="improve_data_foot">
+        <span id="hide_improve_data" class="hide_improve_data">关闭</span>
+    </div>
+</div>
+<!--问卷详情-->
+<div class="questionnaire_detail" id="questionnaire_detail">
+    <div class="questionnaire_detail_head">
+        <span class="line_vertical"></span><span class="questionnaire_detail_head_title">问卷详情</span>
+    </div>
+    <div class="questionnaire_detail_content">
+        <div class="survey_title" id="preview_name">这是问卷详情的标题</div>
+        <div class="survey_desc" id="preview_desc">这是问卷详情的副标题标题</div>
+        <div class="survey_content"></div>
+        <!--<div class="improve_data_part_line"><span class="improve_data_part_line_left">积分</span><span id="">加载中...</span></div>-->
+    </div>
+    <div class="questionnaire_detail_foot">
+        <span id="hide_questionnaire_detail" class="hide_questionnaire_detail">关闭</span>
+    </div>
+</div>
+<!--结束任务-->
+<div class="action_over_box" id="action_over_box">
+    <div class="action_over">
+        <p>
+            提示</p>
+        <p>
+            您设定的任务时间尚未到达</p>
+        <p>
+            是否现在提前结束任务?</p>
+        <div class="action_footer">
+            <div class="action_footer_l">
+                取消
+            </div>
+            <div class="action_footer_r">
+                结束任务
+            </div>
+        </div>
+    </div>
+</div>
+<!--邀请注册详情-->
+<div  class="detailBox" id="inviteRegistrationInfoDetailBox">
+    <div class="vip_status_store" style="height: 460px">
+        <div class="_header">
+            <div class="join_header_l">
+                <span class="icon-ishop_6-28 join_bar"></span>
+                <span class="customer_title">邀请顾客列表</span>
+                <div class="action_detail_box">
+                    <span class="s1"></span>
+                    <span class="s2"></span>
+                </div>
+            </div>
+        </div>
+        <div class="customerDetails_tableBox">
+            <table class="customerDetails_thead" style="table-layout: fixed" border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr><th>序号</th>
+                    <th>会员名称</th>
+                    <th>会员卡号</th>
+                    <th>会员类型</th>
+                    <th>消费总额</th>
+                </tr></thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div style="max-height: 300px;overflow-y: auto;" class="inviteRegistrationInfo">
+                <table class="customerDetails_thead" style="table-layout: fixed" border="0" cellspacing="0" cellpadding="0">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="15%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                    </colgroup>
+                <tbody></tbody>
+            </table></div>
+        </div>
+        <div class="join_footer">
+            <div class="vip_status_btn" id="inviteRegistrationInfoDetails_back">
+                关闭
+            </div>
+        </div>
+    </div>
+</div>
+<!--side-->
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<p style="position: fixed;top:0;bottom: 0;left: 0;right: 0;background-color: rgba(0,0,0,0.5);display: none" id="P"></p>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../echart/echarts.min.js"></script>
+<!--<script src="../js/bootstrap.min.js?v=3.4.0"></script>-->
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170401715"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170401715"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!--匹配js文件-->
+<script src="/js/loading.js?2017040170331"></script>
+<script src="../js/silide.js"></script>
+<script src="../js/vip/vip_task_track.js?t=20180117"></script>
+</body>
+</html>

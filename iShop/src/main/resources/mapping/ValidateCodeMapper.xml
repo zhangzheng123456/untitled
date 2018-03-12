@@ -17,11 +17,11 @@
     </select>
 
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
-    SELECT *
-    FROM def_validate_code
-    WHERE 1 = 1
+        SELECT *
+        FROM def_validate_code
+        WHERE 1 = 1
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryValue!=''">
                     ${entryKey} REGEXP ${entryValue}
@@ -31,7 +31,7 @@
                 </otherwise>
             </choose>
         </foreach>
-        GROUP BY  id
+        GROUP BY id
         ORDER BY id DESC
     </select>
 
@@ -153,13 +153,13 @@
         FROM def_validate_code AS dvc
         WHERE 1=1
         AND (
-          phone NOT IN (
-            SELECT phone FROM def_user
-            WHERE phone IS NOT NULL
-            GROUP BY phone)
-          OR phone IN (
-            SELECT phone FROM def_user
-            WHERE corp_code = #{corp_code})
+        phone NOT IN (
+        SELECT phone FROM def_user
+        WHERE phone IS NOT NULL
+        GROUP BY phone)
+        OR phone IN (
+        SELECT phone FROM def_user
+        WHERE corp_code = #{corp_code})
         )
         <if test="search_value != null and search_value !=''">
             AND
@@ -171,21 +171,60 @@
         ORDER BY id DESC
     </select>
 
-    <select id="selectByCorpScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
+
+    <select id="selectValidateCodeByCorp2" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT *
         FROM def_validate_code AS dvc
         WHERE 1=1
         AND (
-          phone NOT IN (
-            SELECT phone FROM def_user
-            WHERE phone IS NOT NULL
-            GROUP BY phone)
-         OR phone IN (
-            SELECT phone FROM def_user
-            WHERE corp_code = #{corp_code})
+        phone NOT IN (
+        SELECT phone FROM def_user
+        WHERE phone IS NOT NULL
+        GROUP BY phone)
+        OR phone IN (
+        SELECT phone FROM def_user
+        WHERE 1=1
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                corp_code =#{item}
+            </foreach>
+        </if>
+        )
+        )
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            phone LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        GROUP BY id
+        ORDER BY id DESC
+    </select>
+
+
+    <select id="selectByCorpScreen2" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT *
+        FROM def_validate_code AS dvc
+        WHERE 1=1
+        AND (
+        phone NOT IN (
+        SELECT phone FROM def_user
+        WHERE phone IS NOT NULL
+        GROUP BY phone)
+        OR phone IN (
+        SELECT phone FROM def_user
+        WHERE 1=1
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                corp_code =#{item}
+            </foreach>
+        </if>
+        )
         )
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryValue!=''">
                     ${entryKey} REGEXP ${entryValue}
@@ -198,6 +237,36 @@
         GROUP BY id
         ORDER BY id DESC
     </select>
+
+
+    <select id="selectByCorpScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT *
+        FROM def_validate_code AS dvc
+        WHERE 1=1
+        AND (
+        phone NOT IN (
+        SELECT phone FROM def_user
+        WHERE phone IS NOT NULL
+        GROUP BY phone)
+        OR phone IN (
+        SELECT phone FROM def_user
+        WHERE corp_code = #{corp_code})
+        )
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
+            <choose>
+                <when test="entryValue!=''">
+                    ${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY id
+        ORDER BY id DESC
+    </select>
+
 
     <select id="selectByPhone" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT *

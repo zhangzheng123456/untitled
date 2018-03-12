@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>编辑模板配置</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <style>
+        .require{
+            color:#c26555!important;
+            margin-right: 14px;
+        }
+        .templet_settings{
+            color: #888888;
+            display: none;
+        }
+        .templet_left{
+            display: inline-block;
+            width: 60px;
+            font-size: 13px;
+            float: left;
+            height: 30px;
+            line-height: 30px;
+        }
+        .templet_line{
+            margin-bottom: 10px!important;
+        }
+        .templet_left+input,.templet_left+textarea{
+            width: 330px;
+            border: 1px solid #d7d7d7;
+            border-radius: 3px;
+        }
+        .templet_left+textarea{
+            margin: 0;
+            height: 100px;
+            /*text-indent: 10px;*/
+        }
+
+        input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+            color: #888888;
+        }
+        　　input:-moz-placeholder, textarea:-moz-placeholder {
+            　　color:#888888;
+        }
+        　　input::-moz-placeholder, textarea::-moz-placeholder {
+            　　color:#888888;
+        }
+        　　input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+            　　color:#888888;
+        }
+        .templet_settings input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+            font-size: 13px;
+        }
+    　　 .templet_settings input:-moz-placeholder,textarea:-moz-placeholder{
+        　　font-size: 13px;
+        }
+    　　 .templet_settings input::-moz-placeholder,textarea::-moz-placeholder{
+        　　font-size: 13px;
+        }
+    　　 .templet_settings input:-ms-input-placeholder,textarea:-ms-input-placeholder{
+        　　font-size: 13px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>系统管理</span><i class="icon-ishop_8-03"></i><span id="back_wx">微信模板配置</span><i
+            class="icon-ishop_8-03"></i><label>编辑模板配置</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form style="margin-left:0" class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li id="corp_select"><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select></span></li>
+                </ul>
+            </div>
+            <!--公众号-->
+            <div class="drop_down item_2">
+                <span><label class="require">公众号*</label><input data-value="1" class="input_select" value="请选择公众号" data-app_id="" data-app_name="" data-app_user_name type="text" id="vipCode" placeholder="请选择公众号" readonly="" >
+                     <ul style="display: none;" id="vipPublic">
+                         <!--动态加载-->
+                     </ul>
+                </span>
+            </div>
+            <div class="drop_down item_2">
+                <span><label class="require">标题*</label><input  data-id="" class="input_select" value=""  type="text" id="wx_title" placeholder="请选择标题" readonly="" >
+                     <ul style="display: none;" id="wx_title_select">
+                         <!--动态加载-->
+                     </ul>
+                </span>
+            </div>
+            <div class="drop_down item_2" id="change_type" style="display: none">
+                <span><label class="require">变更类型*</label><input data-value="1" class="input_select" value=""  type="text" id="change_type_input" placeholder="请选择标题" readonly="" >
+                     <ul style="display: none;" id="change_type_select">
+                         <li>升级</li>
+                         <li>降级</li>
+                     </ul>
+                </span>
+            </div>
+            <div>
+                <ul style="display:none;" id="change_vip_card_type">
+                    <li style="float:left;"><label>会员类型</label></li>
+                    <li id="vip_type_select">
+                            <span class="corp_select">
+                                <select id="VIP_TYPE" style="display:inline-flex"></select>
+                            </span>
+                    </li>
+                </ul>
+            </div>
+            <div id="templet_settings" class="templet_settings" style="display: block;">
+               <span style="display: inline-flex;width:100%;">
+                    <label style="height:260px;color:#c26555">模板配置*</label>
+                    <span class="tempalte_area" style="background-color: #fff;height: auto;padding: 15px;">
+                        <div style="font-size: 12px;" id="temp_tip">标记说明："#store#" 店铺名；"#name#" 会员名；"#birthday#" 会员生日；"#join_time#" 加入时间；"#sex#" 会员性别</div>
+                        <div class="templet_line">
+                            <span class="templet_left">导航语</span>
+                            <input type="text" placeholder="请输入内容" id="heading">
+                        </div>
+                        <div class="templet_line">
+                            <span class="templet_left">备注</span>
+                            <textarea name="" id="remark" placeholder="请输入内容"></textarea>
+                        </div>
+                        <div class="templet_line">
+                            <span class="templet_left">详情链接</span>
+                            <input type="text" placeholder="请以http://或者https://开头" id="tem_link">
+                        </div>
+                    </span>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="operadd_btn">
+            <ul>
+                <li class="edit_save" ><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="wx_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Dialog -->
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!-- 带搜索的下拉菜单 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<script src="../js/laydate/laydate.js?2017040170331"></script>
+<script src="../js/system/setting_WeChat_template_operate.js?v=20171229"></script>
+</body>
+</html>

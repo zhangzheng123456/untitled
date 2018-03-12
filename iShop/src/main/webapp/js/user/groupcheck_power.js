@@ -11,3 +11,11 @@ $('#edit_power').click(function(){
     $("#page-wrapper").hide();
     $(".content").show();
 })
+$("#check_name").click(function(){
+    group_code=$("#GROUP_ID").val();
+    corp_code=$('#OWN_CORP').val();
+    var group_name=$('#GROUP_NAME').val();
+    var check_name={"corp_code":corp_code,"group_code":group_code,"group_name":group_name};
+    sessionStorage.setItem("check_name",JSON.stringify(check_name));
+    $(window.parent.document).find('#iframepage').attr("src","/user/groupcheck_name.html");
+})

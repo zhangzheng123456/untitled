@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class Brand {
     private int id;
+    //品牌编号xxx
+    private String brand_id;
     //品牌编号
     private String brand_code;
     //品牌名称
@@ -19,6 +21,12 @@ public class Brand {
     private String cus_user_code;
     //修改时间
     private String modified_date;
+
+
+    private String channel_production;
+    private String channel_marketing;
+
+
     //修改人
     private String modifier;
     //创建时间
@@ -27,6 +35,7 @@ public class Brand {
     private String creater;
     //是否可用
     private String isactive;
+
 
     public String getLogo() {
         return logo;
@@ -45,9 +54,21 @@ public class Brand {
     private List<JSONObject> cus_user;
 
     private String app_id;
+    private String market_id;
+    private String product_id;
+
 
     private String app_name;
+    //所属公众号logo
+    private String app_logo;
 
+    public String getApp_logo() {
+        return app_logo;
+    }
+
+    public void setApp_logo(String app_logo) {
+        this.app_logo = app_logo;
+    }
     public String getCorp_name() {
         return corp_name;
     }
@@ -57,6 +78,16 @@ public class Brand {
     }
 
     public Brand() {
+    }
+
+
+
+    public String getBrand_id() {
+        return brand_id;
+    }
+
+    public void setBrand_id(String brand_id) {
+        this.brand_id = brand_id;
     }
 
     public Brand(int id) {
@@ -160,6 +191,22 @@ public class Brand {
         this.cus_user = cus_user;
     }
 
+    public String getChannel_production() {
+        return channel_production;
+    }
+
+    public void setChannel_production(String channel_production) {
+        this.channel_production = channel_production;
+    }
+
+    public String getChannel_marketing() {
+        return channel_marketing;
+    }
+
+    public void setChannel_marketing(String channel_marketing) {
+        this.channel_marketing = channel_marketing;
+    }
+
     public String getApp_id() {
         return app_id;
     }
@@ -174,5 +221,21 @@ public class Brand {
 
     public void setApp_name(String app_name) {
         this.app_name = app_name;
+    }
+
+    public String getMarket_id() {
+        return market_id;
+    }
+
+    public void setMarket_id(String market_id) {
+        this.market_id = market_id;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
     }
 }

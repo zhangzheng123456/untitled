@@ -2,19 +2,16 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,8 +83,111 @@ public class MessageController {
 //        }
 //        return dataBean.getJsonStr();
 //    }
+    @RequestMapping(value = "/unReadMessage", method = RequestMethod.GET)
+    @ResponseBody
+    public String UnReadMessage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try{
+            String user_code= request.getSession().getAttribute("user_code").toString();
+            String corp_code= request.getSession().getAttribute("corp_code").toString();
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_user_code = new Data("user_id", user_code, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_user_code.key, data_user_code);
+            DataBox dataBox = iceInterfaceService.iceInterface("UnReadMessage", datalist);
+            String result = dataBox.data.get("message").value;
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("获取失败");
+
+        }
+        return dataBean.getJsonStr();
+    }
 
 
+    @RequestMapping(value = "/updateMessageState", method = RequestMethod.GET)
+    @ResponseBody
+    public String MessageState(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try{
+            String user_code= request.getSession().getAttribute("user_code").toString();
+            String corp_code= request.getSession().getAttribute("corp_code").toString();
+
+            String message_id = request.getParameter("message_id");
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_type = new Data("type", "one", ValueType.PARAM);
+            Data data_user_code = new Data("user_id", user_code, ValueType.PARAM);
+            Data data_message_id= new Data("message_id", message_id, ValueType.PARAM);
+            Data data_phone= new Data("phone", "", ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_type.key, data_type);
+            datalist.put(data_user_code.key, data_user_code);
+            datalist.put(data_message_id.key, data_message_id);
+            datalist.put(data_phone.key, data_phone);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("MessageState", datalist);
+            String result = dataBox.data.get("message").value;
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("获取失败");
+
+        }
+        return dataBean.getJsonStr();
+    }
+    /**
+     * 获取个人消息
+     *
+     */
+    @RequestMapping(value = "/getUserMessage", method = RequestMethod.GET)
+    @ResponseBody
+    public String getUserMessage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try{
+            String user_code= request.getSession().getAttribute("user_code").toString();
+            String corp_code= request.getSession().getAttribute("corp_code").toString();
+
+            String row_num = request.getParameter("row_num");
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_type = new Data("type", "", ValueType.PARAM);
+            Data data_user_code = new Data("user_id", user_code, ValueType.PARAM);
+            Data data_row_num= new Data("row_num", row_num, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_type.key, data_type);
+            datalist.put(data_user_code.key, data_user_code);
+            datalist.put(data_row_num.key, data_row_num);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("Message", datalist);
+            String result = dataBox.data.get("message").value;
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("获取消息失败");
+
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 发送消息
      * 新增
@@ -206,6 +306,11 @@ public class MessageController {
                 scope.add("指定区域");
                 scope.add("指定店铺");
                 scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_CM)){
+                scope.add("全体成员");
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
             } else if (role_code.equals(Common.ROLE_GM)){
                 scope.add("全体成员");
                 scope.add("指定区域");
@@ -254,10 +359,10 @@ public class MessageController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int message_id = Integer.parseInt(jsonObject.getString("id"));
             MessageInfo message1 = messageService.getMessageById(message_id);
             String message_code = message1.getMessage_code();
@@ -289,10 +394,10 @@ public class MessageController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String message_code = jsonObject.getString("message_code");
             List<Message> messages = messageService.getMessageDetail(message_code);
             dataBean.setId(id);
@@ -318,10 +423,10 @@ public class MessageController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
@@ -384,10 +489,10 @@ public class MessageController {
             String user_code = request.getSession(false).getAttribute("user_code").toString();
 
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -396,6 +501,14 @@ public class MessageController {
             PageInfo<MessageInfo> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = messageService.selectBySearch(page_number, page_size, "", "", search_value);
+            }else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = messageService.selectBySearch(page_number, page_size, corp_code, "", search_value);
+
+              //  list = messageService.selectBySearch(page_number, page_size, "", "", search_value,manager_corp);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //企业管理员
                 list = messageService.selectBySearch(page_number, page_size, corp_code, "", search_value);
@@ -427,10 +540,10 @@ public class MessageController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
@@ -442,6 +555,14 @@ public class MessageController {
             PageInfo<MessageInfo> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = messageService.selectByScreen(page_number, page_size, "", "", map);
+            } else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = messageService.selectByScreen(page_number, page_size, corp_code, "", map);
+
+                //   list = messageService.selectByScreen(page_number, page_size, "", "", map,manager_corp);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //企业管理员
                 list = messageService.selectByScreen(page_number, page_size, corp_code, "", map);

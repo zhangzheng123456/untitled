@@ -93,10 +93,6 @@ public interface CodeUpdateMapper {
     int updateRelVipLabel(@Param("new_corp_code") String new_corp_code, @Param("old_corp_code") String old_corp_code,
                           @Param("new_store_code") String new_store_code, @Param("old_store_code") String old_store_code) throws SQLException;
 
-    //open_id员工关系
-    int updateRelVipEmp(@Param("new_emp_id") String new_emp_id,@Param("old_emp_id") String old_emp_id,
-                        @Param("app_user_name") String app_user_name) throws SQLException;
-
     //open_id店铺关系
     int updateRelVipStore(@Param("new_store_id") String new_store_id,@Param("old_store_id") String old_store_id,
                           @Param("app_user_name") String app_user_name) throws SQLException;

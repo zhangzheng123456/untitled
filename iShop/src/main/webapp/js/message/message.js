@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left = ($(window).width() - $("#tk").width()) / 2;//弹框定位的left值
-var tp = ($(window).height() - $("#tk").height()) / 2;//弹框定位的top值
 var inx = 1;//默认是第一页
 var pageNumber=1;//删除默认第一页
 var pageSize = 10;//默认传的每页多少行
@@ -82,12 +80,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex, pageSize, funcCode) {
+function setPage(container, count, pageindex, pageSize, funcCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize = pageSize;
+    var total = total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -140,7 +139,7 @@ function setPage(container, count, pageindex, pageSize, funcCode) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 " + count + "页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function () { //点击上一页
             if (inx == 1) {
                 return false;
@@ -187,19 +186,6 @@ function dian(a, b) {//点击分页的时候调什么接口
     }
 }
 function superaddition(data, num) {//页面加载循环
-    if(data.length == 0){
-        var len = $(".table thead tr th").length;
-        var i;
-        for(i=0;i<10;i++){
-            $(".table tbody").append("<tr></tr>")
-            for(var j=0;j<len;j++){
-                $($(".table tbody tr")[i]).append("<td></td>")
-            }
-        }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
-    }
-
-
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -332,10 +318,11 @@ function GET(a, b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list = list.list;
             superaddition(list, pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode,total);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -387,8 +374,7 @@ function jumpBianse() {
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width": +l + "px", "height": +h + "px"});
-        $("#tk").css({"left": +left + "px", "top": +tp + "px"});
-    })
+    });
     //查看信息详情跳转
     $('.details').click(function(){
         var event=window.event||arguments[0];
@@ -476,6 +462,7 @@ function POST(a,b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -495,7 +482,7 @@ function POST(a,b) {
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode,total);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -866,6 +853,7 @@ function filtrates(a,b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -878,7 +866,7 @@ function filtrates(a,b) {
                 superaddition(list, pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode,total);
         } else if (data.code == "-1") {
             alert(data.message);
         }

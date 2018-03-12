@@ -3,12 +3,12 @@ package com.bizvane.ishop.interceptor;
 /**
  * Created by maoweidong on 2016/2/19.
  */
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 public class SpringMVCInterceptor implements HandlerInterceptor {
 

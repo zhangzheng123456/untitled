@@ -31,6 +31,17 @@
         <result column="degree" property="degree" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="high_vip_card_type_code" property="high_vip_card_type_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="high_degree" property="high_degree" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_id" property="app_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <!--  新增字段-->
+        <result column="valid_date" property="valid_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="keep_grade_condition" property="keep_grade_condition" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="keep_present_coupon" property="keep_present_coupon" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="keep_present_point" property="keep_present_point" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="degrade_vip_code" property="degrade_vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="degrade_degree" property="degrade_degree" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="degrade_vip_name" property="degrade_vip_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -55,11 +66,20 @@
           dvr.created_date,
           dvr.creater,
           dvr.isactive,
-           dvr.vip_card_type_code,
-            dvr.degree,
-             dvr.high_vip_card_type_code,
-            dvr.high_degree,
-           dc.corp_name
+          dvr.vip_card_type_code,
+          dvr.degree,
+          dvr.high_vip_card_type_code,
+          dvr.high_degree,
+          dvr.app_id,
+          dc.corp_name,
+          <!-- 新增字段 -->
+          dvr.valid_date,
+          dvr.keep_grade_condition,
+          dvr.keep_present_coupon,
+          dvr.keep_present_point,
+          dvr.degrade_vip_code,
+          dvr.degrade_degree,
+          dvr.degrade_vip_name
         FROM def_vip_rules dvr,def_corp dc
         WHERE dvr.corp_code = dc.corp_code
         AND  dvr.ID=#{id}
@@ -87,9 +107,19 @@
         dvr.degree,
         dvr.high_vip_card_type_code,
         dvr.high_degree,
-        dc.corp_name
+        dvr.app_id,
+        dc.corp_name,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
         FROM def_vip_rules dvr,def_corp dc
         WHERE dvr.corp_code = dc.corp_code
+        AND (activity_code IS NULL or activity_code = '')
         <if test="corp_code != null and corp_code !=''">
             AND dvr.corp_code = #{corp_code}
         </if>
@@ -175,6 +205,33 @@
             <if test="high_vip_card_type_code!=null">
                 high_vip_card_type_code,
             </if>
+            <if test="activity_code!=null">
+                activity_code,
+            </if>
+            <if test="app_id!=null">
+                app_id,
+            </if>
+            <if test="valid_date!=null">
+                valid_date,
+            </if>
+            <if test="keep_grade_condition!=null">
+                keep_grade_condition,
+            </if>
+            <if test="keep_present_coupon!=null">
+                keep_present_coupon,
+            </if>
+            <if test="keep_present_point!=null">
+                keep_present_point,
+            </if>
+            <if test="degrade_vip_code!=null">
+                degrade_vip_code,
+            </if>
+            <if test="degrade_degree!=null">
+                degrade_degree,
+            </if>
+            <if test="degrade_vip_name!=null">
+                degrade_vip_name,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -236,6 +293,33 @@
             </if>
             <if test="high_vip_card_type_code!=null">
                 #{high_vip_card_type_code},
+            </if>
+            <if test="activity_code!=null">
+                #{activity_code},
+            </if>
+            <if test="app_id!=null">
+                #{app_id},
+            </if>
+            <if test="valid_date!=null">
+                #{valid_date},
+            </if>
+            <if test="keep_grade_condition!=null">
+                #{keep_grade_condition},
+            </if>
+            <if test="keep_present_coupon!=null">
+                #{keep_present_coupon},
+            </if>
+            <if test="keep_present_point!=null">
+                #{keep_present_point},
+            </if>
+            <if test="degrade_vip_code!=null">
+                #{degrade_vip_code},
+            </if>
+            <if test="degrade_degree!=null">
+                #{degrade_degree},
+            </if>
+            <if test="degrade_vip_name!=null">
+                #{degrade_vip_name},
             </if>
         </trim>
     </insert>
@@ -303,6 +387,30 @@
             <if test="high_degree!=null">
                 high_degree=#{high_degree},
             </if>
+            <if test="app_id!=null">
+                app_id=#{app_id},
+            </if>
+            <if test="valid_date!=null">
+                valid_date=#{valid_date},
+            </if>
+            <if test="keep_grade_condition!=null">
+                keep_grade_condition=#{keep_grade_condition},
+            </if>
+            <if test="keep_present_coupon!=null">
+                keep_present_coupon=#{keep_present_coupon},
+            </if>
+            <if test="keep_present_point!=null">
+                keep_present_point=#{keep_present_point},
+            </if>
+            <if test="degrade_vip_code!=null">
+                degrade_vip_code=#{degrade_vip_code},
+            </if>
+            <if test="degrade_degree!=null">
+                degrade_degree=#{degrade_degree},
+            </if>
+            <if test="degrade_vip_name!=null">
+                degrade_vip_name=#{degrade_vip_name},
+            </if>
         </trim>
         WHERE id=#{id};
     </update>
@@ -329,9 +437,19 @@
         dvr.degree,
         dvr.high_vip_card_type_code,
         dvr.high_degree,
-        dc.corp_name
+        dvr.app_id,
+        dc.corp_name,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
         FROM def_vip_rules dvr,def_corp dc
         WHERE dvr.corp_code = dc.corp_code
+        AND (activity_code IS NULL or activity_code = '')
         <if test="corp_code!=null and corp_code!=''">
             AND dvr.corp_code=#{corp_code}
         </if>
@@ -353,7 +471,7 @@
         ORDER BY dvr.id DESC
     </select>
 
-    <select id="selectByVipType" resultType="com.bizvane.ishop.entity.VipRules">
+    <select id="selectByVipType" resultMap="VipRules">
         SELECT
         dvr.id,
         dvr.corp_code,
@@ -374,19 +492,33 @@
         dvr.isactive,
         dvr.vip_card_type_code,
         dvr.degree,
+        dvr.app_id,
         dvr.high_vip_card_type_code,
-        dvr.high_degree
+        dvr.high_degree,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
         FROM def_vip_rules dvr,def_corp
         WHERE dvr.corp_code=def_corp.corp_code
+        AND (activity_code IS NULL or activity_code = '')
         <if test="corp_code!=null and corp_code!=''">
             AND dvr.CORP_CODE = #{corp_code}
         </if>
-        AND  dvr.vip_type= #{vip_type}
-        AND  dvr.high_vip_type= #{high_vip_type}
+        <if test="vip_type!=null and vip_type!=''">
+            AND  dvr.vip_type= #{vip_type}
+        </if>
+        <if test="high_vip_type!=null and high_vip_type!=''">
+            AND  dvr.high_vip_type= #{high_vip_type}
+        </if>
          AND  dvr.isactive= #{isactive}
     </select>
 
-    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.VipRules">
+    <select id="selectDegradeByVipType" resultMap="VipRules">
         SELECT
         dvr.id,
         dvr.corp_code,
@@ -407,16 +539,74 @@
         dvr.isactive,
         dvr.vip_card_type_code,
         dvr.degree,
+        dvr.app_id,
         dvr.high_vip_card_type_code,
-        dvr.high_degree
+        dvr.high_degree,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
         FROM def_vip_rules dvr,def_corp
         WHERE dvr.corp_code=def_corp.corp_code
+        AND (activity_code IS NULL or activity_code = '')
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvr.CORP_CODE = #{corp_code}
+        </if>
+        <if test="vip_type!=null and vip_type!=''">
+            AND  dvr.vip_type= #{vip_type}
+        </if>
+        <if test="degrade_vip_name!=null and degrade_vip_name!=''">
+            AND  dvr.degrade_vip_name= #{degrade_vip_name}
+        </if>
+        AND  dvr.isactive= #{isactive}
+    </select>
+
+    <select id="selectByCorp" resultMap="VipRules">
+        SELECT
+        dvr.id,
+        dvr.corp_code,
+        dvr.vip_type,
+        dvr.high_vip_type,
+        dvr.discount,
+        dvr.join_threshold,
+        dvr.upgrade_time,
+        dvr.upgrade_amount,
+        dvr.points_value,
+        dvr.store_code,
+        dvr.present_point,
+        dvr.present_coupon,
+        dvr.modified_date,
+        dvr.modifier,
+        dvr.created_date,
+        dvr.creater,
+        dvr.isactive,
+        dvr.vip_card_type_code,
+        dvr.degree,
+        dvr.app_id,
+        dvr.high_vip_card_type_code,
+        dvr.high_degree,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
+        FROM def_vip_rules dvr,def_corp
+        WHERE dvr.corp_code=def_corp.corp_code
+        AND (activity_code IS NULL or activity_code = '')
         <if test="corp_code!=null and corp_code!=''">
             AND dvr.CORP_CODE = #{corp_code}
         </if>
         AND  dvr.isactive= #{isactive}
     </select>
-    <select id="selectByCardTypeCode" resultType="com.bizvane.ishop.entity.VipRules">
+
+    <select id="selectByCardTypeCode" resultMap="VipRules">
     SELECT
     dvr.id,
     dvr.corp_code,
@@ -440,13 +630,91 @@
     dvr.high_vip_card_type_code,
     dvr.high_degree,
     dc.corp_name,
-    dvct.vip_card_type_code
+    dvr.app_id,
+    dvct.vip_card_type_code,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
     FROM def_vip_rules dvr,def_corp dc,def_vip_card_type dvct
     WHERE dvr.corp_code = dc.corp_code
     and  dvr.corp_code = dvct.corp_code
+    and dvr.vip_card_type_code = dvct.vip_card_type_code
     and dvct.vip_card_type_code=#{vip_card_type_code}
-     and dvct.corp_code=#{corp_code}
+    and dvct.corp_code=#{corp_code}
+    AND dvr.isactive = 'Y'
     ORDER by dvr.id
 </select>
+
+    <select id="selectByCardHighCode" resultMap="VipRules">
+        SELECT *
+        FROM def_vip_rules dvr
+        WHERE dvr.corp_code=#{corp_code}
+        AND dvr.high_vip_card_type_code=#{high_vip_card_type_code}
+        AND dvr.isactive = 'Y'
+        ORDER by dvr.id
+    </select>
+
+    <delete id="deleteByActivity">
+        DELETE FROM
+        def_vip_rules
+        WHERE activity_code=#{activity_code}
+    </delete>
+
+
+
+    <!--根据会员卡的编号做判断-->
+    <select id="selectByVipCardTypeCode" resultMap="VipRules">
+        SELECT
+        dvr.id,
+        dvr.corp_code,
+        dvr.vip_type,
+        dvr.high_vip_type,
+        dvr.discount,
+        dvr.join_threshold,
+        dvr.upgrade_time,
+        dvr.upgrade_amount,
+        dvr.points_value,
+        dvr.store_code,
+        dvr.present_point,
+        dvr.present_coupon,
+        dvr.modified_date,
+        dvr.modifier,
+        dvr.created_date,
+        dvr.creater,
+        dvr.isactive,
+        dvr.vip_card_type_code,
+        dvr.degree,
+        dvr.app_id,
+        dvr.high_vip_card_type_code,
+        dvr.high_degree,
+        <!-- 新增字段 -->
+        dvr.valid_date,
+        dvr.keep_grade_condition,
+        dvr.keep_present_coupon,
+        dvr.keep_present_point,
+        dvr.degrade_vip_code,
+        dvr.degrade_degree,
+        dvr.degrade_vip_name
+        FROM def_vip_rules dvr,def_corp
+        WHERE dvr.corp_code=def_corp.corp_code
+        AND (activity_code IS NULL or activity_code = '')
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvr.CORP_CODE = #{corp_code}
+        </if>
+        <if test="vip_card_type_code!=null and vip_card_type_code!=''">
+            AND  dvr.vip_card_type_code= #{vip_card_type_code}
+        </if>
+        <if test="high_vip_card_type_code!=null and high_vip_card_type_code!=''">
+            AND  dvr.high_vip_card_type_code= #{high_vip_card_type_code}
+        </if>
+        <if test="isactive!=null and isactive!=''">
+            AND dvr.isactive= #{isactive}
+        </if>
+    </select>
 
 </mapper>

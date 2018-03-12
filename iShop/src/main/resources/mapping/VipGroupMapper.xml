@@ -14,6 +14,7 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="is_public" property="is_public" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
@@ -31,7 +32,8 @@
         dvg.modifier,
         dvg.created_date,
         dvg.creater,
-        dvg.isactive
+        dvg.isactive,
+        dvg.is_public
         FROM def_vip_group dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code
         AND dvg.id=#{id}
@@ -51,7 +53,8 @@
         dvg.modifier,
         dvg.created_date,
         dvg.creater,
-        dvg.isactive
+        dvg.isactive,
+        dvg.is_public
         FROM def_vip_group dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code != null and corp_code !=''">
@@ -83,7 +86,8 @@
         dvg.modifier,
         dvg.created_date,
         dvg.creater,
-        dvg.isactive
+        dvg.isactive,
+        dvg.is_public
         FROM def_vip_group dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code != null and corp_code !=''">
@@ -110,7 +114,8 @@
         dvg.modifier,
         dvg.created_date,
         dvg.creater,
-        dvg.isactive
+        dvg.isactive,
+        dvg.is_public
         From def_vip_group dvg
         WHERE dvg.corp_code = #{corp_code}
         AND dvg.vip_group_code = #{vip_group_code}
@@ -124,7 +129,8 @@
         dvg.id,
         dvg.vip_group_name,
         dvg.corp_code,
-        dvg.isactive
+        dvg.isactive,
+        dvg.is_public
         FROM def_vip_group dvg
         WHERE dvg.corp_code=#{corp_code}
         AND dvg.vip_group_name=#{vip_group_name}
@@ -175,6 +181,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="is_public!=null">
+                is_public,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="vip_group_code!=null">
@@ -209,6 +218,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="is_public!=null">
+                #{is_public},
             </if>
         </trim>
     </insert>
@@ -248,6 +260,9 @@
             </if>
             <if test="isactive!=null">
                 isactive=#{isactive},
+            </if>
+            <if test="is_public!=null">
+                is_public=#{is_public},
             </if>
         </trim>
         WHERE id=#{id};

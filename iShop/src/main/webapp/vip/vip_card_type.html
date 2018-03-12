@@ -1,10 +1,9 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>会员类型定义</title>
-	<link rel="stylesheet" href="../table/css/inner.css?201715">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
 	<script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js"></script>
 </head>
@@ -12,7 +11,7 @@
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
-    			<span>会员管理</span>
+    			<span>会员类型</span>
                 <span class="icon-ishop_8-03"></span>
                 <span>会员类型定义</span>
     		</div>
@@ -22,7 +21,7 @@
                     </ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="会员类型编号/会员类型名称/会员等级/所属企业">
+                            <input type="text" class="input" id="search" placeholder="会员类型编号/会员类型名称/会员等级">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -40,8 +39,8 @@
                         <li id="more">
                             <span class="icon-ishop_6-08"></span>
                             更多
-                            <div class="more_down" id="more_down">
-                            </div>
+                            <!--<div class="more_down" id="more_down">-->
+                            <!--</div>-->
                         </li>
 
                     </ul>
@@ -172,24 +171,49 @@
         </div>
     </div>
 </body>
-    <script type="text/javascript" src="/js/insidePostRequire.js?201715"></script>
-    <script src="/js/vip/vip_card_type.js?201715"></script>
-    <script src="/js/silide.js?201715"></script>
+    <script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+    <script src="../js/vip/vip_card_type.js?20171229"></script>
+    <script src="/js/silide.js?2017040170331"></script>
     <script type="text/javascript">
         $(function(){
             $(".icon-ishop_6-07").parent().click(function () {
-                window.location.reload();
+//                window.location.reload();
+                inx=1;
+                if (value == "" && filtrate == "") {
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["searchValue"]="";
+                    GET(inx, pageSize);
+                } else if (value !== "") {
+                    param["pageSize"] = pageSize;
+                    param["pageNumber"]=inx;
+                    $("#search").val(value);
+                    POST(inx, pageSize);
+                } else if (filtrate !== "") {
+//                    _param["pageSize"] = pageSize;
+//                    _param["pageNumber"]=inx;
+                    getInputValue();
+//                    filtrates(inx, pageSize);
+                }
             })
         });
         var timer=setInterval(function(){
             $(window.parent.document).find("#navbar li dd[data-code='F0046']").parent().show();
             $(window.parent.document).find("#navbar li dd[data-code='F0046']").find("span").addClass("icon-ishop_8-01");
+            $(window.parent.document).find("#navbar li dd[data-code='F0046']").siblings().find("span").removeClass("icon-ishop_8-01");
             $(window.parent.document).find("#navbar li dd[data-code='F0046']").find("a").css({color:"#6cc1c8"});
+            $(window.parent.document).find("#navbar li dd[data-code='F0046']").siblings().find("a").css({color:"#FFF"});
             $(window.parent.document).find("#navbar li dd[data-code='F0046']").parent().siblings().addClass("h1");
             $(window.parent.document).find("#navbar li dd[data-code='F0046']").parent().siblings().find("span").addClass("icon-ishop_8-02");
             if($(window.parent.document).find("#navbar li dd[data-code='F0046']").find("span").hasClass("icon-ishop_8-01")){
                 clearInterval(timer);
             }
         },0);
+        //默认全部
+        window.onload = function () {
+            setTimeout(function(){
+                getScreenVal();
+            },500);
+        }
     </script>
 </html>

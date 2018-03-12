@@ -11,9 +11,16 @@ import java.util.Map;
  * Created by yin on 2016/7/21.
  */
 public interface TaskMapper {
-        List<Task> selectAllTask(@Param("corp_code")String corp_code,@Param("role_ident")String role_ident,@Param("user_code")String user_code,@Param("search_value")String search_value);
+        List<Task> selectAllTask(@Param("corp_code")String corp_code,@Param("role_ident")String role_ident,@Param("user_code")String user_code,@Param("search_value")String search_value,@Param("manager_corp_arr")String[] manager_corp_arr);
 
         List<Task> selectAllTaskScreen(Map<String, Object> params);
+
+        List<TaskAllocation> selectAllTaskByTaskCode(Map<String,Object> params);
+
+        List<TaskAllocation> selAllTaskAllocationByStore(Map<String,Object> params );
+
+
+        List<TaskAllocation> selAllTaskAllocationByUsers(Map<String,Object> params );
 
         Task selTaskById(@Param("id")String id);
 
@@ -46,4 +53,13 @@ public interface TaskMapper {
         List<Task> getTaskByActivityCode(@Param("corp_code")String corp_code,@Param("activity_vip_code")String activity_vip_code);
 
         int delTaskByActivityCode(@Param("corp_code")String corp_code,@Param("activity_vip_code")String activity_vip_code);
+
+        List<TaskAllocation> selUserComTaskCount(@Param("corp_code")String corp_code,@Param("store_code")String store_code,@Param("task_status")String task_status);
+
+        List<TaskAllocation> selUserTask(Map<String,Object> param);
+
+        List<TaskAllocation> selTaskStore(@Param("corp_code")String corp_code,@Param("search_value")String search_value);
+
+        List<TaskAllocation> selStoreComTaskCount(@Param("corp_code")String corp_code,@Param("store_code")String store_code,@Param("task_status")String task_status);
+
 }

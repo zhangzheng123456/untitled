@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>会员管理之会员参数</title>
-    <link rel="stylesheet" href="../table/css/inner.css?201715">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <script src="../table/js/jquery.min.js"></script>
     <script src="../js/jquery-ui-1.10.4.min.js"></script>
-    <script src="/js/loading.js?201715"></script>
+    <script src="/js/loading.js?2017040170331"></script>
 </head>
 <body>
 <div class="content">
@@ -36,7 +36,7 @@
                     <!--</li>-->
                 </ul>
                 <li class="li">
-                    <input type="text" class="input" id="search" placeholder="参数/参数名称/参数值/所属企业/备注">
+                    <input type="text" class="input" id="search" placeholder="参数名称/参数值/企业名称/备注">
                     <i class="icon-ishop_3-05" id="d_search"></i>
                 </li>
             </div>
@@ -152,9 +152,10 @@
     </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="../js/insidePostRequire.js?201715"></script>
-<script src="../js/vip/vip_param.js?201715"></script>
+<script src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/vip/vip_param.js?2018019"></script>
 <!-- <script src="../table/js/inner.js"></script> -->
+<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script type="text/javascript">
 
     $(function(){
@@ -177,13 +178,17 @@
     var timer=setInterval(function(){
         $(window.parent.document).find("#navbar li dd[data-code='F0034']").parent().show();
         $(window.parent.document).find("#navbar li dd[data-code='F0034']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").siblings().find("span").removeClass("icon-ishop_8-01");
         $(window.parent.document).find("#navbar li dd[data-code='F0034']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").siblings().find("a").css({color:"#FFF"});
         $(window.parent.document).find("#navbar li dd[data-code='F0034']").parent().siblings().addClass("h1");
         $(window.parent.document).find("#navbar li dd[data-code='F0034']").parent().siblings().find("span").addClass("icon-ishop_8-02");
         if($(window.parent.document).find("#navbar li dd[data-code='F0034']").find("span").hasClass("icon-ishop_8-01")){
             clearInterval(timer);
         }
     },0);
+
+
 </script>
 </body>
 </html>

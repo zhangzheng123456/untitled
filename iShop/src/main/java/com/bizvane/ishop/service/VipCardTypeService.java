@@ -21,12 +21,21 @@ public interface VipCardTypeService {
 
     int delete(int id) throws Exception;
 
-    PageInfo<VipCardType> getAllVipCardTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
+    PageInfo<VipCardType> getAllVipCardTypeScreen(int page_number, int page_size, String corp_code, String brand_code, String store_group_code,Map<String, String> map) throws Exception;
 
     VipCardType getVipCardTypeByCode(String corp_code,String vip_card_type_code,String isactive)throws Exception;
 
     VipCardType getVipCardTypeByName(String corp_code,String vip_card_type_name,String isactive)throws Exception;
 
-    List<VipCardType> getVipCardTypes(String corp_code, String isactive)throws Exception;
+    List<VipCardType> getVipCardTypes(String corp_code, String isactive,String search_value)throws Exception;
 
+    List<VipCardType> getVipCardByRole(String corp_code, String isactive,String brand_code, String store_group_code) throws Exception;
+
+    PageInfo<VipCardType> getVipCardByRole(int pageNum, int pageSize, String corp_code, String isactive,String brand_code, String store_group_code) throws Exception;
+
+    int insertVipCardType(VipCardType vipCardType) throws Exception;
+
+    VipCardType isExistByType(String corp_code,String vip_card_type_id, String vip_card_type_code,String vip_card_type_name)throws Exception;
+
+    public VipCardType isExistByTypeTwo(String corp_code, String vip_card_type_id, String vip_card_type_code, String vip_card_type_name) throws Exception;
 }

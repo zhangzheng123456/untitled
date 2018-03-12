@@ -28,12 +28,17 @@
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="is_authorize" property="is_authorize" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="access_key" property="access_key" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_logo" property="app_logo" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="use_offline" property="use_offline" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+
     </resultMap>
 
     <select id="selectByCorpName" resultMap="CorpInfo">
@@ -63,6 +68,12 @@
         SELECT *
         FROM def_corp
         WHERE 1 = 1
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (
@@ -132,6 +143,10 @@
             <if test="avatar!=null ">
                 avatar,
             </if>
+            <if test="use_offline!=null ">
+                use_offline,
+            </if>
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
@@ -170,6 +185,10 @@
             <if test="avatar!=null ">
                 #{avatar},
             </if>
+            <if test="use_offline!=null ">
+                #{use_offline},
+            </if>
+
         </trim>
 
     </insert>
@@ -213,6 +232,9 @@
             <if test="avatar!=null">
                 avatar=#{avatar},
             </if>
+            <if test="use_offline!=null">
+                use_offline=#{use_offline},
+            </if>
         </trim>
         WHERE ID = #{id};
     </update>
@@ -238,7 +260,6 @@
     <select id="getGoodCount" resultType="java.lang.Integer">
         SELECT count(*) FROM def_goods WHERE corp_code=#{corp_code}
     </select>
-
 
     <select id="getGroupCount" resultType="java.lang.Integer">
         SELECT count(*) FROM def_group WHERE corp_code=#{corp_code}
@@ -271,10 +292,24 @@
         SELECT id,
         app_id,
         app_name,
+        app_user_name,
         corp_code,
+        app_logo,
         is_authorize
         FROM rel_corp_wechat
         WHERE app_user_name = #{app_user_name}
+    </select>
+
+    <select id="selectWByApp" resultMap="CorpWechat">
+        SELECT id,
+        app_id,
+        app_name,
+        app_user_name,
+        corp_code,
+        app_logo,
+        is_authorize
+        FROM rel_corp_wechat
+        WHERE app_id = #{app_id}
     </select>
 
     <select id="selectWByAppId" resultMap="CorpWechat">
@@ -282,20 +317,24 @@
         app_id,
         app_name,
         corp_code,
+        app_user_name,
         is_authorize,
-        brand_code
+        app_logo,
+        brand_code,
+        access_key
         FROM rel_corp_wechat
         WHERE app_id = #{app_id}
+        <if test="corp_code != null and corp_code != ''">
+            AND (corp_code = #{corp_code}
+            OR crm_corp_code = #{corp_code})
+        </if>
+
     </select>
 
     <select id="selectWByCorp" resultMap="CorpWechat">
-        SELECT id,
-        app_id,
-        app_name,
-        corp_code,
-        is_authorize
+        SELECT *
         FROM rel_corp_wechat
-        WHERE corp_code = #{corp_code}
+        WHERE ( corp_code = #{corp_code} OR crm_corp_code = #{corp_code})
         AND isactive = 'Y'
     </select>
 
@@ -304,9 +343,11 @@
         app_id,
         app_name,
         corp_code,
+        app_user_name,
+        app_logo,
         is_authorize
         FROM rel_corp_wechat
-        WHERE corp_code = #{corp_code}
+        WHERE ( corp_code = #{corp_code} OR crm_corp_code = #{corp_code})
         AND
         <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
             brand_code REGEXP #{item}
@@ -321,10 +362,13 @@
         app_id,
         app_name,
         corp_code,
+        app_user_name,
         brand_code,
-        is_authorize
+        app_logo,
+        is_authorize,
+        access_key
         FROM rel_corp_wechat
-        WHERE corp_code = #{corp_code}
+        WHERE ( corp_code = #{corp_code} OR crm_corp_code = #{corp_code})
         AND is_authorize = 'Y'
         AND isactive = 'Y'
     </select>
@@ -334,6 +378,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_code != null">
                 corp_code,
+            </if>
+            <if test="corp_code != null">
+                crm_corp_code,
             </if>
             <if test="app_id != null">
                 app_id,
@@ -359,8 +406,17 @@
             <if test="isactive != null">
                 isactive,
             </if>
+            <if test="app_logo != null">
+                app_logo,
+            </if>
+            <if test="access_key != null">
+                access_key,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
             <if test="corp_code != null">
                 #{corp_code},
             </if>
@@ -388,6 +444,12 @@
             <if test="isactive != null">
                 #{isactive},
             </if>
+            <if test="app_logo != null">
+                #{app_logo},
+            </if>
+            <if test="access_key != null">
+                #{access_key},
+            </if>
         </trim>
 
     </insert>
@@ -398,12 +460,16 @@
             <if test="corp_code != null">
                 corp_code = #{corp_code},
             </if>
+            <if test="corp_code != null">
+                crm_corp_code = #{corp_code},
+            </if>
             <if test="app_id != null">
                 app_id = #{app_id},
             </if>
             <if test="app_name != null">
                 app_name = #{app_name},
             </if>
+
             <if test="is_authorize != null">
                 is_authorize = #{is_authorize},
             </if>
@@ -425,6 +491,12 @@
             <if test="brand_code != null">
                 brand_code = #{brand_code},
             </if>
+            <if test="app_logo != null">
+                app_logo = #{app_logo},
+            </if>
+            <if test="access_key != null">
+                access_key = #{access_key},
+            </if>
         </trim>
         WHERE id = #{id};
     </update>
@@ -437,9 +509,10 @@
             AND app_id = #{app_id}
         </if>
         <if test="corp_code != null and corp_code != ''">
-            AND corp_code = #{corp_code}
+            AND (corp_code = #{corp_code} OR crm_corp_code = #{corp_code})
         </if>
     </delete>
+
     <select id="selectByCorpcode" resultType="com.bizvane.ishop.entity.Corp">
         SELECT * FROM def_corp
         WHERE corp_code=#{corp_code}

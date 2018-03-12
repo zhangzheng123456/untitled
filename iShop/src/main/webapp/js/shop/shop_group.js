@@ -543,7 +543,7 @@ $("#leading_out").click(function(){
     var h=$(document.body).height();
     var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
     var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
-    $(".file").css({"left":+left+"px","top":+tp+"px"});
+    $(".file").css("position","fixed");
     $("#p").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').show();

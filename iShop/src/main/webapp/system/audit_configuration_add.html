@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增审核配置</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-select.css">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <style>
+        body {
+            margin-top: 81px;
+        }
+        .auditor_group{
+            background-color: #ffffff;
+            width: 420px;
+            display: inline-block;
+            padding: 10px 10px 10px 20px;
+        }
+        .auditor_line .selectInput{
+            background: url(../img/icon_list_down.png) no-repeat 97% center;
+            padding-right: 20px;
+            width: 250px;
+            margin: 5px 10px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: inherit;
+        }
+        /*.auditor_line .selectInput:after{*/
+            /*background: url(../img/icon_list_down.png) no-repeat 97% center;*/
+        /*}*/
+        .auditor_line{
+            margin: 0!important;
+        }
+        .auditor_line .group_name{
+           vertical-align: middle;
+            display: inline-block;
+            width: 40px;
+        }
+        .auditor_line .add_btn{
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border: 1px solid #d7d7d7;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #fff;
+            color: #6dc1c8;
+            cursor: pointer;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .auditor_line:not(:last-child) .add_btn.icon-ishop_6-01{
+            display: none;
+        }
+        .auditor_line:first-child .add_btn.icon-ishop_6-02{
+            display: none;
+        }
+        .drop_down .input_select,.drop_down ul li,#corp_select{
+            cursor: pointer;
+        }
+        .selectInputWrap ul {
+            left: 0;margin-left: 10px;width: 250px;top: 36px;overflow: hidden;overflow-y: auto;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            position: absolute;
+            display: none;
+            z-index: 100;
+            max-height: 150px;
+        }
+        .selectInputWrap {
+            position: relative;display: inline-block;
+        }
+        .selectInputWrap ul li{
+            display: block;
+            height: 30px;
+            color: #807a62;
+            text-decoration: none;
+            line-height: 30px;
+            text-indent: 10px;
+            width: 100%;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 30px;
+        }
+        /*.selectInputWrap ul li:hover{*/
+            /*background: #4a5f7c;*/
+            /*color: white;*/
+        /*}*/
+        .selectInputWrap li .checkbox{
+            margin: 0;
+            height: 30px;
+            line-height: 30px;
+        }
+       .selectInputWrap  li label {
+            margin-left: 10px;
+            margin-right: 0;
+            background-position: center center;
+           cursor: inherit;
+        }
+        .selectInputWrap li span{
+            vertical-align: middle;
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            width: auto;
+            text-indent: 0;
+        }
+        .noAudit{
+            margin: 0;
+            line-height: 30px;
+            text-align: center;
+            color: #999;
+        }
+        .audit_dec{
+            color: #c26555;
+            font-size: 12px;
+            margin-left: 120px;
+            width: 400px;
+        }
+        .select_sendType div{
+            margin: 0;
+            height: 30px;
+        }
+        .select_sendType .checkbox~span{
+            margin-left: 20px;
+            vertical-align: middle;
+        }
+        .select_sendType .checkbox+span{
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .select_sendType .checkbox label{
+            background-position: center;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>系统管理</span><i class="icon-ishop_8-03"></i><span id="back_audit_list">审核配置</span><i
+            class="icon-ishop_8-03"></i><label>新增审核配置</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form style="margin-left:0" class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li id="corp_select">
+                        <span class="corp_select">
+                            <select id="OWN_CORP" style="display:inline-flex">
+                            </select>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="drop_down item_2">
+                        <span><label style="color:#c26655">功能单据*</label><input id="functional_documents" data-value="会员任务" class="input_select" value="会员任务" type="text" placeholder="" readonly="">
+                            <ul style="display: none;">
+                                <li data-value="会员任务">会员任务</li>
+                                <li data-value="会员活动">会员活动</li>
+                                <li data-value="群发消息">群发消息</li>
+                                <li data-value="积分清零">积分清零</li>
+                                <li data-value="积分调整">积分调整</li>
+                                <li data-value="核准计划">核准计划</li>
+                            </ul>
+                        </span>
+            </div>
+            <div>
+                <label style="color:#c26555;vertical-align: top">审核组别*</label><div class="auditor_group" id="auditor_group">
+                    <div class="auditor_line">
+                        <span class="group_name">组1</span>
+                        <span class="selectInputWrap">
+                            <input type="text" class="input250px selectInput notEmpty" placeholder="选择审核员工" readonly data-selected="[]" data-selected_code="[]">
+                            <ul>
+                            </ul>
+                        </span>
+                        <span class="add_btn icon-ishop_6-01"></span>
+                        <span class="add_btn icon-ishop_6-02"></span>
+
+                    </span>
+                    </div>
+                </div>
+                <p class="audit_dec">*组内多人为“或”的关系，即任意一人审核通过即可；组间为“与”的关系，即每组内必须有人审核通过。</p>
+            </div>
+            <div class="select_sendType">
+                <label style="vertical-align: top">短信通知</label><div style="display: inline-block">
+                       <div>
+                            <div class="checkbox"><input type="checkbox" value="" name="test" class="check" id="sms_examine"><label for="sms_examine"></label></div>
+                            <span>提交审核</span>
+                            <span style="color: #c26555;font-size: 12px">*短信通知审核人</span>
+                        </div>
+                        <div>
+                            <div class="checkbox"><input type="checkbox" value="" name="test" class="check" id="sms_progress"><label for="sms_progress"></label></div>
+                            <span>审核进度</span>
+                            <span style="color: #c26555;font-size: 12px">*短信通知创建人</span>
+                        </div>
+                        <div>
+                            <div class="checkbox"><input type="checkbox" value="" name="test" class="check" id="sms_result"><label for="sms_result"></label></div>
+                            <span>审核结果</span>
+                            <span style="color: #c26555;font-size: 12px">*短信通知创建人</span>
+                        </div>
+                   </div>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="oper_btn">
+            <ul>
+                <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="send_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <!--<div>-->
+                <!--<span><label>创建时间</label><input type="text" id="created_time" readonly/></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label>创建人</label><input type="text" id="creator" readonly/></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label>修改人</label><input type="text" id="modifier" readonly/></span>-->
+            <!--</div>-->
+            <div>
+            <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 拉取品牌 -->
+<div id="screen_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选员工</h4>
+        <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="staff_search">
+            <span class="icon-ishop_3-05" id="staff_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加<span>0</span>/<span>0</span>个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_staff">确定</div>
+</div>
+<div class="p" id="p" style="left: 0;top: 0;right:0;bottom: 0"></div>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<!-- 带搜索的下拉菜单 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!--美化滚动条-->
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!-- 遮罩层 -->
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="../js/moni_select.js?20180105"></script>
+<!--dialog-->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script src="../js/system/audit_configuration_operate.js?t=201801116"></script>
+</body>
+</html>

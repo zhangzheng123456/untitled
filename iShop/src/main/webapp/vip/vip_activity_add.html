@@ -12,8 +12,9 @@
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
-    <link rel="stylesheet" href="../css/set_vip_activity.css">
+    <link rel="stylesheet" href="../css/set_vip_activity.css?20180125">
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <link rel="stylesheet" href="../css/select_new.css?t=20171229">
     <style>
         body{
             margin-top: 80px;
@@ -22,7 +23,7 @@
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>新增活动</label></div>
+    <div class="col-lg-12 pre_title"><span>会员营销</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><label>新增活动</label></div>
     <div class="main col-lg-12">
         <div class="tabs" id="tabs">
             <div class="active" data-src="set_vip_activity.html">
@@ -35,14 +36,14 @@
                  <span>2</span><span>活动筹备</span>
                </div>
             </div>
-            <div data-src="activity_select.html">
-                <div class="tab">
-                    <span>3</span><span>筛选会员</span>
-                </div>
-            </div>
+            <!--<div data-src="activity_select.html">-->
+                <!--<div class="tab">-->
+                    <!--<span>3</span><span>筛选会员</span>-->
+                <!--</div>-->
+            <!--</div>-->
             <div data-src="activity_finish.html">
                 <div class="tab">
-                    <span>4</span><span>完成</span>
+                    <span>3</span><span>完成</span>
                 </div>
             </div>
         </div>
@@ -58,17 +59,16 @@
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
 <script src="../js/insidePostRequire.js"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js"></script>
-<script src="../js/vip/vip_activity_add.js"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js?20180104"></script>
+<!--<script src="../js/laydate/laydate.dev.js?20180103"></script>-->
+<script src="../js/vip/vip_activity_add.js?t=20180110"></script>
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
 <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <!--<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>-->
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
 <script src="../js/loading.js"></script>
-<!--<script src="../js/artDialog/plugins/iframeTools.js"></script>-->
 <script src="../js/artDialog/jquery.artDialog.js"></script>
 <script src="../js/artDialog/plugins/iframeTools.js"></script>
-<!--<script src="../js/vip_screen.js?20161214"></script>-->
  <!--//带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <script type="text/javascript" src="../js/moni_select.js"></script>

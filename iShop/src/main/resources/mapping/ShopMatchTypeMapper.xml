@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.ShopMatchTypeMapper">
+
+    <select id="selectAllMatchType" resultType="com.bizvane.ishop.entity.ShopMatchType">
+        SELECT dst.*,dc.corp_name
+        FROM def_shopmatch_type dst,def_corp dc
+        WHERE 1 = 1
+        AND dst.corp_code=dc.corp_code
+        <if test="role_type !='sys'.toString() and role_type !='cm'.toString() ">
+            <if test="corp_code != null and corp_code!=''">
+                AND dst.corp_code = #{corp_code}
+            </if>
+        </if>
+        <if test="role_type =='cm'.toString()">
+            <if test="manager_corp_arr!=null">
+                AND
+                <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                    dst.corp_code =#{item}
+                </foreach>
+          --      OR dst.corp_code = 'C00000'
+            </if>
+        </if>
+        <if test="role_type =='sys'.toString() and corp_code !='C00000'.toString() ">
+            AND
+            (
+            dst.corp_code = #{corp_code}
+            OR dst.corp_code = 'C00000'
+            )
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND dst.shopmatch_type LIKE concat('%', #{search_value},'%')
+        </if>
+        GROUP BY dst.id
+        ORDER BY dst.id DESC
+    </select>
+    <!--<select id="selectAllScreen" resultType="com.bizvane.ishop.entity.ShopMatchType">-->
+    <!--SELECT dst.*,dc.corp_name-->
+    <!--FROM def_shopmatch_type dst,def_corp dc-->
+    <!--WHERE 1 = 1-->
+    <!--AND dst.corp_code=dc.corp_code-->
+    <!--<foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >-->
+    <!--<choose>-->
+    <!--<when test="entryValue!=''">-->
+    <!--${entryKey} REGEXP ${entryValue}-->
+    <!--</when>-->
+    <!--<otherwise>-->
+    <!--1=1-->
+    <!--</otherwise>-->
+    <!--</choose>-->
+    <!--</foreach>-->
+    <!--GROUP BY dst.id-->
+    <!--ORDER BY dst.id DESC-->
+    <!--</select>-->
+    <insert id="addShopMatchType" parameterType="com.bizvane.ishop.entity.ShopMatchType">
+        INSERT INTO def_shopmatch_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="shopmatch_type != null">
+                shopmatch_type,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="shopmatch_type != null">
+                #{shopmatch_type},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+        </trim>
+    </insert>
+    <update id="updShopMatchType" parameterType="com.bizvane.ishop.entity.ShopMatchType">
+        UPDATE def_shopmatch_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code= #{corp_code},
+            </if>
+            <if test="shopmatch_type != null">
+                shopmatch_type= #{shopmatch_type},
+            </if>
+            <if test="created_date != null">
+                created_date= #{created_date},
+            </if>
+            <if test="creater != null">
+                creater= #{creater},
+            </if>
+            <if test="modified_date != null">
+                modified_date= #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier= #{modifier},
+            </if>
+            <if test="isactive != null">
+                isactive= #{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+    <delete id="delShopMatchTypeById">
+        DELETE FROM def_shopmatch_type
+        WHERE ID=#{id};
+    </delete>
+    <!--根据ID查询-->
+    <select id="selShopMatchTypeById" resultType="com.bizvane.ishop.entity.ShopMatchType">
+        SELECT dst.*,dc.corp_name
+        FROM def_shopmatch_type dst,def_corp dc
+        WHERE 1 = 1
+        AND dst.corp_code=dc.corp_code AND dst.ID=#{id};
+    </select>
+
+    <select id="checkName" resultType="com.bizvane.ishop.entity.ShopMatchType">
+        SELECT dst.*,dc.corp_name
+        FROM def_shopmatch_type dst,def_corp dc
+        WHERE 1 = 1
+        AND dst.corp_code=dc.corp_code
+        AND dst.corp_code=#{corp_code}
+        AND dst.shopmatch_type=#{shopmatch_type}
+        AND dst.isactive='Y'
+    </select>
+</mapper>

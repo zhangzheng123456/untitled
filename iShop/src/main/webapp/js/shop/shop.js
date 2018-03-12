@@ -42,9 +42,10 @@ var isscroll=false;
         $(".shopadd_oper_btn ul li:nth-of-type(1)").click(function () {
             var nameMark = $("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
             var codeMark = $("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
-            var idMark = $("#storeId").attr("data-mark");//店铺ID是唯一的标志
+            //var idMark = $("#storeId").attr("data-mark");//店铺ID是唯一的标志
             if (shopjs.firstStep()) {
-                if (nameMark == "N" || codeMark == "N"||idMark=="N") {
+                //if (nameMark == "N" || codeMark == "N"||idMark=="N") {
+                if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
                         var div = $("#STORE_NAME").next('.hint').children();
                         div.html("该名称已经存在！");
@@ -55,18 +56,22 @@ var isscroll=false;
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
-                    if(idMark=="N"){
-                        var div = $("#storeId").next('.hint').children();
-                        div.html("该编号已经存在！");
-                        div.addClass("error_tips");
-                    }
+                    //if(idMark=="N"){
+                    //    var div = $("#storeId").next('.hint').children();
+                    //    div.html("该编号已经存在！");
+                    //    div.addClass("error_tips");
+                    //}
                     return;
                 }
                 var STORE_ID = $("#STORE_ID").val();
                 var STORE_NAME = $("#STORE_NAME").val();
                 var OWN_CORP = $("#OWN_CORP").val();
-                var store_id = $("#storeId").val();
+                //var store_id = $("#storeId").val();
+                var store_id = "";
                 var location = $("#show_map").attr("data-location");
+                var offline_area=$("#offline_area").val().trim();
+                var dealer=$("#dealer").val().trim();
+                var store_type=$("#store_type").val().trim();
                 var province="";
                 var city = "";
                 var area = "";
@@ -83,8 +88,6 @@ var isscroll=false;
                     street = address[3];//获取街道值
                 }
                 if(city == undefined){
-                    console.log(address);
-                    console.log(city);
                     alert("您还没选择城市");
                     return ;
                 }
@@ -123,7 +126,7 @@ var isscroll=false;
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content: "所属区域不能为空"
+                        content: "所属店铺群组不能为空"
                     });
                     return;
                 }
@@ -171,7 +174,11 @@ var isscroll=false;
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
-                    "isactive": ISACTIVE
+                    "offline_area":offline_area,
+                     "dealer":dealer,
+                    "store_type":store_type,
+                    "isactive": ISACTIVE,
+                    "find_type":"user"
                 };
                 shopjs.ajaxSubmit(_command, _params, opt);
             } else {
@@ -181,9 +188,10 @@ var isscroll=false;
         $("#edit_save").click(function () {
             var nameMark = $("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
             var codeMark = $("#STORE_ID").attr("data-mark");//店铺编号是否唯一的标志
-            var idMark=$("#storeId").attr("data-mark");//店铺id是否唯一的标志
+            //var idMark=$("#storeId").attr("data-mark");//店铺id是否唯一的标志
             if (shopjs.firstStep()) {
-                if (nameMark == "N" || codeMark == "N"||idMark=="N") {
+                //if (nameMark == "N" || codeMark == "N"||idMark=="N") {
+                if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
                         var div = $("#STORE_NAME").next('.hint').children();
                         div.html("该名称已经存在！");
@@ -194,17 +202,20 @@ var isscroll=false;
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
-                    if(idMark=="N"){
-                        var div = $("#storeId").next('.hint').children();
-                        div.html("该编号已经存在！");
-                        div.addClass("error_tips");
-                    }
+                    //if(idMark=="N"){
+                    //    var div = $("#storeId").next('.hint').children();
+                    //    div.html("该编号已经存在！");
+                    //    div.addClass("error_tips");
+                    //}
                     return;
                 }
-                console.log($("#OWN_BRAND").data("mybcode"));
                 var ID = sessionStorage.getItem("id");
-                var store_id = $("#storeId").val();
+                //var store_id = $("#storeId").val();
+                var store_id = "";
                 var OWN_CORP = $("#OWN_CORP").val();
+                var offline_area=$("#offline_area").val().trim();
+                var dealer=$("#dealer").val().trim();
+                var store_type=$("#store_type").val().trim();
                 //var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
                 //var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
                 var STORE_ID = $("#STORE_ID").val();
@@ -229,8 +240,6 @@ var isscroll=false;
                     street = address[3];//获取街道值
                 }
                 if(city == undefined){
-                    console.log(address);
-                    console.log(city);
                     alert("您还没选择城市");
                     return ;
                 }
@@ -307,11 +316,18 @@ var isscroll=false;
                     FLG_TOB = "N";
                 }
                 var ISACTIVE = "";
+                var is_open="";
                 var input = $(".checkbox_isactive").find("input")[0];
+                var input1=$("#is_open")[0];
                 if (input.checked == true) {
                     ISACTIVE = "Y";
                 } else if (input.checked == false) {
                     ISACTIVE = "N";
+                }
+                if(input1.checked==true){
+                    is_open="Y";
+                }else if(input1.checked==false){
+                    is_open="N";
                 }
                 var logo=$("#shopLogo").attr("data-src");
                 // var SHOP_MANAGER=$("#SHOP_MANAGER").val();
@@ -336,7 +352,12 @@ var isscroll=false;
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
                     "logo":logo,
-                    "isactive": ISACTIVE
+                    "offline_area":offline_area,
+                    "dealer":dealer,
+                    "store_type":store_type,
+                    "isactive": ISACTIVE,
+                    "isopen":is_open,
+                    "find_type":"user"
                 };
                 shopjs.ajaxSubmit(_command, _params, opt);
             } else {
@@ -419,11 +440,9 @@ jQuery(document).ready(function () {
         key_val = JSON.parse(key_val);
         var funcCode = key_val.func_code;
         $.get("/detail?funcCode=" + funcCode + "", function (data) {
-            var data = JSON.parse(data);
             if (data.code == "0") {
                 var message = JSON.parse(data.message);
                 var action = message.actions;
-                console.log(action.length);
                 if (action.length == 0) {
                     $("#edit_save").remove();
                     $("#edit_close").css("margin-left","120px");
@@ -434,10 +453,8 @@ jQuery(document).ready(function () {
         var _command = "/shop/select";
         whir.loading.add("", 0.5);//加载等待框
         oc.postRequire("post", _command, "", _params, function (data) {
-            console.log(data);
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
-                console.log(msg);
                 if (msg.brand_code != "") {
                     if (msg.brand_code.indexOf(',') !== -1) {
                         checknow_data = msg.brand_code.split(",");
@@ -456,8 +473,6 @@ jQuery(document).ready(function () {
                         areaData.push(msg.area_name);
                     }
                 }
-                console.log(areaDataCode);
-                console.log(areaData);
                 for(var i=0;i<areaData.length;i++){
                     $('#OWN_AREA_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+areaDataCode[i]+"'  value='"+areaData[i]+"'><span class='power remove_app_id'>删除</span></p>");
                 }
@@ -476,9 +491,12 @@ jQuery(document).ready(function () {
                 $("#STORE_NAME").attr("data-name", msg.store_name);
                 $("#STORE_ID").val(msg.store_code);
                 $("#STORE_ID").attr("data-name", msg.store_code);
-                $("#storeId").val(msg.store_id);
-                $("#storeId").attr("data-name", msg.store_id);
+                //$("#storeId").val(msg.store_id);
+                //$("#storeId").attr("data-name", msg.store_id);
                 $("#show_map").attr("data-location",msg.store_location);
+                $("#offline_area").val(msg.offline_area);
+                $("#dealer").val(msg.dealer);
+                $("#store_type").val(msg.store_type);
                 var address_code = "";
                 var address = "";
                 if(msg.province_location_name!==""){
@@ -493,6 +511,9 @@ jQuery(document).ready(function () {
                 // $("#STORE_address").attr("title",address);
                 // $("#STORE_address").attr("data-code",address_code);
                 $("#STORE_address").val(address);
+                $("#open_date").val(msg.open_date);
+                $("#open_people").val(msg.open_person);
+                $("#open_date_count").val(msg.open_date_count);
                 //$("#OWN_AREA").val(msg.area_name);
                 //$("#OWN_AREA").attr("data-myacode", msg.area_code);
                 //$("#OWN_AREA").attr("title",msg.area_name);
@@ -505,8 +526,6 @@ jQuery(document).ready(function () {
                 var qrcodeList = msg.qrcodeList;
                 var appinput = $(".er_code li input");
                 var img = $(".er_code .kuang img")
-                console.log(qrcodeList);
-                console.log(img);
                 for (var i = 0; i < qrcodeList.length; i++) {
                     $(appinput[i]).val(qrcodeList[i].app_name);
                     $(img[i]).attr("src", qrcodeList[i].qrcode);
@@ -516,10 +535,16 @@ jQuery(document).ready(function () {
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
                 var input = $(".checkbox_isactive").find("input")[0];
+                var input1=$("#is_open")[0];
                 if (msg.isactive == "Y") {
                     input.checked = true;
                 } else if (msg.isactive == "N") {
                     input.checked = false;
+                }
+                if(msg.isopen=="Y"){
+                    input1.checked = true;
+                }else if (msg.isopen == "N") {
+                    input1.checked = false;
                 }
                 if (qrcodeList.length > 0) {
                     for (var i = 0; i < qrcodeList.length; i++) {
@@ -571,27 +596,27 @@ jQuery(document).ready(function () {
             })
         }
     })
-    $("#storeId").blur(function () {
-        var _params = {};
-        var store_id= $(this).val();//店仓ID
-        var store_id1 = $(this).attr("data-name");//标志
-        var corp_code = $("#OWN_CORP").val();//公司编号
-        if (store_id !== "" && store_id !== store_id1) {
-            _params["store_id"] = store_id;
-            _params["corp_code"] = corp_code;
-            var div = $(this).next('.hint').children();
-            oc.postRequire("post", "/shop/storeCodeExist", "", _params, function (data) {
-                if (data.code == "0") {
-                    div.html("");
-                    $("#storeId").attr("data-mark", "Y");
-                } else if (data.code == "-1") {
-                    $("#storeId").attr("data-mark", "N");
-                    div.addClass("error_tips");
-                    div.html("店铺ID已经存在！");
-                }
-            })
-        }
-    })
+    //$("#storeId").blur(function () {
+    //    var _params = {};
+    //    var store_id= $(this).val();//店仓ID
+    //    var store_id1 = $(this).attr("data-name");//标志
+    //    var corp_code = $("#OWN_CORP").val();//公司编号
+    //    if (store_id !== "" && store_id !== store_id1) {
+    //        _params["store_id"] = store_id;
+    //        _params["corp_code"] = corp_code;
+    //        var div = $(this).next('.hint').children();
+    //        oc.postRequire("post", "/shop/storeCodeExist", "", _params, function (data) {
+    //            if (data.code == "0") {
+    //                div.html("");
+    //                $("#storeId").attr("data-mark", "Y");
+    //            } else if (data.code == "-1") {
+    //                $("#storeId").attr("data-mark", "N");
+    //                div.addClass("error_tips");
+    //                div.html("店铺ID已经存在！");
+    //            }
+    //        })
+    //    }
+    //})
     $("#STORE_NAME").blur(function () {
         var store_name = $("#STORE_NAME").val();//店铺名称
         var store_name1 = $("#STORE_NAME").attr("data-name");//给店铺的名称是一个字
@@ -615,7 +640,7 @@ jQuery(document).ready(function () {
         
     });
 
-    $(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
+    $(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false,autohidemode:false});
     $("#screen_close_area").click(function(){
         $("#screen_area").hide();
     });
@@ -631,29 +656,24 @@ jQuery(document).ready(function () {
         $("#screen_area .screen_content_l ul").empty();
         $("#screen_area .screen_content_r ul").empty();
         $("#screen_area").show();
-        var left=(arr[0]-$("#screen_area").width())/2;
-        var tp=(arr[3]-$("#screen_area").height())/2+40;
-        $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+        // var left=(arr[0]-$("#screen_area").width())/2;
+        // var tp=(arr[3]-$("#screen_area").height())/2+40;
+        $("#screen_area").css({"position":"fixed"});
         getArea(area_num);
         isscroll=false;
-        console.log(1);
     });
     $("#ADD_BRAND").click(function(){
-        $("#screen_brand .screen_content_l").unbind("scroll");
+        //$("#screen_brand .screen_content_l").unbind("scroll");
         var arr=whir.loading.getPageSize();
-        area_num=1;
         $("#brand_search").val("");
         $("#screen_brand .s_pitch span").html("0");
         $("#screen_brand .screen_content_l ul").empty();
         $("#screen_brand .screen_content_r ul").empty();
         $("#screen_brand").show();
-        var left=(arr[0]-$("#screen_brand").width())/2;
-        var tp=(arr[3]-$("#screen_brand").height())/2+40;
-        $("#screen_brand").css({"left":left+"px","top":tp+"px","position":"fixed"});
-        //getArea(area_num);
-        getBrand(area_num);
-        isscroll=false;
-        console.log(1);
+        // var left=(arr[0]-$("#screen_brand").width())/2;
+        // var tp=(arr[3]-$("#screen_brand").height())/2+40;
+        $("#screen_brand").css({"position":"fixed"});
+        getBrand();
     });
     //点击右移选中
     $(".shift_right").click(function(){
@@ -802,7 +822,6 @@ jQuery(document).ready(function () {
                 $("#screen_area .screen_content_l ul").append(area_html);
                 if(!isscroll){
                         $("#screen_area .screen_content_l").bind("scroll",function () {
-                            console.log("滚动了吗");
                             var nScrollHight = $(this)[0].scrollHeight;
                             var nScrollTop = $(this)[0].scrollTop;
                             var nDivHight=$(this).height();
@@ -811,7 +830,6 @@ jQuery(document).ready(function () {
                                     return;
                                 }
                                 getArea(area_num);
-                                console.log(4)
                             }
                         });
                 }
@@ -835,79 +853,32 @@ jQuery(document).ready(function () {
 
     }
     //获取品牌
-    function getBrand(a){
+    function getBrand(){
         whir.loading.add("",0.5);//加载等待框
         $("#mask").css("z-index","10002");
         var brand_command = "/shop/brand";
         var brand_code = $("#OWN_CORP").val();
         var searchValue=$("#brand_search").val().trim();
         var pageSize=20;
-        var pageNumber=a;
         var area_param = {};
         area_param["searchValue"]=searchValue;
         area_param["pageSize"]=pageSize;
-        area_param["pageNumber"]=pageNumber;
         area_param["corp_code"]=brand_code;
         oc.postRequire("post", brand_command, "", area_param, function (data) {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=msg.brands;
-                var area_html = '';
-                if (list.length == 0) {
-                    if(a==1){
-                        for(var h=0;h<9;h++){
-                            area_html+="<li></li>";
-                        }
-                    }
-                    area_next=true;
-                } else {
-                    if(list.length<9&&a==1){
-                        for (var i = 0; i < list.length; i++) {
-                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'/><label for='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'></label></div><span class='p16' title='"+list[i].brand_name+"'>"+list[i].brand_name+"</span></li>"
-                        }
-                        for(var j=0;j<9-list.length;j++){
-                            area_html+="<li></li>"
-                        }
-                    }else if(list.length>=9||list.length<9&&a>1){
-                        for (var i = 0; i < list.length; i++) {
-                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'/><label for='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'></label></div><span class='p16' title='"+list[i].brand_name+"'>"+list[i].brand_name+"</span></li>"
-                        }
-                    }
-                    area_num++;
-                    area_next=false;
-
+                var brand_html = '';
+                for (var i = 0; i < list.length; i++) {
+                    brand_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'></label></div><span class='p16' title='"+list[i].brand_name+"'>"+list[i].brand_name+"</span></li>"
                 }
-                $("#screen_brand .screen_content_l ul").append(area_html);
-                if(!isscroll){
-                        $("#screen_brand .screen_content_l").bind("scroll",function () {
-                            var nScrollHight = $(this)[0].scrollHeight;
-                            var nScrollTop = $(this)[0].scrollTop;
-                            var nDivHight=$(this).height();
-                            if(nScrollTop + nDivHight >=nScrollHight){
-                                if(area_next){
-                                    return;
-                                }
-                                getBrand(area_num);
-                            }
-                        });
-                }
-                isscroll=true;
+                $("#screen_brand .screen_content_l ul").append(brand_html);
                 var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
                 for(var k=0;k<li.length;k++){
                     $("#screen_brand .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
@@ -941,10 +912,9 @@ jQuery(document).ready(function () {
         $("#screen_brand .screen_content_l").unbind("scroll");
         isscroll=false;
         var event=window.event||arguments[0];
-        area_num=1;
         if(event.keyCode == 13){
             $("#screen_brand .screen_content_l ul").empty();
-            getBrand(area_num);
+            getBrand();
         }
     });
     //区域放大镜搜索
@@ -953,15 +923,12 @@ jQuery(document).ready(function () {
         area_num=1;
         $("#screen_area .screen_content_l ul").empty();
         getArea(area_num);
-        console.log(3)
     });
     //品牌放大镜搜索
     $("#brand_search_f").click(function(){
         $("#screen_brand .screen_content_l").unbind("scroll");
-        area_num=1;
         $("#screen_brand .screen_content_l ul").empty();
-        getBrand(area_num);
-        console.log(3)
+        getBrand();
     });
 $("#screen_que_area").click(function(){
     var li=$(this).prev().children(".screen_content_r").find("ul li");
@@ -1072,10 +1039,8 @@ function getcorplist(a) {
     //获取所属企业列表
     var corp_command = "/user/getCorpByUser";
     oc.postRequire("post", corp_command, "", "", function (data) {
-        console.log(data);
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
-            console.log(msg);
             var corp_html = '';
             var c = null;
             for (var i = 0; i < msg.corps.length; i++) {
@@ -1126,18 +1091,15 @@ function getAppName(a) {
     param["corp_code"] = corp_code;
     var _command = "/corp/selectWx";
     oc.postRequire("post", _command, "", param, function (data) {
-        console.log(data);
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
             var list = msg.list;
-            console.log(list);
             $(a).next("ul").empty();
             for (var i = 0; i < list.length; i++) {
                 $(a).next("ul").append('<li data-id="' + list[i].app_id + '">' + list[i].app_name + '</li>')
             }
             $(a).next("ul").find("li").click(function () {
                 var value = $(this).html();
-                console.log(value);
                 $(a).val(value);
                 $(a).attr("id", $(this).attr("data-id"));
             })
@@ -1330,7 +1292,7 @@ $("#address_nav a").click(function () {
     $(this).siblings().removeClass("address_liActive");
     $(".address_content").children('.dl_box').eq(index).show();
     $(".address_content").children('.dl_box').eq(index).siblings().hide();
-})
+});
 //添加街道
 $("#enter").click(function () {
     var val = $(".street").val().trim();
@@ -1351,8 +1313,8 @@ $("#enter").click(function () {
             data_code+=','+val;
             $("#STORE_address").val(input);
             $("#STORE_address").attr("data-code",data_code);
-            var location = input_l[1]+input_l[2]+val;
-            $("#show_map").attr("data-location",location);
+            // var location = input_l[1]+input_l[2]+val;
+            // $("#show_map").attr("data-location",location);
         }
     }
 });
@@ -1426,7 +1388,6 @@ $("#address_nav a:last-child").click(function () {
         });
         marker.setLabel(label);
         map.addEventListener("click",function(e){
-            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
             var now_point =  new BMap.Point(e.point.lng, e.point.lat );
             var location =e.point.lat+","+e.point.lng;
@@ -1465,7 +1426,6 @@ $("#address_nav a:last-child").click(function () {
                 var location = lat+","+lng;
                 $("#show_map").attr("data-location",location);
                 map.addEventListener("click",function(e){
-                    console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
                     map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
                     var now_point =  new BMap.Point(e.point.lng, e.point.lat );
                     var location =e.point.lat+","+e.point.lng;
@@ -1501,7 +1461,6 @@ $("#address_nav a:last-child").click(function () {
         });
         marker.setLabel(label);
         map.addEventListener("click",function(e){
-            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
             var now_point =  new BMap.Point(e.point.lng, e.point.lat );
             var location =e.point.lat+","+e.point.lng;
@@ -1583,7 +1542,6 @@ $("#address_nav a:last-child").click(function () {
         });
         marker.setLabel(label);
         map.addEventListener("click",function(e){
-            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
             var now_point =  new BMap.Point(e.point.lng, e.point.lat );
             var location =e.point.lat+","+e.point.lng;

@@ -7,13 +7,13 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
-    <link rel="stylesheet" href="../table/css/inner.css?20170105">
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa"></script>
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa"></script>
     <style>
         body{
             margin-top:81px;
@@ -50,18 +50,18 @@
                             <li>
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex">
-                                      
+
                                     </select>
                                 </span>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">店铺编号*</label><input type="text" id="STORE_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓编号为必填项,不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">店铺编号*</label><input type="text" id="STORE_ID" disabled="" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓编号为必填项,不能为空！"></div></div></span>
                     </div>
-                    <div>
-                        <span><label title="客户业务系统下的店铺ID">店铺ID</label><input type="text" id="storeId" maxlength="50"><div style="padding-left:80px" class="hint"><div></div></div></span>
-                    </div>
+                    <!--<div>-->
+                        <!--<span><label title="客户业务系统下的店铺ID">店铺ID</label><input type="text" id="storeId" maxlength="50"><div style="padding-left:80px" class="hint"><div></div></div></span>-->
+                    <!--</div>-->
                     <div>
                         <span><label style="color:#c26555;">店铺名称*</label><input type="text" id="STORE_NAME" verify="Empty" maxlength="200"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
                     </div>
@@ -128,7 +128,7 @@
                         </span>
                     </div>
                     <div>
-                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">所属区域*</div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">店铺群组*</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
                             <div class="xingming" id="OWN_AREA_All" style="max-height: 200px;overflow-y: auto">
 
@@ -171,6 +171,15 @@
                             </div>
 
                         </div>
+                    </div>
+                    <div>
+                        <span><label>所属区域</label><input type="text" id="offline_area"  maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺编号为必填项,不能为空"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label>所属经销商</label><input type="text" id="dealer"  maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺编号为必填项,不能为空"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label>店铺类型</label><input type="text" id="store_type"  maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺编号为必填项,不能为空"></div></div></span>
                     </div>
                     <div class="drop_down item_1" >
                         <span><label>是否直营</label><input class="input_select" id="FLG_TOB" type="text" placeholder="请选择是否直营" readonly />
@@ -218,21 +227,33 @@
                         <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
                     </div>
                     <div>
-                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                        <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
+                     <div>
+                         <span><label>开启爱秀</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_open"><label for="is_open"></label></em></span>
+                     </div>
+                     <!--<div>-->
+                         <!--<span><label>开启时间</label><input type="text" id="open_date" readonly/></span>-->
+                     <!--</div>-->
+                     <!--<div>-->
+                         <!--<span><label>开启人</label><input type="text" id="open_people" readonly/></span>-->
+                     <!--</div>-->
+                     <!--<div>-->
+                         <!--<span><label>开启天数</label><input type="text" id="open_date_count" readonly/></span>-->
+                     <!--</div>-->
                 </form>
             </div>
         </div>
    <!--选取操作-->
    <div id="screen_area" class="screen_area" >
        <div class="screen_title">
-           <h4>筛选区域</h4>
+           <h4>筛选店铺群组</h4>
            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
            <div class="xian"></div>
        </div>
        <div class="input_s">
            <div class="input_search">
-               <input type="text" placeholder="搜索区域" id="area_search">
+               <input type="text" placeholder="搜索" id="area_search">
                <span class="icon-ishop_3-05" id="area_search_f"></span>
            </div>
            <div class="s_center"></div>
@@ -305,19 +326,19 @@
    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
    <!-- moni select -->
-   <script type="text/javascript" src="../js/moni_select.js?20170105"></script>
-   <script src="/js/loading.js?20170105"></script>
+   <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+   <script src="/js/loading.js?2017040170331"></script>
    <!-- Dialog -->
-   <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-   <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+   <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+   <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
    <!-- ajax -->
-   <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+   <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
    <!-- 带搜索的下拉框 -->
-   <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+   <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
    <!-- multiple choice -->
-   <script type="text/javascript" src="../js/multiple_choice.js?20170105"></script>
+   <script type="text/javascript" src="../js/multiple_choice.js?2017040170331"></script>
    <!-- error tips -->
-   <script type="text/javascript" src="../js/shop/shop.js?20170105"></script>
+   <script type="text/javascript" src="../js/shop/shop.js?2017040170331"></script>
 </body>
 
 </html>

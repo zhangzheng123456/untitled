@@ -23,6 +23,8 @@ public class VipParam {
     private String param_class;
     //是否必填
     private String required;
+    //参数属性
+    private  String param_attribute;
     //显示顺序
     private String show_order;
     //修改时间
@@ -35,6 +37,7 @@ public class VipParam {
     private String creater;
     //是否可用
     private String isactive;
+
 
     public int getId() {
         return id;
@@ -154,6 +157,14 @@ public class VipParam {
 
     public void setRequired(String required) {
         this.required = required;
+    }
+
+    public String getParam_attribute() {
+        return param_attribute;
+    }
+
+    public void setParam_attribute(String param_attribute) {
+        this.param_attribute = param_attribute;
     }
 
     public String getShow_order() {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <title>问题详情</title>
+    <link rel="stylesheet" href="css/help.css?2017040170331">
+    <link rel="stylesheet" href="../../css/font_style.css?2017040170331">
+    <script src="js/flexible.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/gqrequest.js?2017040170331"></script>
+</head>
+<body>
+    <div class="problem_details">
+        <div class="problem" id="title">
+            如何玩转社区
+        </div>
+        <div class="problem_content" id="content">
+
+        </div>
+    </div>
+</body>
+<script>
+    var oc = new ObjectControl();
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    var param={};
+    param["app_help_code"]=GetRequest().app_help_code;
+    param["app_help_title"]=GetRequest().app_help_title;
+    oc.postRequire("post","/api/getRelDetail","",param, function(data){
+        var message=JSON.parse(data.message);
+        $("#title").html(message.title);
+        $("#content").html(message.content);
+    })
+</script>
+</html>

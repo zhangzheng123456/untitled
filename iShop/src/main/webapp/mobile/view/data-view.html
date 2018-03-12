@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="format-detection" content="telephone=no" />
+    <title>数字面板</title>
+    <script src="../task/js/flexible.js"></script>
+    <link rel="stylesheet" href="../task/css/font_style.css">
+    <link rel="stylesheet" href="../task/css/reset.css">
+    <link rel="stylesheet" href="css/index.css?t=20171122">
+    <script src="../task/js/jquery-2.1.1.min.js"></script>
+    <script src="js/mobiscroll_002.js" type="text/javascript"></script>
+    <script src="js/mobiscroll_004.js" type="text/javascript"></script>
+    <link href="css/mobiscroll_002.css" rel="stylesheet" type="text/css">
+    <link href="css/mobiscroll.css" rel="stylesheet" type="text/css">
+    <script src="js/mobiscroll.js" type="text/javascript"></script>
+    <script src="js/mobiscroll_003.js" type="text/javascript"></script>
+    <script src="js/mobiscroll_005.js" type="text/javascript"></script>
+    <link href="css/mobiscroll_003.css?t=20171115" rel="stylesheet" type="text/css">
+    <script src="js/fastclick.js"></script>
+</head>
+<body>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<div class="tabs">
+    <div class="tabs_head">
+        <span class="active">全渠道数据</span>
+        <span>品牌分析</span>
+    </div>
+    <div class="content" id="content">
+        <div class="content_source" id="content_source">
+         <div class="select_contain">
+             <div class="select_input">
+                  <select id="brand_value">
+                    <option value="">全部品牌</option>
+                </select>
+                <i class="icon-ishop_8-02"></i>
+            </div>
+            <div class="select_date">
+                <input type="text" class="dateClassOther" id="dateClassOtherSource" style="display:none" >
+                <div class="data_value" id="select_date">...</div>
+                <script>
+                    function formatNowTime(){
+                        var now="";
+                        var Y=new Date().getFullYear();
+                        var M=new Date().getMonth()+1;
+                        var D=new Date().getDate();
+                        M=M<10?"0"+M:M;
+                        D=D<10?"0"+D:D;
+                        now=Y+"-"+M+"-"+D;
+                        return now
+                    }
+                    var timeNow=formatNowTime();
+                    var timeValue=timeNow.replace(/-/g,"");
+                    $('#select_date').attr("data-value",timeNow);
+                    $('#select_date').html(timeValue)
+                </script>
+            </div>
+         </div>
+         <div id="achTotal">
+            <p class="model_title">当日全渠道成交额<span id="data_value">加载中...</span></p>
+            <p class="ach_today" id="ach_today">加载中...</p>
+            <div class="ach_total">
+                <p>昨日业绩：<span id="before">加载中...</span></p>
+                <p>当月业绩：<span id="month">加载中...</span></p>
+            </div>
+         </div>
+         <div class="model_parent">
+            <p class="model_title">渠道业绩排行</p>
+            <div class="ach_list">
+                <div class="list_head">
+                    <span>序号</span>
+                    <span>渠道</span>
+                    <span>销售金额</span>
+                    <span>占比</span>
+                </div>
+                <div class="list_content" id="sourceListContent">
+
+                </div>
+             </div>
+             <div class="spinner_warp" >
+                 <div class="spinner">
+                     <div class="bounce1"></div>
+                     <div class="bounce2"></div>
+                     <div class="bounce3"></div>
+                 </div>
+             </div>
+        </div>
+        <div class="model_parent">
+            <p class="model_title">省份业绩排行</p>
+            <div class="area_list">
+                <div class="list_head">
+                    <span>序号</span>
+                    <span>省份</span>
+                    <span>销售金额</span>
+                    <span>占比</span>
+                </div>
+                <div class="list_content" id="areaListContent">
+
+                </div>
+             </div>
+            <div class="spinner_warp" >
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="model_parent">-->
+            <!--<p class="model_title">品牌业绩排行</p>-->
+            <!--<div class="brand_list">-->
+                <!--<div class="list_head">-->
+                    <!--<span>序号</span>-->
+                    <!--<span>品牌</span>-->
+                    <!--<span>销售金额</span>-->
+                    <!--<span>占比</span>-->
+                <!--</div>-->
+                <!--<div class="list_content" id="brandListContent">-->
+
+                <!--</div>-->
+             <!--</div>-->
+            <!--<div class="spinner_warp" >-->
+                <!--<div class="spinner">-->
+                    <!--<div class="bounce1"></div>-->
+                    <!--<div class="bounce2"></div>-->
+                    <!--<div class="bounce3"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="model_parent">
+            <p class="model_title">会员发展(根据手机号去重) <span class="abilityNoData">*获取数据失败</span></p>
+            <div class="ability" id="actVip">
+                <div>
+                    <dl>
+                        <dt id="vip_dev_total">0</dt>
+                        <dd>会员总数</dd>
+                    </dl>
+                </div>
+                <div style="text-align: center;margin: 5px">今日新增 <span id="vip_new_amount">0</span></div>
+                <div class="ability_list">
+                    <dl>
+                        <dt id="act_rate">0</dt>
+                        <dd>90天活跃<br>会员占比</dd>
+                    </dl>
+                    <dl>
+                        <dt id="wx_rate">0</dt>
+                        <dd>微信<br>会员占比</dd>
+                    </dl>
+                    <dl>
+                        <dt id="vip_rate">0</dt>
+                        <dd>微信<br>活跃会员占比</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="spinner_warp" >
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="model_parent">
+            <p class="model_title">当月业绩 <span class="abilityNoData">*获取数据失败</span></p>
+            <div style="width: 100%;position: relative"  id="lineChart"></div>
+        </div>
+        <div class="model_parent">
+            <p class="model_title">每日会员增长人数(人) <span class="abilityNoData">*获取数据失败</span></p>
+            <div style="position: relative;width: 100%" id="barChart"></div>
+        </div>
+        </div>
+        <div class="content_brand" id="content_brand" style="display: none">
+            <div class="select_contain">
+              <div class="select_input_warp">
+                  <div class="select_input_brand">
+                    <select id="source_list">
+                        <option value="">全部渠道</option>
+                        <option value="电商">电商</option>
+                        <option value="直营">直营</option>
+                        <option value="经销">经销</option>
+                        <option value="微信">微信</option>
+                    </select>
+                    <i class="icon-ishop_8-02"></i>
+                </div>
+                <div class="select_input_brand">
+                    <select id="brand_value_brand">
+                        <option value="">全部品牌</option>
+                    </select>
+                    <i class="icon-ishop_8-02"></i>
+                </div>
+              </div>
+                <div class="select_date">
+                    <input type="text" id="dateClassOtherBrand" class="dateClassOther" style="display:none" >
+                    <div class="data_value" id="select_date_brand">...</div>
+                    <script>
+                        function formatNowTime(){
+                            var now="";
+                            var Y=new Date().getFullYear();
+                            var M=new Date().getMonth()+1;
+                            var D=new Date().getDate();
+                            M=M<10?"0"+M:M;
+                            D=D<10?"0"+D:D;
+                            now=Y+"-"+M+"-"+D;
+                            return now
+                        }
+                        var timeNowBrand=formatNowTime();
+                        var timeValueBrand=timeNowBrand.replace(/-/g,"");
+                        $('#select_date_brand').attr("data-value",timeNowBrand);
+                        $('#select_date_brand').html(timeValueBrand)
+                    </script>
+                </div>
+            </div>
+            <div class="time_tabs" id="time_tabs">
+                <span><a class="active" data-type="weekly">周</a></span>
+                <span><a data-type="monthly">月</a></span>
+                <span><a data-type="yearly">年</a></span>
+            </div>
+            <div class="model_parent">
+                <div class="model_title">品牌经营能力<span class="abilityNoData">*获取数据失败</span></div>
+                <div class="ability" id="brand_management">
+                    <div>
+                        <dl>
+                            <dt id="brand_amt_trade">0</dt>
+                            <dd>品牌业绩</dd>
+                        </dl>
+                    </div>
+                    <div class="ability_list">
+                        <dl>
+                            <dt id="num_trade">0</dt>
+                            <dd>笔数</dd>
+                        </dl>     <dl>
+                            <dt id="num_sales">0</dt>
+                            <dd>件数</dd>
+                        </dl>     <dl>
+                            <dt id="relate_rate">0</dt>
+                            <dd>连带率</dd>
+                        </dl>     <dl>
+                            <dt id="discount">0</dt>
+                            <dd>折扣</dd>
+                        </dl>     <dl>
+                            <dt id="trade_price">0</dt>
+                            <dd>客单价</dd>
+                        </dl>     <dl>
+                            <dt id="sale_price">0</dt>
+                            <dd>件单价</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="spinner_warp" >
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="model_parent">
+                <div class="model_title">会销关键指标<span class="abilityNoData">*获取数据失败</span></div>
+                <div class="ability" id="newVip">
+                    <div>
+                        <dl>
+                            <dt id="vip_amt_trade">0</dt>
+                            <dd>会销业绩</dd>
+                        </dl>
+                    </div>
+                    <div class="ability_list">
+                        <dl>
+                            <dt id="vip_num_trade">0</dt>
+                            <dd>会销笔数</dd>
+                        </dl>     <dl>
+                            <dt id="vip_num_sales">0</dt>
+                            <dd>会销件数</dd>
+                        </dl>     <dl>
+                            <dt id="vip_relate_rate">0</dt>
+                            <dd>连带率</dd>
+                        </dl>     <dl>
+                            <dt id="vip_discount">0</dt>
+                            <dd>折扣</dd>
+                        </dl>     <dl>
+                            <dt id="vip_trade_price">0</dt>
+                            <dd>客单价</dd>
+                        </dl>     <dl>
+                            <dt id="vip_sale_price">0</dt>
+                            <dd>件单价</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="spinner_warp" >
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="model_parent">
+                <p class="model_title">渠道业绩排行</p>
+                <div class="brand_list list_6" style="overflow: auto">
+                    <div class="list_head">
+                        <span>序号</span>
+                        <span>渠道</span>
+                        <span>销售金额</span>
+                        <span>占比</span>
+                        <span>同比</span>
+                        <span>环比</span>
+                    </div>
+                    <div class="list_content" id="sourceListContentBand">
+
+                    </div>
+                </div>
+                <div class="spinner_warp" >
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="model_parent">
+                <p class="model_title">品牌业绩排行</p>
+                <div class="brand_list list_6" style="overflow: auto">
+                    <div class="list_head">
+                        <span>序号</span>
+                        <span>品牌</span>
+                        <span>销售金额</span>
+                        <span>销售件数</span>
+                        <span>同比</span>
+                        <span>环比</span>
+                    </div>
+                    <div class="list_content" id="brandListContentBand">
+
+                    </div>
+                </div>
+                <div class="spinner_warp" >
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="model_parent">
+                <p class="model_title">品牌能力 <span class="abilityNoData">*获取数据失败</span></p>
+                <div style="height: 150px" id="brandAbility">
+                    <div class="band_ability">
+                        <div style="margin-top: 10px">
+                            <div class="band_ability_line band_ability_line_achievement">
+                                <div class="line_left">
+                                    <span>新会员</span>
+                                    <span id="amt_trade_rate">0%</span>
+                                </div>
+                                <div class="line_center">
+                                    <span>业绩</span>
+                           <span class="bar_data_all data-achievement">
+                               <span class="bar_data_left"></span>
+                           </span>
+                                </div>
+                                <div class="line_right">
+                                    <span>老会员</span>
+                                    <span>0%</span>
+                                </div>
+                            </div>
+                            <div class="band_ability_line band_ability_line_vip_num">
+                                <div class="line_left">
+                                    <span style="visibility: hidden">占位</span>
+                                    <span id="vip_count_rate">0%</span>
+                                </div>
+                                <div class="line_center">
+                                    <span>人数</span>
+                           <span class="bar_data_all data-vip_num">
+                               <span class="bar_data_left"></span>
+                           </span>
+                                </div>
+                                <div class="line_right">
+                                    <span style="visibility: hidden">占位</span>
+                                    <span>0%</span>
+                                </div>
+                            </div>
+                            <div class="band_ability_line band_ability_line_num_trade">
+                                <div class="line_left">
+                                    <span style="visibility: hidden">占位</span>
+                                    <span id="num_trade_rate">0%</span>
+                                </div>
+                                <div class="line_center">
+                                    <span>笔数</span>
+                           <span class="bar_data_all data-num_trade">
+                               <span class="bar_data_left"></span>
+                           </span>
+                                </div>
+                                <div class="line_right">
+                                    <span style="visibility: hidden">占位</span>
+                                    <span>0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="spinner_warp" >
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="model_parent">-->
+                <!--<p class="model_title">店铺业绩排行</p>-->
+                <!--<div class="brand_list list_5" style="overflow: hidden;overflow-x: scroll">-->
+                    <!--<div class="list_head">-->
+                        <!--<span>序号</span>-->
+                        <!--<span style="width: 31.5%">店铺</span>-->
+                        <!--<span>销售金额</span>-->
+                        <!--<span style="width:18%">同比</span>-->
+                        <!--<span style="width:18%;">环比</span>-->
+                    <!--</div>-->
+                    <!--<div class="list_content" id="shopListContentBand">-->
+
+                    <!--</div>-->
+                    <!--<div class="spinner_warp" >-->
+                        <!--<div class="spinner">-->
+                            <!--<div class="bounce1"></div>-->
+                            <!--<div class="bounce2"></div>-->
+                            <!--<div class="bounce3"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="model_parent">-->
+                <!--<p class="model_title">商品业绩排行</p>-->
+                <!--<div class="brand_list">-->
+                    <!--<div class="list_head">-->
+                        <!--<span>序号</span>-->
+                        <!--<span>商品</span>-->
+                        <!--<span>销售金额</span>-->
+                        <!--<span>销售件数</span>-->
+                    <!--</div>-->
+                    <!--<div class="list_content" id="skuListContentBand">-->
+
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="spinner_warp" >-->
+                    <!--<div class="spinner">-->
+                        <!--<div class="bounce1"></div>-->
+                        <!--<div class="bounce2"></div>-->
+                        <!--<div class="bounce3"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="model_parent">
+                <p class="model_title">会员类型分析(根据手机号去重)</p>
+                <div class="brand_list">
+                    <div class="list_head">
+                        <span>序号</span>
+                        <span>会员类型</span>
+                        <span>人数</span>
+                        <span>占比</span>
+                    </div>
+                    <div class="list_content" id="cardTypeListContentBand">
+
+                    </div>
+                </div>
+                <div class="spinner_warp" >
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="model_parent">
+                <p class="model_title">生命周期占比 <span class="abilityNoData">*获取数据失败</span></p>
+                <div style="position: relative" id="cycleRatio"></div>
+            </div>
+            <div style="overflow: hidden" class="model_parent">
+                <p class="model_title">活跃会员占比 <span class="abilityNoData">*获取数据失败</span></p>
+                <div style="width: 50%;float: left;position: relative" id="activeVip90"></div>
+                <div style="width: 50%;float: left;position: relative" id="activeVip180"></div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="mask" style="display: none">-->
+        <!--<p>加载中...</p>-->
+    <!--</div>-->
+</div>
+<div class="icon-ishop_4-03 backTop"></div>
+<script src="../../js/insidePostRequire.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="../../js/plugins/countUp.js"></script>
+<script src="js/data-view.js?20171122"></script>
+</body>
+</html>

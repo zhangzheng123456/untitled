@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>编辑店铺信息</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa"></script>
+    <style>
+        body{
+            margin-top:81px;
+        }
+        .rel{
+            background-color:#6cc1c8;
+        }
+        #area_select li:hover{
+            background: #e8f5fe;!important;
+            color: #807a62 !important;
+        }
+    </style>
+</head>
+
+<body>
+   <!--  <div id="wrapper">
+    </div> -->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="col-lg-12 pre_title"><span id="back_shop">店铺管理</span><i class="icon-ishop_8-03"></i><label>编辑店铺信息</label></div>
+            <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
+                <!-- <div class="operation_conpany">
+                    <ul>
+                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
+                    </ul>
+                </div> -->
+                <div>
+                    <span class="conpany_logo"><img id="shopLogo" data-src="" src="a" onerror="this.onerror=''; this.src='../img/bg1.png'"/></span>
+                    <span class="change_logo" style="position: relative;"><i class="icon-ishop_6-09"></i><input id="STORE_LOGO" type="file" class="LOGO"><label>更换logo</label></span>
+                </div>
+                <form class="conpany_msg">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex">
+
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span><label style="color:#c26555;">店铺编号*</label><input type="text" id="STORE_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓编号为必填项,不能为空！"></div></div></span>
+                    </div>
+                    <!--<div>-->
+                        <!--<span><label title="客户业务系统下的店铺ID">店铺ID</label><input type="text" id="storeId" maxlength="50"><div style="padding-left:80px" class="hint"><div></div></div></span>-->
+                    <!--</div>-->
+                    <div>
+                        <span><label style="color:#c26555;">店铺名称*</label><input type="text" id="STORE_NAME" verify="Empty" maxlength="200"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
+                    </div>
+                    <div class="drop_down">
+                        <span>
+                            <label style="margin-right: 15px;">店铺地址</label>
+                              <span class="input_box"><input type="text" id="STORE_address" data-code="" readonly/></span>
+                            <div class="address_container">
+                                <div class="address_nav_box">
+                                    <div class="address_nav" id="address_nav">
+                                        <a class="address_liActive">省份</a>
+                                        <a>城市</a>
+                                        <a>县区</a>
+                                        <a>街道</a>
+                                        <a title="该坐标将用于员工签到距离计算">定位</a>
+                                    </div>
+                                </div>
+                                <div class="address_content">
+                                    <div class="dl_box" id="province" style="display: block">
+                                        <dl>
+                                            <dd>
+                                                <!--<a title="安徽"  href="javascript:;">安徽1</a>-->
+                                                <!--<a title="北京"  href="javascript:;">北京</a>-->
+                                                <!--<a title="重庆"  href="javascript:;">重庆</a>-->
+                                                <!--<a title="福建"  href="javascript:;">福建</a>-->
+                                                <!--<a title="甘肃"  href="javascript:;">甘肃</a>-->
+                                                <!--<a title="广东"  href="javascript:;">广东</a>-->
+                                                <!--<a title="广西"  href="javascript:;">广西</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">贵州</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">陕西</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">日本</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">东京</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">云南</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">新疆</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">湖南</a>-->
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box" id="city">
+                                        <dl>
+                                            <dd>
+
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box" id="county">
+                                        <dl>
+                                            <dd>
+
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box">
+                                        <input type="text" placeholder="请输入街道地址" maxlength="30" class="street">
+                                        <span class="enter" id="enter">确定</span>
+                                    </div>
+                                    <div class="dl_box">
+                                        <div id="show_map"></div>
+                                        <input type="text" id="suggestId" size="20" placeholder="输入地址" style="width:380px;margin-top: 22px;border: 1px solid #888888;" />
+                                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">店铺群组*</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming" id="OWN_AREA_All" style="max-height: 200px;overflow-y: auto">
+
+                            </div>
+                            <div id="test">
+                                <div class="add_app_id" id="ADD_AREA" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--<div>-->
+                        <!--<span><label>所属区域</label>-->
+                            <!--&lt;!&ndash;<input data-myacode="" type="text" id="OWN_AREA"  class="input_select" readonly  title=""  style="padding-right: 30px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"/>&ndash;&gt;-->
+                         <!--&lt;!&ndash;<ul id="area_select" style="overflow-y: auto;height: 144px;moz-user-select: -moz-none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -moz-user-select: none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -o-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -khtml-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -webkit-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -ms-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash;user-select:none;/**禁止选中文字*/">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span><label>所属品牌</label><input  title="" data-mybcode="" type="text" id="OWN_BRAND"   name="checkboxSelect" readonly style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;padding-right: 30px;" /></span>-->
+                        <!--<input type="text" id="hiddencheckboxSelect" name="hiddencheckboxSelect" style="display:none;width:250px;">-->
+                    <!--</div>-->
+                    <div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">所属品牌*</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming" id="OWN_BRAND_All" style="max-height: 200px;overflow-y: auto">
+
+                            </div>
+                            <div>
+                                <div class="add_app_id" id="ADD_BRAND" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <span><label>所属区域</label><input type="text" id="offline_area"  maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺编号为必填项,不能为空"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label>所属经销商</label><input type="text" id="dealer"  maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺编号为必填项,不能为空"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label>店铺类型</label><input type="text" id="store_type"  maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺编号为必填项,不能为空"></div></div></span>
+                    </div>
+                    <div class="drop_down item_1" >
+                        <span><label>是否直营</label><input class="input_select" id="FLG_TOB" type="text" placeholder="请选择是否直营" readonly />
+                            <ul>
+                                <li>是</li>
+                                <li>否</li>
+                            </ul>
+                        </span>
+                    </div>
+                    <label>二维码</label>
+                    <div class="er_code">
+                        <!--<li>-->
+                            <!--<input onclick="select_down(this)" readonly="readonly">-->
+                            <!--<ul style="margin-left: 76px;">-->
+                            <!--</ul>-->
+                            <!--<span class="power create" onclick="getTwoCode(this)">生成</span>-->
+                            <!--<div class="kuang">-->
+                                <!--<span class="icon-ishop_6-12 k_close"></span>-->
+                                <!--<img src="" alt="">-->
+                                <!--<p></p>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <div id="add_app_id"><span class="text">新增</span><span class="jia">+</span></div>
+                    </div>
+                </form>
+            </div>
+            <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+                <div class="shopedit_oper_btn">
+                    <ul>
+                        <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    </ul>
+                </div>
+                 <form class="msg_detail">
+                    <div>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                    </div>
+                     <div>
+                         <span><label>开启爱秀</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_open"><label for="is_open"></label></em></span>
+                     </div>
+                     <!--<div>-->
+                         <!--<span><label>开启时间</label><input type="text" id="open_date" readonly/></span>-->
+                     <!--</div>-->
+                     <!--<div>-->
+                         <!--<span><label>开启人</label><input type="text" id="open_people" readonly/></span>-->
+                     <!--</div>-->
+                     <!--<div>-->
+                         <!--<span><label>开启天数</label><input type="text" id="open_date_count" readonly/></span>-->
+                     <!--</div>-->
+                </form>
+            </div>
+        </div>
+   <!--选取操作-->
+   <div id="screen_area" class="screen_area" >
+       <div class="screen_title">
+           <h4>筛选店铺群组</h4>
+           <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+           <div class="xian"></div>
+       </div>
+       <div class="input_s">
+           <div class="input_search">
+               <input type="text" placeholder="搜索" id="area_search">
+               <span class="icon-ishop_3-05" id="area_search_f"></span>
+           </div>
+           <div class="s_center"></div>
+           <div class="s_pitch">
+               已添加&nbsp;<span>0</span>&nbsp;个
+           </div>
+       </div>
+       <div class="screen_content">
+           <div class="screen_content_l">
+               <ul>
+
+               </ul>
+           </div>
+           <div class="screen_content_z">
+               <div class="shift shift_right" title="右移">&gt;</div>
+               <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+               <div class="shift shift_left" title="左移">&lt;</div>
+               <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+           </div>
+           <div class="screen_content_r">
+               <ul>
+
+               </ul>
+           </div>
+       </div>
+       <div class="screen_que" id="screen_que_area">确定</div>
+   </div>
+   <!--选取品牌操作-->
+   <div id="screen_brand" class="screen_area">
+       <div class="screen_title">
+           <h4>筛选品牌</h4>
+           <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+           <div class="xian"></div>
+       </div>
+       <div class="input_s">
+           <div class="input_search">
+               <input type="text" placeholder="搜索品牌" id="brand_search">
+               <span class="icon-ishop_3-05" id="brand_search_f"></span>
+           </div>
+           <div class="s_center"></div>
+           <div class="s_pitch">
+               已添加&nbsp;<span>0</span>&nbsp;个
+           </div>
+       </div>
+       <div class="screen_content">
+           <div class="screen_content_l">
+               <ul>
+
+               </ul>
+           </div>
+           <div class="screen_content_z">
+               <div class="shift shift_right" title="右移">&gt;</div>
+               <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+               <div class="shift shift_left" title="左移">&lt;</div>
+               <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+           </div>
+           <div class="screen_content_r">
+               <ul>
+
+               </ul>
+           </div>
+       </div>
+       <div class="screen_que" id="screen_que_brand">确定</div>
+   </div>
+    <!-- Mainly scripts -->
+   <script src="../js/jquery-2.1.1.min.js"></script>
+   <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+   <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+   <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+   <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+   <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+   <!-- moni select -->
+   <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+   <script src="/js/loading.js?2017040170331"></script>
+   <!-- Dialog -->
+   <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+   <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+   <!-- ajax -->
+   <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+   <!-- 带搜索的下拉框 -->
+   <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+   <!-- multiple choice -->
+   <script type="text/javascript" src="../js/multiple_choice.js?2017040170331"></script>
+   <!-- error tips -->
+   <script type="text/javascript" src="../js/shop/all_shop.js?2017040170331"></script>
+</body>
+
+</html>

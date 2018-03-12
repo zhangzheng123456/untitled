@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Function;
@@ -11,15 +12,10 @@ import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.GroupService;
 import com.bizvane.ishop.service.RoleService;
-import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
-import org.omg.CORBA.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,10 +92,10 @@ public class RoleController {
             String user_id = request.getSession(false).getAttribute("user_code").toString();
             // String jsString = request.getSession(false).getAttribute("param").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
 
             Role role1 = new Role();
             role1.setRole_code(jsonObject.get("role_code").toString());
@@ -162,10 +158,10 @@ public class RoleController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String[] role_ids = jsonObject.get("id").toString().split(",");
             String msg = null;
             for (int i = 0; i < role_ids.length; i++) {
@@ -233,10 +229,10 @@ public class RoleController {
             String user_id = request.getSession(false).getAttribute("user_id").toString();
             String jsString = request.getParameter("param");
 
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             int role_id = Integer.parseInt(jsonObject.get("id").toString());
             Role role = roleService.selectByRoleId(role_id);
             String role_code = role.getRole_code();
@@ -272,10 +268,10 @@ public class RoleController {
         String user_id = request.getSession(false).getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
 
             Role role1 = new Role();
             role1.setId(Integer.parseInt(jsonObject.get("id").toString()));
@@ -342,17 +338,17 @@ public class RoleController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject =JSONObject.parseObject(message);
             String login_user_code = request.getSession().getAttribute("user_code").toString();
             String login_corp_code = request.getSession().getAttribute("corp_code").toString();
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("searchValue")) {
+            if (jsonObject.containsKey("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限

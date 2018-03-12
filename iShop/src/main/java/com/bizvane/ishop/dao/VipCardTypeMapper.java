@@ -28,6 +28,10 @@ public interface VipCardTypeMapper {
 
     VipCardType selVipCardTypeByName( @Param("corp_code")String corp_code,@Param("vip_card_type_name")String vip_card_type_name,@Param("isactive") String isactive)throws SQLException;
 
-    List<VipCardType>  selectByCorp(@Param("corp_code") String corp_code,@Param("isactive") String isactive)throws SQLException;
+    List<VipCardType>  selectByCorp(@Param("corp_code") String corp_code,@Param("isactive") String isactive, @Param("search_value") String search_value)throws SQLException;
+
+    List<VipCardType>  selectByRole(Map<String,Object> param)throws SQLException;
+
+    VipCardType isExistByType(@Param("corp_code")String corp_code,@Param("vip_card_type_id")String vip_card_type_id,@Param("vip_card_type_code") String vip_card_type_code,@Param("vip_card_type_name")String vip_card_type_name)throws Exception;
 
 }

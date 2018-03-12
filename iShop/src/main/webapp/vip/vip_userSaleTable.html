@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>导购高级VIP经营报表</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="../css/shoppingSaleTable.css?20180115">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <style>
+        .table_tbodyWrap{
+            height: 300px;
+            background: url(../img/table_bg.jpg);
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table" style="padding-bottom: 20px">
+        <div class="title">
+            <span>报表中心</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>导购高级VIP经营报表</span>
+        </div>
+        <div class="middleWrap">
+            <div class="tabs_head">
+                <span class="title_icon"></span><span>导购VIP经营分析图</span>
+            </div>
+            <div class="header">
+                <div class="header_inputWrap" id="filter_inputWrap_1">
+                    <ul class="filterConditionWrap">
+                        <li><label>员工名称</label><input id="staffInput_1"  readonly class="function_input" type="text" placeholder="请选择员工"></li>
+                        <li><label>店铺名称</label><input id="storeInput_1" readonly class="function_input" type="text" placeholder="请选择店铺"></li>
+                        <li style="position: relative"><label>时间范围</label>
+                            <input id="chartTimeInput" value="" type="text" data-time=""  class="function_input width130 timeClickArea" readonly>
+                            <div class="time_choose_wrap" id="time_choose_wrap">
+                                <div class="time_choose_nav timeClickArea" id="time_nav_switch">
+                                    <ul>
+                                        <li class="time_active">周</li><li>月</li><li>年</li>
+                                    </ul>
+                                </div>
+                                <div class="time_choose_content timeClickArea ">
+                                    <div class="year_change_wrap timeClickArea" id="year_change_wrap">
+                                        <i class="icon-ishop_8-03 arrow_left timeClickArea" id="arrow_left"></i>
+                                        <span id="years" style="vertical-align: top" class="timeClickArea"></span>
+                                        <i class="icon-ishop_8-03 arrow_right timeClickArea" id="arrow_right"></i>
+                                    </div>
+                                    <ul class="time_details" id="time_details">
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header_btnWrap">
+                    <span class="emptyFilterBtn" id="emptyFilterBtn_1">清空筛选</span><span id="filterBtn_1" class="filterBtn">筛选</span>
+                </div>
+            </div>
+            <div class="table_achWrap">
+                <div class="table_ach">
+                    <span class="font_lg" id="amt_trade">¥0</span><span class="font_lg" id="amt_trade_avg">¥0</span><span class="font_lg" id="num_sales">¥0</span><span class="font_lg" id="num_trade">¥0</span>
+                    <span>总业绩</span><span>人均业绩</span><span>总件数</span><span>总笔数</span>
+                </div>
+                <div class="table_ach bg5f8bc8">
+                    <span class="font_lg" id="vip_amt_trade">¥0</span><span class="font_lg" id="vip_amt_trade_avg">¥0</span><span class="font_lg" id="vip_num_sales">¥0</span><span class="font_lg" id="vip_num_trade">¥0</span>
+                    <span>会销金额</span><span>人均会销金额</span><span>会销件数</span><span>会销笔数</span>
+                </div>
+            </div>
+            <div class="chart_navWrap">
+                <ul class="chart_nav" id="chart_nav"><li class="nav-active">新老顾客消费趋势</li><li>多渠道新增会员</li><li>顾客经营能力评价</li></ul>
+                <div class="chart_filterWrap">
+                    <!--<div>-->
+                        <!--<input id="chartTimeInput" value="" type="text" data-time=""  class="function_input width130 timeClickArea" readonly>-->
+                        <!--<div class="time_choose_wrap" id="time_choose_wrap">-->
+                            <!--<div class="time_choose_nav timeClickArea" id="time_nav_switch">-->
+                                <!--<ul>-->
+                                    <!--<li class="time_active">周</li><li>月</li><li>年</li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<div class="time_choose_content timeClickArea ">-->
+                                <!--<div class="year_change_wrap timeClickArea" id="year_change_wrap">-->
+                                    <!--<i class="icon-ishop_8-03 arrow_left timeClickArea" id="arrow_left"></i>-->
+                                    <!--<span id="years" style="vertical-align: top" class="timeClickArea"></span>-->
+                                    <!--<i class="icon-ishop_8-03 arrow_right timeClickArea" id="arrow_right"></i>-->
+                                <!--</div>-->
+                                <!--<ul class="time_details" id="time_details">-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div>
+                        <input value="笔数" type="text" id="chart_selectInput" class="function_input width130" readonly>
+                        <ul class="chart_filter" id="chart_filter">
+                            <li>笔数</li><li>件数</li><li>金额</li>
+                        </ul>
+                    </div>
+                    <div class="export_btn" id="chart_export_btn">导出</div>
+                </div>
+            </div>
+            <div id="chartContentWrap" style="height: 300px"></div>
+            <div class="listLoading_box" id="chart_loading">
+                <div>加载中，请稍候...</div>
+            </div>
+        </div>
+        <div class="header">
+            <div class="header_inputWrap" id="filter_inputWrap">
+                <ul class="filterConditionWrap">
+                    <label>员工名称</label><input id="staffInput"  readonly class="function_input" type="text" placeholder="请选择员工"></li><li>
+                    <li><label>店铺名称</label><input id="storeInput" readonly class="function_input" type="text" placeholder="请选择店铺"></li><li>
+                    <label>时间范围</label><input readonly class="time_input laydate-icon" id="time_start" type="text"><span>~</span><input id="time_end" readonly class="time_input laydate-icon" type="text"></li>
+                    </li>
+                </ul>
+            </div>
+            <div class="header_btnWrap">
+                <span class="emptyFilterBtn" id="emptyFilterBtn">清空筛选</span><span id="filterBtn" class="filterBtn">筛选</span>
+            </div>
+        </div>
+        <div class="pop-up-wrap" id="chart_export_wrap">
+            <div class="tk" style="position:fixed;display: block">
+                <span class="icon-ishop_6-12" id="close_export_box"></span>
+                <p>是否导出该图表数据?</p>
+                <div class="btn">
+                    <em class="cancel" id="cancel_export">取消</em>
+                    <em class="album_enter" id="chart_export_enter"><a style="color: white;">确认</a></em>
+                </div>
+            </div>
+        </div>
+        <div class="footerWrap">
+            <div class="tabs_head">
+                <span class="title_icon"></span><span>导购VIP经营表</span>
+                <div class="export_btn list_export_btn" id="list_export_btn">导出</div>
+            </div>
+            <div class="table_contentWrap" style="overflow: hidden;margin-top: 10px;position: relative">
+                <div class="nav_left scroll_area">
+                    <ul id="table_nav">
+                        <li data-nav="user" class="nav-active">员工业绩</li>
+                        <li data-nav="vip">会员消费</li>
+                        <li data-nav="vipNum">会员数量</li>
+                        <li data-nav="newVip">新会员</li>
+                        <li data-nav="actVip">活跃会员</li>
+                        <li data-nav="secVip">复购分析</li>
+                        <li data-nav="vipSex">性别</li>
+                        <li data-nav="vipAge" class="nav_select" id="age_nav"><label>年龄</label><i class="icon-ishop_8-02"></i><dl style="display: none"><dd data-type="all">会员结构</dd><dd data-type="new">新增结构</dd></dl></li>
+                        <li data-nav="vipSource" class="nav_select" id="Channel_member_nav"><label>渠道会员</label><i class="icon-ishop_8-02"></i><dl style="display: none"></dl></li>
+                        <li data-nav="vipCardType" class="nav_select" id="cardType_nav"><label>卡类型</label><i class="icon-ishop_8-02"></i><dl style="display: none"></dl></li>
+                    </ul>
+                </div>
+                <div style="float: right;width:90%">
+                    <div class="table_titleWrap">
+                        <div class="table_title" id="table_title"><span>员工业绩</span><i style="display: none"  class="icon-ishop_8-03"></i><span></span></div>
+                        <!--<ul id="table_nav"><li data-nav="vip" class="nav-active">会员消费</li><li data-nav="store">店铺业绩</li><li data-nav="wechat">微会员</li></ul>-->
+                        <div class="table_searchWrap"><input id="table_search_input" placeholder="员工编号/员工名称" type="text" class="width280"><i id="search_icon" class="icon-ishop_3-05 search_icon"></i></div>
+                    </div>
+                    <div style="width: 100%;overflow-y: auto">
+                        <table class="table_thead tabel_x_scroll" id="table_thead" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <!--<th width="10%">店铺编号</th>-->
+                                <!--<th width="10%">店铺名称</th>-->
+                                <!--<th width="10%">所属群组</th>-->
+                                <!--<th width="10%">所属区域</th>-->
+                                <!--<th width="10%" class="bgf0f0f0 textCenter">会销金额<br/><span class="color33b4c7">总 ¥0</span><br/><span>店均 ¥0</span></th>-->
+                                <!--<th width="10%" class="textCenter">会销占比<br/><span>店均 0%</span></th>-->
+                                <!--<th width="10%" class="bgf0f0f0 textCenter">会销笔数<br/><span class="color33b4c7">总 0</span><br/><span>店均 0</span></th>-->
+                                <!--<th width="10%" class="textCenter textCenter">会销客单价<br/><span>店均 0</span></th>-->
+                                <!--<th width="10%" class="bgf0f0f0 textCenter">已购会员数<br/><span class="color33b4c7">总 0</span><br/><span>店均 0</span></th>-->
+                                <!--<th width="10%" class="textCenter">复购会员数<br/><span class="color33b4c7">总 0</span><br/><span>店均 0</span></th>-->
+                            </tr>
+                            </thead>
+                        </table>
+                        <div class="table_tbodyWrap tabel_x_scroll">
+                            <table id="table_tbody" class="table_tbody" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="listLoading_box" id="table_loading" style="display: none">
+                <div>加载中，请稍候...</div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-up-wrap" id="pop-up-wrap">
+        <!-- 拉取区域 -->
+        <div id="screen_area" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选店铺群组</h4>
+                <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="area_search">
+                    <span class="icon-ishop_3-05" id="area_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加<span>0</span>/<span>0</span>个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_area">确定</div>
+        </div>
+        <!-- 拉取店铺 -->
+        <div id="screen_shop" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选店铺</h4>
+                <div class="xuanzhong">
+                    <div class="xuanzhong_p">
+                        <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="" readonly="readonly">
+                        <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                    </div>
+                    <div class="xuanzhong_p">
+                        <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                                    data-areacode="">
+                        <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                    </div>
+                </div>
+                <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="store_search">
+                    <span class="icon-ishop_3-05" id="store_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加<span>0</span>/<span>0</span>个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_shop">确定</div>
+        </div>
+        <!-- 拉取品牌 -->
+        <div id="screen_brand" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选品牌</h4>
+                <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="brand_search">
+                    <span class="icon-ishop_3-05" id="brand_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加<span>0</span>/<span>0</span>个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_brand">确定</div>
+        </div>
+        <!-- 拉取导购  -->
+        <div id="screen_staff" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选</h4>
+                <div class="xuanzhong">
+                    <div class="xuanzhong_p">
+                        <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                                  data-brandcode="">
+                        <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                    </div>
+                    <div class="xuanzhong_p">
+                        <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                                    data-areacode="">
+                        <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                    </div>
+                    <div class="xuanzhong_p">
+                        <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                        <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                    </div>
+                </div>
+                <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="staff_search">
+                    <span class="icon-ishop_3-05" id="staff_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加<span>0</span>/<span>0</span>个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_staff">确定</div>
+        </div>
+    </div>
+    <div class="export_list" id="export_list">
+        <!--<div><span class="icon-ishop_6-12"></span></div>-->
+        <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+        <div class="export_list_content">
+            <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+            <div class="export_type">
+                <span class="export_type_title">选择导出列表</span>
+                <input  readonly="" class="function_input" type="text" autocomplete="off" placeholder="请选择" id="select_export_type">
+                <div class="export_type_first_list">
+                    <ul>
+                    </ul>
+                    <div class="select_all">
+                       <label id="check_all_first">
+                           <div class="checkbox"><input type="checkbox" value="" name="test" id="select_all_box" class="check"><label for="select_all_box"></label></div>
+                           <span>全选</span>
+                       </label>
+                        <span class="select_sure" id="select_sure">确定</span>
+                    </div>
+                </div>
+                <div class="export_type_second_list_other" id="export_type_second_list_other" style=" position: absolute; left: 330px; width: 230px;display: none">
+                </div>
+            </div>
+            <div class="export_list_all" id="export_list_all">
+                <ul></ul>
+            </div>
+        </div>
+        <div class="hide_export">
+            <span id="hide_export">关闭</span>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/activity/echarts.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js"></script>
+<script src="../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js?2017040170331"></script>
+<script type="text/javascript">
+    document.write("<s" + "cript type='text/javascript' src='../js/vip/vip_userSaleTable.js?" + new Date().getTime()+ "'></s" + "cript>");
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").siblings().find("span").removeClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").siblings().find("a").css({color:"#FFF"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0031']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0031']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
+</body>
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>编辑积分清零</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-select.css">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/vip_activity_add.css">
+    <style>
+        body {
+            margin-top: 81px;
+        }
+        #expend_attribute{
+            max-height: 250px;
+            overflow-y: scroll;
+        }
+        ul li{
+            height: 30px;
+            line-height: 30px;
+        }
+        .icon_action_add,.icon_action_delete{
+            margin-left: 2px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: middle;
+            text-align: center;
+            border:1px solid #d9d9d9;
+            border-radius: 5px;
+            color: #6dc1c8;
+            background-color: white;
+            display: inline-block;
+        }
+        .clear_time{
+            width: 240px!important;
+            min-height: 130px !important;
+            background-color: white!important;
+            position: absolute;
+            left: 313px;!important;
+            z-index: 100;!important;
+            padding-left: 10px;
+            padding-right: 10px;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 5px;
+            -moz-box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 5px;
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 5px;
+        }
+        .clear_time p{
+            height: 40px;
+            line-height:40px;
+            border-bottom: 1px solid #d4d8e1;
+            overflow: hidden;
+        }
+        .clear_time input{
+            border: 1px solid #d7d7d7;
+            background: none;
+        }
+        .clear_time label{
+            cursor: pointer;
+        }
+        .check{
+            background: url(../img/radio_chicked.png) no-repeat center;!important;
+            background-size: 15px 15px;!important;
+        }
+        .radio_b{
+            border: 1px solid #dbdbdb;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            border-radius: 50%;
+            position: relative;
+            top: 1px;
+            cursor: pointer;
+        }
+        .clear_time_btn{
+            display: block;
+            width:90px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color:white;
+            background-color:#32b5c9;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 68px;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        #drop_down .select_icon{
+            width: 16px;
+            height: 16px;
+            background-color: #d5d5d5;
+            border-radius: 15px;
+        }
+        .select_icon_check{
+            background: url(../img/icon_radio_S.png) no-repeat center center;
+            background-size: 16px 16px;
+        }
+        #screenVip{
+            margin-left: 50px;
+        }
+        .add_per_icon{
+            margin-left: 50px;
+            padding-left: 10px;
+            cursor: pointer;
+            width: 104px;
+        }
+        /*****************/
+        #expend_attribute{
+            max-height: 250px;
+            overflow-y: scroll;
+        }
+        #custom_vip_list{
+            display: none;
+            padding: 10px 10px 10px 0;
+            border-top: 1px solid #d4d4d4;
+            background: #FFFFFF;
+            color: #888888;
+        }
+        #custom_vip_list div:last-child{
+            margin: 0;
+        }
+        #group_list>div>span{
+            display: inline-block;
+            width: 60px;
+        }
+        .condition_group .group_title{
+            margin: 0;
+        }
+        .condition_group li{
+            float: none!important;
+            position: relative;
+            font-size: 13px;
+        }
+        .condition_group li ul{
+            margin-left: 20px;
+        }
+        .condition_group .condition{
+            margin-left: 20px!important;
+            margin-bottom: 5px!important;
+            margin-right: 20px!important;
+            height: 24px;
+            line-height: 24px;
+            padding: 0px 10px;
+            background-color: #f4f5f8;
+            border-radius: 12px;
+        }
+        .condition_group li span{
+            vertical-align: middle;
+            display: inline-block;
+            height: 24px;
+            line-height: 24px;
+        }
+        .icon-ishop_6-29{
+            position: absolute;
+            right: 0;
+        }
+        #custom_vip_list .icon-ishop_6-29{
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+        }
+        #isCondition,#isGroup{
+            display: none;
+            background-color: #FFFFFF;
+            position: absolute;
+            right: -160px;
+            width: 150px;
+            top:0;
+        }
+        #isGroup span,#isCondition span{
+            display: inline-block;
+            width: 100%;
+            height: 30px;
+            line-height: 20px;
+            font-size: 12px;
+            padding: 5px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        #isGroup span:hover,#isCondition span:hover{
+            color: #FFFFFF;
+            background-color: #41c7db;
+        }
+        .select_jb{
+            cursor: pointer;
+            display: inline-block;
+            padding-left: 25px;
+            margin-left: 10px;
+            background-size: 8px 14px;
+            background: url(../img/jji.png);
+            background-repeat: no-repeat;
+            background-size: 18px 18px;
+            background-position: left center;
+            position: relative;
+        }
+        .select_jb div{
+            position: absolute;
+            width: 150px;
+            display: none;
+            background-color: #FFFFFF;
+            z-index: 2;
+        }
+        .select_jb div span{
+            display: inline-block;
+            width: 100%;
+            padding-left: 20px;
+        }
+        .select_jb div span:hover{
+            color: #FFFFFF;
+            background-color: #41c7db;
+        }
+       #corp_cover{
+           position: absolute;
+           left: 143px;
+           border: none;
+           top: 116px;
+           height: 31px;
+           width: 420px;
+           border-radius: 5px;
+           background: #dfdfdf;
+           text-indent: 10px;
+           color: #888888;
+           outline:none;
+       }
+        .edit_message{
+            box-shadow: 0px 5px 5px;
+        }
+        .condition{
+            margin-left: 20px!important;
+            margin-bottom: 5px!important;
+            margin-right: 20px!important;
+            height: 24px;
+        }
+        .condition span:nth-child(1){
+            color: #6dc1c8;
+            margin-right: 10px;
+        }
+        #custom_vip_list span{
+            vertical-align: middle;
+        }
+        .conpany_msg input{
+            text-indent: 0;
+            padding-left: 10px;
+        }
+        .isWx{
+            cursor: not-allowed!important;
+            background-color: #dfdfdf!important;
+        }
+        .condition_title{
+            color: #6dc1c8;
+            margin-right: 5px;
+            /*max-width: 20%;*/
+            vertical-align: middle;
+            display: inline-block;
+            height: 24px;
+            line-height: 24px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .condition_detail{
+            vertical-align: middle;
+            /*display: inline-block;*/
+            height: 24px;
+            line-height: 24px;
+            /*text-overflow: ellipsis;*/
+            /*white-space: nowrap;*/
+            /*overflow: hidden;*/
+            /*max-width: 75%;*/
+        }
+        #custom_vip_list div{
+            margin: 0;
+            padding-left: 10px;
+            position: relative;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>会员运营</span><i class="icon-ishop_8-03"></i><span id="back_message">积分清零</span><i
+            class="icon-ishop_8-03"></i><label>编辑积分清零</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form style="margin-left:0px" class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li id="corp_select"><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex;background-color: #dfdfdf"></select></span></li>
+                </ul>
+            </div>
+            <!--公众号-->
+            <div class="drop_down item_2">
+                            <span><label >公众号</label><input data-value="1" class="input_select"   placeholder="请选择公众号" value="请选择公众号" data-app_id="" type="text" id="vipCode" placeholder="" readonly="" >
+                                 <ul style="display: none;" id="vipPublic">
+                                     <!--动态加载-->
+                                 </ul>
+                            </span>
+            </div>
+            <div>
+                <span class="t_parent" style="display: inline-block;height: 30px">
+                    <label style="color:#c26555;margin-right: 14px;">名称*</label>
+                    <input verify="Number" type="text" id="name" maxlength="50"/><span class="holder_text"></span>
+                    <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
+                </span>
+            </div>
+            <div>
+                <span class="t_parent" style="display: inline-block;height: 30px">
+                    <label>单据编号</label>
+                    <input verify="Number" type="text" id="No" maxlength="50" style="background-color: #dfdfdf;margin-left: -4px;" placeholder="系统自动生成" disabled/><span class="holder_text"></span>
+                    <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
+                </span>
+            </div>
+            <div id="drop_down" style="overflow: hidden">
+                <span style="float: left"><label style="color:#c26555;">目标会员*</label>
+                 </label><c id="allVip">所有会员</c> <label class="select_icon" id="screenVip" style="margin-left: 0px;"></label><c>筛选会员</c>
+                </span>
+                <!--<span class="add_per_icon" id="add_select" style="width: 130px;background-color: #ccc">添加筛选条件<i class="icon-ishop_8-03"></i></span>-->
+                <div style="background-color: #dfdfdf;margin-left: 123px;min-height: 60px;width: 420px;margin-top: 10px;display: none;overflow:hidden;" id="custom_vip_list">
+                    <p style="text-align: center;height: 60px;line-height: 60px;" id="p">暂无条件</p>
+                </div>
+            </div>
+            <div id="keep_time" class="item_1">
+                <span><label style="color:#c26555;">保留积分时长*</label><input type="text" id="MESSAGE_TYPE" placeholder="请选择保留积分时长" style="background-color: #dfdfdf;width: 400px" readonly/> 月
+                </span>
+            </div>
+            <div id="clear_time" class="drop_down item_1">
+                <span><label style="color:#c26555;">清理周期*</label><input class="input_select" type="text" id="clear_cycle" style="background: #dfdfdf" placeholder=""  readonly/>
+                   <!--<div class="clear_time" style="display: none;">-->
+                       <!--<p>-->
+                           <!--<span style="margin-right: 5px;float: left;">-->
+                               <!--<input type="radio" name="ck" class="check" style="display: none;" id="ck_1">-->
+                               <!--<b class="radio_b"></b>-->
+                               <!--<label for="ck_1" id="M" style="width: 40px;margin-left: -10px;margin-right:12px;color: #dbdbdb">每月</label>-->
+                           <!--</span>-->
+                           <!--<span style="margin-right: 5px;float: left;">-->
+                               <!--<input type="radio" name="ck" class="check" style="display: none" id="ck_2">-->
+                               <!--<b class="radio_b"></b>-->
+                               <!--<label for="ck_2" id="Y" style="width: 40px;margin-left:-10px;margin-right:12px;color:#dbdbdb;">每年</label>-->
+                           <!--</span>-->
+                           <!--<span style="margin-right: 5px;float: left;">-->
+                               <!--<input type="radio" name="ck" class="check" style="display: none" id="ck_3">-->
+                               <!--<b class="radio_b"></b>-->
+                               <!--<label for="ck_3" id="O" style="width: 50px;margin-left: -10px;color:#dbdbdb;">一次性</label>-->
+                           <!--</span>-->
+                       <!--</p>-->
+                       <!--<span id="clear_show">-->
+
+                       <!--</span>-->
+                       <!--<btn id="clear_time_btn">确认</btn>-->
+                   <!--</div>-->
+                </span>
+            </div>
+            <div id="remind" style="min-height: 60px">
+                <span>
+                    <label>提醒</label>
+                    <div style="position:relative;top:-30px;left: 123px;height: auto" class="once">
+                        <!--内容-->
+                        <div class="drop_down item_1" style="float: left;">
+                            <span>
+                                <input class="input_select" type="text" placeholder="时间" readonly style="width: 200px;margin-right: 10px;" onclick="showNext(this)"/>
+                               <!--*****-->
+                                <div class="clear_time" style="display: none;left: 0px;">
+                                    <p>
+                                         <span style="margin-right: 5px;float: left;">
+                                             <input type="radio" name="ck" class="check" style="display: none;" class="ck_1">
+                                             <b class="radio_b"></b>
+                                             <label class="M" style="width: 40px;margin-left: -10px;margin-right:12px;color: #dbdbdb">每月</label>
+                                         </span>
+                                         <span style="margin-right: 5px;float: left;">
+                                             <input type="radio" name="ck" class="check" style="display: none" class="ck_2">
+                                             <b class="radio_b"></b>
+                                             <label class="Y" style="width: 40px;margin-left:-10px;margin-right:12px;color:#dbdbdb;">每年</label>
+                                         </span>
+                                         <span style="margin-right: 5px;float: left;">
+                                             <input type="radio" name="ck" class="check" style="display: none" class="ck_3">
+                                             <b class="radio_b"></b>
+                                             <label class="O" style="width: 50px;margin-left: -10px;color:#dbdbdb;">一次性</label>
+                                         </span>
+                                    </p>
+                                     <span class="clear_show">
+
+                                     </span>
+                                    <btn class="clear_time_btn" >确认</btn>
+                                    <div style="margin-bottom: 10px;font-size: 12px;text-align: center">*若设置当前日清理，将在下个周期有效</div>
+                                </div>
+                                <!--*****-->
+                            </span>
+                        </div>
+                        <div class="drop_down item_1" style="float: left;">
+                             <span>
+                                 <input class="input_select" type="text" placeholder="微信模板消息" readonly style="width: 130px" id="tempInput" onclick="showMsgType(this)" />
+                                 <ul style="width:130px; margin-left: 200px;">
+                                     <li>微信模板消息</li>
+                                     <li>短信消息</li>
+                                 </ul>
+                             </span>
+                        </div>
+                        <span class="add_per_icon remind_edit isWx"  style="text-align: center;cursor: pointer;margin-left: 10px;padding-left: 0px;width: 70px">编辑内容</span>
+                        <span class="icon_action_add" onclick="add(this)"><span class="icon-ishop_6-01"></span></span>
+                        <span class="icon_action_delete" onclick="removeIt(this)"><span class="icon-ishop_6-02"></span></span>
+                    </div>
+                </span>
+            </div>
+            <span style="display: inline-flex;width:100%;position:relative;top: -30px;">
+                <label style="height:70px;">备注</label>
+                <span class="tempalte_area"style="height: 70px">
+                    <textarea style="height: 70px" id="message_content" placeholder="请输入备注"></textarea>
+                </span>
+            </span>
+            <div id="messageTemplet" class="edit_frame edit_message" style="display: none;width: 380px;height: 290px;">
+                <div class="tabs_title_p">
+                    <div class="tabs_left">
+                        <span class="title_icon"></span>
+                        <span>短信内容设定</span>
+                    </div>
+                </div>
+                <div class="edit_frame_left">
+                    <div style="color: #888;padding-left:18px;word-break:break-all;font-size: 12px;margin-bottom: 10px;line-height: 20px;">标记说明："#name#" 会员名;"#card_type#" 会员类型;"#card_no#" 会员卡号;"#clean_time#" 清理时间;"#clean_points#" 到期积分;</div>
+                    <label  class="label_frame" style="font-size: 14px;vertical-align: top;margin-top: -3px; color:#c26555;">消息内容*</label><textarea class="edit_content" placeholder="请输入提醒内容" maxlength="140"></textarea>
+                </div>
+                <div class="edit_footer">
+                    <div class="edit_footer_close">取消</div>
+                    <div class="edit_footer_save">保存</div>
+                </div>
+            </div>
+            <div id="wxTemplet" class="edit_frame edit_message">
+                <div class="tabs_title_p">
+                    <div class="tabs_left">
+                        <span class="title_icon"></span>
+                        <span>微信内容设定</span>
+                    </div>
+                </div>
+                <div class="edit_frame_left">
+                    <span class="message_label">推送标题*</span><input class="wxTitle" type="text">
+                    <span class="message_label" style="vertical-align: top">消息内容*</span><textarea class="edit_content" placeholder="请输入微信内容" maxlength="140"></textarea>
+                    <div style="color: #888;padding-left:65px;word-break:break-all;font-size: 12px;margin-bottom: 10px;line-height: 20px;">标记说明："#store#" 店铺名；"#name#" 会员名；"#birthday#" 会员生日；"#join_time#" 加入时间；"#sex#" 会员性别</div>
+                    <span class="message_label">详情链接*</span><input class="wxUrl" type="text">
+                    <span class="imgUploadWrap"><span class="message_label">推送图片*</span><span id="imgBox" class="imgBox"></span><input id="imgInput" class="imgInput" type="file"><span class="imgBtn">上传图片</span></span>
+                </div>
+                <div class="edit_footer">
+                    <div class="edit_footer_close">取消</div>
+                    <div class="edit_footer_save">保存</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <input verify="Number" type="text" id="corp_cover" maxlength="50" disabled/>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="oper_btn">
+            <ul>
+                <li class="edit_save" id="send"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="send_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+            </div>
+            <div>
+                <span style="visibility: hidden"><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check"  id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!--会员列表-->
+<div class="content" style="display:none;">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>会员管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span id="back_vip_group_1">群发信息</span>
+            <span class="icon-ishop_8-03"></span>
+            <span id="back_edit_vip_group">发送消息</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>会员列表</span>
+            <!--<span class="icon-ishop_8-03"></span>-->
+            <!--<span>编辑权限</span>-->
+        </div>
+        <div class="list" style="margin-bottom: 20px;">
+            <div class="list_r">
+                <div class="save" id="save">
+                    <i class="icon-ishop_6-04"></i>保存
+                </div>
+                <div class="turnoff" id="turnoff">
+                    <i class="icon-ishop_6-12"></i>关闭
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul>
+                    <li class="li s">
+                        <input type="text" class="input" placeholder="姓名/手机号/会员卡号" id="search">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="filtrate">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th style="text-align: left; padding-left: 22px;">序号</th>
+                    <th>姓名</th>
+                    <th style="width: 20px"></th>
+                    <th>性别</th>
+                    <th>联系电话</th>
+                    <th>会员卡号</th>
+                    <th>会员类型</th>
+                    <th>所属导购</th>
+                    <th>所属店铺</th>
+                    <th width="50px;" style="text-align: left;">
+                        <div class="checkbox1">
+                            <input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/>
+                            <label for="checkboxTwoInput0"></label>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="36" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num" >
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+
+                        </li>
+                        <li>
+                            <span class="p-bg">1</span>
+                        </li>
+                        <li>
+                            <span>2</span>
+                        </li>
+                        <li>
+                            <span>3</span>
+                        </li>
+                        <li>
+                            <span>4</span>
+                        </li>
+                        <li>
+                            <span>5</span>
+                        </li>
+                        <li class="icon-ishop_4-02">
+
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <!--<span class="zy">共 75 页</span>-->
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--<div class="p" id="p"></div>-->
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
+</div>
+<!--筛选会员-->
+<div class="screen_wrapper" id="screen_wrapper">
+    <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+    <div id="simple_filter">
+        <div class="filter_condition" id="simple_filter_condition">
+            <ul>
+                <li><a href="####" class="condition_active">按生日</a></li>
+                <li><a href="####">按导购</a></li>
+                <li><a href="####">按纪念日</a></li>
+                <li><a href="####">按消费次数</a></li>
+                <li><a href="####">按消费金额</a></li>
+                <li><a href="####">按可用积分</a></li>
+                <li><a href="####">冻结会员</a></li>
+            </ul>
+        </div>
+        <div class="contion" id="simple_contion">
+            <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
+            <div class="contion_input" style="display: none"><label>所属导购</label><input data-kye="15" class="screen_staff_num input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staff_basic"></span></div>
+            <div id="memorial_day" style="display: none">
+
+            </div>
+            <!--<div class="contion_input" style="display: none"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>-->
+            <div class="consume_attribute" style="display: none">
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_3" readonly><ul class="sex_select" id="consume_select_basic_3">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="15">最近15个月</li>
+                    <li data-date="18">最近18个月</li>
+                    <li data-date="21">最近21个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+            </div>
+            <div class="consume_attribute" style="display: none">
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_4" readonly><ul class="sex_select" id="consume_select_basic_4">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="15">最近15个月</li>
+                    <li data-date="18">最近18个月</li>
+                    <li data-date="21">最近21个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            </div>
+            <!--<div class="contion_input" style="display: none"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>-->
+            <!--<div class="contion_input" style="display: none"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>-->
+            <div class="contion_input" style="display: none"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+            <div class="contion_input" style="display: none"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+                <li>已冻结</li>
+                <li>未冻结</li>
+                <li>全部</li>
+            </ul></div>
+        </div>
+        <!--<div class="ensure"><span>确定</span></div>-->
+        <a href="####" id="more_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">高级筛选</a>
+    </div>
+    <div style="display: none" id="senior_filter">
+        <div class="filter_condition" id="filter_condition">
+            <ul>
+                <li><a href="####" class="condition_active">按基本属性</a></li>
+                <li><a href="####">按会员属性</a></li>
+                <li><a href="####">按消费属性</a></li>
+                <li><a href="####">按所属关系</a></li>
+                <li><a href="####">按会员分组</a></li>
+                <li><a href="####">按拓展资料</a></li>
+                <!--<li><a href="####">按券查询</a></li>-->
+            </ul>
+        </div>
+        <div class="contion" id="contion">
+            <div id="basic_message">
+                <div class="contion_input"><label>姓名</label><input data-kye="7" class="input" type="text"></div>
+                <div class="contion_input">
+                    <label>性别</label><input data-kye="8" class="select" type="text" value="全部" readonly="readonly" id="sex">
+                    <ul class="sex_select" id="sex_select">
+                        <li>男</li>
+                        <li>女</li>
+                        <li>全部</li>
+                    </ul>
+                </div>
+                <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input_date" id="age_l" /><ul class="age_l"></ul><label class="jian">~</label><input
+                        class="short_input_date" id="age_r" /><ul class="age_r"></ul></div>
+                <div class="contion_input"><label>生日</label><input data-kye="1" id="birth_start" class="short_input_date laydate-icon" readonly><label class="jian">~</label><input id="birth_end" class="short_input_date laydate-icon" readonly></div>
+                <div class="contion_input"><label>手机号</label><input data-kye="10" class="input" type="text"></div>
+            </div>
+            <div id="vip_attribute" style="display: none">
+                <div class="contion_input"><label>卡号</label><input data-kye="11" class="input" type="text"></div>
+                <div class="contion_input"><label>卡类型</label><input data-kye="12" class="select" type="text" id="vip_card_type_add" value="全部" readonly><ul class="sex_select" id="card_type_select_add"></ul></div>
+                <div class="contion_input"><label>开卡日期</label><input data-kye="13" id="activate_card_start" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end" class="short_input_date laydate-icon" type="text" readonly/></div>
+                <div class="contion_input"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                <div class="contion_input"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="state" type="text" readonly><ul class="sex_select" id="state_select">
+                    <li>已冻结</li>
+                    <li>未冻结</li>
+                    <li>全部</li>
+                </ul></div>
+            </div>
+            <div id="consume_attribute" style="display: none">
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date" readonly><ul class="sex_select" id="consume_select">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="15">最近15个月</li>
+                    <li data-date="18">最近18个月</li>
+                    <li data-date="21">最近21个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+                <div class="contion_input"><label>消费总额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            </div>
+            <div id="relation" style="display: none">
+                <div class="contion_input"><label>所属品牌</label><input data-kye="brand_code" id="screen_brand_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                <div class="contion_input"><label>店铺群组</label><input data-kye="area_code" id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+                <div class="contion_input"><label>所属店铺</label><input data-kye="14" id="screen_shop_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+                <div class="contion_input"><label>所属导购</label><input data-kye="15" class="input screen_staff_num" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+            </div>
+            <div id="vip_group" style="display: none">
+                <!--<div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>-->
+                <div class="contion_input">
+                    <label>分组</label><input data-kye="16" id="filter_group" class="input" type="text" data-code="" readonly="readonly"><span
+                        class="icon_r icon-ishop_8-03" id="screen_group_icon_add"></span>
+                    <!--<div class="filter_group">-->
+                    <!--<input type="text" id="search_filter_group">-->
+                    <!--<ul id="ul">-->
+
+                    <!--</ul>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div id="expend_attribute" style="display: none"></div>
+            <div id="ticket" style="display: none">
+                <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
+                <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
+            </div>
+        </div>
+        <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
+    </div>
+    <a id="empty_filter_define" href="####" style="position: absolute;left: 25px;bottom: 30px;text-decoration: underline;color: #888">清空筛选</a>
+    <div class="ensure"><span id="select_vip_que">确定</span></div>
+</div>
+<!-- 拉取区域 -->
+<div id="screen_area" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选区域</h4>
+        <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="area_search">
+            <span class="icon-ishop_3-05" id="area_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_area">确定</div>
+</div>
+<!-- 拉取店铺 -->
+<div id="screen_shop" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选店铺</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input class="brand_num" type="text" value="全部" id="brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input class="area_num" type="text" value="全部" readonly="true" id="area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+            </div>
+        </div>
+        <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="store_search">
+            <span class="icon-ishop_3-05" id="store_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_shop">确定</div>
+</div>
+<!-- 拉取品牌 -->
+<div id="screen_brand" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选品牌</h4>
+        <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="brand_search">
+            <span class="icon-ishop_3-05" id="brand_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_brand">确定</div>
+</div>
+<!-- 拉取导购  -->
+<div id="screen_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选员工</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input class="brand_num" type="text" value="全部" id="staff_brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input class="area_num" type="text" value="全部" readonly="true" id="staff_area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+            </div>
+        </div>
+        <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="staff_search">
+            <span class="icon-ishop_3-05" id="staff_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_staff">确定</div>
+</div>
+<div id="tk" style="position: fixed;left: 0;top: 0;right: 0;bottom: 0;background-color: rgba(223,223,223,0.5);display: none">
+    <div class="tk" style="z-index: 10001;display: block">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <div style="height: 120px;line-height:normal;padding: 50px 10px 10px 10px;text-align: center"><p style="word-break: break-all;text-align: left;display:inline-block;margin: 0 auto;line-height: normal;height: auto">是否确认群发，已选 <b id="send_vip_num" style="font-weight: normal">0</b> 位会员</p></div>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" style="background-color: #6dc1c8" id="sendOk">确认</em>
+        </div>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Dialog -->
+<script src="/js/loading.js?2017040170331"></script>
+<script src="../js/laydate/laydate.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!-- 带搜索的下拉菜单 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<!--<script src="../js/vip_screen.js?2017040170713"></script>-->
+<script src="../js/vip/select_new.js?t=20180102"></script>
+<script src="../js/laydate/laydate.js?2017040170331"></script>
+<script type="text/javascript" src="../js/vip/vip_integralZero_operate.js?2018010217"></script>
+</body>
+<script type="text/javascript">
+    $("#keep_time ul").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"9px",
+        cursorborderradius:"10px"});
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0057']").find("span").hasClass("icon-ishop_8-01")){
+            $(window.parent.document).find("#sidebar").scrollTop($(window.parent.document).find("#navbar li dd[data-code='F0057']").position().top);
+            clearInterval(timer);
+        }
+    },0);
+</script>
+</html>

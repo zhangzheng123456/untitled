@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,9 +23,9 @@ public class Rest {
 
 
 
-    public static String Add(String table,String corpcode,HashMap<String,Object> tableRow){
+    public static String Add(String table, List<String> drplist, HashMap<String,Object> tableRow){
 
-        RequestParams createObjectRequestParams = new RequestParams(corpcode);
+        RequestParams createObjectRequestParams = new RequestParams(drplist);
         RequestParams.BaseTrans createObjectTrans = createObjectRequestParams.new BaseTrans();
 
         //请求方式
@@ -52,9 +53,9 @@ public class Rest {
 
 
     //查询
-    public static String query(String corpcode,HashMap<String,Object> tableRow){
+    public static String query(List<String> drplist,HashMap<String,Object> tableRow){
 
-        QueryRequestParams queryRequestParams = new QueryRequestParams(corpcode);
+        QueryRequestParams queryRequestParams = new QueryRequestParams(drplist);
         QueryRequestParams.QueryTrans queryTrans = queryRequestParams.new QueryTrans();
         QueryRequestParams.QueryTrans.QueryTransParams queryTransParams = queryTrans.new QueryTransParams();
 
@@ -106,9 +107,9 @@ public class Rest {
 
 
     //修改
-    public  static  String modify(String table,String  corpcode,HashMap<String,Object> modVip){
+    public  static  String modify(String table,List<String>  drplist,HashMap<String,Object> modVip){
 
-        RequestParams modifyObjectRequestParams = new RequestParams(corpcode);
+        RequestParams modifyObjectRequestParams = new RequestParams(drplist);
         RequestParams.BaseTrans modifyObjectTrans = modifyObjectRequestParams.new BaseTrans();
 
 
@@ -141,9 +142,9 @@ public class Rest {
 
     //执行WebAction查询
 
-    public static String excuteWebaction(String corpcode,String webaction,int vipid){
+    public static String excuteWebaction(List<String> drplist,String webaction,int vipid){
 
-        ExecuteWebActionRequestParams executeWebActionRequestParams = new ExecuteWebActionRequestParams(corpcode);
+        ExecuteWebActionRequestParams executeWebActionRequestParams = new ExecuteWebActionRequestParams(drplist);
         ExecuteWebActionRequestParams.ExecuteWebActionTrans executeWebActionTrans = executeWebActionRequestParams.new ExecuteWebActionTrans();
         ExecuteWebActionRequestParams.ExecuteWebActionTrans.ExecuteWebActionTransParams executeWebActionTransParams = executeWebActionTrans.new ExecuteWebActionTransParams();
 
@@ -168,9 +169,9 @@ public class Rest {
     }
 
     //执行查询
-    public  static  String excuteSql(String corpcode,HashMap<String,Object> hashmap){
+    public  static  String excuteSql(List<String> drplist,HashMap<String,Object> hashmap){
 
-        ExecuteSQLRequestParams executeSQLRequestParams = new ExecuteSQLRequestParams(corpcode);
+        ExecuteSQLRequestParams executeSQLRequestParams = new ExecuteSQLRequestParams(drplist);
         ExecuteSQLRequestParams.ExecuteSQLTrans executeSQLTrans = executeSQLRequestParams.new ExecuteSQLTrans();
         ExecuteSQLRequestParams.ExecuteSQLTrans.ExecuteSQLTransParams executeSQLTransParams = executeSQLTrans.new ExecuteSQLTransParams();
 
@@ -197,9 +198,9 @@ public class Rest {
     }
 
     //提交单据
-    public  static  String  submitObject(String corpcode,HashMap<String,Object> hashmap){
+    public  static  String  submitObject(List<String> drplist,HashMap<String,Object> hashmap){
 
-        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(corpcode);
+        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(drplist);
         GetOrSubOrUnSubRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
         GetOrSubOrUnSubRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
                 getObjectTran.new GetObjectTransParams();
@@ -232,9 +233,9 @@ public class Rest {
 
 
     //取消提交单据
-    public  static  String  unSubmitObject(String corpcode,HashMap<String,Object> hashmap){
+    public  static  String  unSubmitObject(List<String> drplist,HashMap<String,Object> hashmap){
 
-        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(corpcode);
+        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(drplist);
         GetOrSubOrUnSubRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
         GetOrSubOrUnSubRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
                 getObjectTran.new GetObjectTransParams();
@@ -266,6 +267,31 @@ public class Rest {
     }
 
 
+    //删除一个记录的信息
+    public  static  String  delObject(List<String> drplist,HashMap<String,Object> hashmap){
+        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(drplist);
+        GetOrSubOrUnSubRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
+        GetOrSubOrUnSubRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
+                getObjectTran.new GetObjectTransParams();
+        for(String key:hashmap.keySet()){
+            if(key.equals("table")){
+                getObjectTransParams.setTable(hashmap.get(key).toString());
+            }else  if(key.equals("id")){
+                getObjectTransParams.setId((Integer)hashmap.get(key));
+            }
+        }
+
+        getObjectTran.setId(112);
+        getObjectTran.setCommand("ObjectDelete");
+        getObjectTran.setParams(getObjectTransParams);
+        getObjectRequestParams.setTransactions(getObjectTran);
+        //执行添加
+        String info=getConnection(getObjectRequestParams.getUrl(),getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
+                getObjectRequestParams.getTransactions());
+        System.out.println("delObject信息:......"+info.toString());
+        return  info;
+    }
 
 
     //网络请求
@@ -290,8 +316,69 @@ public class Rest {
             e.printStackTrace();
         }
 
-
-
         return  result.getPage().toString();
     }
+
+
+//
+//
+//    //发送短信(未测试)
+//
+//    public static  String sendSMS(HashMap<String,Object> hashmap){
+//        SendSMSRequestParams sendsmsRequestParams = new SendSMSRequestParams();
+//        SendSMSRequestParams.SendSMSTrans sendsmsTrans = sendsmsRequestParams.new SendSMSTrans();
+//        SendSMSRequestParams.SendSMSTrans.SendSMSTransParams sendsmsTransParams = sendsmsTrans.new SendSMSTransParams();
+//
+//        //设置id
+//        sendsmsTrans.setId(112);
+//
+//        //请求方式
+//        sendsmsTrans.setCommand("com.agilecontrol.nea.monitor.SendSMS");
+//
+//        //请求params
+//        //添加手机 短信
+//
+////        sendsmsTransParams.setContent();
+////        sendsmsTransParams.setPhone();
+////        sendsmsTransParams.setSendtime();
+//
+//
+//        sendsmsTrans.setParams(sendsmsTransParams);
+//
+//        sendsmsRequestParams.setTransactions(sendsmsTrans);
+//
+//        //执行添加
+//        String info=getConnection(sendsmsRequestParams.getSip_sign(),sendsmsRequestParams.getSip_appkey(),
+//                sendsmsRequestParams.getAppSecret(),sendsmsRequestParams.getSip_timestamp(),
+//                sendsmsRequestParams.getTransactions());
+//
+//        return  info;
+//    }
+//    //获取一个对象(vip)的信息
+//    public static String getObject(HashMap<String,Object> hashmap){
+//        GetObjectRequestParams getObjectRequestParams=new GetObjectRequestParams();
+//        GetObjectRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
+//        GetObjectRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
+//                getObjectTran.new GetObjectTransParams();
+//        for(String key:hashmap.keySet()){
+//            if(key.equals("table")){
+//                getObjectTransParams.setTable(hashmap.get(key).toString());
+//            }else  if(key.equals("id")){
+//                getObjectTransParams.setId((Integer)hashmap.get(key));
+//            }else if(key.equals("reftables")){
+//                getObjectTransParams.setReftables(new org.json.JSONArray(hashmap.get(key)));
+//            }
+//        }
+//        getObjectTran.setId(112);
+//        getObjectTran.setCommand("GetObject");
+//        getObjectTran.setParams(getObjectTransParams);
+//        getObjectRequestParams.setTransactions(getObjectTran);
+//        //执行添加
+//        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+//                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
+//                getObjectRequestParams.getTransactions());
+//        return  info;
+//    }
+
+
 }

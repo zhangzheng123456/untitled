@@ -5,61 +5,36 @@
     <resultMap type="com.bizvane.ishop.entity.VipActivityDetail" id="VipActivityDetail">
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_code" property="activity_code"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_type" property="activity_type"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_url" property="activity_url"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_type" property="activity_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_url" property="activity_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="recruit" property="recruit" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="h5_url" property="h5_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sales_no" property="sales_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="festival_start" property="festival_start"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="festival_start" property="festival_start" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="festival_end" property="festival_end" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="send_coupon_type" property="send_coupon_type"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_coupon_type" property="send_coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="apply_title" property="apply_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="apply_endtime" property="apply_endtime"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="apply_desc" property="apply_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="apply_success_tips" property="apply_success_tips"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="apply_logo" property="apply_logo" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="apply_qrcode" property="apply_qrcode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="join_count" property="join_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="present_point" property="present_point" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="register_data" property="register_data" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="batch_no" property="batch_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="td_allow" property="td_allow" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="td_end_time" property="td_end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="present_time" property="present_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_type" property="apply_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_condition" property="apply_condition" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_agreement" property="apply_agreement" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllActivityDetail" resultMap="VipActivityDetail">
-        SELECT dvad.id,
-        dvad.corp_code,
-        dvad.activity_code,
-        dvad.activity_type,
-        dvad.activity_url,
-        dvad.recruit,
-        dvad.h5_url,
-        dvad.sales_no,
-        dvad.festival_start,
-        dvad.festival_end,
-        dvad.send_coupon_type,
-        dvad.coupon_type,
-        dvad.apply_title,
-        dvad.apply_endtime,
-        dvad.apply_desc,
-        dvad.apply_success_tips,
-        dvad.apply_logo,
-        dvad.apply_qrcode,
-        dvad.modified_date,
-        dvad.modifier,
-        dvad.created_date,
-        dvad.creater,
-        dvad.isactive,
+        SELECT dvad.*,
         dc.corp_name
         FROM def_vip_activity_detail dvad,def_corp dc
         WHERE dvad.corp_code = dc.corp_code
@@ -98,9 +73,6 @@
             <if test="recruit!=null">
                 recruit,
             </if>
-            <if test="h5_url!=null">
-                h5_url,
-            </if>
             <if test="sales_no!=null">
                 sales_no,
             </if>
@@ -116,23 +88,14 @@
             <if test="coupon_type!=null">
                 coupon_type,
             </if>
-            <if test="apply_title!=null">
-                apply_title,
-            </if>
-            <if test="apply_endtime!=null">
-                apply_endtime,
-            </if>
             <if test="apply_desc!=null">
                 apply_desc,
             </if>
-            <if test="apply_success_tips!=null">
-                apply_success_tips,
+            <if test="join_count!=null">
+                join_count,
             </if>
-            <if test="apply_logo!=null">
-                apply_logo,
-            </if>
-            <if test="apply_qrcode!=null">
-                apply_qrcode,
+            <if test="present_point!=null">
+                present_point,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -148,6 +111,31 @@
             </if>
             <if test="isactive!=null">
                 isactive,
+            </if>
+            <if test="register_data!=null">
+                register_data,
+            </if>
+            <if test="batch_no!=null">
+                batch_no,
+            </if>
+            <if test="td_allow!=null">
+                td_allow,
+            </if>
+            <if test="td_end_time!=null">
+                td_end_time,
+            </if>
+            <if test="present_time!=null">
+                present_time,
+            </if>
+            <if test="apply_type!=null">
+                apply_type,
+            </if>
+            <if test="apply_condition!=null">
+                apply_condition,
+            </if>
+
+            <if test="apply_agreement!=null">
+                apply_agreement,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -166,9 +154,6 @@
             <if test="recruit!=null">
                 #{recruit},
             </if>
-            <if test="h5_url!=null">
-                #{h5_url},
-            </if>
             <if test="sales_no!=null">
                 #{sales_no},
             </if>
@@ -178,33 +163,21 @@
             <if test="festival_end!=null">
                 #{festival_end},
             </if>
-
             <if test="send_coupon_type!=null">
                 #{send_coupon_type},
             </if>
-
             <if test="coupon_type!=null">
                 #{coupon_type},
-            </if>
-            <if test="apply_title!=null">
-                #{apply_title},
-            </if>
-            <if test="apply_endtime!=null">
-                #{apply_endtime},
             </if>
             <if test="apply_desc!=null">
                 #{apply_desc},
             </if>
-            <if test="apply_success_tips!=null">
-                #{apply_success_tips},
+            <if test="join_count!=null">
+                #{join_count},
             </if>
-            <if test="apply_logo!=null">
-                #{apply_logo},
+            <if test="present_point!=null">
+                #{present_point},
             </if>
-            <if test="apply_qrcode!=null">
-                #{apply_qrcode},
-            </if>
-
             <if test="modified_date!=null">
                 #{modified_date},
             </if>
@@ -219,6 +192,31 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="register_data!=null">
+                #{register_data},
+            </if>
+            <if test="batch_no!=null">
+                #{batch_no},
+            </if>
+
+            <if test="td_allow!=null">
+                #{td_allow},
+            </if>
+            <if test="td_end_time!=null">
+                #{td_end_time},
+            </if>
+            <if test="present_time!=null">
+                #{present_time},
+            </if>
+            <if test="apply_type!=null">
+                #{apply_type},
+            </if>
+            <if test="apply_condition!=null">
+                #{apply_condition},
+            </if>
+            <if test="apply_agreement!=null">
+                #{apply_agreement},
             </if>
         </trim>
     </insert>
@@ -241,9 +239,6 @@
             <if test="recruit!=null">
                 recruit=#{recruit},
             </if>
-            <if test="h5_url!=null">
-                h5_url=#{h5_url},
-            </if>
             <if test="sales_no!=null">
                 sales_no=#{sales_no},
             </if>
@@ -259,23 +254,14 @@
             <if test="coupon_type!=null">
                 coupon_type=#{coupon_type},
             </if>
-            <if test="apply_title!=null">
-                apply_title=#{apply_title},
-            </if>
-            <if test="apply_endtime!=null">
-                apply_endtime=#{apply_endtime},
-            </if>
             <if test="apply_desc!=null">
                 apply_desc=#{apply_desc},
             </if>
-            <if test="apply_success_tips!=null">
-                apply_success_tips=#{apply_success_tips},
+            <if test="join_count!=null">
+                join_count=#{join_count},
             </if>
-            <if test="apply_logo!=null">
-                apply_logo=#{apply_logo},
-            </if>
-            <if test="apply_qrcode!=null">
-                apply_qrcode=#{apply_qrcode},
+            <if test="present_point!=null">
+                present_point=#{present_point},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
@@ -286,6 +272,31 @@
             <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
+            <if test="register_data!=null">
+               register_data= #{register_data},
+            </if>
+            <if test="batch_no!=null">
+                batch_no= #{batch_no},
+            </if>
+
+            <if test="td_allow!=null">
+                td_allow=#{td_allow},
+            </if>
+            <if test="td_end_time!=null">
+                td_end_time= #{td_end_time},
+            </if>
+            <if test="present_time!=null">
+                present_time= #{present_time},
+            </if>
+            <if test="apply_type!=null">
+                apply_type= #{apply_type},
+            </if>
+            <if test="apply_condition!=null">
+                apply_condition=#{apply_condition},
+            </if>
+            <if test="apply_agreement!=null">
+                apply_agreement=#{apply_agreement},
+            </if>
         </trim>
         WHERE activity_code=#{activity_code};
     </update>
@@ -295,108 +306,21 @@
         WHERE def_vip_activity_detail.activity_code=#{activity_code};
     </delete>
 
-    <select id="selectActivityDetailScreen" resultMap="VipActivityDetail">
-        SELECT dvad.id,
-        dvad.corp_code,
-        dvad.activity_code,
-        dvad.activity_type,
-        dvad.recruit,
-        dvad.h5_url,
-        dvad.sales_no,
-        dvad.festival_start,
-        dvad.festival_end,
-        dvad.send_coupon_type,
-        dvad.coupon_type,
-        dvad.apply_title,
-        dvad.apply_endtime,
-        dvad.apply_desc,
-        dvad.apply_success_tips,
-        dvad.apply_logo,
-        dvad.apply_qrcode,
-        dc.corp_name
-        FROM def_vip_activity_detail dvad,def_corp dc
-        WHERE dvad.corp_code=dc.corp_code
-        <if test="corp_code != null and corp_code !=''">
-            AND dvad.corp_code = #{corp_code}
-        </if>
-        <if test="user_code!=null and user_code!=''">
-            AND dvad.creater = #{user_code}
-        </if>
-        AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
-            <choose>
-                <when test="entryValue!='' and entryKey=='corp_name'">
-                    dc.${entryKey} REGEXP ${entryValue}
-                </when>
-                <when test="entryValue!=''">
-                    dvad.${entryKey} REGEXP ${entryValue}
-                </when>
-                <otherwise>
-                    1=1
-                </otherwise>
-            </choose>
-        </foreach>
-        GROUP BY dvad.id
-        ORDER BY dvad.id DESC
-    </select>
-
-    <select id="selActivityDetailById" resultMap="VipActivityDetail">
-         SELECT dvad.id,
-        dvad.corp_code,
-        dvad.activity_code,
-        dvad.activity_type,
-        dvad.activity_url,
-        dvad.recruit,
-        dvad.h5_url,
-        dvad.sales_no,
-        dvad.festival_start,
-        dvad.festival_end,
-        dvad.send_coupon_type,
-        dvad.coupon_type,
-        dvad.apply_title,
-        dvad.apply_endtime,
-        dvad.apply_desc,
-        dvad.apply_success_tips,
-        dvad.apply_logo,
-        dvad.apply_qrcode,
-         dvad.modified_date,
-        dvad.modifier,
-        dvad.created_date,
-        dvad.creater,
-        dvad.isactive,
-        dc.corp_name
-        FROM def_vip_activity_detail dvad,def_corp dc
-        WHERE dvad.corp_code=dc.corp_code
-        AND dvad.id =#{id}
-    </select>
     <select id="selActivityDetailByCode" resultMap="VipActivityDetail">
-        SELECT dvad.id,
-        dvad.corp_code,
-        dvad.activity_code,
-        dvad.activity_type,
-         dvad.activity_url,
-        dvad.recruit,
-        dvad.h5_url,
-        dvad.sales_no,
-        dvad.festival_start,
-        dvad.festival_end,
-        dvad.send_coupon_type,
-        dvad.coupon_type,
-        dvad.apply_title,
-        dvad.apply_endtime,
-        dvad.apply_desc,
-        dvad.apply_success_tips,
-        dvad.apply_logo,
-        dvad.apply_qrcode,
-        dvad.modified_date,
-        dvad.modifier,
-        dvad.created_date,
-        dvad.creater,
-        dvad.isactive,
-        dc.corp_name
-        FROM def_vip_activity_detail dvad,def_corp dc
-        WHERE dvad.corp_code=dc.corp_code
-        AND dvad.activity_code =#{activity_code}
+        SELECT *
+        FROM def_vip_activity_detail dvad
+        WHERE dvad.activity_code =#{activity_code}
     </select>
 
+
+
+
+    <!-- 获取活动中的优惠券信息  CZY-->
+    <select id="selActivityByCodeAndName" resultMap="VipActivityDetail">
+        SELECT
+        coupon_type
+        FROM `def_vip_activity_detail`
+        WHERE
+        activity_code = #{activity_code}
+    </select>
 </mapper>

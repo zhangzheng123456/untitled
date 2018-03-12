@@ -7,19 +7,19 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <!--富文本编辑-->
     <!--<link href="font_editor/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
     <!--<link href="font_editor/css/froala_editor.min.css" rel="stylesheet" type="text/css">-->
-    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.config.js?20170105"></script>
-    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.min.js?20170105"> </script>
-    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.js?20170105"> </script>
-    <script type="text/javascript" charset="utf-8" src="ueditor/lang/zh-cn/zh-cn.js?20170105"></script>
-    <script src="../js/loading.js?20170105"></script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.config.js?2017040170331"></script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.min.js?2017040170331"> </script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.js?2017040170331"> </script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/lang/zh-cn/zh-cn.js?2017040170331"></script>
+    <script src="../js/loading.js?2017040170331"></script>
     <style type="text/css">
         #page-wrapper {
             width:100%;
@@ -108,8 +108,24 @@
                     <div>
                         <span><label style="color:#c26555;">商品名称*</label><input type="text" id="GOODS_NAME" verify="Empty" maxlength="50"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品名称不能为空！"></div></div></span>
                     </div>
-                    <div>
+                    <div id="price">
                         <span><label>价格</label><input type="text" id="GOODS_PRICE" verify="Number" maxlength="8"/><div style="padding-left:125px" class="hint"><div  hintinfo=""></div></div></span>
+                    </div>
+                    <div class="standard" id="standard">
+                        <div class="standard_pice">规格及价格</div>
+                        <div class="silider_parent">
+                            <div class="silider"><span class="silider_content">点击收起</span><span class="icon-ishop_8-02"></span></div>
+                            <div class="silider_heaader">
+                                <ul>
+                                    <li>颜色</li>
+                                    <li>尺寸</li>
+                                    <li class="pice">价格</li>
+                                </ul>
+                            </div>
+                            <div class="standard_pice_list" id="standard_pice_list">
+
+                            </div>
+                        </div>
                     </div>
                     <div style="padding-left: 126px;position: relative;margin-bottom: 10px">
                         <span><label style="margin-right:14px;position: absolute;top:12px;left:0px;display:inline-block">商品图片</label></span>
@@ -123,6 +139,26 @@
                             </span>
                             <!--<span class="add_new_touxiang" style="position: relative;margin-bottom: 38px"><span id="test"></span></span>-->
                         </span>
+                    </div>
+                    <div style="position: relative;">
+                        <span><label style="color:#c26555;">年份*</label><input class="input_select"  id="goods_year" type="text" placeholder="请选择年份" readonly="true"/>
+                        </span>
+                        <div class="ym_parent" style="left: 125px;z-index: 123123">
+                            <div class="ym_header" id="ym_header">
+                                <ul>
+                                    <li style="width: 100%;text-align: center;" >年</li>
+                                </ul>
+                            </div>
+                            <div class="ym_content" id="ym_content" style="margin-bottom: 0;">
+                                <div class="year" id="yearnew" style="margin-bottom: 0;">
+                                    <ul id="year_parent">
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ym_footer" style="margin-bottom: 0;">
+                                <div class="footer_q" id="footer_q" style="margin-bottom: 0;">确定</div>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <span><label style="color:#c26555;">季度*</label><input type="text" value="" verify="Empty" id="GOODS_QUARTER" maxlength="20"/><div style="padding-left:125px" class="hint"><div  hintinfo="季度不能为空！"></div></div>
@@ -223,7 +259,7 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161216"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161216"></script>
     <!-- oss -->
-    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
     <!-- Custom and plugin javascript -->
     <!-- <script src="../js/hplus.js?v=2.2.0"></script> -->
     <!-- moni select -->
@@ -243,10 +279,11 @@
         });
     </script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
-    <script type="text/javascript" src="../js/goods/fab_operate.js?20170105"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/goods/fab_operate.js?2017040170331"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
     <!--富文本编辑器-->

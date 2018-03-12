@@ -9,20 +9,26 @@
         <result column="goods_image" property="goods_image" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="goods_price" property="goods_price" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="goods_time" property="goods_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="goods_quarter" property="goods_quarter" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_quarter" property="goods_quarter"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="goods_wave" property="goods_wave" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="goods_description" property="goods_description" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="share_description" property="share_description" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_description" property="goods_description"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="share_description" property="share_description"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
         <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
+        <result column="standard" property="standard" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_source" property="goods_source" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_year" property="goods_year" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <!--<association property="corp" javaType="com.bizvane.ishop.entity.Corp">-->
         <!--<result column="corp_name" property="corp_name"/>-->
         <!--</association>-->
@@ -35,6 +41,8 @@
         SELECT g.id,
         g.goods_code,
         g.goods_name,
+        g.goods_year,
+        g.standard,
         g.goods_image,
         g.goods_price,
         g.goods_time,
@@ -55,6 +63,12 @@
         WHERE g.corp_code=cp.corp_code AND g.corp_code=db.corp_code AND g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                g.corp_code =#{item}
+            </foreach>
         </if>
         <if test="brand_code!=null and brand_code!=''">
             AND
@@ -89,9 +103,11 @@
         g.goods_name,
         g.goods_image,
         g.goods_price,
+        g.goods_year,
         g.goods_time,
         g.goods_quarter,
         g.goods_wave,
+        g.standard,
         g.modified_date,
         g.modifier,
         g.isactive,
@@ -152,6 +168,7 @@
         g.goods_image,
         g.goods_price,
         g.goods_time,
+        g.goods_year,
         g.goods_quarter,
         g.goods_wave,
         g.modified_date,
@@ -159,6 +176,7 @@
         g.isactive,
         g.created_date,
         g.creater,
+        g.standard,
         g.goods_description,
         g.share_description,
         g.corp_code,
@@ -204,6 +222,8 @@
         g.goods_image,
         g.goods_quarter,
         g.goods_wave,
+        g.goods_year,
+
         g.goods_description,
         g.corp_code,
         cp.corp_name,
@@ -238,6 +258,7 @@
         g.goods_name,
         g.goods_image,
         g.goods_price,
+        g.goods_year,
         g.goods_time,
         g.goods_quarter,
         g.goods_wave,
@@ -248,6 +269,7 @@
         g.creater,
         g.corp_code,
         g.brand_code,
+        g.standard,
         cp.corp_name,
         db.brand_name,
         g.goods_description,
@@ -256,6 +278,12 @@
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                g.corp_code =#{item}
+            </foreach>
         </if>
         <if test="brand_code!=null and brand_code!=''">
             AND
@@ -294,6 +322,7 @@
         g.goods_image,
         g.goods_price,
         g.goods_time,
+        g.goods_year,
         g.goods_quarter,
         g.goods_wave,
         g.modified_date,
@@ -306,6 +335,8 @@
         g.corp_code,
         cp.corp_name,
         g.brand_code,
+         g.standard,
+         g.goods_source,
         db.brand_name
         FROM def_goods g,def_corp cp,def_brand db
         WHERE g.corp_code=cp.corp_code
@@ -367,6 +398,15 @@
             <if test="brand_code!=null ">
                 brand_code,
             </if>
+            <if test="standard!=null ">
+                standard,
+            </if>
+            <if test="goods_source!=null ">
+                goods_source,
+            </if>
+            <if test="goods_year!=null ">
+                goods_year,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="goods_code!=null">
@@ -416,6 +456,15 @@
             </if>
             <if test="brand_code!=null">
                 #{brand_code},
+            </if>
+            <if test="standard!=null">
+                #{standard},
+            </if>
+            <if test="goods_source!=null ">
+                #{goods_source},
+            </if>
+            <if test="goods_year!=null ">
+                #{goods_year},
             </if>
         </trim>
     </insert>
@@ -471,6 +520,15 @@
             <if test="brand_code!=null">
                 brand_code=#{brand_code},
             </if>
+            <if test="standard!=null">
+                standard=#{standard},
+            </if>
+            <if test="goods_source!=null">
+                goods_source=#{goods_source},
+            </if>
+            <if test="goods_year!=null">
+                goods_year=#{goods_year},
+            </if>
         </trim>
         where id=#{id}
     </update>
@@ -488,6 +546,7 @@
         g.goods_name,
         g.goods_image,
         g.goods_price,
+        g.goods_year,
         g.goods_time,
         g.goods_quarter,
         g.goods_wave,
@@ -521,6 +580,7 @@
         g.goods_name,
         g.goods_image,
         g.goods_price,
+        g.goods_year,
         g.goods_time,
         g.goods_quarter,
         g.goods_wave,

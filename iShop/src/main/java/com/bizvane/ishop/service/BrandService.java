@@ -18,21 +18,28 @@ public interface BrandService {
 
     Brand getBrandByName(String corp_code, String brand_name,String isactive) throws Exception;
 
-    PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
+    PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception;
 
     PageInfo<Brand> getPartBrandByPage(int page_number, int page_size, String corp_code,String[] brand_code, String search_value) throws SQLException;
 
     List<Brand> getActiveBrand(String corp_code, String search_value, String[] brand_codes) throws Exception;
 
+    List<Brand> getActiveBrand(String corp_code, String search_value, String[] brand_codes,String manager_corp) throws Exception;
+
+
     String insert(String message, String user_id) throws Exception;
 
     String update(String message, String user_id) throws Exception;
 
-    int delete(int id) throws Exception;
+    int delete(int id,String user_code) throws Exception;
 
     String insertExecl(Brand brand) throws Exception;
 
+    String updateExecl(Brand brand) throws Exception;
+
     int getGoodsCount(String corp_code, String brand_code) throws Exception;
 
-    PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code,String[] brand_code, Map<String, String> map) throws Exception;
+    PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code,String[] brand_code, Map<String, String> map,String manager_corp) throws Exception;
+
+    List<Brand> selectBrandByLabel(String corp_code,String[] brand_code)throws SQLException;
 }

@@ -1,8 +1,6 @@
 var oc = new ObjectControl();
 var interFace={
     titleArray:[],
-    left:($(window).width()-$("#tk").width())/2,//弹框定位的left值
-    tp:($(window).height()-$("#tk").height())/2,//弹框定位的top值
     value:"", //收索的关键词
     param:{}, //定义的对象
     _param:{}, //筛选定义的内容
@@ -156,21 +154,21 @@ var interFace={
             var oAlink = container.getElementsByTagName("span");
             self.inx = pageindex; //初始的页码
             $("#input-txt").val(self.inx);
-            $(".foot-sum .zy").html("共 "+count+"页");
+            $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
             oAlink[0].onclick = function() { //点击上一页
                 if (self.inx == 1) {
                     return false;
                 }
                 self.inx--;
                 self.dian(self.inx);
-                self.setPage(container, count, self.inx,pageSize,funcCode,value);
+                self.setPage(container, count, self.inx,pageSize,funcCode,value,total);
                 return false;
             };
             for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
                 oAlink[i].onclick = function() {
                     self.inx = parseInt(this.innerHTML);
                     self.dian(self.inx);
-                    self.setPage(container, count, self.inx,pageSize,funcCode,value);
+                    self.setPage(container, count, self.inx,pageSize,funcCode,value,total);
                     return false;
                 }
             }
@@ -180,7 +178,7 @@ var interFace={
                 }
                 self.inx++;
                 self.dian(self.inx);
-                self.setPage(container, count, self.inx,pageSize,funcCode,value);
+                self.setPage(container, count, self.inx,pageSize,funcCode,value,total);
                 return false;
             }
         }();
@@ -319,10 +317,11 @@ var interFace={
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
                    interFace.cout=list.pages;
+                   total = list.total;
                     var list=list.list;
                     interFace.superaddition(list,interFace.inx);
                     interFace.jumpBianse();
-                    interFace.setPage($("#foot-num")[0],interFace.cout,interFace.inx,interFace.pageSize,interFace.funcCode,interFace.value);
+                    interFace.setPage($("#foot-num")[0],interFace.cout,interFace.inx,interFace.pageSize,interFace.funcCode,interFace.value,total);
                 }else if(data.code=="-1"){
                     // alert(data.message);
                 }
@@ -410,7 +409,6 @@ var interFace={
             $("#p").show();
             $("#tk").show();
             $("#p").css({"width":+l+"px","height":+h+"px"});
-            $("#tk").css({"left":+interFace.left+"px","top":+interFace.tp+"px"});
         })
     },
     //删除弹框
@@ -493,6 +491,7 @@ var interFace={
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 interFace.cout=list.pages;
+                total =list.total;
                 var list=list.list;
                 var actions=message.actions;
                 $(".table tbody").empty();
@@ -504,7 +503,7 @@ var interFace={
                     interFace.superaddition(list,interFace.inx);
                     interFace.jumpBianse();
                 }
-                interFace.setPage($("#foot-num")[0],interFace.cout,interFace.inx,interFace.pageSize,interFace.funcCode,interFace.value);
+                interFace.setPage($("#foot-num")[0],interFace.cout,interFace.inx,interFace.pageSize,interFace.funcCode,interFace.value,total);
             }else if(data.code=="-1"){
                 alert(data.message);
             }

@@ -20,7 +20,7 @@ function superaddition(data){
                 $($(".table tbody tr")[i]).append("<td></td>")
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+        $(".table tbody tr:nth-child(5) td:nth-child(6)").append("<span style='font-size: 15px;color:#999'>暂无内容</span>");
     }
     console.log(data.length);
 if(data.length!=0) {
@@ -104,7 +104,7 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
+    });
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
@@ -174,11 +174,13 @@ function jumpBianse(){
     })
     $('#turnoff').click(function(){
         sessionStorage.removeItem("store_corp");
-        $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+        window.history.go(-1)
+        // $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
     })
     $('#back_shop').click(function(){
         sessionStorage.removeItem("store_corp");
-        $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+        // $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+        window.history.go(-1)
     })
 }
 //鼠标按下时触发的收索

@@ -17,6 +17,9 @@ public interface TaskTypeService {
 
     PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value)throws Exception;
 
+    PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value,String manager_corp)throws Exception;
+
+
     String insertTaskType(String message,String user_code)throws Exception;
 
     String updateTaskType(String message,String user_code)throws Exception;
@@ -28,6 +31,9 @@ public interface TaskTypeService {
     List<TaskType> nameExist(String corp_code,String task_type_name)throws Exception;
 
     PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map)throws Exception;
+
+    PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map,String manager_corp)throws Exception;
+
 
     TaskType getTaskTypeForId(String corp_code,String task_type_code)throws Exception;
 

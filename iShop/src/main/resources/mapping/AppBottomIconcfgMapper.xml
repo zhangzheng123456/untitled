@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.AppBottomIConCfgMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.AppBottomIConCfg" id="AppBottomIConCfg">
+        <id column="id" property="id"/>
+        <result column="cfg_info" property="cfg_info"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllCfg" resultMap="AppBottomIConCfg">
+        SELECT rel_app_bottom_icon_cfg.id,
+        rel_app_bottom_icon_cfg.corp_code,
+        rel_app_bottom_icon_cfg.cfg_info,
+        rel_app_bottom_icon_cfg.created_date,
+        rel_app_bottom_icon_cfg.modified_date,
+        rel_app_bottom_icon_cfg.modifier,
+        rel_app_bottom_icon_cfg.creater,
+        def_corp.corp_name,
+        rel_app_bottom_icon_cfg.isactive
+        FROM rel_app_bottom_icon_cfg,def_corp
+        WHERE rel_app_bottom_icon_cfg.corp_code = def_corp.corp_code
+        <if test="search_value != null and search_value !=''">
+            AND (
+            def_corp.corp_name LIKE concat('%', #{search_value},'%')
+
+            )
+        </if>
+        GROUP BY rel_app_bottom_icon_cfg.id
+        ORDER BY rel_app_bottom_icon_cfg.id DESC
+    </select>
+
+    <insert id="insertAppBottomIConCfg" parameterType="com.bizvane.ishop.entity.AppBottomIConCfg">
+        INSERT INTO rel_app_bottom_icon_cfg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="cfg_info!=null">
+                cfg_info,
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+
+
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="cfg_info!=null">
+                #{cfg_info},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateAppBottomIConCfg" parameterType="com.bizvane.ishop.entity.AppBottomIConCfg">
+        UPDATE rel_app_bottom_icon_cfg
+        <trim prefix="SET" suffixOverrides=",">
+
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="cfg_info!=null">
+                cfg_info=#{cfg_info},
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="delAppBottomIConCfgById">
+        DELETE FROM rel_app_bottom_icon_cfg
+        WHERE id=#{id};
+    </delete>
+
+    <select id="selectAppBottomIConCfgScreen" resultType="com.bizvane.ishop.entity.AppBottomIConCfg">
+        SELECT rel_app_bottom_icon_cfg.id,
+        rel_app_bottom_icon_cfg.corp_code,
+        rel_app_bottom_icon_cfg.cfg_info,
+        def_corp.corp_name,
+        rel_app_bottom_icon_cfg.created_date,
+        rel_app_bottom_icon_cfg.modified_date,
+        rel_app_bottom_icon_cfg.modifier,
+        rel_app_bottom_icon_cfg.creater,
+        rel_app_bottom_icon_cfg.isactive
+        FROM rel_app_bottom_icon_cfg,def_corp
+        WHERE rel_app_bottom_icon_cfg.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND rel_app_bottom_icon_cfg.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                rel_app_bottom_icon_cfg.corp_code =#{item}
+            </foreach>
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    rel_app_bottom_icon_cfg.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY rel_app_bottom_icon_cfg.id
+
+    </select>
+
+    <select id="selAppBottomIConCfgById" resultType="com.bizvane.ishop.entity.AppBottomIConCfg">
+         SELECT rel_app_bottom_icon_cfg.id,
+rel_app_bottom_icon_cfg.cfg_info,
+rel_app_bottom_icon_cfg.corp_code,
+        rel_app_bottom_icon_cfg.created_date,
+        rel_app_bottom_icon_cfg.modified_date,
+        rel_app_bottom_icon_cfg.modifier,
+        rel_app_bottom_icon_cfg.creater,
+                def_corp.corp_name,
+        rel_app_bottom_icon_cfg.isactive
+        FROM rel_app_bottom_icon_cfg,def_corp
+        WHERE rel_app_bottom_icon_cfg.corp_code=def_corp.corp_code
+        AND rel_app_bottom_icon_cfg.id =#{id}
+    </select>
+
+    <select id="selAppBottomIConCfgByCode" resultType="com.bizvane.ishop.entity.AppBottomIConCfg">
+        SELECT rel_app_bottom_icon_cfg.id,
+        rel_app_bottom_icon_cfg.cfg_info,
+rel_app_bottom_icon_cfg.corp_code,
+        rel_app_bottom_icon_cfg.created_date,
+        rel_app_bottom_icon_cfg.modified_date,
+        rel_app_bottom_icon_cfg.modifier,
+        def_corp.corp_name,
+        rel_app_bottom_icon_cfg.creater,
+        rel_app_bottom_icon_cfg.isactive
+        FROM rel_app_bottom_icon_cfg,def_corp
+        WHERE rel_app_bottom_icon_cfg.corp_code=def_corp.corp_code
+         AND rel_app_bottom_icon_cfg.isactive= #{isactive}
+        AND rel_app_bottom_icon_cfg.corp_code = #{corp_code}
+    </select>
+
+    <select id="getListByCorp" resultType="com.bizvane.ishop.entity.AppBottomIConCfg">
+        SELECT rel_app_bottom_icon_cfg.id,
+        rel_app_bottom_icon_cfg.cfg_info,
+        rel_app_bottom_icon_cfg.corp_code,
+        rel_app_bottom_icon_cfg.created_date,
+        rel_app_bottom_icon_cfg.modified_date,
+        rel_app_bottom_icon_cfg.modifier,
+        def_corp.corp_name,
+        rel_app_bottom_icon_cfg.creater,
+        rel_app_bottom_icon_cfg.isactive
+        FROM rel_app_bottom_icon_cfg,def_corp
+        WHERE rel_app_bottom_icon_cfg.corp_code=def_corp.corp_code
+        AND rel_app_bottom_icon_cfg.isactive= #{isactive}
+        AND rel_app_bottom_icon_cfg.corp_code = #{corp_code}
+    </select>
+
+
+</mapper>

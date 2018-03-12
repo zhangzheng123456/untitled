@@ -46,6 +46,16 @@ public class Task {
     //关联活动
     private String activity_vip_code;
 
+    public String getTask_status() {
+        return task_status;
+    }
+
+    public void setTask_status(String task_status) {
+        this.task_status = task_status;
+    }
+
+    private  String task_status;
+
 
 
     public String getTask_type_code_old() {

@@ -4,7 +4,7 @@
         <div class="all_select_vip_content">
             <span class="title">参加此次活动的会员总数</span>
             <span class="num" id="num">0</span>
-            <span class="select_btn" id="select_vip">点击筛选会员</span>
+            <span class="select_btn" id="select_vip">点击筛选会员</span><span class="select_btn" id="select_vip_all" style="background-color: #5f8bc8;margin-left: 10px;">选择全部会员</span>
         </div>
     </div>
     <div class="vip_list" id="vip_list">
@@ -45,13 +45,13 @@
     <!-- 拉取区域 -->
     <div id="screen_area" class="screen_area">
         <div class="screen_title">
-            <h4>筛选区域</h4>
+            <h4>筛选店铺群组</h4>
             <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索" id="area_search">
+                <input type="text" placeholder="搜索店铺群组" id="area_search">
                 <span class="icon-ishop_3-05" id="area_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -88,7 +88,7 @@
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
                 <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
                                               data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
                 </div>
@@ -174,7 +174,7 @@
                     <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
                 </div>
                 <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
                                               data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
                 </div>
@@ -260,6 +260,7 @@
             <div class="filter_condition" id="simple_filter_condition">
                 <ul>
                     <li><a href="####" class="condition_active">按生日</a></li>
+                    <li><a href="####">按导购</a></li>
                     <li><a href="####">按纪念日</a></li>
                     <li><a href="####">按消费次数</a></li>
                     <li><a href="####">按消费金额</a></li>
@@ -269,6 +270,7 @@
             </div>
             <div class="contion" id="simple_contion">
                 <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start1" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end1" class="short_input_date laydate-icon"></div>
+                <div class="contion_input" style="display: none"><label>所属导购</label><input data-kye="15" class="screen_staff_num input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staff_basic"></span></div>
                 <div id="memorial_day" style="display: none">
                     <!--<div class="contion_input"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>-->
                 </div>
@@ -367,13 +369,13 @@
                     <div class="contion_input"><label>所属品牌</label><input data-kye="brand_code" id="screen_brand_num" class="input" type="text"
                                                                          readonly="true" data-code=""><span
                             class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
-                    <div class="contion_input"><label>所属区域</label><input data-kye="area_code" id="screen_area_num" class="input" type="text"
+                    <div class="contion_input"><label>店铺群组</label><input data-kye="area_code" id="screen_area_num" class="input" type="text"
                                                                          readonly="true" data-code=""><span
                             class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
                     <div class="contion_input"><label>所属店铺</label><input data-kye="14" id="screen_shop_num" class="input" type="text"
                                                                          readonly="true" data-code=""><span
                             class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
-                    <div class="contion_input"><label>所属导购</label><input data-kye="15" id="screen_stff_num" class="input" type="text"
+                    <div class="contion_input"><label>所属导购</label><input data-kye="15" class="input screen_staff_num" type="text"
                                                                          readonly="true" data-code=""><span
                             class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
                 </div>

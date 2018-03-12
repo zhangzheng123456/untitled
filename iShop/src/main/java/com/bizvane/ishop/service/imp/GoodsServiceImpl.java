@@ -69,6 +69,11 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public int updateExecl(Goods goods) throws Exception {
+        return goodsMapper.updateByPrimaryKey(goods);
+    }
+
+    @Override
     public int insertGoods(Goods goods, String match_goods) throws Exception {
 //        Date now = new Date();
 //        if (!match_goods.equals("")) {
@@ -158,6 +163,29 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value, String[] brand_code,String manager_corp) throws Exception {
+        List<Goods> list;
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("manager_corp_arr", manager_corp_arr);
+        map.put("corp_code", corp_code);
+        map.put("search_value", search_value);
+        map.put("brand_code", brand_code);
+        map.put("isactive", "");
+        map.put("brand_code", brand_code);
+        PageHelper.startPage(page_number, page_size);
+        list = goodsMapper.selectAllGoods(map);
+        for (Goods goods : list) {
+            goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
+            transterGoods(goods);
+        }
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
+        return page;
+    }
+    @Override
     public PageInfo<Goods> selectAllGoodsByBrand(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception {
         List<Goods> list;
         Map<String, Object> map = new HashMap<String, Object>();
@@ -229,6 +257,28 @@ public class GoodsServiceImpl implements GoodsService {
         params.put("corp_code", corp_code);
         params.put("brand_code", brand_code);
 
+        List<Goods> list;
+        PageHelper.startPage(page_number, page_size);
+        list = goodsMapper.selectAllGoodsScreen(params);
+        for (Goods goods : list) {
+            goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
+            transterGoods(goods);
+        }
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map, String[] brand_code,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        params.put("corp_code", corp_code);
+        params.put("brand_code", brand_code);
+        params.put("manager_corp_arr", manager_corp_arr);
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoodsScreen(params);

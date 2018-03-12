@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
     <title>编辑店铺业绩目标</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20171116" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <style>
         body{
             margin-top:81px;
@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <div id="page-wrapper" class="gray-bg dashbard-1">
+    <div id="page-wrapper" class="gray-bg dashbard-1">7
             <div class="col-lg-12 pre_title">业绩管理<i class="icon-ishop_8-03"></i><span id="back_achvshop">店铺业绩目标</span><i class="icon-ishop_8-03"></i><label>编辑店铺业绩目标</label></div>
             <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
                 <!-- <div class="operation_conpany">
@@ -54,35 +54,31 @@
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <span><label style="color:#c26655">业绩目标*</label><input type="text" id="PER_GOAL" verify="Number" maxlength="8"/><div style="padding-left:122px" class="hint"><div  hintinfo="请输入数字！"></div></div></span>
-                    </div>
-                    <div class="drop_down item_1" id="drop_down">
-                        <span><label>业绩类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>
-                            <ul>
-                                <li>日</li>
-                                <!-- <li>周</li> -->
-                                <!-- <li>月</li> -->
-                                <!-- <li>年</li> -->
-                            </ul>
+                    <!--<div>-->
+                        <!--<span><label style="color:#c26655">业绩目标*</label><input type="text" id="PER_GOAL" verify="Number" maxlength="8"/><div style="padding-left:122px" class="hint"><div  hintinfo="请输入数字！"></div></div></span>-->
+                    <!--</div>-->
+                    <div class="drop_down item_2 upgrade_amount" id="drop_down">
+                        <span class="t_parent"><label style="color:#c26655">业绩目标*</label><input class="input_select w" style="width: 195px;" type="text" id="TIME_TYPE" value="日" readonly/><input type="text" style="background-image: none;margin-left: 30px;width: 195px;" id="PER_GOAL" class="w" verify="Number1" maxlength="8"/>
+                        <ul style="width: 195px;">
+
+                        </ul>
+                        <div style="padding-left:122px" class="hint"><div  hintinfo="请输入数字！"></div></div>
+                        <div id="month_day" style="margin-left: 120px;display:none;">该月目标将平均分配到每日<span style="color: #c26555;margin-left: 10px;">0.00</span>元/每天</div>
                         </span>
                     </div>
                     <div id="day">
-                        <span><label style="color:#c26555;">时间段*</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: false, format: 'YYYY-MM-DD',min: laydate.now(+1)})"/>
+                        <span><label style="color:#c26555;">时间段*</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: false,istoday: false,format: 'YYYY-MM-DD',min: laydate.now(+1)})"/>
                         <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
                         </span>
                     </div>
                     <div id="week_p" style="display:none;">
-                        <span>
-                            <label>日期</label>
-                            <input type="text" id="year" class="week" value="2016" readonly="true">
-                            <input type="text" id="month" class="week" value="07" readonly="true">
+                        <span><label>日期</label><input type="text" id="year" class="week" value="" readonly="true"><span class="year_down"></span><input type="text" id="month" style="margin-left: 30px;" class="week" value="" readonly="true"><span class="month_down"></span>
                             <ul class="year">
                             </ul>
                             <ul class="month">
                             </ul>
                         </span>
-                    </div> 
+                    </div>
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
@@ -117,16 +113,16 @@
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="/js/loading.js"></script>
      <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js?20170105"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- 带搜索的下拉菜单 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
     <!-- input的验证情况 -->
-    <script type="text/javascript" src="../js/achv/shopgoal.js?20170105"></script>
+    <script type="text/javascript" src="../js/achv/shopgoal.js?2017040170331"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>

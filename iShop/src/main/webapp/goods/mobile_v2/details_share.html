@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>分享详情</title>
+    <link rel="stylesheet" href="css/swiper.3.1.7.min.css?2017040170331">
+    <link rel="stylesheet" href="css/details.css?20170830"/>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/swiper-3.4.2.min.css"/>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <style>
+        body{
+            background-color: #ededed;
+        }
+        .carousel-control.left{
+            background: none;
+        }
+        .carousel-control.right{
+            background: none;
+        }
+        .item{
+            width: 100%;
+            position:relative;
+        }
+        .item img{
+            /*width:50%;*/
+            /*height:50%;*/
+            /*background:#990;*/
+            margin:auto;
+            position:absolute;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
+        }
+        .swiper-container {
+             width: 100%;
+             height: 100%
+         }
+        .mui-preview-image.mui-fullscreen {
+            position: fixed;
+            z-index: 20;
+            background-color: #000;
+        }
+        .mui-preview-header,
+        .mui-preview-footer {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            z-index: 10;
+        }
+        .mui-preview-header {
+            height: 44px;
+            top: 0;
+        }
+        .mui-preview-footer {
+            height: 50px;
+            bottom: 0px;
+        }
+        .mui-preview-header .mui-preview-indicator {
+            display: block;
+            line-height: 25px;
+            color: #fff;
+            text-align: center;
+            margin: 15px auto 4px;
+            width: 70px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            font-size: 16px;
+        }
+        .mui-preview-image {
+            display: none;
+            -webkit-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+        .mui-preview-image.mui-preview-in {
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+        }
+        .mui-preview-image.mui-preview-out {
+            background: none;
+            -webkit-animation-name: fadeOut;
+            animation-name: fadeOut;
+        }
+        .mui-preview-image.mui-preview-out .mui-preview-header,
+        .mui-preview-image.mui-preview-out .mui-preview-footer {
+            display: none;
+        }
+        .mui-zoom-scroller {
+            position: absolute;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            -webkit-backface-visibility: hidden;
+        }
+        .mui-zoom {
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+        .mui-slider .mui-slider-group .mui-slider-item img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+            width: 100%;
+        }
+        .mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+            display: inline-table;
+        }
+        .mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .mui-preview-loading {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        .mui-preview-loading.mui-active {
+            display: block;
+        }
+        .mui-preview-loading .mui-spinner-white {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -25px;
+            margin-top: -25px;
+            height: 50px;
+            width: 50px;
+        }
+        .mui-preview-image img.mui-transitioning {
+            -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        @-webkit-keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @-webkit-keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        p img {
+            max-width: 100%;
+            height: auto;
+        }
+        .swiper-container{overflow: hidden}
+        .mui-content-padded {margin:0px !important;}
+        .swiper-pagination-bullet-active{
+            background: #c26555;
+        }
+        .mui-slider-group .mui-slider-item{
+            overflow:hidden; 
+        }
+        .mui-preview-header{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<ul class="warp">
+    <li class="main_img">
+        <!--<img src="" alt="" id="mainImg"/>-->
+        <!--****-->
+        <!--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">-->
+            <!--&lt;!&ndash; Indicators &ndash;&gt;-->
+            <!--<ol class="carousel-indicators">-->
+
+            <!--</ol>-->
+            <!--&lt;!&ndash; Wrapper for slides &ndash;&gt;-->
+            <!--<div class="carousel-inner" role="listbox">-->
+                <!--&lt;!&ndash;<div class="item active">&ndash;&gt;-->
+                <!--&lt;!&ndash;<img src="" alt="">&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="item">&ndash;&gt;-->
+                <!--&lt;!&ndash;<img src="" alt="">&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+            <!--&lt;!&ndash; Controls &ndash;&gt;-->
+            <!--<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">-->
+                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                <!--<span class="sr-only">Previous</span>-->
+            <!--</a>-->
+            <!--<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">-->
+                <!--<span class="glyphicon glyphicon-chevron-right"></span>-->
+                <!--<span class="sr-only">Next</span>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--****-->
+        <div class="mui-content" style="position: relative;">
+            <div class="mui-content-padded">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                    </div>
+                    <!-- 如果需要分页器 -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                    <!-- 如果需要导航按钮 -->
+                    <!--<div class="swiper-button-prev"></div>-->
+                    <!--<div class="swiper-button-next"></div>-->
+                </div>
+            </div>
+            <div class="dapei_del">该搭配已被删除</div>
+        </div>
+        <div class="main_btn">
+            <!--<img src="image/editor_02.png" alt="" class="editor"/>-->
+            <!--<img src="image/editor_03.png" alt="" class="delete"/>-->
+            <!--<div class="editor"></div>-->
+            <!--<div class="delete"></div>-->
+        </div>
+    </li>
+    <li class="main_list">
+        <div class="main_list_title">共<span class="num"></span>件搭配</div>
+        <div class="main_list_main" id="main_list_share">
+        </div>
+    </li>
+    <li class="main_select">
+        <div style="width: 100%;">搭配说明</div>
+    </li>
+    <!--搭配说明-->
+    <li class="main_content">
+        <!--<div class="share_content">-->
+            <!--<div class="left">-->
+                <!--<div class="shopCount" id="shopCount"></div>-->
+                <!--<div class="shopName">销量</div>-->
+            <!--</div>-->
+            <!--<div class="left">-->
+                <!--<div class="shopMoney" id="shopMoney"></div>-->
+                <!--<div class="shopName">成交金额(元)</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="seen_content">
+            <div class="seen_garnish">
+                <div class="text">共<span id="seen_garnish"></span>人浏览了该搭配</div>
+            </div>
+            <div class="seen_list" id="seen_list">
+                <ul>
+                    <li class="omit"></li>
+                </ul>
+            </div>
+            <div class="seen_garnish">
+                <div class="text">关于搭配</div>
+            </div>
+        </div>
+        <div class="theDetails">图文详情</div>
+    </li>
+    <!--评论-->
+    <li class="main_content">
+        <ul class="area">
+            <!--评论模板-->
+            <!--<li class="box">-->
+            <!--<div class="top">-->
+            <!--<img src="image/img_kong.png" alt=""/>-->
+            <!--<div class="title">-->
+            <!--<span>${name}</span>-->
+            <!--<span>${time}</span>-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="msg">${msg}</div>-->
+            <!--</li>-->
+            <!--<img src="image/img_kong.png" alt="" class="none"/>-->
+        </ul>
+        <div class="none">暂无评论</div>
+        <div class="out">-- 已经是底部了 --</div>
+    </li>
+    <!--<li class="outWindow">-->
+        <!--<div class="outWindow_warp"></div>-->
+    <!--<li class="outWindow_main">-->
+        <!--<div class="title">是否确认删除该搭配</div>-->
+        <!--<div>-->
+            <!--<div class="left">取消</div>-->
+            <!--<div class="right">删除</div>-->
+        <!--</div>-->
+    <!--</li>-->
+    <!--</li>-->
+    <li class="success">
+        <div>
+            <img src="image/img_success.png" alt=""/>
+            <div class="msg">评论成功</div>
+        </div>
+    </li>
+    <!--<li class="bottom_input">-->
+        <!--&lt;!&ndash;<img src="image/face.jpg" alt="" id="face"/>&ndash;&gt;-->
+        <!--<input type="text" id="input"/><span id="send">发送</span>-->
+    <!--</li>-->
+    <div id="loading">
+        <div class="tip">
+            <div class="tip_box">
+                <div class="icon_err rotate"><img src="image/icon_apply.png" width="100%"height="100%" alt="icon_error.png"></div>
+                <div class="loading_txt">加载中...</div>
+            </div>
+        </div>
+    </div>
+</ul>
+<div class="share_bottom">
+    <!--<div style="width: 24%;"><img src="image/icon_点赞@2x.png" alt=""/><span class="num">0</span></div>-->
+    <!--<div style="width: 24%;"><img src="image/icon_收藏@2x.png" alt=""/><span class="num">0</span></div>-->
+    <!--<div style="width: 24%;"><img src="image/icon_评论@2x.png" alt=""/><span class="num">0</span></div>-->
+    <div class="buy" id="buy">
+        <span class="buy_bg"></span>
+        购买搭配
+    </div>
+</div>
+<script src="js/flexible.js?2017040170331"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/ajaxForm.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="js/insidePostRequire.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--匹配js-->
+<script src="js/mui.min.js"></script>
+<script src="js/mui.zoom.js"></script>
+<script src="js/mui.previewimage.js"></script>
+<script src="js/swiper-3.4.2.jquery.min.js"></script>
+<script src="js/sha1.js"></script>
+<script src="js/details.js?20170830"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</body>
+<script>
+    mui.previewImage();
+//    var ticket="";
+//    var time= $.now();
+//    var isShare=false;
+//    var shareTitle="";//分享的标题
+//    var share_desc="";//分享的描述
+//    var shareUrl="";//要分享的地址
+//    var shareIcon="";//要分享的地址
+//    var isShowMask=true;  //当点击分享按钮时判断wx.config是否配置成功
+//    var host=location.host;//获取当前域名
+//    var url=location.href;
+    //获取？后缀
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+//    if(isShare){
+//        oc.postRequire("get","/api/wechat/jsTicket?app_id="+JSON.parse(GetRequest().value).app_id+"","","", function(data){
+//            ticket=data.message;
+//            var string="jsapi_ticket="+ticket+"&noncestr=5dJCd1ztKKRPMclhiPKeTRbMbr7vjSsrPPdBlLv6O4r&timestamp="+time+"&url="+url;
+//            wx.config({
+//                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+//                appId:JSON.parse(GetRequest().value).app_id, // 必填，公众号的唯一标识
+//                timestamp: time, // 必填，生成签名的时间戳
+//                nonceStr: '5dJCd1ztKKRPMclhiPKeTRbMbr7vjSsrPPdBlLv6O4r', // 必填，生成签名的随机串
+//                signature:sha1(string),// 必填，签名，见附录1
+//                jsApiList: ["onMenuShareTimeline","onMenuShareAppMessage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+//            });
+//            wx.ready(function(){
+//                wx.checkJsApi({
+//                    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+//                    success: function(res) {
+////                        alert(JSON.stringify(res));
+//                        // 以键值对的形式返回，可用的api值true，不可用为false
+//                        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+//                    }
+//                });
+//                wx.onMenuShareTimeline({
+//                    title:"nihao", // 分享标题
+//                    link:"http://ishop.dev.bizvane.com/mobile/task/link.html", // 分享链接
+//                    imgUrl:"", // 分享图标
+//                    success: function () {
+//
+////                        var param=theRequest;
+////                        oc.postRequire("post",ajaxUrl.shareUrl,"",param, function(data){
+////                        })
+//                    },
+//                    cancel: function () {
+//                        // 用户取消分享后执行的回调函数
+//
+//                    }
+//                });
+//                wx.onMenuShareAppMessage({
+//                    title:"你好", // 分享标题
+//                    desc: "秀搭", // 分享描述
+//                    link:"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8032b19f5c57fef7&redirect_uri=http%3a%2f%2fwechat.dev.bizvane.com%2fapp%2fwechat%2fgetOpenIdByWx?d_match_code%3DP20170605104508459373%26corp_code%3DC10000%26user_id%3DLY002%26store_id%3DSHJG0001&response_type=code&scope=snsapi_base&component_appid=wx722fb7eaa40020e9#wechat_redirect", // 分享链接
+//                    imgUrl:"", // 分享图标
+//                    type: '', // 分享类型,music、video或link，不填默认为link
+//                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+//                    success: function () {
+//                        // 用户确认分享后执行的回调函数
+////                        var param=theRequest;
+////                        oc.postRequire("post",ajaxUrl.shareUrl,"",param, function(data){
+////                        })
+//                    },
+//                    cancel: function () {
+//                        // 用户取消分享后执行的回调函数
+//                    }
+//                });
+//            });
+//            wx.error(function(res){
+//                isShowMask=false;
+//            });
+//        });
+//    }
+    var param={};
+    var value=JSON.parse(GetRequest().value);
+    param["corp_code"]=GetRequest().corp_code;
+    param["user_id"]=GetRequest().user_id;
+    param["d_match_code"]=GetRequest().d_match_code;
+    param["store_id"]=GetRequest().store_id;//店铺
+    param["headImg"]=value.headImg;
+    param["nickName"]=value.nickName;
+    param["open_id"]=value.open_id;
+    param["app_id"]=value.app_id;
+    if(value!==""||value!==undefined){
+        oc.postRequire("post", "/api/shopMatch/addShopMatchPageViewsLog","0",param, function (data) {
+            console.log(data);
+        });
+    }
+</script>
+</html>

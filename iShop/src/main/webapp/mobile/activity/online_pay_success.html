@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../activity/css/reset.css">
+    <script src="../activity/js/flexible.js"></script>
+    <link rel="stylesheet" href="../activity/mui/mui.min.css">
+    <link rel="stylesheet" href="../activity/mui/mui.picker.min.css">
+    <link rel="stylesheet" href="../activity/css/online_activity.css?t=20810202">
+    <link rel="stylesheet" href="../activity/css/perfect_information.css?t=20810202">
+    <title>报名成功</title>
+    <style>
+        body{
+            padding: 0;
+        }
+        .center{
+            position: absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        .center .mui-btn{
+            background-color: #555;
+            border-color: #555;
+            color: #fff;
+        }
+    </style>
+</head>
+<body style="text-align: center">
+<div class="center">
+    <img src="img/pay_success.png" alt="报名成功" style="width: 100%;margin: 0 auto;display: block">
+    <p style="margin-top:20px">恭喜您已报名成功！</p>
+    <div class="mui-btn" style="margin: 30px 0" id="go_unEnroll_List">继续报名</div><br>
+    <div class="mui-btn" id="go_enroll_List">已报活动</div>
+</div>
+<script src="../activity/js/jquery-2.1.1.min.js"></script>
+<!--<script src="../../js/insidePostRequire.js"></script>-->
+<script>
+    var theRequest={};
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    $("#go_enroll_List").click(function(){
+        sessionStorage.setItem("tabs_index","enroll");
+        window.location.href="online_activity.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id
+    });
+    $("#go_unEnroll_List").click(function(){
+        sessionStorage.setItem("tabs_index","uneEnroll");
+        window.location.href="online_activity.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id
+    })
+</script>
+</body>
+</html>

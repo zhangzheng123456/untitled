@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.AppManagerMapper">
+    <select id="getFunctionList" resultType="com.bizvane.ishop.entity.AppManager">
+        SELECT * FROM def_app_manager GROUP BY app_function
+        <if test="corp_az == null or corp_az ==''">
+            HAVING app_function !='活动管理'
+        </if>
+        ORDER BY id
+    </select>
+    <select id="getActionList" resultType="com.bizvane.ishop.entity.AppManager">
+        SELECT * FROM def_app_manager
+        WHERE 1=1
+        AND app_function =#{app_function}
+        <if test="corp_az == null or corp_az ==''">
+            AND app_function !='活动管理'
+        </if>
+        <if test="corp_jnby == null or corp_jnby ==''">
+            AND app_action_code !='click_to_corp_vip_constume_record'
+            AND app_action_code !='select_vip_constume_record'
+            AND app_action_code !='complete_staff_info'
+        </if>
+    </select>
+</mapper>

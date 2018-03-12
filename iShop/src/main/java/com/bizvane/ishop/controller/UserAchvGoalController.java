@@ -186,10 +186,13 @@ public class UserAchvGoalController {
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("user_code").toString();
                 List<User> users = userService.userCodeExist(t_code, t_corp_code, Common.IS_ACTIVE_Y);
-                String t_name = users.get(0).getUser_name();
-                String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
-                //-------------------行为日志结束-----------------------------------------------------------------------------------
+                if(users.size()>0){
+                    String t_name = users.get(0).getUser_name();
+                    String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
+                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+
+                }
+               //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -220,7 +223,7 @@ public class UserAchvGoalController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
@@ -283,38 +286,98 @@ public class UserAchvGoalController {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             UserAchvGoal userAchvGoal = new UserAchvGoal();
-            userAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
-            userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
-            userAchvGoal.setUser_code(jsonObject.get("user_code").toString());
-            userAchvGoal.setUser_target(jsonObject.get("achv_goal").toString());
-            String achv_type = jsonObject.get("achv_type").toString();
-            userAchvGoal.setTarget_type(achv_type);
 
-            if (achv_type.equalsIgnoreCase(Common.TIME_TYPE_WEEK)) {
-                String time = jsonObject.get("end_time").toString();
-                String week = TimeUtils.getWeek(time);
-                userAchvGoal.setTarget_time(week);
-            } else {
-                userAchvGoal.setTarget_time(jsonObject.get("end_time").toString());
-            }
+            String corp_code=jsonObject.get("corp_code").toString();
+            String user_code=jsonObject.get("user_code").toString();
+            String achv_type=jsonObject.get("achv_type").toString();
+            String achv_goal=jsonObject.get("achv_goal").toString();
+            String store_code=jsonObject.get("store_code").toString();
+            String user_name=jsonObject.get("user_name").toString();
+            String store_name=jsonObject.get("store_name").toString();
+            String end_time=jsonObject.get("end_time").toString();
+            String isactive=jsonObject.get("isactive").toString();
+
+            userAchvGoal.setTarget_time(end_time);
+//            if (achv_type.equalsIgnoreCase(Common.TIME_TYPE_WEEK)) {
+//                String time = jsonObject.get("end_time").toString();
+//                String week = TimeUtils.getWeek(time);
+//                userAchvGoal.setTarget_time(week);
+//            } else {
+//                userAchvGoal.setTarget_time(jsonObject.get("end_time").toString());
+//            }
             Date now = new Date();
+            userAchvGoal.setCorp_code(corp_code);
+            userAchvGoal.setStore_code(store_code);
+            userAchvGoal.setUser_code(user_code);
+            userAchvGoal.setUser_target(achv_goal);
+            userAchvGoal.setStore_name(store_name);
+            userAchvGoal.setUser_name(user_name);
+            userAchvGoal.setTarget_type(achv_type);
             userAchvGoal.setModifier(user_id);
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            userAchvGoal.setIsactive(jsonObject.get("isactive").toString());
+            userAchvGoal.setIsactive(isactive);
+            String result="";
 
-            String result = userAchvGoalService.insert(userAchvGoal);
-            if (result.equalsIgnoreCase(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                UserAchvGoal userAchvGoal1 = userAchvGoalService.getUserAchvForId(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getUser_target(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
-                dataBean.setMessage(String.valueOf(userAchvGoal1.getId()));
+    UserAchvGoal userAchvGoal2=userAchvGoalService.getUserAchvForId(corp_code, user_code,store_code, end_time,Common.IS_ACTIVE_Y);
+
+    if(userAchvGoal2!=null){
+        logger.info("=========================="+userAchvGoal2.getId());
+        userAchvGoal.setId(userAchvGoal2.getId());
+        userAchvGoal.setCorp_code(corp_code);
+        userAchvGoal.setStore_code(store_code);
+        userAchvGoal.setUser_code(user_code);
+        userAchvGoal.setUser_target(achv_goal);
+        userAchvGoal.setTarget_time(end_time);
+        userAchvGoal.setTarget_type(achv_type);
+        userAchvGoal.setStore_name(store_name);
+        userAchvGoal.setUser_name(user_name);
+        userAchvGoal.setModifier(user_id);
+        userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
+        userAchvGoal.setIsactive(isactive);
+        String  resultInfo = userAchvGoalService.updateUserAchvGoal(userAchvGoal);
+        if(resultInfo.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result=Common.DATABEAN_CODE_SUCCESS;
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(String.valueOf(userAchvGoal.getId()));
+        }
+    }else{
+        userAchvGoal.setCorp_code(corp_code);
+        userAchvGoal.setStore_code(store_code);
+        userAchvGoal.setUser_code(user_code);
+        userAchvGoal.setUser_target(achv_goal);
+        userAchvGoal.setStore_name(store_name);
+        userAchvGoal.setUser_name(user_name);
+        userAchvGoal.setTarget_time(end_time);
+        userAchvGoal.setTarget_type(achv_type);
+        userAchvGoal.setModifier(user_id);
+        userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
+        userAchvGoal.setCreater(user_id);
+        userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
+        userAchvGoal.setIsactive(jsonObject.get("isactive").toString());
+        String resultInfo = userAchvGoalService.insert(userAchvGoal);
+        if(resultInfo.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result=Common.DATABEAN_CODE_SUCCESS;
+
+        dataBean.setId(id);
+        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+        UserAchvGoal userAchvGoal1 = userAchvGoalService.getUserAchvForId(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(),userAchvGoal.getStore_code(), userAchvGoal.getTarget_time(),Common.IS_ACTIVE_Y);
+        if (userAchvGoal1!=null) {
+            dataBean.setMessage(String.valueOf(userAchvGoal1.getId()));
+        }else{
+            dataBean.setMessage("error");
+        }
+        }
+    }
+
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
 
                 //----------------行为日志------------------------------------------
                 /**
@@ -336,19 +399,24 @@ public class UserAchvGoalController {
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("user_code").toString();
                 List<User> users = userService.userCodeExist(t_code, t_corp_code, Common.IS_ACTIVE_Y);
-                String t_name = users.get(0).getUser_name();
-                String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
+                String t_name="";
+                if (users.size() > 0) {
+                     t_name = users.get(0).getUser_name();
+                    String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
+                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
+               }
+
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("用户" + userAchvGoal.getUser_code() + "业绩目标已经设定");
+                dataBean.setMessage(Common.DATABEAN_CODE_ERROR);
             }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setCode("-1");
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
             logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
@@ -366,10 +434,10 @@ public class UserAchvGoalController {
         try {
 
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String userAchvGoalId = jsonObject.get("id").toString();
             data = JSON.toJSONString(userAchvGoalService.getUserAchvGoalById(Integer.parseInt(userAchvGoalId)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -395,10 +463,10 @@ public class UserAchvGoalController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -410,7 +478,15 @@ public class UserAchvGoalController {
             if (role_code.contains(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
-            } else {
+            } else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
+
+                // list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value,manager_corp);
+            }else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
                     list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
@@ -460,16 +536,24 @@ public class UserAchvGoalController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<UserAchvGoal> pages = null;
             if (screen.equalsIgnoreCase("")) {
                 if (role_code.equalsIgnoreCase(Common.ROLE_SYS)) {
                     pages = userAchvGoalService.selectBySearch(1, Common.EXPORTEXECLCOUNT, "", search_value);
-                } else if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
+                } else if(role_code.equals(Common.ROLE_CM)){
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                    System.out.println("manager_corp=====>"+manager_corp);
+                     corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    System.out.println("getCorpCodeByCm=====>"+corp_code);
+                    pages = this.userAchvGoalService.selectBySearch(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
+
+                    // list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value,manager_corp);
+                }else if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
                     pages = this.userAchvGoalService.selectBySearch(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
@@ -492,7 +576,15 @@ public class UserAchvGoalController {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equalsIgnoreCase(Common.ROLE_SYS)) {
                     pages = userAchvGoalService.getAllUserAchScreen(1, Common.EXPORTEXECLCOUNT, "", "", "", "", map, "");
-                } else if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
+                } else if(role_code.equals(Common.ROLE_CM)){
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                    System.out.println("manager_corp=====>"+manager_corp);
+                     corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    System.out.println("getCorpCodeByCm=====>"+corp_code);
+                    pages = userAchvGoalService.getAllUserAchScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", "", "", map, "");
+
+                    //list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, "", "", "", "", map, "",manager_corp);
+                }else if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
                     pages = userAchvGoalService.getAllUserAchScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", "", "", map, "");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
@@ -523,7 +615,7 @@ public class UserAchvGoalController {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json, userAchvGoals, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, userAchvGoals, map, response, request,"员工业绩目标");
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -767,10 +859,10 @@ public class UserAchvGoalController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json-----------" + jsString);
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            JSONObject jsonObject = JSONObject.parseObject(jsString);
             id = jsonObject.getString("id");
             String message = jsonObject.get("message").toString();
-            org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
+            JSONObject jsonObject1 = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject1.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject1.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject1);
@@ -779,7 +871,15 @@ public class UserAchvGoalController {
             PageInfo<UserAchvGoal> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, "", "", "", "", map, "");
-            } else {
+            }  else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, "", "", "", map, "");
+
+                //list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, "", "", "", "", map, "",manager_corp);
+            }else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, "", "", "", map, "");

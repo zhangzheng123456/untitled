@@ -1,11 +1,11 @@
 package com.bizvane.ishop.utils;
 
-import com.bizvane.ishop.bean.DataBean;
 import jxl.Cell;
 import jxl.CellType;
 import jxl.DateCell;
 import jxl.Sheet;
 import org.apache.commons.lang.StringUtils;
+import org.mongojack.Aggregation;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +44,26 @@ public class LuploadHelper {
         model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
         return targetFile;
     }
+
+    public static File lupload2_zip(HttpServletRequest request,MultipartFile file){
+        //创建你要保存的文件的路径
+        String path = request.getSession().getServletContext().getRealPath("lupload");
+        //获取该文件的文件名
+        String fileName = file.getOriginalFilename();
+        System.out.println(path);
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        // 保存
+        try {
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return targetFile;
+    }
+
 
     /***
      * 验证execl中唯一的列是否有重复值
@@ -224,4 +244,7 @@ public class LuploadHelper {
             return false;
         }
     }
+
+
+
 }

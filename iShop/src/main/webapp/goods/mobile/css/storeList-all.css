@@ -1,0 +1,139 @@
+@charset "UTF-8";
+body {
+  width: 100%;
+  background-color: #f4f4f4;
+  font-family: 微软雅黑;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.title {
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  background-color: #f4f4f4;
+  height: 1.69082rem;
+  line-height: 1.69082rem;
+  position: relative;
+  top: 0px; }
+
+.title input {
+  width: 66%;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 0.96618rem;
+  border-radius: 0.12077rem;
+  border: 1px solid #e1e1e1;
+  color: #888888;
+  font-size: 0.38647rem;
+  background: #FFF url("../image/all_0.png") no-repeat 33% 0.28986rem;
+  background-size: 0.43478rem; }
+
+input::-ms-input-placeholder {
+  text-align: center; }
+
+input::-webkit-input-placeholder {
+  text-align: center; }
+
+.title button {
+  width: 20%;
+  border: none;
+  background-color: #71cbd3;
+  color: white;
+  margin-left: 2%;
+  height: 0.96618rem;
+  line-height: 0.96618rem;
+  font-size: 0.36232rem;
+  border-radius: 0.12077rem;
+  outline: none; }
+
+.main {
+  position: relative;
+  width: 100%; }
+
+.none {
+  width: 50%;
+  vertical-align: middle;
+  margin: 30% 25%; }
+
+.bottom {
+  position: relative;
+  bottom: 10px;
+  text-align: center;
+  font-size: 0.28986rem;
+  color: #888;
+  display: none; }
+
+.main .area_box {
+  width: 100%;
+  margin-bottom: 0.48309rem;
+  background-color: #ffffff; }
+
+.area {
+  width: 100%;
+  color: #888888;
+  font-size: 0.36232rem;
+  height: 0.72464rem;
+  line-height: 0.72464rem;
+  background-color: #fff;
+  border-bottom: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+  position: relative; }
+
+.area span {
+  margin-left: 3%; }
+
+.main .box {
+  clear: both;
+  margin-left: 3%;
+  margin-right: 3%;
+  width: 94%;
+  padding-top: 0.36232rem;
+  height: 3.26087rem;
+  line-height: 3.26087rem;
+  border-bottom: 1px solid #eeeeee;
+  background-color: #fff; }
+
+.main .box .left {
+  float: left;
+  width: 2.89855rem;
+  height: 2.89855rem;
+  border-radius: 0.12077rem; }
+
+.main .box .left img {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto; }
+
+.main .box .right {
+  float: right;
+  margin-left: 0.36232rem;
+  height: 2.89855rem;
+  width: 62%; }
+
+.main .box .right .right_name {
+  width: 100%;
+  height: 0.72464rem;
+  line-height: 0.72464rem;
+  font-size: 0.38647rem;
+  color: #555555;
+  position: relative; }
+
+.main .box .right .right_name span {
+  float: right;
+  color: #888888;
+  font-size: 0.31401rem; }
+
+.main .box .right .right_name img {
+  float: right;
+  height: 0.48309rem;
+  margin-top: 0.07246rem; }
+
+.main .box .right .right_add {
+  font-size: 0.36232rem;
+  color: #888888;
+  clear: both;
+  width: 100%;
+  max-height: 2.17391rem;
+  line-height: 0.48309rem; }
+
+/*# sourceMappingURL=storeList-all.css.map */

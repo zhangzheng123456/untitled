@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.SendCouponsMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.SendCoupons" id="SendCoupons">
+        <id column="id" property="id"/>
+        <result column="tick_code_ishop" property="tick_code_ishop"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_code" property="coupon_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_name" property="coupon_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_id" property="app_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_name" property="app_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_coupon_title" property="send_coupon_title"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_coupon_desc" property="send_coupon_desc"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="time_start" property="time_start" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="time_end" property="time_end" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_coupon_users" property="send_coupon_users"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_num_per" property="coupon_num_per"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_num" property="user_num" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_sum" property="coupon_sum" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive"/>
+        <result column="couponInfo" property="couponInfo" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+        <association property="brand" javaType="com.bizvane.ishop.entity.Brand">
+            <result column="brand_name" property="brand_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectById" resultMap="SendCoupons">
+        SELECT
+        def_send_coupons.*,
+        def_brand.brand_name,
+        def_corp.corp_name
+        FROM def_send_coupons,def_corp,def_brand
+        WHERE def_send_coupons.corp_code = def_corp.corp_code
+         AND def_send_coupons.corp_code = def_brand.corp_code
+        AND  def_send_coupons.ID=#{id}
+    </select>
+
+    <select id="selectAllSendCoupons" resultMap="SendCoupons">
+        SELECT
+        def_send_coupons.*,
+        def_brand.brand_name,
+        def_corp.corp_name
+        FROM def_send_coupons,def_corp,def_brand
+        WHERE def_send_coupons.corp_code = def_corp.corp_code
+        AND def_send_coupons.corp_code = def_brand.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_send_coupons.corp_code = #{corp_code}
+        </if>
+
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_send_coupons.send_coupon_title LIKE concat('%',#{search_value},'%')
+            OR def_brand.brand_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_send_coupons.coupon_name LIKE concat('%',#{search_value},'%')
+            OR def_send_coupons.time_start LIKE concat('%',#{search_value},'%')
+            OR def_send_coupons.time_end LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY def_send_coupons.id DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM
+        def_send_coupons
+        WHERE ID=#{id}
+    </delete>
+
+    <insert id="insertSendCoupons" parameterType="com.bizvane.ishop.entity.SendCoupons">
+        INSERT INTO def_send_coupons
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tick_code_ishop!=null">
+                tick_code_ishop,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="coupon_code!=null">
+                coupon_code,
+            </if>
+            <if test="coupon_name!=null">
+                coupon_name,
+            </if>
+            <if test="app_id!=null">
+                app_id,
+            </if>
+            <if test="app_name!=null">
+                app_name,
+            </if>
+            <if test="brand_code!=null">
+                brand_code,
+            </if>
+
+            <if test="send_coupon_title!=null">
+                send_coupon_title,
+            </if>
+            <if test="send_coupon_desc!=null">
+                send_coupon_desc,
+            </if>
+            <if test="time_start!=null">
+                time_start,
+            </if>
+            <if test="time_end!=null">
+                time_end,
+            </if>
+            <if test="send_coupon_users!=null">
+                send_coupon_users,
+            </if>
+            <if test="coupon_num_per!=null">
+                coupon_num_per,
+            </if>
+            <if test="coupon_sum!=null">
+                coupon_sum,
+            </if>
+            <if test="user_num!=null">
+                user_num,
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="couponInfo!=null">
+                couponInfo,
+            </if>
+
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="tick_code_ishop!=null">
+                #{tick_code_ishop},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="coupon_code!=null">
+                #{coupon_code},
+            </if>
+            <if test="coupon_name!=null">
+                #{coupon_name},
+            </if>
+            <if test="app_id!=null">
+                #{app_id},
+            </if>
+            <if test="app_name!=null">
+                #{app_name},
+            </if>
+            <if test="brand_code!=null">
+                #{brand_code},
+            </if>
+            <if test="send_coupon_title!=null">
+                #{send_coupon_title},
+            </if>
+            <if test="send_coupon_desc!=null">
+                #{send_coupon_desc},
+            </if>
+            <if test="time_start!=null">
+                #{time_start},
+            </if>
+            <if test="time_end!=null">
+                #{time_end},
+            </if>
+            <if test="send_coupon_users!=null">
+                #{send_coupon_users},
+            </if>
+            <if test="coupon_num_per!=null">
+                #{coupon_num_per},
+            </if>
+            <if test="coupon_sum!=null">
+                #{coupon_sum},
+            </if>
+            <if test="user_num!=null">
+                #{user_num},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="couponInfo!=null">
+                #{couponInfo},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateSendCoupons" parameterType="com.bizvane.ishop.entity.SendCoupons">
+        UPDATE def_send_coupons
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tick_code_ishop != null">
+                tick_code_ishop = #{tick_code_ishop},
+            </if>
+            <if test="corp_code != null">
+                corp_code = #{corp_code},
+            </if>
+            <if test="coupon_code != null">
+                coupon_code = #{coupon_code},
+            </if>
+            <if test="coupon_name != null">
+                coupon_name = #{coupon_name},
+            </if>
+            <if test="app_id != null">
+                app_id = #{app_id},
+            </if>
+            <if test="app_name != null">
+                app_name = #{app_name},
+            </if>
+            <if test="brand_code != null">
+                brand_code = #{brand_code},
+            </if>
+            <if test="send_coupon_title != null">
+                send_coupon_title = #{send_coupon_title},
+            </if>
+            <if test="send_coupon_desc != null">
+                send_coupon_desc = #{send_coupon_desc},
+            </if>
+            <if test="time_start != null">
+                time_start = #{time_start},
+            </if>
+            <if test="time_end != null">
+                time_end = #{time_end},
+            </if>
+            <if test="send_coupon_users != null">
+                send_coupon_users = #{send_coupon_users},
+            </if> <if test="coupon_num_per != null">
+            coupon_num_per = #{coupon_num_per},
+        </if>
+            <if test="coupon_sum != null">
+                coupon_sum = #{coupon_sum},
+            </if>
+            <if test="user_num != null">
+                user_num = #{user_num},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="couponInfo!=null">
+                couponInfo=#{couponInfo},
+            </if>
+
+        </trim>
+        WHERE ID = #{id};
+    </update>
+
+
+    <select id="selectAllFsendScreen" resultMap="SendCoupons">
+        SELECT
+        def_send_coupons.*,
+        def_brand.brand_name,
+        def_corp.corp_name
+        FROM def_send_coupons,def_corp,def_brand
+        WHERE def_send_coupons.corp_code = def_corp.corp_code
+        AND def_send_coupons.corp_code = def_brand.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_send_coupons.corp_code=#{corp_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND def_send_coupons.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND def_send_coupons.created_date &lt;= #{created_date_end}
+        </if>
+        <if test="time_end_start!=null and time_end_start!=''">
+            AND  def_send_coupons.time_end &gt;= #{time_end_start}
+        </if>
+        <if test="time_end_end!=null and time_end_end!=''">
+            AND  def_send_coupons.time_end &lt;= #{time_end_end}
+        </if>
+        <if test="time_start_start!=null and time_start_start!=''">
+            AND  def_send_coupons.time_start &gt;= #{time_start_start}
+        </if>
+        <if test="time_start_end!=null and time_start_end!=''">
+            AND  def_send_coupons.time_start &lt;= #{time_start_end}
+        </if>
+
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+                <choose>
+                    <when test="entryValue!='' and entryKey=='corp_name'">
+                        def_corp.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <when test="entryValue!='' and entryKey=='brand_name'">
+                        def_brand.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <when test="entryValue!=''">
+                        def_send_coupons.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        GROUP By def_send_coupons.id
+        ORDER BY def_send_coupons.id DESC
+    </select>
+
+    <select id="selectByCode" resultType="com.bizvane.ishop.entity.SendCoupons">
+        SELECT *
+        FROM def_send_coupons
+        WHERE def_send_coupons.corp_code = #{corp_code}
+        AND  def_send_coupons.tick_code_ishop= #{tick_code_ishop}
+    </select>
+
+    <select id="selectByCode1" resultType="com.bizvane.ishop.entity.SendCoupons">
+        SELECT *
+        FROM def_send_coupons
+        WHERE def_send_coupons.tick_code_ishop= #{tick_code_ishop}
+    </select>
+
+    <select id="getSendCouponsByCode" resultType="com.bizvane.ishop.entity.SendCoupons">
+        SELECT
+        def_send_coupons.*
+        FROM def_send_coupons
+        WHERE def_send_coupons.CORP_CODE = #{corp_code}
+        AND   def_send_coupons.tick_code_ishop= #{activity_vip_code}
+    </select>
+
+
+    <delete id="delSendByCode">
+        DELETE FROM def_send_coupons WHERE  corp_code =#{corp_code} AND tick_code_ishop =#{tick_code_ishop}
+    </delete>
+
+</mapper>

@@ -30,7 +30,7 @@ public interface ScheduleJobService {
      */
     public void update(ScheduleJob scheduleJob) throws Exception;
 
-    void updateSchedule(String job_name,String job_group) throws Exception;
+    void updateSchedule(String job_name,String job_group);
     /**
      * 删除重新创建方式
      * 
@@ -80,6 +80,10 @@ public interface ScheduleJobService {
 
 
     ScheduleJob selectScheduleByJob(String job_name, String job_group)throws Exception;
+
+    int deleteScheduleByName(String job_name)throws Exception;
+
+    int deleteScheduleByGroup(String job_group)throws Exception;
     /**
      * 查询任务列表
      * 

@@ -47,14 +47,9 @@
                             });
                             return ;
                         }
-                        if(activity.cache.store_codes==""){
-                            art.dialog({
-                                time: 1,
-                                lock: true,
-                                cancel: false,
-                                content: "没有选择参与门店"
-                            });
-                            return ;
+                        if(activity.edit_flag){
+                            self.getHtml(src,html);
+                            return;
                         }
                         $.when(activity.add())
                             .then(function(data){
@@ -65,23 +60,27 @@
                     }
                     if(index=="1"){
                         if (prvindex>index){
-                            $.when(activityPlanning.submitJob(),activityPlanning.submitGroup())
-                            .then(function(data1,data2){
-                                if(data1=="成功"&&data2=="成功"){
-                                    self.getHtml(src,html);
-                                }
-                            });
+                            if($("#tabs>div:nth-of-type(2)").attr("data-state") == "true"){
+                                self.getHtml(src,html);
+                            }else {
+                                $.when(activityPlanning.submitJob(),activityPlanning.submitGroup())
+                                    .then(function(data1,data2){
+                                        if(data1=="成功"&&data2=="成功"){
+                                            self.getHtml(src,html);
+                                        }
+                                    });
+                            }
                         }else if(prvindex<index){
                             self.getHtml(src,html);
                         }
                     }
+                    // if(index=="2"){
+                    //     $.when(postSelect()).then(function (data) {
+                    //         if(data=="失败") return;
+                    //         self.getHtml(src,html);
+                    //     });
+                    // }
                     if(index=="2"){
-                        $.when(postSelect()).then(function (data) {
-                            if(data=="失败") return;
-                            self.getHtml(src,html);
-                        });
-                    }
-                    if(index=="3"){
                         self.getHtml(src,html);
                     }
                 }
@@ -92,6 +91,7 @@
                 type: "GET",
                 url: "set_vip_activity.html?t="+ $.now(),
                 dataType: "html",
+                cache:false,
                 success: function (data) {
                     $("#tabs-content").html(data);
                 },
@@ -105,6 +105,7 @@
                 type: "GET",
                 url: src+"?t="+ $.now(),
                 dataType: "html",
+                cache:false,
                 success: function (data) {
                     $("#tabs-content").html(data);
                 },
@@ -118,7 +119,7 @@
         backActivityList:function(){
             //回到会员列表
             $("#back_corp_param").click(function(){
-                $(window.parent.document).find('#iframepage').attr("src","/activity/activity.html");
+                $(window.parent.document).find('#iframepage').attr("src","/activity/activity.html?t="+$.now());
             });
         }
     };

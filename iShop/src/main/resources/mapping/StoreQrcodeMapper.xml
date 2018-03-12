@@ -7,12 +7,30 @@
         rsq.id,
         rsq.qrcode,
         rsq.app_id,
-        rcw.app_name
+        rcw.app_name,
+        rsq.qrcode_content
         FROM rel_store_qrcode rsq ,rel_corp_wechat rcw
         WHERE rsq.corp_code = rcw.corp_code
         AND rsq.app_id = rcw.app_id
         AND rsq.store_code=#{store_code}
         AND rsq.corp_code=#{corp_code}
+        AND rcw.isactive = 'Y'
+        AND rcw.is_authorize = 'Y'
+    </select>
+
+    <select id="selectByStoreQrcode" resultType="com.bizvane.ishop.entity.StoreQrcode">
+        SELECT
+        rsq.id,
+        rsq.qrcode,
+        rsq.app_id,
+        rcw.app_name,
+        rsq.qrcode_content
+        FROM rel_store_qrcode rsq ,rel_corp_wechat rcw
+        WHERE rsq.corp_code = rcw.corp_code
+        AND rsq.app_id = rcw.app_id
+        AND rsq.store_code=#{store_code}
+        AND rsq.corp_code=#{corp_code}
+        AND rsq.qrcode=#{qrcode}
         AND rcw.isactive = 'Y'
         AND rcw.is_authorize = 'Y'
     </select>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>推送标题</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/details.css">
+    <script src="js/flexible.js"></script>
+</head>
+<body>
+<div class="wraps">
+    <div class="imgWrap">
+        <div class="imgBox" id="image">
+            <img src=""></div>
+    </div>
+    <p class="telempteTitle" id="telempteTitle"></p>
+    <div class="contentWrap" id="contents"></div>
+    <div class="footer"><a id="telempteUrl" href="javascript:void(0)" class="detailBtn">查看详情</a></div>
+</div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script>
+    var oc = new ObjectControl();
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("=");
+            var sms_code = strs[1];
+            return sms_code ;
+        }
+    }
+    var code = geUrl();
+    $(function () {
+        oc.postRequire("get","/api/wxTempMsgDetail?sms_code="+code,"","",function (data) {
+            if(data.code == 0){
+                var msg = JSON.parse(data.message);
+                $("#telempteTitle").text(msg.title);
+                $("#contents").text(msg.content);
+                $("#image img").attr("src",msg.image);
+                if(msg.templ_url != ""){
+                    $("#telempteUrl").attr("href",msg.templ_url);
+                }else {
+                    $("#telempteUrl").css("background","#dfdfdf");
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

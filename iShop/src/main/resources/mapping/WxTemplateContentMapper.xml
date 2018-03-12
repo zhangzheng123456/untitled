@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.WxTemplateContentMapper">
+    <resultMap id="WxTemplateContent" type="com.bizvane.ishop.entity.WxTemplateContent">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="app_id" property="app_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_name" property="app_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_user_name" property="app_user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_id" property="template_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_first" property="template_first" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_remark" property="template_remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_url" property="template_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="type" property="type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_type" property="vip_card_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_type_id" property="vip_card_type_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="WxTemplateContent">
+        SELECT rwtc.*,def_corp.corp_name
+        FROM rel_wechat_template_content rwtc,def_corp
+        WHERE rwtc.corp_code = def_corp.corp_code
+        AND rwtc.id=#{id}
+    </select>
+
+    <select id="selectAllWxTemplateContent" resultMap="WxTemplateContent">
+        SELECT rwtc.*,def_corp.corp_name
+        FROM rel_wechat_template_content rwtc,def_corp
+        WHERE rwtc.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code != ''">
+            AND rwtc.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value != ''">
+            AND (
+            rwtc.template_name LIKE concat ('%',#{search_value},'%')
+            OR rwtc.app_name LIKE concat ('%',#{search_value},'%')
+            )
+        </if>
+      <!--  AND isactive = 'Y' -->
+        GROUP By rwtc.id
+        ORDER BY rwtc.id DESC
+    </select>
+
+    <select id="selectWxTemplateContentScreen" resultMap="WxTemplateContent">
+        SELECT rwtc.*,def_corp.corp_name
+        FROM rel_wechat_template_content rwtc,def_corp
+        WHERE rwtc.corp_code = def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND rwtc.corp_code=#{corp_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  rwtc.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  rwtc.created_date &lt;= #{created_date_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    rwtc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By rwtc.id
+        ORDER BY rwtc.id DESC
+    </select>
+
+    <insert id="insertWxTemplateContent" parameterType="com.bizvane.ishop.entity.WxTemplateContent">
+        INSERT INTO rel_wechat_template_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="app_id != null">
+                app_id,
+            </if>
+            <if test="app_name != null">
+                app_name,
+            </if>
+            <if test="app_user_name != null">
+                app_user_name,
+            </if>
+            <if test="template_id != null">
+                template_id,
+            </if>
+            <if test="template_name != null">
+                template_name,
+            </if>
+            <if test="template_first != null">
+                template_first,
+            </if>
+            <if test="template_remark != null">
+                template_remark,
+            </if>
+            <if test="template_url != null">
+                template_url,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="vip_card_type != null">
+                vip_card_type,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="vip_card_type_id!=null">
+                vip_card_type_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="app_id != null">
+                #{app_id},
+            </if>
+            <if test="app_name != null">
+                #{app_name},
+            </if>
+            <if test="app_user_name != null">
+                #{app_user_name},
+            </if>
+            <if test="template_id != null">
+                #{template_id},
+            </if>
+            <if test="template_name != null">
+                #{template_name},
+            </if>
+            <if test="template_first != null">
+                #{template_first},
+            </if>
+            <if test="template_remark != null">
+                #{template_remark},
+            </if>
+            <if test="template_url != null">
+                #{template_url},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="vip_card_type != null">
+                #{vip_card_type},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="vip_card_type_id!=null">
+                #{vip_card_type_id},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateWxTemplateContent" parameterType="com.bizvane.ishop.entity.WxTemplateContent">
+        UPDATE rel_wechat_template_content
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="app_id != null">
+                app_id=#{app_id},
+            </if>
+            <if test="app_name != null">
+                app_name=#{app_name},
+            </if>
+            <if test="app_user_name != null">
+                app_user_name=#{app_user_name},
+            </if>
+            <if test="template_id != null">
+                template_id=#{template_id},
+            </if>
+            <if test="template_name != null">
+                template_name=#{template_name},
+            </if>
+            <if test="template_first != null">
+                template_first=#{template_first},
+            </if>
+            <if test="template_remark != null">
+                template_remark= #{template_remark},
+            </if>
+            <if test="template_url != null">
+                template_url= #{template_url},
+            </if>
+            <if test="type != null">
+                type=#{type},
+            </if>
+            <if test="vip_card_type != null">
+                vip_card_type=#{vip_card_type},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="vip_card_type_id!=null">
+                vip_card_type_id=#{vip_card_type_id},
+            </if>
+        </trim>
+        WHERE id = #{id};
+    </update>
+
+    <delete id="deleteWxTemplateContent">
+        DELETE FROM
+        rel_wechat_template_content
+        WHERE id = #{id}
+    </delete>
+
+
+    <select id="selectByName" resultMap="WxTemplateContent">
+        SELECT *
+        FROM rel_wechat_template_content
+        WHERE 1=1
+        <if test="app_id != null and app_id != ''">
+            AND app_id = #{app_id}
+        </if>
+        <if test="template_name!=null and template_name!=''">
+            AND  template_name=#{template_name}
+        </if>
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectContentById" resultMap="WxTemplateContent">
+        SELECT *
+        FROM rel_wechat_template_content
+        WHERE app_id = #{app_id}
+        AND  template_name=#{template_name}
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="vip_card_type != null and vip_card_type != ''">
+            AND vip_card_type = #{vip_card_type}
+        </if>
+    </select>
+
+    <select id="selectContentByCardId" resultMap="WxTemplateContent">
+        SELECT *
+        FROM rel_wechat_template_content
+        WHERE app_id = #{app_id}
+        AND  template_name=#{template_name}
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="vip_card_type_id != null">
+            AND vip_card_type_id = #{vip_card_type_id}
+        </if>
+    </select>
+
+</mapper>

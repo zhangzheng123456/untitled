@@ -1,12 +1,9 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Area;
-import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +18,8 @@ public interface AreaService {
 
     PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
+    PageInfo<Area> getAllAreaByPageByCm(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception;
+
     String insert(String message, String user_id) throws Exception;
 
     String update(String message, String user_id) throws Exception;
@@ -31,15 +30,25 @@ public interface AreaService {
 
     String insertExecl(Area area) throws Exception;
 
+    String updateExecl(Area area) throws Exception;
+
     PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception;
+
+    PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map,String manager_corp) throws Exception;
+
 
     PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception;
 
     PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes,String store_code, String search_value)throws Exception;
+
+    PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes,String store_code, String search_value,String manager_corp)throws Exception;
+
 
     List<Area> selAreaByCorpCode(String corp_code, String area_codes,String store_code) throws Exception;
 
     List<Area> selectArea(String corp_code, String area_codes) throws SQLException;
 
     void trans(PageInfo<Store> page,String area_code);
+
+    public List<Area> getAllAreaByPage(String corp_code, String search_value) throws Exception;
 }

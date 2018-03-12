@@ -6,16 +6,38 @@
     <title>编辑企业信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
-    <script src="/js/loading.js?20170105"></script>
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?20180102">
+    <script src="/js/loading.js?2017040170331"></script>
     <style>
         body{
             margin-top:81px;
         }
         .editor_1{border-top: 2px #e0e0e0 solid;margin-top: 15px;margin-right: 10px}
+        #page-wrapper{
+            overflow: hidden;
+        }
+        .content_parent:after {
+            content: ",";
+            height: 0;
+            visibility: hidden;
+            display: block;
+            clear: both;
+        }
+        .tk{
+            position: fixed;
+            left: 60%;
+            top: 65%;
+             transform: translate(-50%,-50%);
+             -ms-transform: translate(-50%,-50%);
+             -moz-transform: translate(-50%,-50%);
+             -webkit-transform: translate(-50%,-50%);
+             -o-transform: translate(-50%,-50%);
+            z-index: 10001;
+        }
     </style>
 </head>
 <body>
@@ -50,15 +72,19 @@
                     <div>
                         <span><label style="color:#c26655">联系电话</label><input type="text" id="PHONE" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
                     </div>
+                    <div>
+                        <span><label>ERPURL</label><input type="text" id="use_offline"/><div style="padding-left:80px" class="hint"><div  hintinfo=""></div></div></span>
+                    </div>
                     <div class="code_style"style="position:relative;height:50px;display:inline-flex;margin-bottom: 0px;margin-top: 0px;color:#888888">
                         <p class="p" style="left:-82px;">公众号授权</p>
-                        <p style="width: 160px;font-size: 14px">微信公众号AppID</p>
-                        <p style="width: 160px;font-size: 14px;margin:0 10px 0 10px">公众号名称</p>
+                        <p style="width: 120px;font-size: 14px">微信公众号AppID</p>
+                        <p style="width: 90px;font-size: 14px;margin:0 10px 0 10px">公众号名称</p>
+                        <p style="width: 100px;font-size: 14px;margin:0 10px 0 10px">密钥</p>
                         <p style="margin-left:15px">状态</p>
                     </div>
                     <div class="wx_app code_style wx_app_new">
                     </div>
-                    <div id="add_app_id"onclick="add()"style="margin-bottom: 0px;margin-top: 2px">新增 <span>+</span></div>
+                    <div id="add_app_id" onclick="add()" style="margin-bottom: 0px;margin-top: 2px">新增 <span>+</span></div>
                     <div style="margin-top: 20px;">
                         <li>
                             <label style="width:105px;"></label><span class="power_d" id="power">打开授权二维码</span>
@@ -67,7 +93,7 @@
                     <div>
                         <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">默认客服</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
-                            <div class="xingming">  
+                            <div class="xingming">
                             </div>
                             <div id="test">
                                 <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;margin-left:0px">
@@ -77,53 +103,6 @@
                         </div>
                     </div>
                 </form>
-                <div class="distribution_frame" id="distribution_frame">
-                    <div id="area_code" class="drop-down">
-                        <h5>所属区域</h5>
-                        <input type="text" class="input" readonly="true" id="area_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="area_search">
-                            <i class="icon-ishop_3-05" id="area_search_d"></i>
-                        </div>    
-                        <div class="drop_down_ul">
-                            <ul>
-                                
-                            </ul>
-                            <div class="area_more" id="area_more">加载更多</div>
-                        </div>
-                        <div id="area_code_drop" class="drop_q">确定</div>
-                    </div>
-                    <div id="store_code" class="drop-down">
-                        <h5>所属店铺</h5>
-                        <input type="text" class="input" readonly="true" id="store_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="store_search">
-                            <i class="icon-ishop_3-05" id="store_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-                                
-                            </ul>
-                            <div class="area_more" id="store_more">加载更多</div>
-                        </div>
-                        <div id="store_code_drop" class="drop_q">确定</div>   
-                    </div>
-                    <div id="staff_code" class="drop-down">
-                        <h5>员工名称</h5>
-                        <input type="text" class="input" readonly="true" id="staff_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="staff_search">
-                            <i class="icon-ishop_3-05" id="staff_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-                                
-                            </ul>
-                            <div class="area_more" id="staff_more">加载更多</div>
-                        </div>
-                        <div id="staff_code_drop" class="drop_q">确定</div>  
-                    </div>
-                </div>
             </div>
             <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
                 <div class="corpedit_oper_btn">
@@ -151,31 +130,410 @@
                 </form>
             </div>
         </div>
+    <!-- 拉取区域 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺群组</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
 
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取导购  -->
+    <div id="screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                              data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
+    </div>
+    <div class="sms_pass">
+        <div class="sms_header">
+            <div class="left">短信通道</div>
+            <div class="right">
+                <div class="add" id="add"><span class="icon-ishop_6-01"></span>新增</div>
+                <div class="add" id="edit"><span class="icon-ishop_6-03"></span>编辑</div>
+                <div class="del" id="del"><span class="icon-ishop_6-02"></span>删除</div>
+            </div>
+        </div>
+        <div class="sms_list">
+            <div class="sms_list_header">
+                <div class="check_left">
+                    <div class="checkbox">
+                        <input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label>
+                    </div>
+                </div>
+                <ul>
+                    <li class="red">类型*</li>
+                    <li class="red">通道名称*</li>
+                    <li class="red">账号*</li>
+                    <li class="red">密码*</li>
+                    <li class="red">单价*</li>
+                    <li class="red">签名*</li>
+                    <li>编号</li>
+                    <li>子账号</li>
+                </ul>
+                <div class="check_right">
+                    是否强制使用
+                </div>
+            </div>
+            <div class="sms_list_content" id="sms_list_content">
+                <!--<div class="sms_content" style="display: none;" id="sms_content">-->
+                    <!--<div class="check_left">-->
+                        <!--<div class="checkbox">-->
+                            <!--<input  type="checkbox" value="" name="test" title="全选/取消" class="check" /><label></label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<ul>-->
+                        <!--<li class="type">-->
+                            <!--<input type="text" class="select" readonly value="营销短信通道" bute-type="type" data-type="Marketing">-->
+                            <!--<div class="select_list">-->
+                                <!--<div data-type="Marketing">营销短信通道</div>-->
+                                <!--<div data-type="Production">生产短信通道</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="channel_name">-->
+                            <!--<input type="text" class="select" bute-type="channel_name" data-type="" readonly placeholder="请选择...">-->
+                            <!--<div class="select_list">-->
+                                <!--<div>测试</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="channel_account">-->
+                            <!--<input type="text" bute-type="channel_account">-->
+                        <!--</li>-->
+                        <!--<li class="passwored">-->
+                            <!--<input type="text" bute-type="password">-->
+                        <!--</li>-->
+                        <!--<li class="channel_price">-->
+                            <!--<input type="text" bute-type="channel_price">-->
+                        <!--</li>-->
+                        <!--<li class="channel_sign">-->
+                            <!--<input type="text" bute-type="channel_sign">-->
+                        <!--</li>-->
+                        <!--<li class="channel_code">-->
+                            <!--<input type="text" bute-type="channel_code">-->
+                        <!--</li>-->
+                        <!--<li class="channel_child">-->
+                            <!--<input type="text" bute-type="channel_child">-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                    <!--<div class="check_right">-->
+                        <!--<div class="checkbox1">-->
+                            <!--<input  type="checkbox" value="" name="test" title="全选/取消" class="check" /><label></label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="sms_content" >-->
+                    <!--<div class="check_left">-->
+                        <!--<div class="checkbox">-->
+                            <!--<input  type="checkbox" value="" name="test" title="全选/取消" class="check" /><label></label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<ul>-->
+                        <!--<li class="type">-->
+                            <!--<input type="text" class="select" readonly value="营销短信通道" bute-type="type" data-type="Marketing">-->
+                            <!--<div class="select_list">-->
+                                <!--<div data-type="Marketing">营销短信通道</div>-->
+                                <!--<div data-type="Production">生产短信通道</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="channel_name">-->
+                            <!--<input type="text" class="select" bute-type="channel_name" data-type="" readonly placeholder="请选择...">-->
+                            <!--<div class="select_list">-->
+                                <!--<div>测试</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="channel_account">-->
+                            <!--<input type="text" bute-type="channel_account">-->
+                        <!--</li>-->
+                        <!--<li class="passwored">-->
+                            <!--<input type="text" bute-type="password">-->
+                        <!--</li>-->
+                        <!--<li class="channel_price">-->
+                            <!--<input type="text" bute-type="channel_price">-->
+                        <!--</li>-->
+                        <!--<li class="channel_sign">-->
+                            <!--<input type="text" bute-type="channel_sign">-->
+                        <!--</li>-->
+                        <!--<li class="channel_code">-->
+                            <!--<input type="text" bute-type="channel_code">-->
+                        <!--</li>-->
+                        <!--<li class="channel_child">-->
+                            <!--<input type="text" bute-type="channel_child">-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                    <!--<div class="check_right">-->
+                        <!--<div class="checkbox1">-->
+                            <!--<input  type="checkbox" value="" name="test" title="全选/取消" class="check" /><label></label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <div class="batchbomb" style="height: 450px;" id="batchbomb" data-id="">
+        <div class="x" id="close_batchbomb"><span class="icon-ishop_6-12"></span></div>
+        <div class="batchbomb_header">
+            <i></i>
+            <b style="text-align: left;left: 10px;top: 7px;">短信通道配置</b>
+        </div>
+        <div class="batchbomb_content" style="margin-top:0;height: 350px;" id="batchbomb_content">
+            <div class="content_parent">
+                <span class="content_left" style="color:#c26655;">类型*</span>
+                <div class="content_right">
+                    <input type="text" id="type" class="select" readonly="true" value="" placeholder="请选择......" data-type="">
+                    <div class="select_list" id="marketing_list">
+                        <div data-type="Marketing">营销短信通道</div>
+                        <div data-type="Production">生产短信通道</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left" style="color:#c26655;">通道名称*</span>
+                <div class="content_right">
+                    <input type="text" id="channel_name" class="select" readonly="true" placeholder="请选择......" data-type="">
+                    <div class="select_list"  id="channel_list">
+                    </div>
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left" style="color:#c26655;">账号*</span>
+                <div class="content_right">
+                    <input type="text" id="channel_account" maxlength="20">
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left" style="color:#c26655;">密码*</span>
+                <div class="content_right">
+                    <input type="text" id="password" maxlength="20">
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left" style="color:#c26655;">单价*</span>
+                <div class="content_right">
+                    <input type="text" id="channel_price" maxlength="20">
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left" style="color:#c26655;">签名*</span>
+                <div class="content_right">
+                    <input type="text" id="channel_sign" maxlength="20">
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left">编号</span>
+                <div class="content_right">
+                    <input type="text" id="channel_code" maxlength="20">
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left">子账号</span>
+                <div class="content_right">
+                    <input type="text" id="channel_child" maxlength="20">
+                </div>
+            </div>
+            <div class="content_parent">
+                <span class="content_left">强制使用</span>
+                <div class="checkbox1" style="left: -120px;">
+                    <input type="checkbox" value="" name="test" title="全选/取消" class="check" id="is_forced"><label for="is_forced"></label>
+                </div>
+            </div>
+        </div>
+        <div class="batchbomb_footer">
+            <div class="left" id="batchbomb_return">取消</div>
+            <div class="right" id="batchbomb_que">保存</div>
+        </div>
+    </div>
+    <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" id="delete">删除</em>
+        </div>
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- oss -->
-    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
     <!-- 上传头像 -->
-    <script type="text/javascript" src="../js/upload_touxiang.js?20170105"></script>
+    <script type="text/javascript" src="../js/upload_touxiang.js?2017040170331"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
-    <script type="text/javascript" src="../js/multiple_choice.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js?2017040170331"></script>
      <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/corp/corp_operate.js?20170105"></script>
-    <script type="text/javascript" src="../js/brand/get_staff.js?20170105"></script>
+    <script type="text/javascript" src="../js/corp/corp_operate.js?20170925"></script>
+    <script type="text/javascript" src="../js/brand/screen_staff.js?20170925"></script>
     <script>
         function add(){
         is_authorize='未授权';
             $(".wx_app").append('<span class="wx_span" style="display:inline-flex">'
             + '<input type="text" class="WXID" value=' + ''+ '>'
             + '<input type="text" class="AppName" value=' + ''+ '>'
-            + '<input type="text" disabled="true" value="'+is_authorize+'" ><p class="icon-ishop_6-12"onclick="removeselect(this)"></p>'
+            + '<input type="text" class="access_key" value=' + ''+ '>'
+            + '<input type="text" style="margin-top: 10px;" disabled="true" value="'+is_authorize+'" ><p class="icon-ishop_6-12" onclick="removeselect(this)" style="margin-top: 10px"></p>'
             + '</span>')
         }
         function removeselect(obj){//区域  删除

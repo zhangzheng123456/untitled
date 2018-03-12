@@ -208,7 +208,6 @@ jQuery(document).ready(function(){
 		key_val=JSON.parse(key_val);
 		var funcCode=key_val.func_code;
 		$.get("/detail?funcCode="+funcCode+"", function(data){
-			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var action=message.actions;

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.ExamineConfigureMapper">
+    <resultMap type="com.bizvane.ishop.entity.ExamineConfigure" id="examine">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="function_bill_name" property="function_bill_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="examine_group" property="examine_group" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="examine_group_info" property="examine_group_info" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sms_examine" property="sms_examine" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sms_progress" property="sms_progress" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sms_result" property="sms_result" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+    </resultMap>
+
+    <select id="selectById" resultMap="examine">
+        SELECT dc.*,def_corp.corp_name
+        FROM def_examine_configure dc,def_corp
+        WHERE dc.corp_code=def_corp.corp_code and dc.id=#{id}
+    </select>
+
+    <select id="selectAll" resultMap="examine">
+        SELECT
+        dc.*,def_corp.corp_name
+        FROM def_examine_configure dc,def_corp
+        WHERE  dc.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dc.corp_code=#{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND (def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR dc.function_bill_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        GROUP By dc.id
+        ORDER BY dc.id DESC
+    </select>
+
+    <select id="selectAllScreen" resultMap="examine">
+        SELECT
+        dc.*,def_corp.corp_name
+        FROM def_examine_configure dc,def_corp
+        WHERE dc.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dc.corp_code=#{corp_code}
+        </if>
+        <if test="modified_date_start!=null and modified_date_start!=''">
+            AND  dc.modified_date &gt;= #{modified_date_start}
+        </if>
+        <if test="modified_date_end!=null and modified_date_end!=''">
+            AND  dc.modified_date &lt;= #{modified_date_end}
+        </if>
+         AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    dc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY dc.id
+        ORDER BY dc.id DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM
+        def_examine_configure
+        WHERE id=#{id}
+    </delete>
+
+    <select id="selectByName" resultMap="examine">
+        SELECT
+        dc.*,def_corp.corp_name
+        FROM def_examine_configure dc,def_corp
+        WHERE dc.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            and dc.corp_code=#{corp_code}
+        </if>
+        <if test="function_bill_name!=null and function_bill_name!=''">
+            and dc.function_bill_name=#{function_bill_name}
+        </if>
+    </select>
+
+    <insert id="insertExamine" parameterType="com.bizvane.ishop.entity.ExamineConfigure">
+        INSERT INTO def_examine_configure
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="function_bill_name != null">
+                function_bill_name,
+            </if>
+            <if test="examine_group != null">
+                examine_group,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="examine_group_info!=null">
+                examine_group_info,
+            </if>
+            <if test="sms_examine!=null">
+                sms_examine,
+            </if>
+            <if test="sms_progress!=null">
+                sms_progress,
+            </if>
+            <if test="sms_result!=null">
+                sms_result,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="function_bill_name != null">
+                #{function_bill_name},
+            </if>
+            <if test="examine_group != null">
+                #{examine_group},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="examine_group_info!=null">
+                #{examine_group_info},
+            </if>
+            <if test="sms_examine!=null">
+                #{sms_examine},
+            </if>
+            <if test="sms_progress!=null">
+                #{sms_progress},
+            </if>
+            <if test="sms_result!=null">
+                #{sms_result},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateExamine" parameterType="com.bizvane.ishop.entity.ExamineConfigure">
+        UPDATE def_examine_configure
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="function_bill_name != null">
+                function_bill_name=#{function_bill_name},
+            </if>
+            <if test="examine_group != null">
+                examine_group=#{examine_group},
+            </if>
+            <if test="isactive != null">
+                isactive=#{isactive},
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="examine_group_info!=null">
+                examine_group_info=#{examine_group_info},
+            </if>
+            <if test="sms_examine!=null">
+                sms_examine=#{sms_examine},
+            </if>
+            <if test="sms_progress!=null">
+                sms_progress=#{sms_progress},
+            </if>
+            <if test="sms_result!=null">
+                sms_result=#{sms_result},
+            </if>
+        </trim>
+        WHERE  id=#{id}
+    </update>
+
+</mapper>

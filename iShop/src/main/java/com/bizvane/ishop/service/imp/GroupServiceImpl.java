@@ -1,12 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.CodeUpdateMapper;
-import com.bizvane.ishop.dao.GroupMapper;
-import com.bizvane.ishop.dao.PrivilegeMapper;
-import com.bizvane.ishop.entity.Goods;
-import com.bizvane.ishop.entity.Group;
+import com.bizvane.ishop.dao.*;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.GroupService;
+import com.bizvane.ishop.service.VipActivityDetailService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -33,6 +31,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private PrivilegeMapper privilegeMapper;
+    @Autowired
+    private VipActivityMapper vipActivityMapper;
+    @Autowired
+    private VipActivityDetailMapper vipActivityDetailMapper;
 
     public Group getGroupById(int id) throws Exception {
         return groupMapper.selectByGroupId(id);
@@ -58,7 +60,23 @@ public class GroupServiceImpl implements GroupService {
     public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
-        groups = groupMapper.selectAllGroup(corp_code, role_code, search_value);
+        groups = groupMapper.selectAllGroup(corp_code, role_code, search_value,null);
+        for (Group group : groups) {
+            group.setIsactive(CheckUtils.CheckIsactive(group.getIsactive()));
+        }
+        PageInfo<Group> page = new PageInfo<Group>(groups);
+        return page;
+    }
+
+
+    public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value,String manager_corp) throws SQLException {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        List<Group> groups;
+        PageHelper.startPage(page_number, page_size);
+        groups = groupMapper.selectAllGroup(corp_code, role_code, search_value,manager_corp_arr);
         for (Group group : groups) {
             group.setIsactive(CheckUtils.CheckIsactive(group.getIsactive()));
         }
@@ -67,13 +85,35 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public List<Group> getGroupAll(String corp_code, String role_code) throws SQLException {
-        List<Group> groups = groupMapper.selectAllGroup(corp_code, role_code, "");
+        List<Group> groups = groupMapper.selectAllGroup(corp_code, role_code, "",null);
         return groups;
     }
 
     @Override
     public PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        List<Group> groups;
+        PageHelper.startPage(page_number, page_size);
+        groups = groupMapper.selectAllGroupScreen(params);
+        for (Group group : groups) {
+            group.setIsactive(CheckUtils.CheckIsactive(group.getIsactive()));
+        }
+        PageInfo<Group> page = new PageInfo<Group>(groups);
+        return page;
+    }
+
+
+    @Override
+    public PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("manager_corp_arr", manager_corp_arr);
         params.put("map", map);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
@@ -165,5 +205,24 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> selectByCorpRole(String corp_code, String role_code) throws Exception {
         List<Group> group = groupMapper.selectByCorpRole(corp_code, role_code);
         return group;
+    }
+
+    public int insert(VipActivity vipActivity) throws Exception {
+
+        return vipActivityMapper.insertActivity(vipActivity);
+    }
+
+    public int insertDetail(VipActivityDetail detail) throws Exception {
+
+        return vipActivityDetailMapper.insertActivityDetail(detail);
+    }
+
+    public int insertDetailAnniversary(VipActivityDetailAnniversary detailAnniversary) throws Exception{
+        return vipActivityDetailMapper.insertDetailAnniversary(detailAnniversary);
+    }
+
+    public int updateDetail(VipActivityDetail detail) throws Exception {
+
+        return vipActivityDetailMapper.updateActivityDetail(detail);
     }
 }

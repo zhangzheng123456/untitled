@@ -3,24 +3,84 @@
 <head>
 	<meta charset="UTF-8">
 	<title>系统管理之日志管理登录日志</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20170105">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
 	<style>
 		#sxk .isActive_select2 .isActive_select_down li {
 				width: 44px;
+		}
+		.export_list{
+			display: none;
+			width: 370px;
+			height: 320px;
+			color:#4a5f7c;
+			border-radius:5px;
+			padding:20px;
+			box-sizing:border-box;
+			background-color: #FFFFFF;
+			position: fixed;
+			left: 50%;
+			top:50%;
+			-webkit-transform: translate(-50%,-50%);
+			-moz-transform: translate(-50%,-50%);
+			-ms-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);
+			transform: translate(-50%,-50%);
+			z-index: 788;
+			-webkit-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+			-moz-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+			box-shadow: 0 0 10px rgba(0,0,0,0.335);
+		}
+		.export_list_tip{
+			font-size: 12px;margin: 10px 0 20px 0;line-height: 20px
+		}
+		.export_list_all{
+			height: 230px;max-height: 150px;overflow: hidden;overflow-y:auto;font-size: 12px;
+		}
+		.export_list_all li{
+			height: 20px;line-height: 20px;margin-bottom: 10px;
+		}
+		.export_list_all li span{
+			float: right;
+			display: inline-block;
+		}
+		.export_list_btn{
+			display: inline-block;
+			background-color: #41c7db;
+			border-radius: 3px;
+			width:50px;
+			height: 20px;
+			text-align: center;
+			line-height: 20px;
+			color: #FFFFFF;
+			cursor: pointer
+		}
+		.hide_export {
+			text-align: center;
+			padding: 0 20px;
+		}
+		.hide_export span {
+			display: inline-block;
+			color: #FFFFFF;
+			cursor: pointer;
+			background-color: #c4c8d4;
+			width: 90px;
+			height: 26px;
+			line-height: 26px;
+			border-radius: 5px;
+			float: left;
 		}
 	</style>
 </head>
 <body>
 	<!-- <div id="navbar">
-        
+
     </div> -->
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
                 <span>员工管理</span>
                 <span class="icon-ishop_8-03"></span>
-                <span>登录日志</span>
+                <span>爱秀登录日志</span>
     		</div>
     		<div class="action">
     			<div class="action_l">
@@ -32,7 +92,7 @@
     				</ul>
 					<ul>
 						<li class="li">
-							<input type="text" class="input" id="search" placeholder="登录平台/员工姓名/所属企业">
+							<input type="text" class="input" id="search" placeholder="登录平台/员工姓名/企业名称">
 							<i class="icon-ishop_3-05" id="d_search"></i>
 						</li>
 					</ul>
@@ -70,7 +130,7 @@
 				<div id="file_list">
 					<div id="file_list_l">
 						<ul>
-                        
+
 						</ul>
 					</div>
 					<div id="file_list_z">
@@ -195,6 +255,14 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
+	<div class="tk" id="code_ma">
+		<span class="icon-ishop_6-12" id="dao"></span>
+		<p>是否下载文件?</p>
+		<div class="btn">
+			<em class="cancel" id="code_q">取消</em>
+			<em class="album_enter" id="enter">确认</em>
+		</div>
+	</div>
 	<div id="side_bar">
 		<div class="gotop">
 			<span class="icon-ishop_4-03"></span>
@@ -203,13 +271,37 @@
 			<span class="icon-ishop_4-04"></span>
 		</div>
 	</div>
+	<!--压缩成字符集-->
+	<div class="export_list" id="export_list">
+		<!--<div><span class="icon-ishop_6-12"></span></div>-->
+		<div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+		<div style="height: 220px;">
+			<div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+			<div class="export_list_all" id="export_list_all">
+				<ul>
+				</ul>
+			</div>
+		</div>
+		<div class="hide_export">
+			<span id="hide_export" style="float: left">关闭</span>
+			<span id="to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+		</div>
+	</div>
+	<div class="tk" id="download_all">
+		<span class="icon-ishop_6-12" id="X_download"></span>
+		<p>请点击"确认",下载压缩文件</p>
+		<div class="btn">
+			<em class="cancel" id="cancel_download">取消</em>
+			<em class="album_enter" id="enter_download"><a>确认</a></em>
+		</div>
+	</div>
 	<script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20170105"></script>
-    <script src="../js/insidePostRequire.js?20170105"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <script src="../js/insidePostRequire.js?2017040170331"></script>
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-	<script src="../js/system/logging.js?20170105"></script>
+	<script src="../js/system/logging.js?2017040170331"></script>
     <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-	<script src="../js/silide.js?20170105"></script>
+	<script src="../js/silide.js?2017040170331"></script>
 	<script>
 //		$('#isactive').click(function(){
 //			console.log(this);

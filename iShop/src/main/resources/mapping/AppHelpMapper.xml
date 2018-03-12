@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.AppHelpMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.AppHelp" id="AppHelp">
+        <id column="id" property="id"/>
+        <result column="app_help_code" property="app_help_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_help_name" property="app_help_name"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="show_order" property="show_order" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+    </resultMap>
+
+    <select id="selectAllHelp" resultMap="AppHelp">
+        SELECT def_app_help.id,
+        def_app_help.app_help_code,
+        def_app_help.app_help_name,
+        def_app_help.created_date,
+        def_app_help.modified_date,
+        def_app_help.modifier,
+        def_app_help.creater,
+        def_app_help.show_order,
+        def_app_help.isactive
+        FROM def_app_help
+
+        <if test="search_value != null and search_value !=''">
+            WHERE  (
+            def_app_help.app_help_code LIKE concat('%', #{search_value},'%')
+            OR def_app_help.app_help_name LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY def_app_help.show_order ASC
+    </select>
+
+    <insert id="insertAppHelp" parameterType="com.bizvane.ishop.entity.AppHelp">
+        INSERT INTO def_app_help
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="app_help_code!=null">
+                app_help_code,
+            </if>
+            <if test="app_help_name!=null">
+                app_help_name,
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="show_order!=null">
+                show_order,
+            </if>
+
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+
+            <if test="app_help_code!=null">
+                #{app_help_code},
+            </if>
+            <if test="app_help_name!=null">
+                #{app_help_name},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="show_order!=null">
+                #{show_order},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateAppHelp" parameterType="com.bizvane.ishop.entity.AppHelp">
+        UPDATE def_app_help
+        <trim prefix="SET" suffixOverrides=",">
+
+            <if test="app_help_code!=null">
+                app_help_code=#{app_help_code},
+            </if>
+            <if test="app_help_name!=null">
+                app_help_name=#{app_help_name},
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="show_order!=null">
+                show_order=#{show_order},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="delAppHelpById">
+        DELETE FROM def_app_help
+        WHERE id=#{id};
+    </delete>
+
+    <select id="selectAppHelpScreen" resultType="com.bizvane.ishop.entity.AppHelp">
+        SELECT def_app_help.id,
+        def_app_help.app_help_code,
+        def_app_help.app_help_name,
+        def_app_help.created_date,
+        def_app_help.modified_date,
+        def_app_help.show_order,
+        def_app_help.modifier,
+        def_app_help.creater,
+        def_app_help.isactive
+        FROM def_app_help
+        WHERE
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!=''">
+                    def_app_help.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY def_app_help.id
+        ORDER BY  def_app_help.show_order ASC
+    </select>
+
+    <select id="selAppHelpById" resultType="com.bizvane.ishop.entity.AppHelp">
+         SELECT def_app_help.id,
+        def_app_help.app_help_code,
+        def_app_help.app_help_name,
+        def_app_help.created_date,
+        def_app_help.modified_date,
+        def_app_help.modifier,
+        def_app_help.creater,
+                def_app_help.show_order,
+        def_app_help.isactive
+        FROM def_app_help
+        WHERE def_app_help.id =#{id}
+    </select>
+
+    <select id="selAppHelpByCode" resultType="com.bizvane.ishop.entity.AppHelp">
+        SELECT def_app_help.id,
+        def_app_help.app_help_code,
+        def_app_help.app_help_name,
+
+        def_app_help.created_date,
+        def_app_help.modified_date,
+        def_app_help.modifier,
+        def_app_help.creater,
+        def_app_help.isactive
+        FROM def_app_help
+        WHERE  def_app_help.isactive= #{isactive}
+        AND def_app_help.app_help_code = #{app_help_code}
+    </select>
+
+    <select id="selAppHelpByName" resultType="com.bizvane.ishop.entity.AppHelp">
+        SELECT def_app_help.id,
+        def_app_help.app_help_code,
+        def_app_help.app_help_name,
+        def_app_help.created_date,
+        def_app_help.modified_date,
+        def_app_help.modifier,
+        def_app_help.creater,
+        def_app_help.isactive
+        FROM def_app_help
+        WHERE  def_app_help.isactive= #{isactive}
+        AND def_app_help.app_help_name = #{app_help_name}
+
+    </select>
+
+    <select id="selectHelps" resultType="com.bizvane.ishop.entity.AppHelp">
+        SELECT def_app_help.id,
+        def_app_help.app_help_code,
+        def_app_help.app_help_name
+        FROM def_app_help
+        WHERE  def_app_help.isactive = #{isactive}
+         ORDER BY def_app_help.show_order ASC
+    </select>
+
+    <select id="selectMaxOrder" resultType="java.lang.String">
+        SELECT max(show_order)
+        FROM def_app_help dap
+        WHERE  dap.isactive = 'Y'
+        ORDER BY dap.show_order ASC
+    </select>
+
+</mapper>

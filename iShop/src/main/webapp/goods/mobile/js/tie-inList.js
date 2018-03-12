@@ -2,13 +2,64 @@
  * Created by huxue on 2016/12/28.
  */
 cache = {
-    'Page':'1',
-    'chooseVal':''
+    'recPage':'1',
+    'myPage':'1',
+    'chooseVal':'',
+    'match':"",
+    next:false,
+    next2:false
 }
 var oc = new ObjectControl();
 var corp_code = $.cookie('corp_code');
 var pageSize = '20';
-var user_code = $.cookie('user_code');
+var user_code = $.cookie('user_code')
+ $("#screen").click(function(){
+      $("#guide").animate({right:'0'},300);
+      $("#cover").show();
+      $("html").addClass("sift-move");
+      $("body").addClass("sift-move");
+})
+$("#cover").click(function(){
+     $("#guide").animate({right:"-"+$("#guide").width()+"px"},300);
+     $("#cover").hide();
+     $("html").removeClass("sift-move");
+     $("body").removeClass("sift-move");
+})
+$(".screen_content .list").on("click","ul li",function(e){
+        e.stopPropagation();
+        $(this).toggleClass("active");
+})
+$("#reset").click(function(){
+     $(".screen_content .list li").attr("class","");
+})
+ $("#complete").click(function(){
+     $("#guide").animate({right:"-"+$("#guide").width()+"px"},300);
+     $("#cover").hide();
+     $("html").removeClass("sift-move");
+     $("body").removeClass("sift-move");
+     var match_type=$("#match_type .list .active");
+     var match="";
+     for(var i=0;i<match_type.length;i++){
+         if(i<match_type.length-1){
+             match+=$(match_type[i]).html()+",";
+         }else {
+             match+=$(match_type[i]).html()
+         }
+     }
+     cache.match=match;
+     if(cache.chooseVal =='rec'){
+         $("#input").val("");
+         cache.recPage=1;
+         $('.main').eq(0).children("img").siblings().remove();
+         getRec();
+     }
+     if(cache.chooseVal =='my'){
+         $("#input1").val("");
+         cache.myPage=1;
+         $('.main').eq(1).children("img").siblings().remove();
+         getMy();
+     }
+ })
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -23,13 +74,15 @@ function GetRequest() {
     return theRequest;
 }
 //    选项卡-推荐
-$('.title div').eq(0).click(function () {
+$('.title .top').eq(0).click(function () {
     $('.main').eq(0).css('display','block');
     $('.main').eq(1).css('display','none');
-    $('.title div').eq(0).css('color','#6dc1c8');
-    $('.title div').eq(0).css('background-color','white');
-    $('.title div').eq(1).css('color','#888888');
-    $('.title div').eq(1).css('background-color','#ededed');
+    $('.title .top').eq(0).css('color','#6dc1c8');
+    $('.title .top').eq(0).css('background-color','white');
+    $('.title .top').eq(1).css('color','#888888');
+    $('.title .top').eq(1).css('background-color','#ededed');
+    $("#input").show();
+    $("#input1").hide();
     $.cookie('action','0');
     cache.chooseVal ='rec';
     cache.Page ='1';
@@ -38,13 +91,15 @@ $('.title div').eq(0).click(function () {
     $('.main').eq(0).find('.the_img img').css('max-height',nowWidth);
 });
 //    选项卡-我的
-$('.title div').eq(1).click(function () {
+$('.title .top').eq(1).click(function () {
     $('.main').eq(0).css('display','none');
     $('.main').eq(1).css('display','block');
-    $('.title div').eq(1).css('color','#6dc1c8');
-    $('.title div').eq(1).css('background-color','white');
-    $('.title div').eq(0).css('color','#888888');
-    $('.title div').eq(0).css('background-color','#ededed');
+    $('.title .top').eq(1).css('color','#6dc1c8');
+    $('.title .top').eq(1).css('background-color','white');
+    $('.title .top').eq(0).css('color','#888888');
+    $('.title .top').eq(0).css('background-color','#ededed');
+    $("#input").hide();
+    $("#input1").show();
     $.cookie('action','1');
     cache.chooseVal ='my';
     cache.Page ='1';
@@ -58,36 +113,83 @@ function getRec(){
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    var pageNumber = cache.Page;
-    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
+    var pageNumber = cache.recPage;
+    var search_value=$("#input").val();
+    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"&search_value="+search_value+"&d_match_type="+cache.match+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
+            console.log(list);
             $('.div').eq(0).find('.out').remove();
             pageVal(list,type);
+            if(list.length>0){
+                cache.next=true;
+            }
+            if(list.length<0){
+                cache.next=false;
+            }
         }else if(data.code =='-1'){
             console.log(data);
         }
     });
 }
+ //搜索推薦
+ $("#input").keydown(function() {
+     var event=window.event||arguments[0];
+     if(event.keyCode == 13){
+         cache.recPage=1;
+         cache.match="";
+         $('.main').eq(0).children("img").siblings().remove();
+         getRec();
+     }
+ });
+ //收縮我的
+  $("#input1").keydown(function() {
+      var event=window.event||arguments[0];
+      if(event.keyCode == 13){
+          cache.myPage=1;
+          cache.match="";
+          $('.main').eq(1).children("img").siblings().remove();
+          getMy();
+      }
+  })
 //我的列表
 function getMy(pageNumber){
     var type = 'my';
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    var pageNumber = cache.Page;
-    oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
+    var pageNumber = cache.myPage;
+    var search_value=$("#input1").val();
+    oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"&search_value="+search_value+"&d_match_type="+cache.match+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
             $('.div').eq(1).find('.out').remove();
             pageVal(list,type);
+            if(list.length>0){
+                cache.next2=true;
+            }
+            if(list.length<0){
+                cache.next2=false;
+            }
         }else if(data.code =='-1'){
             console.log(data);
         }
     });
 }
+//获取侧边类型
+ function getGoodsTypeByCorp(){
+     var corp_code=GetRequest().corp_code;
+     oc.postRequire("get", "/api/shopMatch/shopTypeList?corp_code=" +corp_code +"", "0", "", function (data) {
+         var message=JSON.parse(data.message);
+         var html="";
+         for(var i=0;i<message.length;i++){
+             html+="<li>"+message[i]+"</li>"
+         }
+         $("#match_type .list ul").html(html);
+     })
+ }
 //页面加载获取数据
 function  pageVal(list,type){
     var screenHeight = $(window).height();
@@ -95,24 +197,29 @@ function  pageVal(list,type){
     var valHeight = screenHeight - titleHeight - 25;
     //如果拉取到的数据>=pageSize，更新缓存
     if(list.length >= pageSize){
-            cache.recPage+=1;
+            // cache.recPage+=1;
     }else{
         if(list.length == 0){
             console.log('length'+list.length);
-            if(type == 'rec'){
-                console.log('rec')
+            if(type == 'rec'&&cache.recPage=="1"){
                 $('.main').eq(0).css('height',valHeight);
                 $('.main').eq(0).find('.none').css('display','block');
                 return;
             }
-            if(type == 'my'){
-                console.log('my');
+            if(type == 'my'&&cache.myPage=="1"){
                 $('.main').eq(1).css('height',valHeight);
                 $('.main').eq(1).find('.none').css('display','block');
                 return;
             }
         }else{
-            //$('.none').css('display','none');
+            if(type == 'rec'){
+                $('.main').eq(0).css('height',valHeight);
+                $('.main').eq(0).find('.none').css('display','none');
+            }
+            if(type == 'my'){
+                $('.main').eq(1).css('height',valHeight);
+                $('.main').eq(1).find('.none').css('display','none');
+            }
         }
         //替换模板
     }
@@ -121,7 +228,8 @@ function  pageVal(list,type){
     var tempHTML2 =' <img src="${r_match_goodsImage}" alt="" id="${r_match_goodsCode}"/>';
     var tempHTML3 =' <span class="num">${num}</span> </li> <li class="add"> <div><img src="${imgLick}" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="${imgSave}" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
     var html = ''
-    for(i=0;i<list.length;i++){
+    console.log(list);
+    for(var i=0;i<list.length;i++){
         var d_match_code = list[i].d_match_code;
         var id = list[i].id;
         var d_match_title = list[i].d_match_title;
@@ -159,7 +267,6 @@ function  pageVal(list,type){
         nowHTML3 = nowHTML3.replace('${num}',d_match_likeCount); //点赞数
         nowHTML3 = nowHTML3.replace('${num}',d_match_commentCount); //评论数
         nowHTML3 = nowHTML3.replace('${num}',d_match_collectCount); //收藏数
-        console.log('点赞'+like_status+'收藏'+collect_status);
         if(like_status=='Y'){
             nowHTML3 = nowHTML3.replace('${imgLick}','image/icon_点赞_已点赞@2x.png');
         }else if(like_status=='N'){
@@ -171,16 +278,16 @@ function  pageVal(list,type){
             nowHTML3 = nowHTML3.replace('${imgSave}','image/icon_收藏@2x.png');
         }
         html += nowHTML3;
-        if(type=='rec'){
-            $('.main').eq(0).html(html);
-        }else if(type =='my'){
-            $('.main').eq(1).html(html);
-        }
+    }
+    if(type=='rec'){
+        $('.main').eq(0).append(html);
+    }else if(type =='my'){
+        $('.main').eq(1).append(html);
     }
     var tempHTML4 =' <br/><div class="out">-- 已经是底部了 --</div>';
-    if(type == 'rec'){
+    if(type == 'rec'&&list.length == 0 ){
         $('.main').eq(0).append(tempHTML4);
-    }else if(type== 'my'){
+    }else if(type== 'my'&&list.length == 0){
         $('.main').eq(1).append(tempHTML4);
     }
     toNext();
@@ -189,19 +296,24 @@ function  pageVal(list,type){
 //监听滚动条，实现翻页
 $(window).scroll( function() {
     var oneHeight =  $('.goods_box').height()+20;
-    var pageNum = cache.recPage;
-    var allHeight = oneHeight *10;           //必须翻页高度
-    var nowHeight = $(window).scrollTop();   //滚动条高度
     var chooseVal = cache.chooseVal;         //选项卡
-   if(nowHeight>allHeight*pageNum-200){
-       console.log('请求数据')
+    var bot = 50; //bot是底部距离的高度
+    if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
        if(chooseVal=='rec'){
+           if(!cache.next){
+               return;
+           }
+           cache.next=false;
+           cache.recPage++;
            getRec();
-           console.log('推荐翻页');
        }
        if(chooseVal=='my'){
+           if(!cache.next2){
+               return;
+           }
+           cache.next2=false;
+           cache.myPage++;
            getMy();
-           console.log('我的翻页');
        }
    }else{
        console.log('未达到翻页高度')
@@ -257,6 +369,7 @@ function  click(){
             var action =$.cookie('action');
             param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+"&the_action="+action+'&type='+type;
             console.log(param);
+            $.cookie('repeat',true);
             doAppWebRefresh(param);
             return;
         }
@@ -320,6 +433,7 @@ function toNext(){
         var action =$.cookie('action');
         param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+'&the_action='+action;
         console.log(param);
+        $.cookie('repeat',false);
         doAppWebRefresh(param);
         //window.location = 'details.html?d_match_code'+d_match_code;
     });
@@ -362,21 +476,42 @@ function doAppWebRefresh(param){
         iShop.jumpToWebViewForWeb(param);
     }
 }
-
+function doAppWebHeaderRefresh(param){
+    if(param=="headerRefresh"){
+        $(".header_line").css({"position":"absolute"});
+        $(".title").css({"position":"absolute"});
+    }else{
+        $(".header_line").css({"position":"fixed"});
+        $(".title").css({"position":"fixed"});
+    }
+}
+var myScroll;
+function loaded() {
+       myScroll = new iScroll('guide', { checkDOMChanges: true });
+       // setInterval(function () {
+       // 	if (myScroll.isReady())
+       // 		document.getElementById('thelist').innerHTML += '<li>new row</li>';
+       // }, 2000);
+ }
 window.onload = function () {
     //$('.main').eq(0).find('.none').css('display','none');
     //默认
-    var val  =  $.cookie('action');
-    var val2 = GetRequest().action;
+    var val = '';
+    var val1  =  $.cookie('action');//页面存值
+    var val2 = GetRequest().action;//url取值
+    var repeat = $.cookie('repeat');//验证是否重复获取
     //alert(val2);
     //$('.title div').eq(0).text(val2);
-    if(val2 == '1'){
+    if(repeat == false && val2 == '1'){
         val ='1';
+        $.cookie('repeat',true);
+    }else{
+        val = val1;
     }
     if(val == '0'||val==''|| val ==undefined){
-        $('.title div').eq(0).click();
+        $('.title .top').eq(0).click();
     }else if(val=='1'){
-        $('.title div').eq(1).click();
+        $('.title .top').eq(1).click();
     }
     //获取推荐
     getRec();
@@ -385,5 +520,6 @@ window.onload = function () {
     //控制宽高
     setTime();
     //评论跳转
-
+    getGoodsTypeByCorp();
+    loaded();
 }

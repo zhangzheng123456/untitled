@@ -8,12 +8,16 @@ import com.alibaba.fastjson.JSONObject;
  *
  * 获取附近门店，采用mysql的st_distance函数
  *
+ * 方法1：
  * select lng,lat,
  * (st_distance (point (lng, lat),point(#{lng},#{lat}) ) *111195) AS distance
  * from table
  * having distance > 范围
  *
  * st_distance 是mysql 5.6.1才加入
+ *
+ * 方法2：
+ * ROUND(6378.138*2*ASIN(SQRT(POW(SIN((#{lat}*PI()/180-lat*PI()/180)/2),2)+COS(#{lat}*PI()/180)*COS(lat*PI()/180)*POW(SIN((#{lng}*PI()/180-lng*PI()/180)/2),2)))*1000)  AS distance
  *
  */
 
@@ -50,7 +54,7 @@ public class BaiduMapUtils {
 
         String result = IshowHttpClient.get(url);
         JSONObject obj = JSONObject.parseObject(result);
-        if (obj.containsKey("status") && obj.get("status").equals("0")){
+        if (obj.get("status").toString().equals("0")){
             array = obj.getJSONArray("result");
         }
         return array;

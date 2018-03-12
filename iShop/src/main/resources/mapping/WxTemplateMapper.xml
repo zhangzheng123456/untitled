@@ -6,6 +6,7 @@
         <result column="corp_code" property="corp_code"/>
         <result column="template_id" property="template_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_content" property="template_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="app_id" property="app_id"/>
         <result column="app_name" property="app_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="app_user_name" property="app_user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -14,6 +15,9 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="industry" property="industry" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="content_example" property="content_example" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_content_data" property="template_content_data" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectById" resultMap="WxTemplate">
@@ -30,7 +34,11 @@
         rwt.created_date,
         rwt.creater,
         rwt.isactive,
-        def_corp.corp_name
+        rwt.industry,
+        rwt.content_example,
+        def_corp.corp_name,
+        rwt.template_content,
+        rwt.template_content_data
         FROM rel_wechat_template rwt,def_corp
         WHERE rwt.corp_code = def_corp.corp_code
         AND  rwt.ID=#{id}
@@ -42,7 +50,7 @@
         FROM rel_wechat_template rwt ,def_corp dc
         WHERE rwt.corp_code = dc.corp_code
         <if test="corp_code != null and corp_code != ''">
-            AND corp_code = #{corp_code}
+            AND rwt.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value != ''">
         AND (
@@ -51,6 +59,38 @@
             OR rwt.app_name LIKE concat ('%',#{search_value},'%')
             )
         </if>
+        <!--  AND isactive = 'Y' -->
+        GROUP By rwt.id
+        ORDER BY rwt.id DESC
+    </select>
+
+    <select id="selectWxTemplateAllScreen" resultMap="WxTemplate">
+        SELECT rwt.*,
+        dc.corp_name
+        FROM rel_wechat_template rwt ,def_corp dc
+        WHERE rwt.corp_code = dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND rwt.corp_code=#{corp_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  rwt.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  rwt.created_date &lt;= #{created_date_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!=''">
+                    rwt.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By rwt.id
+        ORDER BY rwt.id DESC
     </select>
 
     <insert id="insertWxTemplate" parameterType="com.bizvane.ishop.entity.WxTemplate">
@@ -89,6 +129,18 @@
             <if test="isactive != null">
                 isactive,
             </if>
+            <if test="industry!=null">
+                industry,
+            </if>
+            <if test="content_example!=null">
+                content_example,
+            </if>
+            <if test="template_content!=null">
+                template_content,
+            </if>
+            <if test="template_content_data!=null">
+                template_content_data,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="corp_code != null">
@@ -123,6 +175,18 @@
             </if>
             <if test="isactive != null">
                 #{isactive},
+            </if>
+            <if test="industry!=null">
+                #{industry},
+            </if>
+            <if test="content_example!=null">
+                #{content_example},
+            </if>
+            <if test="template_content!=null">
+                #{template_content},
+            </if>
+            <if test="template_content_data!=null">
+                #{template_content_data},
             </if>
         </trim>
     </insert>
@@ -163,6 +227,18 @@
             <if test="isactive != null">
                 isactive = #{isactive},
             </if>
+            <if test="industry!=null">
+                industry=#{industry},
+            </if>
+            <if test="content_example!=null">
+                content_example=#{content_example},
+            </if>
+            <if test="template_content!=null">
+              template_content= #{template_content},
+            </if>
+            <if test="template_content_data!=null">
+               template_content_data= #{template_content_data},
+            </if>
         </trim>
         WHERE id = #{id};
     </update>
@@ -172,5 +248,80 @@
         rel_wechat_template
         WHERE id = #{id}
     </delete>
+
+    <select id="selectTempByAppId" resultMap="WxTemplate">
+        SELECT *
+        FROM rel_wechat_template
+        WHERE 1=1
+        <if test="app_id != null and app_id !=''">
+            AND app_id = #{app_id}
+        </if>
+        <if test="app_user_name != null and app_user_name !=''">
+            AND app_user_name = #{app_user_name}
+        </if>
+        <if test="template_name != null and template_name !=''">
+            AND template_name = #{template_name}
+        </if>
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectByIdAndName" resultMap="WxTemplate">
+        SELECT *
+        FROM rel_wechat_template
+        WHERE 1=1
+        <if test="app_id != null and app_id != ''">
+            AND app_id = #{app_id}
+        </if>
+        <if test="template_id != null and template_id != ''">
+          AND   template_id=#{template_id}
+        </if>
+        <if test="template_name!=null and template_name!=''">
+            AND  template_name=#{template_name}
+        </if>
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectByCorpCode" resultMap="WxTemplate">
+        SELECT *
+        FROM rel_wechat_template
+        WHERE 1=1
+        <if test="corp_code != null and corp_code != ''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="app_id != null and app_id != ''">
+            AND app_id = #{app_id}
+        </if>
+        AND isactive = 'Y'
+    </select>
+
+    <resultMap id="WxTemplateContent" type="com.bizvane.ishop.entity.WxTemplateContent">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="app_id" property="app_id"/>
+        <result column="app_name" property="app_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_user_name" property="app_user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_id" property="template_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_first" property="template_first" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_remark" property="template_remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_url" property="template_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="type" property="type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_type" property="vip_card_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectContentById" resultMap="WxTemplateContent">
+        SELECT *
+        FROM rel_wechat_template_content
+        WHERE app_id = #{app_id}
+        AND  template_name=#{template_name}
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+    </select>
 
 </mapper>

@@ -6,41 +6,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.*;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.PageInfo;
 import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
 import org.apache.log4j.Logger;
-import org.bson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.lang.System;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by zhouzhou on 2016/9/5.
@@ -128,7 +110,7 @@ public class UserActionController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
@@ -164,10 +146,10 @@ public class UserActionController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -184,7 +166,40 @@ public class UserActionController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                result.put("total",dbCursor1.count());
 
+            }else if(role_code.equals(Common.ROLE_CM)){
+//                BasicDBList value = new BasicDBList();
+//                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+//                System.out.println("manager_corp=====>"+manager_corp);
+//                String[] split = manager_corp.split(",");
+//                BasicDBList manager_corp_arr = new BasicDBList();
+//                for (int i = 0; i < split.length; i++) {
+//                    manager_corp_arr.add(split[i]);
+//                }
+//                if(manager_corp_arr.size()>0) {
+//                    value.add(new BasicDBObject("corp_code", new BasicDBObject("$in", manager_corp_arr)));
+//                }
+//                value.add(queryCondition);
+//                BasicDBObject queryCondition1 = new BasicDBObject();
+//                queryCondition1.put("$and", value);
+//                DBCursor dbCursor2 = cursor.find(queryCondition1);
+//                result.put("total",dbCursor2.count());
+//                pages = MongoUtils.getPages(dbCursor2,page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                result.put("total",dbCursor2.count());
+                pages = MongoUtils.getPages(dbCursor2,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
             } else {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -192,7 +207,7 @@ public class UserActionController {
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
-
+                result.put("total",dbCursor2.count());
                 pages = MongoUtils.getPages(dbCursor2,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
             }
@@ -205,6 +220,7 @@ public class UserActionController {
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -245,14 +261,48 @@ public class UserActionController {
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
-            } else {
+                result.put("total",dbCursor1.count());
+            }else if(role_code.equals(Common.ROLE_CM)){
+//                BasicDBList value = new BasicDBList();
+//                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+//                System.out.println("manager_corp=====>"+manager_corp);
+//                String[] split = manager_corp.split(",");
+//                BasicDBList manager_corp_arr = new BasicDBList();
+//                for (int i = 0; i < split.length; i++) {
+//                    manager_corp_arr.add(split[i]);
+//                }
+//                if(manager_corp_arr.size()>0) {
+//                    value.add(new BasicDBObject("corp_code", new BasicDBObject("$in", manager_corp_arr)));
+//                }
+//                value.add(queryCondition);
+//                BasicDBObject queryCondition1 = new BasicDBObject();
+//                queryCondition1.put("$and", value);
+//                DBCursor dbCursor2 = cursor.find(queryCondition1);
+//                result.put("total",dbCursor2.count());
+//                pages = MongoUtils.getPages(dbCursor2,page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
                 value.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
-
+                result.put("total",dbCursor1.count());
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+            }  else {
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                result.put("total",dbCursor1.count());
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
             }
@@ -283,9 +333,9 @@ public class UserActionController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
@@ -295,7 +345,12 @@ public class UserActionController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_action);
             DBObject sort_obj = new BasicDBObject("time", -1);
-
+            if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+            }
             if (screen.equals("")) {
                 String[] column_names = new String[]{"emp_id","emp_name","corp_name","url","time","vip_id","action"};
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
@@ -338,7 +393,7 @@ public class UserActionController {
                 int i = 9 / 0;
             }
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request,"");
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

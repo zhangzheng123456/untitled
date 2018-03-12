@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <title>任务列表</title>
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css?t=20170608">
+</head>
+<body>
+<div class="task_list_tab" id="task_list_tab">
+    <div class="task_list_tab_uncompleted active" id="uncom">未完成(0)</div>
+    <div class="task_list_tab_completed" id="com">已完成(0)</div>
+</div>
+<div class="task_list_content" id="task_list_content">
+    <div class="task_list_content_uncompleted" id="task_list_content_uncompleted">
+        <div class="kong_img" id="kong_img_uncompleted" style="display: none" >
+            <div class="kong">
+               <span>暂无任务</span>
+            </div>
+        </div>
+    </div>
+    <div class="task_list_content_completed" id="task_list_content_completed" style="display: none">
+        <div class="kong_img" id="kong_img_completed" >
+            <div class="kong">
+                <span>您还没有完成过的任务</span>
+            </div>
+        </div>
+        <!--<div class="task_list_line">-->
+            <!--<p class="task_list_title">分享链接满5次得积分</p>-->
+            <!--<p class="task_list_subtitle">奖励200积分;50元优惠券</p>-->
+            <!--<div class="task_list_progressbar_parent_completed">已完成</div>-->
+            <!--&lt;!&ndash;<span class="the_award">领取奖励</span>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="task_list_line">-->
+            <!--<p class="task_list_title">分享链接满5次得积分</p>-->
+            <!--<p class="task_list_subtitle">奖励200积分;50元优惠券</p>-->
+            <!--<div class="task_list_progressbar_parent_completed">已完成</div>-->
+            <!--&lt;!&ndash;<span class="the_award">领取奖励</span>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="task_list_line">-->
+            <!--<p class="task_list_title">分享链接满5次得积分</p>-->
+            <!--<p class="task_list_subtitle">奖励200积分;50元优惠券</p>-->
+            <!--<div class="task_list_progressbar_parent_completed">已完成</div>-->
+            <!--&lt;!&ndash;<span class="the_award">领取奖励</span>&ndash;&gt;-->
+        <!--</div>-->
+    </div>
+</div>
+<div id="loading">
+    <div class="tip">
+        <div class="tip_box">
+            <div class="icon_err rotate"><img src="img/icon_apply.png" width="100%" height="100%" alt="icon_error.png"></div>
+            <div class="loading_txt">加载中...</div>
+        </div>
+    </div>
+</div>
+<div id="tip">
+    <div class="tip">
+        <div class="tip_box">
+            <div class="loading_txt"></div>
+        </div>
+    </div>
+</div>
+<div class="back_vip_center" id="back_vip_center"><a>返回会员中心</a></div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/config.js"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script>
+    var oc = new ObjectControl();
+    var theRequest={};
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    $("#task_list_tab>div").click(function(){
+        var index=$(this).index();
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
+        $("#task_list_content").children().hide();
+        $("#task_list_content").children().eq(index).show();
+    });
+    $("#task_list_content").on("click",".task_list_line.uncompleted",function(){
+       if($(this).attr("data-type")=="activity"){
+           window.location.href="activity_detail.html?id="+$(this).attr("data-code")+"&card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&type=activity&datetime="+new Date().getTime();
+       }else{
+           window.location.href="task_detail.html?id="+$(this).attr("id")+"&card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&datetime="+new Date().getTime();
+       }
+    });
+    var _params=theRequest;
+    $("#loading").show();
+    oc.postRequire("post", ajaxUrl.taskList,"", _params, function(data){
+        if(data.code=="0"){
+            $("#loading").hide();
+            var msg=JSON.parse(data.message);
+//            console.log(msg)
+            var uncom=msg.uncom;
+            var com=msg.com;
+            $("#back_vip_center a").prop("href",msg.vip_url);
+            if(uncom.length=="0"){
+                $("#kong_img_uncompleted").show();
+            }else{
+                $("#kong_img_uncompleted").hide();
+                var unComHtml="";
+                for(var i=0;i<uncom.length;i++){
+                    var unPresentArray=[];
+                    var unPresent=uncom[i].present_point==""?"":uncom[i].present_point+"积分";
+                    var unPresentCoupon=uncom[i].present_coupon==""?"":JSON.parse(uncom[i].present_coupon);
+                    var unPresentObj={};
+                    var status=uncom[i].task_status;
+                    if(unPresentCoupon!=""){
+                        for(var n=0;n<unPresentCoupon.length;n++){
+                            var code=unPresentCoupon[n].coupon_code;
+                            if(unPresentObj[code]==undefined){
+                                unPresentObj[code]={name:unPresentCoupon[n].coupon_name,num:1}
+                            }else{
+                                unPresentObj[code].num+=1;
+                            }
+                        }
+                        for(var key in unPresentObj){
+                            unPresentArray.push(unPresentObj[key].name+"x"+unPresentObj[key].num)
+                        }
+                    }
+                    if(unPresent!=""){
+                        unPresentArray.unshift(unPresent);
+                    }
+                   if(unPresentArray.length!=0){
+                       unPresent="任务奖励:"+unPresentArray.join(",");
+                   }
+                 if(uncom[i].task_type=="activity"){
+                       unComHtml+='<div class="unComLogo"></div></div><div class="task_list_line uncompleted" data-type="'+uncom[i].task_type+'" data-code="'+uncom[i].task_condition+'" id="'+uncom[i].id+'">'
+                               +'<p class="task_list_title text-overflow">'+uncom[i].task_title+'</p>'
+                               +'<p class="task_list_subtitle text-overflow">'+"任务奖励:点击查看详情"+'</p>'
+                               +'<div class="task_list_progressbar_parent"><p class="task_list_progressbar" style="background-color: #FFFFFF"><span style="background-color: #FFFFFF" class="task_list_progressbar_now"></span></p></div>'
+                               +'<span class="task_list_arrow"></span>'
+                               +'</div>'
+                   }else if(uncom[i].task_type=="integral_accumulate" || uncom[i].task_type=="ticket_sales" || status=="0" || uncom[i].task_type=="questionnaire"){
+                        unComHtml+='<div class="unComLogo"></div></div><div class="task_list_line uncompleted" data-type="'+uncom[i].task_type+'" id="'+uncom[i].id+'">'
+                                +'<p class="task_list_title text-overflow">'+uncom[i].task_title+'</p>'
+                                +'<p class="task_list_subtitle text-overflow">'+unPresent+'</p>'
+                                +'<div class="task_list_progressbar_parent"><p class="task_list_progressbar" style="background-color: #FFFFFF"><span style="background-color: #FFFFFF" class="task_list_progressbar_now"></span></p></div>'
+                                +'<span class="task_list_arrow"></span>'
+                                +'</div>'
+                    }else {
+                        unComHtml+='<div class="unComLogo"></div><div class="task_list_line uncompleted" data-type="'+uncom[i].task_type+'" id="'+uncom[i].id+'">'
+                                +'<p class="task_list_title text-overflow">'+uncom[i].task_title+'</p>'
+                                +'<p class="task_list_subtitle text-overflow">'+unPresent+'</p>'
+                                +'<div class="task_list_progressbar_parent"><p class="task_list_progressbar"><span class="task_list_progressbar_now" style="width:'+(uncom[i].complete_count/uncom[i].target_count)*100+'%"></span></p></div>'
+                                +'<span class="task_list_progressNum">('+uncom[i].complete_count+'/'+uncom[i].target_count+')</span>'
+                                +'<span class="task_list_arrow"></span>'
+                                +'</div>'
+                    }
+                }
+                $("#task_list_content_uncompleted").html(unComHtml)
+            }
+            if(com.length=="0"){
+                $("#kong_img_completed").show();
+            }else{
+                $("#kong_img_completed").hide();
+                var comHtml="";
+                for(var i=0;i<com.length;i++){
+                    var presentArray=[];
+                    var present=com[i].present_point==""?"":com[i].present_point+"积分";
+                    var present_coupon=com[i].present_coupon==""?"":JSON.parse(com[i].present_coupon);
+                    if(present_coupon!=""){
+                        for(var c=0;c<present_coupon.length;c++){
+                            presentArray.push(present_coupon[c].coupon_name);
+                        }
+                    }
+                    if(present!=""){
+                        presentArray.push(present)
+                    }
+                        comHtml+='<div class="comLogo"></div><div class="task_list_line" id="'+com[i].id+'" style="padding-bottom: 5px">'
+                                +'<p class="task_list_title text-overflow" style="padding-right: 0">'+com[i].task_title+'</p>'
+                                +'<p class="task_list_subtitle text-overflow" style="padding-right: 0">获得奖励:'+presentArray.join(",")+'</p>'
+                                +'<p class="task_list_time text-overflow">完成时间:'+com[i].modified_date+'</p>'
+//                            +'<div class="task_list_progressbar_parent"><p class="task_list_progressbar"><span class="task_list_progressbar_now"></span></p></div>'
+//                            +'<span class="task_list_progressNum">(3/5)</span>'
+//                                +'<span class="task_list_arrow task_list_arrow_com "></span>'
+                                +'</div>';
+//                    }else{
+//                        comHtml+='<div class="task_list_line uncompleted" id="'+com[i].id+'">'
+//                                +'<p class="task_list_title text-overflow">'+com[i].task_title+'</p>'
+//                                +'<p class="task_list_subtitle text-overflow">'+com[i].task_description+'</p>'
+//                                +'<div class="task_list_progressbar_parent"><p class="task_list_progressbar"><span class="task_list_progressbar_now"></span></p></div>'
+//                                +'<span class="task_list_progressNum">(3/5)</span>'
+//                                +'<span class="task_list_arrow"></span>'
+//                                +'</div>'
+//                    }
+                }
+                $("#task_list_content_completed").html(comHtml);
+            }
+            var progress=$("#task_list_content_uncompleted .task_list_progressNum");
+            for(var p=0;p<progress.length;p++){
+                $(progress[p]).prevAll(".task_list_subtitle").css("paddingRight",$(progress[p]).css("width"));
+            }
+
+            if(com.length=="0"){
+                $("#kong_img_completed").show();
+            }else{
+                $("#kong_img_completed").hide();
+            }
+            $("#com").html("已完成("+com.length+")");
+            $("#uncom").html("未完成("+uncom.length+")");
+        }else if(data.code=="1"){
+             var  url=data.message;
+            window.location.href=url;
+        }else if(data.code=="-1"){
+            $("#loading").hide();
+            $("#tip .loading_txt").html(data.message==undefined?"请求失败":data.message==""?"请求失败":data.message);
+            $("#tip").show();
+            setTimeout(function(){
+                $("#tip").hide();
+            },2000)
+        }
+    })
+</script>
+</body>
+</html>

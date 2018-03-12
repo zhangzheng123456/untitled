@@ -3,16 +3,28 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>搭配列表</title>
-    <link rel="stylesheet" href="css/swiper.3.1.7.min.css?20161209">
-    <link rel="stylesheet" href="css/tie-inList.css"/>
+    <link rel="stylesheet" href="css/swiper.3.1.7.min.css?2017040170331">
+    <link rel="stylesheet" href="css/tie-inList.css?20170408"/>
     <link rel="stylesheet" href="css/reset.css"/>
     <meta content="telephone=no,email=no" name="format-detection">
+    <script src="js/iscroll.js"></script>
 </head>
 <body>
 <ul class="warp">
+    <div class="header_line">
+        <div class="search">
+            <form onkeydown="if(event.keyCode==13)return false;">
+                <input id="input" type="search" value="" placeholder="搜索搭配">
+            </form>
+            <form onkeydown="if(event.keyCode==13)return false;">
+                <input id="input1" type="search" value="" placeholder="搜索搭配" style="display: none;">
+            </form>
+        </div>
+        <div class="screen" id="screen">筛选</div>
+    </div>
     <li class="title">
-        <div>推荐</div>
-        <div>我的</div>
+        <div class="top">推荐</div>
+        <div class="top">我的</div>
     </li>
     <!--推荐-->
     <li class="main">
@@ -30,11 +42,29 @@
 
     </li>
 </ul>
-<script src="js/flexible.js?20161209"></script>
-<script src="js/jquery-1.11.1.js"></script>
+<div id="cover"></div>
+<div id="guide" class="screen_list">
+    <div class="screen_content" id="screen_content">
+        <div id="match_type" class="parent">
+            <h4>秀搭类型</h4>
+            <div class="list">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="xian"></div>
+        </div>
+    </div>
+    <div class="screen_footer">
+        <div id="reset" class="bg_h">重置</div>
+        <div id="complete" class="bg_h">完成</div>
+    </div>
+</div>
+<script src="js/flexible.js?2017040170331"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/insidePostRequire.js"></script>
-<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <!--匹配js-->
-<script src="js/tie-inList.js"></script>
+<script src="js/tie-inList.js?20170408"></script>
 </body>
 </html>

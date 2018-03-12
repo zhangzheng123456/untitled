@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>编辑区域信息</title>
+    <title>编辑店铺群组信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link href="../table/css/inner.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link href="../table/css/inner.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <style>
         body{
             margin-top:81px;
@@ -33,6 +33,33 @@
             color: #888;
             display:none;
         }
+       .tk{
+          position:fixed;
+          left: 50%;
+          top: 65%;
+          /*transform: translate(-50%,-50%);*/
+          /*-ms-transform: translate(-50%,-50%);*/
+          /*-moz-transform: translate(-50%,-50%);*/
+          /*-webkit-transform: translate(-50%,-50%);*/
+          /*-o-transform: translate(-50%,-50%);*/
+          z-index:10001;
+        }
+        /*.screen_area{*/
+            /*min-height: 480px;*/
+            /*height: 480px;*/
+        /*}*/
+        /*.screen_area .screen_content{*/
+            /*height: 300px;*/
+        /*}*/
+        /*.screen_area .screen_content .screen_content_l{*/
+            /*height: 300px;*/
+        /*}*/
+        /*.screen_area .screen_content .screen_content_r{*/
+            /*height: 300px;*/
+        /*}*/
+        /*.screen_area .screen_que{*/
+            /*margin-top: 10px;*/
+        /*}*/
     </style>
 </head>
 
@@ -40,7 +67,7 @@
    <!--  <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title"><span id="back_area">区域管理</span><i class="icon-ishop_8-03"></i><label>编辑区域信息</label></div>
+        <div class="col-lg-12 pre_title"><span id="back_area">店铺群组管理</span><i class="icon-ishop_8-03"></i><label>编辑店铺群组</label></div>
             <div class="editor_1 col-lg-7 editor_line animated fadeInRight">
                <!--  <div class="operation_conpany">
                     <ul>
@@ -60,10 +87,10 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">区域编号*</label><input type="text" id="AREA_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域编号不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">店铺群组编号*</label><input type="text" id="AREA_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺群组编号不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">区域名称*</label><input type="text" id="AREA_NAME" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域名称不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">店铺群组名称*</label><input type="text" id="AREA_NAME" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺群组名称不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>下属店铺</label><input type="text" id="area_shop" class="area_shop" disabled="disabled"/></span>
@@ -100,9 +127,9 @@
     <div class="content" style="display: none;">
        <div class="con_table" id="con_table">
            <div class="title">
-               <span id="back_area_1">区域管理</span>
+               <span id="back_area_1">店铺群组管理</span>
                <span class="icon-ishop_8-03"></span>
-               <span id="back_area_edit">编辑区域信息</span>
+               <span id="back_area_edit">编辑店铺群组</span>
                <span class="icon-ishop_8-03"></span>
                <span>批量管理下属店铺</span>
            </div>
@@ -110,23 +137,23 @@
                <div class="list_l">
                    <ul>
                        <li>
-                           <label>区域编号</label>
+                           <label>店铺群组编号</label>
                            <input type="text" disabled="true" id="area_code">
                        </li>
                        <li class="r">
-                           <label>区域名称</label>
+                           <label>店铺群组名称</label>
                            <input type="text" disabled="true" id="areaName">
                        </li>
-                       <li class="r_filrate">
+                       <!-- <li class="r_filrate">
                            <i class="icon-ishop_6-05"></i>
                        </li>
                        <li class="r_filrate_hint">
-                           显示当前区域店铺
-                       </li>
+                           显示当前店铺群组里店铺
+                       </li> -->
                    </ul>
                </div>
                <div class="list_r">
-                   <div class="save" id="save"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-04"></i>保存</div>
+                   <!-- <div class="save" id="save"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-04"></i>保存</div> -->
                    <div class="turnoff" id="turnoff"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-12"></i>关闭</div>
                </div>
            </div>
@@ -169,22 +196,18 @@
                </div>
                 <div class="action_r">
                    <ul>
-                       <li id="filtrate">
-                           <span class="icon-ishop_6-05"></span>
-                           筛选
+                       <li id="add">
+                           <span class="icon-ishop_6-01"></span>
+                           添加
                        </li>
-                       <!--<li class="bg">-->
-                           <!--<span class="icon-ishop_6-07"></span>-->
-                           <!--刷新-->
-                       <!--</li>-->
-                       <!--<li>-->
-                           <!--<span class="icon-ishop_6-08"></span>-->
-                           <!--更多-->
-                       <!--</li>-->
+                       <li class="bg" id="del">
+                           <span class="icon-ishop_6-02"></span>
+                           移除
+                       </li>
                    </ul>
                </div>
            </div>
-           <div class="sxk" id="sxk">
+           <!-- <div class="sxk" id="sxk">
                <div class="sbtn">
                    <div class="empty" id="empty">
                        <i class="icon-ishop_6-16"></i>清空筛选
@@ -219,17 +242,17 @@
                        <input type="text" id="brand_name">
                    </li>
                </div>
-           </div>
+           </div> -->
            <div class="table">
                <table id="table" cellpadding="0" cellspacing="0" width="100%">
                    <thead>
                    <tr class="th">
+                      <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                        <th style="text-align: left; padding-left: 22px;">序号</th>
                        <th>店铺编号</th>
                        <th>店铺名称</th>
-                       <th>所属区域</th>
+                       <th>店铺群组</th>
                        <th>所属品牌</th>
-                       <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                    </tr>
                    </thead>
                    <tbody>
@@ -266,21 +289,99 @@
                </ul>
            </div>
        </div>
-   </div>
+       <div class="p" id="p"></div>
+      <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认移除数据?</p>
+        <div class="btn" style="padding:0">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" id="delete">移除</em>
+        </div>
+      </div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_store" class="screen_area">
+        <div class="screen_title">
+            <h4>添加店铺</h4>
+            <div class="screen_close" id="screen_close_store"><span class="icon-ishop_6-12"></span></div>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p" style="margin-left:10px;">
+                   <input type="text" value="" readonly="true" id="dealer" class="xuanzhong_input" placeholder="所属经销商">
+                    <div id="dealer_parent">
+                        <input type="text" class="search" placeholder="搜索">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="xuanzhong_p" style="margin-left:0;">
+                    <input type="text" value="" readonly="true" id="offline_area" class="xuanzhong_input" placeholder="所属区域">
+                    <div id="offline_area_parent">
+                        <input type="text" class="search" placeholder="搜索">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="xuanzhong_p" style="margin-left:0;">
+                    <input type="text" value="" readonly="true" id="store_type" class="xuanzhong_input" placeholder="所属店铺类型">
+                    <div id="store_type_parent">
+                        <input type="text" class="search" placeholder="搜索">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="r_search" id="r_search">
+                    <span class="icon-ishop_3-05"></span>
+                </div>
+            </div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索店铺" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_store">确定</div>
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="../js/loading.js?20170105"></script>
+    <script src="../js/loading.js?2017040170331"></script>
    <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/area/area_operate.js?20170105"></script>
-   <script type="text/javascript" src="../js/area/batch_manage_shop.js?20170105"></script>
+    <script type="text/javascript" src="../js/area/area_operate.js?2017040170331"></script>
+   <script type="text/javascript" src="../js/area/batch_manage_shop.js?2017040170331"></script>
 </body>
 
 </html>

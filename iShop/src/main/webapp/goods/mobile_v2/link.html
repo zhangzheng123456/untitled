@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/gqrequest.js?2017040170331"></script>
+<script>
+    var oc = new ObjectControl();
+    var param={};
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    function getXdShareUrl() {
+        var host=window.location.host;
+        var param={};
+        var corp_code=GetRequest().corp_code;
+        var store_id=GetRequest().store_id;
+        var d_match_code=GetRequest().d_match_code;
+        var user_code=GetRequest().user_id;
+        param["corp_code"]=corp_code;
+        param["store_id"]=store_id;
+        param["user_id"]=GetRequest().user_id;
+        param["match_value"]="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code+"&store_id="+store_id;
+        oc.postRequire("post", "/api/getOpenId", "0",param, function (data) {
+            if(data.code=="0"){
+                location.href=data.message;
+            }else if(data.code=="-1"){
+
+            }
+        });
+    };
+    getXdShareUrl();
+</script>
+</body>
+</html>

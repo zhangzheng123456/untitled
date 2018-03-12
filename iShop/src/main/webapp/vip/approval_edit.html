@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>新增核准计划</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+<body>
+<!-- <div id="wrapper">
+</div> -->
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>会员运营</span><i class="icon-ishop_8-03"></i><span id="back_vip_label">核准计划</span><i class="icon-ishop_8-03"></i><label>编辑核准计划</label></div>
+    <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg" style="margin-left:0px">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li>
+                        <span class="corp_select">
+                            <select id="OWN_CORP" style="display:inline-flex" >
+                            </select>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <span><label style="color:#c26555;">名称*</label><input type="text" id="approval_name" verify="Empty" maxlength="200"/><div style="padding-left:80px" class="hint"><div  hintinfo="名称不能为空！"></div></div></span>
+            </div>
+            <div style="height: 30px;line-height: 30px;">
+                <span style="float: left"><label style="color:#c26655">核准周期*</label></span>
+                <div style="width: 420px;padding: 0 10px;margin: 0;float: left;height: 50px;background-color: #fff;line-height: 50px;">
+                    <div style="border-bottom: 1px solid #d4d8e1;margin: 0"><em class="checkbox_isactive" style="margin-right: 20px;"><input type="radio" checked value="" name="test" class="check" id="input_moth"><label for="input_moth"></label></em><span id="month_input" style="cursor: pointer;vertical-align: middle;margin-right: 50px">每月</span>
+                        <em class="checkbox_isactive" style="margin-right: 20px"><input type="radio" value="" name="test" class="check" id="input_year"><label for="input_year"></label></em><span id="year_input" style="cursor: pointer;vertical-align: middle">每年</span></div>
+                </div>
+            </div>
+            <div style="width: 420px;height: 50px;background-color: #fff;clear: both;padding-left: 26px;margin-left: 123px;line-height: 50px;" id="time_select">
+                <span>每月 <input type="text" style="border: 1px solid #d7d7d7;width: 100px;margin: 0 10px 0;" id="month_day" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">日</span>
+                <span style="display: none">每年 <input type="text" style="border: 1px solid #d7d7d7;width: 100px;margin: 0 10px 0" id="year_month" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">月<input maxlength="2" type="text" style="border: 1px solid #d7d7d7;width:100px;margin:0 10px 0" id="year_day"  onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">日</span>
+            </div>
+            <div>
+                <span style="display: inline-flex;width:100%"><label style="height:100px;">备注</label><span class="tempalte_area" style="height: 100px;"><textarea placeholder="请输入备注" style="height: 100px" id="message_content"></textarea></span></span>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+        <div class="operadd_btn">
+            <ul>
+                <li class="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive">
+                    <input checked="true" type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/loading.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script type="text/javascript" src="../js/vip/approval_operate.js"></script>
+</body>
+<script>
+    $("#month_input,#year_input").click(function(){
+        $(this).prev().children("label").trigger("click")
+    });
+    $(".checkbox_isactive label").click(function(){
+        var index=$(this).parent().index();
+        if(index==0){
+            $("#time_select").children().hide().eq(0).show()
+        }else if(index==2){
+            $("#time_select").children().hide().eq(1).show()
+        }
+    })
+</script>
+</html>

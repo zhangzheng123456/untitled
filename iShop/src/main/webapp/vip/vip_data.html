@@ -2,323 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>-->
     <title>会员分析</title>
-    <link rel="stylesheet" href="../css/reset.css?201715">
-    <link rel="stylesheet" href="../css/vip_analyze.css?201715">
-    <link rel="stylesheet" href="../css/vip-data.css?201715">
+    <link rel="stylesheet" href="../css/reset.css?2017040170331">
+    <link rel="stylesheet" href="../css/vip_analyze.css?20170807">
+    <link rel="stylesheet" href="../css/vip-data.css?20180125">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../table/css/inner.css?201715">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
-    <link rel="stylesheet" href="../css/style.css?201715">
-    <link rel="stylesheet" href="../css/jquery.dad.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170815">
+    <link rel="stylesheet" href="../css/style.css?2017040170331">
+    <link rel="stylesheet" href="../css/jquery.dad.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <!--弹窗-->
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js?2017040170331"></script>
     <style>
-        .dad-container::after{
+        .dad-container::after {
             display: none;
         }
-        html, body {
-            background: #e8e8e8;
-            font-family: '微软雅黑';
-            color: #888888;
+        .activityAnalyze{
+            background: #fff;
+            padding: 10px 20px;
         }
-        .warp {
-            background-color: #000000;
-            opacity: 0.25;
-            z-index: 998;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            bottom: 0px;
-            right: 0px;
-            display: none;
+        .activityHeader{
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
         }
-
-        #topUp, #refund, #record {
-            z-index: 999;
-            display: none;
-            width: 570px;
-            height: 520px;
-            background-color: white;
-            border: 1px solid #f7f7f7;
-            border-radius: 5px;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            margin-top: -220px;
-            margin-left: -285px;
-            font-family: "微软雅黑";
-        }
-
-        /*顶部*/
-        .topUp_top {
-            height: 50px;
-            line-height: 50px;
-            border-bottom: 1px solid #d7d7d7;
-            margin: 0 10px;
-            /*padding-left: 5px;*/
-            padding-right: 5px;
-            color: #888;
-        }
-        .screen_close {
-            width: 30px;
-            height: 30px;
-            line-height: 50px;
-            /*padding-top: 5px;*/
-            color: #888;
-            font-size: 16px;
-            cursor: pointer;
-            position: absolute;
-            top: 0;
-            right: 0;
-            z-index: 3;
-            text-align: center;
-            color: #888;
-        }
-
-        /*表单*/
-        .topUp_main {
-            height: 419px;
-            overflow-x: hidden;
-            overflow-y: auto;
-            font-size: 15px;
-        }
-
-        .topUp_main div ul li label {
-            font-size: 15px;
-        }
-
-        .add_border {
-            width: 410px;
-            border: 1px solid #d7d7d7;
-            border-radius: 5px;
-        }
-
-        .editor_em select {
-            width: 410px;
-        }
-
-        #refundNote, #topUpNum, #chooseDate, #topUpShop, #topUpCard, #topUpVipName, #topUpMoney, #topUpMoneyReality, #topUpMoneyDiscount, #topUpNote, #refundNum, #refundDate, #refunBalanceFrom, #refundBalance, #refunTopUpFrom, #refundReality, #refundMoneyDiscount {
-            border: 1px solid #d7d7d7;
-            border-radius: 5px;
-            margin-left: -4px;
-            width: 412px;
-        }
-
-        /*底部*/
-        .topUp_bottom {
-            border-top: 1px solid #d7d7d7;
-            margin: 0 10px;
-            height: 50px;
-            line-height: 50px;
-            position: relative;
-        }
-
-        #toRecord, #toReturn {
-            width: 100px;
+        .activityHeader>div{
+            display: inline-block;
             height: 30px;
             line-height: 30px;
-            background-color: #ffffff;
-            border: 1px solid #888888;
-            text-align: center;
-            border-radius: 5px;
-            position: absolute;
-            left: 10px;
-            top: 10px;
-
         }
-
-        #toFalse {
-            width: 100px;
-            height: 30px;
-            line-height: 30px;
-            background-color: #d1d1d1;
-            color: #888888;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 10px;
-            right: 120px;
-
-        }
-
-        #toSave {
-            width: 100px;
-            height: 30px;
-            line-height: 30px;
-            background-color: #6dc1c8;
-            color: white;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .arrow_right {
-            position: absolute;
-            right: 0;
-            top: 0px;
-            width: 30px;
-            height: 30px;
-            border-radius: 0 5px 5px 0;
-            color: #fff;
-            line-height: 30px;
-            text-align: center;
-            background: #6dc1c8;
-        }
-
-        /*下拉菜单*/
-        .execution li {
-            cursor: pointer;
-            height: 30px;
-            line-height: 30px;
-            padding-left: 5px;
-        }
-
-        .execution li:hover {
-            background: #4a5f7c;
-            color: #fff;
-        }
-
-        .execution .liactive {
-            background: #6cc1cb;
-            color: #fff;
-            border: 1px solid #ccc;
-        }
-
-        /*error*/
-        .hint {
-            display: none;
-        }
-
-        /*日期弹窗*/
-        #laydate_box {
-            z-index: 1000;
-            position: fixed;
-        }
-
-        /*记录页面*/
-        .record_all {
-            margin-left: 10px;
-            margin-right: 10px;
-            width: 547.78px;
-        }
-
-        .record_head_the {
-            color: #888;
-            font-size: 14px;
-            background-color: #efefef;
-            margin: 0 auto;
-            height: 30px;
-            margin-top: 10px
-        }
-
-        .record_bottom_the {
-            position: absolute;
-            bottom: 50px;
-            color: #888;
-            font-size: 14px;
-            margin: 0 auto;
-            height: 20px;
-            text-align: center;
-            width: 547.78px;
-        }
-
-        .record_bottom_the:hover {
-            cursor: pointer;
-        }
-
-        /*单据编号*/
-        .record_num {
-            width: 110px;
-            line-height: 30px;
-            text-align: center;
-            float: left;
-        }
-
-        /*单据类型*/
-        .record_type {
-            float: left;
-            line-height: 30px;
-            text-align: center;
-            width: 135px;
-        }
-
-        /*单据金额*/
-        .record_money {
-            float: left;
-            line-height: 30px;
-            text-align: center;
-            width: 100px;
-        }
-
-        /*单据余额*/
-        .record_balance {
-            float: left;
-            line-height: 30px;
-            text-align: center;
-            width: 100px;
-        }
-
-        #record_body li {
-            background-color: #fff;
-            border-bottom: 1px solid #e8e8e8;
-            color: #888888;
-            height: 30px;
-            font-size: 14px;
-        }
-
-        #record_body li:hover {
-            cursor: pointer;
-        }
-
-        /*数据图表图表*/
-        .chart_head i {
-            float: right;
-        }
-        button{
-            outline:none;
-        }
-        .vip_sex_select{
-            display: none;
-            width: 420px;
-            position: absolute;
-            left: 120px;
-            top: 30px;
-            z-index: 100;
-            text-indent: 10px;
-            background: #f1f1f1;
-        }
-        .vip_sex_select li{
+        .activityAnalyzeChange>span{
+            width:130px;
             height:30px;
             line-height: 30px;
+            text-align: center;
+            color: #4a5f7c;
             cursor: pointer;
         }
-        .vip_sex_select li:hover {
+        .colorC26555{
+            color: #c26555;
+        }
+        .color999{
+            color: #999;
+        }
+        .activityAnalyzeChange>.changeAcitve{
             background: #4a5f7c;
-            color: #FFFFFF;
+            color: #fff;
         }
-        /*特定宽度*/
-        .searchable-select-holder{
-            width: 412px;
-            border: 1px solid #d7d7d7;
+        .activityHeader span{
+            display: inline-block;
+        }
+        .activityHeader>div:nth-child(2){
+            float: right;
+        }
+        .activityMid{
+            background: #61c7db;
+            height: 80px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .activityMid>div{
+            display: inline-block;
+            width: 33.333%;
+            padding-top: 25px;
+            color: #4a5f7c;
+            font-size: 12px;
+        }
+        .activityMid>div span{
+            color:#fff;
+            margin-bottom: 5px;
+            font-size: 20px;
+            display: inline-block;
+        }
+        .noTaskStore_tip_close {
+            margin: 10px 10px 0 0;
+            float: right;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .topUp_bottom{
+            margin: 0 10px;
+        }
+        .topUp_bottom button{
+            bottom: 5px!important;
+        }
+        .address_nav_box .address_nav a{
+            width: 33.33%;
+        }
+        .address_container a:hover{
+            text-decoration: none;
+        }
+        .coupon_num{
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: #f5f5f5;
+            margin-bottom: 20px;
+        }
+        .vip_call_back_header{
+            padding: 10px 20px 0 10px;
+            background-color: #FFFFFF;
+            color: #434960;
+        }
+        .vip_call_back_header:after{
+            content: "";
+            height: 0;
+            visibility: hidden;
+            display: block;
+            clear: both;
+        }
+        .vip_call_back_filter input{
+            width: 200px;
+            height: 30px;
+            margin-left: 10px;
+            line-height: 30px;
             border-radius: 5px;
-            color: #888888;
+            outline: none;
+            padding-left: 10px;
+            border: 1px solid #ddd;
         }
-        .searchable-select-dropdown{
-            width: 412px;
+        .vip_call_back_filter>li{
+            position: relative;
+            float: left;
+            margin: 0 30px 10px 0;
+        }
+        .vip_call_back_filter label{
+            width: 60px;
+            text-align: right;
+        }
+        .vip_call_back_filter i{
             position: absolute;
-            left: 0px;
+            color: #6cc1c8;
+            right: 6px;
+            top:8px;
+        }
+        .vip_call_back_filter ul{
+            display: none;
+            position: absolute;
+            width: 200px;
+            right: 0px;
+            z-index: 100;
+            top:31px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            max-height: 200px;
+            overflow-y: auto;
+            background: #fff;
+        }
+        .vip_call_back_filter ul li{
+            width: 100%;
+            padding-left: 10px;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .vip_call_back_filter ul li:hover{
+            color: #fff;
+            background: #4a5f7c;
+        }
+        .vip_call_back_btn{
+            display: inline-block;
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 5px;
+            background: #6cc1c8;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+        }
+        .vip_call_back_header_time input.laydate-icon{
+            width: 130px;
+            height: 30px;
+            text-indent: 10px;
+            border: 1px solid #d7d7d7;
+            border-radius: 4px;
+            outline: none;
+        }
+        .cart_table tr:nth-child(even){
+            background: #fff;
+        }
+        .spinner {
+            margin: 150px auto;
+            width: 100px;
+            text-align: center;
+        }
+        .spinner > div {
+            width: 25px;
+            height: 25px;
+            background-color: #6cc1c8;
+            border-radius: 100%;
+            display: inline-block;
+            -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+            animation: bouncedelay 1.4s infinite ease-in-out;
+            /* Prevent first frame from flickering when animation starts */
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+        .spinner .bounce1 {
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s;
+        }
+        .spinner .bounce2 {
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+        }
+        @-webkit-keyframes bouncedelay {
+            0%, 80%, 100% { -webkit-transform: scale(0.0) }
+            40% { -webkit-transform: scale(1.0) }
+        }
+        @keyframes bouncedelay {
+            0%, 80%, 100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0);
+            } 40% {
+                  transform: scale(1.0);
+                  -webkit-transform: scale(1.0);
+              }
+        }
+        .module_shadow{
+            display: none;
+            position: absolute;
+            z-index: 100;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            color: #FFFFFF;
+            background: rgba(0,0, 0, 0.1);
         }
     </style>
 </head>
-<body>
+<body style="background-color: #e8e8e8">
 <div class="con_table" id="con_table">
     <!--弹窗-->
     <div class="warp">
@@ -328,11 +248,12 @@
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
         </div>
         <div class="editor_em  animated fadeInRight topUp_main">
-            <form class="conpany_msg" style="margin-top: 30px">
+            <form class="conpany_msg" style="margin-top: 15px">
                 <div>
                     <span>
                         <label>单据编号</label>
-                        <input type="text" id="topUpNum" autocomplete="off" maxlength="50" placeholder="由系统自动生成" disabled/>
+                        <input type="text" id="topUpNum" autocomplete="off" maxlength="50" placeholder="由系统自动生成"
+                               disabled/>
                     </span>
                     <!--<li class="add_border"><span class="corp_select"><select id="topUpNum"style="display:inline-flex;width: 410px"></select></span></li>-->
                 </div>
@@ -342,37 +263,20 @@
                     <input type="text" id="chooseDate" readonly="true" placeholder="请选择日期" class="laydate-icon"/>
                 </span>
                 </div>
-                <div>
-                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
-                        <li><label style="color:#c26555;">充值类型*</label></li>
-                        <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
-                        <input class="PARAM_NAME" id="execution_input"
-                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
-                               readonly/>
-                        <ul class="execution" id="execution"
-                            style="width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
-                            <li>直接充值</li>
-                            <li>退换转充值</li>
-                            <!--<li>系统短信通知顾客</li>-->
-                            <!--<li>(任务)分享链接到社交平台</li>-->
-                            <!--<li>微信公众号推送</li>-->
-                        </ul>
-                    </ul>
-                </div>
-                <div>
-                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
-                        <li><label style="color:#c26555;">充值店仓*</label></li>
-                        <li id="corp_parent">
+                <div style="width: 384.45px;">
+                    <ul style="display:inline-flex;position: relative;margin-bottom:0px;">
+                        <li><label style="color:#c26555;width: 105px;float: left;">充值店仓*</label></li>
+                        <li id="corp_parent" style="width:261px;float: left;">
                             <span class="corp_select" style="width: 412px">
                                 <select id="OWN_CORP" style="display: inline-flex"></select>
                             </span>
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
-                        <li><label style="color:#c26555;">*经办人</label></li>
-                        <li id="topUpPeople_parent">
+                <div style="width: 384.45px">
+                    <ul style="display:inline-flex;position: relative;margin-bottom:0px;">
+                        <li><label style="color:#c26555;width: 105px;float: left;">经办人* </label></li>
+                        <li id="topUpPeople_parent"style="width: 261px;float: left;">
                             <span class="corp_select" style="width: 412px">
                                 <select id="topUpPeople" style="display: inline-flex">
                                 </select>
@@ -383,7 +287,7 @@
                 <div>
                     <span>
                         <label>会员卡号</label>
-                        <input type="text" id="topUpCard" autocomplete="off" maxlength="200" disabled/>
+                        <input type="text" id="topUpCard" autocomplete="off" maxlength="200" disabled style="text-indent: 0px;padding-left: 10px;width: 251px"/>
                          <div style="padding-bottom: 0px" class="hint">
                              <div hintinfo="VIP卡号不能为空！" class="error_tips" style="">VIP卡号不能为空！</div>
                          </div>
@@ -395,6 +299,17 @@
                         <input type="text" id="topUpVipName" autocomplete="off" maxlength="200" disabled/>
                     </span>
                 </div>
+                <div style="width: 384.45px;">
+                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
+                        <li><label style="color:#c26555;width: 105px;float: left;">充值类型*</label></li>    <!--充值类型-->
+                        <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
+                        <input class="PARAM_NAME" id="execution_input" readonly style="width:261px; float: left;"/>
+                        <ul class="execution" id="execution">
+                            <li>直接充值</li>
+                            <li>退换转充值</li>
+                        </ul>
+                    </ul>
+                </div>
                 <div>
                     <span>
                         <label style="color:#c26555;">折合吊牌金额*</label>
@@ -404,7 +319,7 @@
                         </div>
                     </span>
                 </div>
-                <div>
+                <div style="clear:both">
                     <span>
                         <label style="color:#c26555;">实付金额*</label>
                         <input type="text" id="topUpMoneyReality" autocomplete="off" maxlength="10"/>
@@ -416,21 +331,30 @@
                 <div>
                     <span>
                         <label>充值折扣</label>
-                        <input type="text" id="topUpMoneyDiscount" autocomplete="off" maxlength="200" disabled/>
+                        <input type="text" id="topUpMoneyDiscount" autocomplete="off" placeholder="由系统自动生成"
+                               maxlength="200" disabled/>
                     </span>
                 </div>
                 <div>
                     <span>
                         <label>备注</label>
-                        <input type="text" id="topUpNote" autocomplete="off" maxlength="200"/>
+                        <input type="text" id="topUpNote" autocomplete="off" maxlength="200" style="width:261px!important;"/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label style="color:#c26555;">关联活动*</label>
+                        <input type="text" id="activityContent" autocomplete="off" maxlength="200" style="width:261px!important;"/>
+                         <div style="padding-bottom: 0px" class="hint">
+                             <div hintinfo="关联活动不能为空！" class="error_tips" style="line-height: 20px">关联活动不能为空！</div>
+                         </div>
                     </span>
                 </div>
             </form>
         </div>
         <div class="topUp_bottom">
-            <button id="toRecord">充值记录</button>
             <button id="toFalse">取 消</button>
-            <button id="toSave">保 存</button>
+            <button id="toSave">提 交</button>
         </div>
     </div>
     <!--充值结束-->
@@ -451,13 +375,7 @@
                     <ul id="record_body">
                     </ul>
                 </li>
-                <!-- <li class="record_bottom_the" id="toAddMore">加载更多></li> -->
             </ul>
-        </div>
-        <div class="topUp_bottom">
-            <button id="toReturn">< 返回充值</button>
-            <!--<button id="toFalse">取 消</button>-->
-            <!--<button id="toSave">保 存</button>-->
         </div>
     </div>
     <!--充值记录结束-->
@@ -466,11 +384,12 @@
             <div class="screen_close" id="refundClose"><span class="icon-ishop_6-12"></span></div>
         </div>
         <div class="editor_em  animated fadeInRight topUp_main">
-            <form class="conpany_msg" style="margin-top: 30px">
+            <form class="conpany_msg" style="margin-top: 15px">
                 <div>
                     <span>
                         <label>单据编号</label>
-                        <input type="text" id="refundNum" autocomplete="off" maxlength="50" placeholder="由系统自动生成" disabled/>
+                        <input type="text" id="refundNum" autocomplete="off" maxlength="50" placeholder="由系统自动生成"
+                               disabled/>
                     </span>
                 </div>
                 <div>
@@ -479,54 +398,40 @@
                     <input type="text" id="refundDate" readonly="true" placeholder="请选择日期" class="laydate-icon"/>
                 </span>
                 </div>
-                <div>
-                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
-                        <li><label style="color:#c26555;">退款类型*</label></li>
-                        <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
-                        <input class="PARAM_NAME" id="refunTypeInput"
-                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;border: 1px solid #ddd"
-                               readonly/>
-                        <div style="padding-bottom: 0px" class="hint">
-                            <div hintinfo="退款类型不能为空！" class="error_tips" style="">退款类型不能为空！</div>
-                        </div>
-                        <ul class="execution" id="refunType"
-                            style="width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #d7d7d7;">
-                            <li onclick="refunTopUpShow()">按充值单退款</li>
-                            <li onclick="refunBalanceShow()">余额退款</li>
-                        </ul>
-                    </ul>
-                </div>
-                <div>
+                <div style="width: 384.45px;">
                     <ul style="display:inline-flex;position: relative;margin-bottom: 0px;">
-                        <li><label style="color:#c26555;">退款店仓*</label></li>
-                        <li id="refund_parent">
+                        <li><label style="color:#c26555;width: 105px;float: left;">退款店仓*</label></li>
+                        <li id="refund_parent" style="width: 261px;float: left;">
                             <span class="corp_select" style="width: 412px">
                                 <select id="OWN_CORP_refund" style="display: inline-flex">
                                 </select>
                             </span>
                         </li>
-                        <!--&lt;!&ndash;<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>&ndash;&gt;-->
-                        <!--<input class="PARAM_NAME" id="refunShop"-->
-                               <!--style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px;border: 1px solid #ddd"-->
-                               <!--readonly/>-->
-                        <!--<div style="padding-bottom: 0px" class="hint">-->
-                            <!--<div hintinfo="退款店仓不能为空！" class="error_tips" style="">退款店仓不能为空！</div>-->
-                        <!--</div>-->
-                        <!--<ul class="execution" id="refunShopSelcet"-->
-                            <!--style="max-height: 120px;overflow-y:auto;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">-->
-                            <!--<li>本店</li>-->
-                        </ul>
+                    </ul>
                     </ul>
                 </div>
-                <div>
+                <div style="width: 384.45px;">
                     <ul style="display:inline-flex;position: relative;margin-bottom:0px">
-                        <li><label style="color:#c26555;">*经办人</label></li>
-                        <li id="refundPeople_parent">
+                        <li><label style="color:#c26555;width: 105px;float: left;;">经办人*</label></li>
+                        <li id="refundPeople_parent"style="width:261px;float: left; ">
                             <span class="corp_select" style="width: 412px">
                                 <select id="refundPeople" style="display: inline-flex">
                                 </select>
                             </span>
                         </li>
+                    </ul>
+                </div>
+                <div style="width: 384.45px;">
+                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
+                        <li><label style="color:#c26555;width: 105px;float: left;">退款类型*</label></li>
+                        <input class="PARAM_NAME" id="refunTypeInput" readonly style="width: 261px;float: left;"/>
+                        <div style="padding-bottom: 0px" class="hint">
+                            <div hintinfo="退款类型不能为空！" class="error_tips" style="">退款类型不能为空！</div>
+                        </div>
+                        <ul class="execution" id="refunType">
+                            <li onclick="refunTopUpShow()">按充值单退款</li>
+                            <li onclick="refunBalanceShow()">余额退款</li>
+                        </ul>
                     </ul>
                 </div>
                 <!--若选择按充值单退款：-->
@@ -546,7 +451,7 @@
                         <input type="text" id="refunBalanceFrom" autocomplete="off" maxlength="200"/>
                     </span>
                 </div>
-                <div style="display: none">
+                <div style="display: none;clear: both;">
                     <span>
                         <label>实付金额</label>
                         <input type="text" id="refundReality" autocomplete="off" maxlength="200" disabled/>
@@ -558,7 +463,7 @@
                         <input type="text" id="refundMoneyDiscount" autocomplete="off" maxlength="200" disabled/>
                     </span>
                 </div>
-                <div style="display: none">
+                <div style="display: none;clear: both;">
                     <span>
                         <label>账户余额</label>
                         <input type="text" id="refundBalance" autocomplete="off" maxlength="200" disabled/>
@@ -574,7 +479,7 @@
         </div>
         <div class="topUp_bottom">
             <button id="toFalse" onclick="toFalse()">取 消</button>
-            <button id="toSave" onclick="toSave()">保 存</button>
+            <button id="toSave" onclick="toSave()">提 交</button>
         </div>
     </div>
     <!--退款结束 -->
@@ -583,7 +488,7 @@
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span id="VIP_LIST">会员档案</span>
+            <span id="VIP_LIST">会员卡档案</span>
             <span class="icon-ishop_8-03"></span>
             <span id="vipAnalyze_return">会员信息</span>
         </div>
@@ -596,15 +501,23 @@
                     </div>
                     <div class="person-right">
                         <span class="icon-ishop_9-01 edit" title="编辑资料" id="edit_message"></span>
-                      <span class="person-message">
+                        <span class="person-message">
                           <i class="person-name" id="vip_name"></i> <a></a>
                       </span>
-                      <span class="vip">
-                          <span class="margin-right10">会员卡号</span><span id="vip_card_no"></span>
+                        <span class="vip">
+                          <span class="margin-right10">卡号</span><span id="vip_card_no"></span>
                       </span>
-                      <span class="vip">
-                         <span class="margin-right10">会员卡类型</span><span class="vipClass" id="vip_card_type"></span>
-                          <span id="grade_change" style="display: none"><i id="grade_up" style="color:#6cc1c8;margin-left: 5px" class="icon-ishop_6-25"></i><i id="grade_down" style="color:#c4c4c4;margin-left: 5px" class="icon-ishop_6-26"></i></span>
+                        <span class="vip">
+                         <span class="margin-right10">类型</span><span class="vipClass" id="vip_card_type"></span>
+                          <span id="grade_change" style="display: none"><i id="grade_up"
+                                                                           style="color:#6cc1c8;margin-left: 5px"
+                                                                           class="icon-ishop_6-25"></i><i
+                                  id="grade_down" style="color:#c4c4c4;margin-left: 5px"
+                                  class="icon-ishop_6-26"></i></span>
+                      </span>
+                        <span class="vip" style="margin-left: 90px">
+                          <span class="margin-right10">积分</span><span class="vipClass" id="vip_point"></span>
+                          <span class="margin-right10">保护积分</span><span class="vipClass" id="vip_protect_point"></span>
                       </span>
                     </div>
                 </div>
@@ -612,7 +525,7 @@
                     <div class="datail-first">
                         <span class="detail-left">手机号码</span><span class="detail-right" id="vip_phone"></span>
                         <div id="send_code" class="functional_btn"><input
-                                type="text" data-type="1" value="预存款密码" readonly/><i class="icon-ishop_8-02"></i>
+                                type="text" data-type="1" value="预存款密码" autocomplete="off" readonly/><i class="icon-ishop_8-02"></i>
                             <ul>
                                 <li data-type="1">预存款密码</li>
                                 <li data-type="2">积分付款密码</li>
@@ -624,14 +537,19 @@
                         <span class="detail-left">所属导购</span><span class="detail-right" id="user_name"></span>
                     </div>
                     <div style="height: 30px;line-height: 30px;">
-                        <span class="detail-left">所属店铺</span><span class="detail-right" id="store_name"></span>
+                        <span class="detail-left">所属店铺</span><span class="detail-right" id="store_name" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;vertical-align: middle;max-width: 75%"></span>
                     </div>
                     <div style="height: 30px;line-height: 30px;">
                         <!--<span class="detail-left">余额</span><span class="detail-right" id="balance">0 元</span><span class="functional_btn" id="toTopUp">充值</span>-->
-                        <span class="detail-left">余额</span><span class="detail-right" id="balance">0 元</span><span
-                            class="functional_btn" id="toTopUp">充值</span><span class="functional_btn"
-                                                                               id="toRefund">退款</span>
+                        <span class="detail-left">余额</span><span class="detail-right" id="balance"></span>
+                        <span class="functional_btn" id="toTopUp">充值</span><span class="functional_btn"
+                                                                                 id="toRefund">退款</span> <span
+                            class="functional_btn" id="toRecord">充值记录</span>
                     </div>
+                    <!--<div style="height: 30px;line-height: 30px;">-->
+                    <!--<span class="detail-left">当前积分</span><span class="detail-right jifen"-->
+                    <!--id="vip_total_points"></span>-->
+                    <!--</div>-->
                     <div style="height: 30px;line-height: 30px;">
                         <span class="detail-left">消费金额</span><span class="detail-right jifen"
                                                                    id="vip_total_amount"></span>
@@ -646,10 +564,17 @@
                     <!--<span class="detail-left">休眠时间</span><span class="detail-right" id="vip_dormant_time"></span>-->
                     <!--</div>-->
                     <div style="height: 30px;line-height: 30px;">
-                        <span class="detail-left">会员生日</span><span class="detail-right" id="vip_birthday"></span>
+                        <span class="detail-left">出生日期</span><span class="detail-right" id="vip_birthday"></span>
                     </div>
                     <div id="corp_code" style="display: none"></div>
                     <div class="person-more"><label id="more_message">详细资料<i class="icon-ishop_8-03"></i></label></div>
+                </div>
+                <div class="module_shadow" id="left_module">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
                 </div>
             </div>
             <div class="center">
@@ -672,12 +597,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!--<tr>-->
-                                <!--<td >2016-09-18</td>-->
-                                <!--<td>5</td>-->
-                                <!--<td>9.6</td>-->
-                                <!--<td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>-->
-                                <!--</tr>-->
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td colspan="4">数据加载中...</td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
+                                    <tr style="border: none"><td></td><td></td><td></td><td></td></tr>
                                 </tbody>
                             </table>
 
@@ -708,18 +637,32 @@
                     <div class="person-more" style="margin:0 10px;"><label id="fenLei">查看更多<i
                             class="icon-ishop_8-03"></i></label></div>
                 </div>
+                <div class="module_shadow" id="center_module">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
             </div>
             <div class="left">
+                <div class="module_shadow" id="right_module">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
                 <div class="left-class">
                     <div class="content1">
                         <span class="Fsize-28" id="total_amount_Y"></span>
-                        <span class="Fsize-12">近一年消费金额(元)</span>
+                        <span class="Fsize-12" id="amt"></span>
                     </div>
                 </div>
                 <div class="left-class left-color-1">
                     <div class="content1">
                         <span class="Fsize-28" id="consume_times_Y"></span>
-                        <span class="Fsize-12">近一年消费单数</span>
+                        <span class="Fsize-12" id="num"></span>
                     </div>
                 </div>
                 <div class="left-class left-color-2">
@@ -744,26 +687,51 @@
             </div>
         </div>
         <!-- 分析数据图表描述-->
-        <div id="chart_analyze" style="margin-top: 0.5%"  data-id="">
-            <div class="chart_module" data-id="type">
+        <div class="chart_dec_title">
+            <div style="padding-left: 15px">
+                按年筛选
+                <div style="position: relative;display: inline-block;margin-left: 10px">
+                    <input type="text" value="全部" readonly class="chart_year_input" id="chart_year_input"><i class="icon-ishop_8-02 chart_year_input"></i>
+                    <ul id="chart_year_select">
+                        <!--<li>全部</li>-->
+                        <!--<li>2017</li>-->
+                        <!--<li>2016</li>-->
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: right;color: #19a7b3">*下列图表数据截止为昨天</div>
+        </div>
+        <div id="chart_analyze" style="margin-top: 0.5%" data-id="">
+            <div class="chart_module col_sm_5" data-id="type">
                 <ul>
                 <span class="chart_head">
                     <span class="drag_area">
                         <i class="icon-ishop_6-27"></i>
-                        <span>消费类型</span>
+                        <span>品类偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
                         <li>按件数分析</li>
                         <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
                     </ul></span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24 chart_list_icon" title="导出数据"></i>
                 </span>
                     <li id="type" style="padding-left: 10px;height: 270px">
                     </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
-            <div class="chart_module" data-id="weeks">
+            <div class="chart_module col_sm_5" data-id="weeks">
                 <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -773,15 +741,26 @@
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
                         <li>按件数分析</li>
                         <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
                     </ul></span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
                 </span>
-                    <li id="weeks" style="height: 270px;">
+                    <li id="weeks" style="height: 270px">
                     </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
-            <div class="chart_module" data-id="price">
+            <div class="chart_module col_sm_5" data-id="price">
                 <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -791,33 +770,55 @@
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
                         <li>按件数分析</li>
                         <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
                     </ul></span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
                 </span>
-                    <li id="price" style="height: 270px;">
+                    <li id="price" style="height: 270px">
                     </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
-            <!--<div class="chart_module" data-id="times">-->
-                <!--<ul>-->
-                <!--<span class="chart_head">-->
-                    <!--<span class="drag_area">-->
-                        <!--<i class="icon-ishop_6-27"></i>-->
-                        <!--<span>购买时段</span>-->
-                    <!--</span>-->
-                    <!--<span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>-->
-                        <!--<li>按件数分析</li>-->
-                        <!--<li>按金额分析</li>-->
-                    <!--</ul></span>-->
-                    <!--<i class="icon-ishop_6-12 chart_close_icon"></i>-->
-                    <!--<i class="icon-ishop_9-05 chart_list_icon"></i>-->
-                <!--</span>-->
-                    <!--<li id="times" style="height: 270px;">-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
-            <div class="chart_module" data-id="month">
+            <div class="chart_module col_sm_5" data-id="season">
+                <ul>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>季节偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
+                    </ul></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
+                </span>
+                    <li id="season" style="height: 270px;">
+                    </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="chart_module col_sm_5" data-id="month">
                 <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -827,40 +828,58 @@
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
                         <li>按件数分析</li>
                         <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
+                        <li>按笔数分析</li>
+                        <li>按客单价分析</li>
+                        <li>按连带率分析</li>
                     </ul></span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
                 </span>
-                    <li id="month" style="height: 270px;">
+                    <li id="month" style="height: 270px;background: #ffffff">
                     </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
-            <div class="chart_module" data-id="series">
+            <div class="chart_module col_sm_5" data-id="series">
                 <ul>
                 <span class="chart_head">
                     <span class="drag_area">
                          <i class="icon-ishop_6-27"></i>
-                         <span>系列偏好</span>
+                         <span>品牌偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
                         <li>按件数分析</li>
                         <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
                     </ul></span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
                 </span>
-                    <li id="series" style="height: 270px;padding-left: 10px;">
+                    <li id="series" style="padding-left: 10px;height: 270px">
                     </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
-            <!--<div class="chart_module">-->
-            <!--<ul>-->
-            <!--<span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>-->
-            <!--<li id="main6" style="height: 270px;padding-left: 10px;">-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</div>-->
-            <div class="chart_module" data-id="areas">
+            <div class="chart_module col_sm_5" data-id="areas">
                 <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -870,70 +889,240 @@
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
                         <li>按件数分析</li>
                         <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
                     </ul></span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
                 </span>
-                    <li id="areas" style="height:270px;">
+                    <li id="areas" style="height: 270px;">
                     </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
-            <!--<div class="chart_module add_chart" id="add_chart" style="display: block">-->
-                <!--<span>+</span>-->
-                <!--<span>添加图表</span>-->
-            <!--</div>-->
+            <div class="chart_module col_sm_5" data-id="typeMid">
+                <ul>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>中类偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
+                    </ul></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
+                </span>
+                    <li id="typeMid" style="padding-left: 10px;height: 270px;">
+                    </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="chart_module col_sm_5" data-id="typeSm">
+                <ul>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>小类偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
+                    </ul></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
+                </span>
+                    <li id="typeSm" style="padding-left: 10px;height: 270px;">
+                    </li>
+                    <div class="data_table" style="display: none;">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="chart_module col_sm_5" data-id="typeSeries">
+                <ul>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>系列偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
+                    </ul></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
+                </span>
+                    <li id="typeSeries" style="height: 270px;">
+                    </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="chart_module col_sm_5" data-id="year">
+                <ul>
+                <span class="chart_head">
+                    <span class="drag_area">
+                        <i class="icon-ishop_6-27"></i>
+                        <span>年份偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                        <li data-type="discount">按折扣分析</li>
+                    </ul></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon" title="切换数据展示方式"></i>
+                    <i class="icon-ishopwebicon_6-24" title="导出数据"></i>
+                </span>
+                    <li id="Year" style="height: 270px">
+                    </li>
+                    <div class="data_table" style="display: none">
+                    </div>
+                    <div class="right_shadow">
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
         </div>
-            <div class="add_chart" id="add_chart" style="width: 32.833%;height: 300px;float: left;background-color: #DDDDDD">
+        <div class="add_chart" id="add_chart"
+             style="width: 32.833%;height: 300px;float: left;background-color: #DDDDDD">
             <span>+</span>
             <span>添加图表</span>
         </div>
         <!--添加图表弹窗-->
         <div class="chart_add_wrap" id="chart_add_wrap">
-            <span class="chart_add_title">选择要展示的图表</span>
-            <i class="icon-ishop_6-12 chart_close"></i>
+            <span class="chart_add_title"><span class="title_icon"></span>选择要展示的图表</span>
+            <!--<i class="icon-ishop_6-12 chart_close"></i>-->
             <div class="chart_add_details" id="chart_add_details">
                 <ul>
                     <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box1"><label for="check_box1"></label>
-                            <span>消费类型</span>
-                        </div>
+                        <img src="../img/map_circular.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">品类偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
                     </li>
                     <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box2"><label for="check_box2"></label>
-                            <span>价格偏好</span>
-                        </div>
-                    </li>
-                    <!--<li>-->
-                        <!--<div class="chart_checkbox">-->
-                            <!--<input type="checkbox" class="check" type="text" id="check_box3"><label for="check_box3"></label>-->
-                            <!--<span>购买时段</span>-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box4"><label for="check_box4"></label>
-                            <span>月份偏好</span>
-                        </div>
+                        <img src="../img/map_circular.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">季节偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
                     </li>
                     <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box5"><label for="check_box5"></label>
-                            <span>系列偏好</span>
-                        </div>
+                        <img src="../img/map_radar.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">星期偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
                     </li>
                     <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box7"><label for="check_box7"></label>
-                            <span>地域偏好</span>
-                        </div>
+                        <img src="../img/map_bar.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">价格偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
+                    </li>
+                    <li id="year_chart" style="display: none">
+                        <img src="../img/map_bar.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">年份偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
                     </li>
                     <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box8"><label for="check_box8"></label>
-                            <span>星期偏好</span>
-                        </div>
+                        <img src="../img/map_radar.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">月份偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
+                    </li>
+                    <li>
+                        <img src="../img/map_area.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">地域偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
+                    </li>
+                    <li>
+                        <img src="../img/map_circular.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">品牌偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
+                    </li>
+                    <li>
+                        <img src="../img/map_circular.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">中类偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
+                    </li>
+                    <li>
+                        <img src="../img/map_circular.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">小类偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
+                    </li>
+                    <li>
+                        <img src="../img/map_circular.png">
+                        <span class="chart_dec">
+                             <span class="chart_name">系列偏好</span>
+                             <span></span>
+                        </span>
+                        <span class="chart_icon">+</span>
                     </li>
                 </ul>
             </div>
@@ -944,13 +1133,20 @@
                 </ul>
             </div>
         </div>
-        <div class="p" id="p"></div>
+        <div class="tk" id="tk_export" style="position:fixed; display: none;">
+            <span class="icon-ishop_6-12" id="X_export"></span>
+            <p>是否导出该图表数据?</p>
+            <div class="btn">
+                <em class="cancel" id="cancel_export">取消</em>
+                <em class="album_enter" id="enter"><a style="color: white;" data-src="">确认</a></em>
+            </div>
+        </div>
     </div>
     <div id="VIP_edit" style="display:none;">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span id="VIP_LIST_info">会员列表</span>
+            <span id="VIP_LIST_info">会员卡档案</span>
             <span class="icon-ishop_8-03"></span>
             <span id="VIP_message_back">会员信息</span>
             <span class="icon-ishop_8-03"></span>
@@ -962,14 +1158,18 @@
                     <li class="active1">基本信息</li>
                     <li>拓展信息</li>
                     <li data-name="consume">消费记录</li>
+                    <li>积分记录</li>
                     <li data-name="Ablum">相册</li>
                     <li data-name="label">标签</li>
                     <li>收藏夹</li>
+                    <!--<li>活动分析</li>-->
+                    <li data-name="callback">回访反馈</li>
                     <li>备忘录</li>
-                    <li>购物车</li>
+                    <li data-name="coupon">优惠券</li>
+                    <li data-name="cart">购物车</li>
                     <li>备注</li>
                     <div id="remark"
-                         style="width: 11.111%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
+                         style="width: 8.3333%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
             </div>
             <div class="all_list">
@@ -980,13 +1180,14 @@
                             <div>
                                 <label>头像</label><span class="head_img" id="preview"><img src="" id="IMG"
                                                                                           style="height:50px;width: 50px;"></span>
-                        <span class="change_touxiang" style="position: relative;">
+                                <span class="change_touxiang" style="position: relative;">
                         <i class="icon-ishop_6-09"></i>
-                        <input type="file" id="VIP_avatar"
-                               style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
+                        <input type="file" id="VIP_avatar" unselectable="on" name="vipAvatar"
+                               style="overflow: hidden;position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px;font-size: 50px">更换头像</span>
                             </div>
                             <div class="item_1">
-                            <span><label>所属店铺</label><input class="input_select" value="" id="store_name_edit"
+                            <span><label>所属店铺</label><input class="input_select" data-code="" value=""
+                                                            id="store_name_edit"
                                                             type="text" style="background: #dfdfdf" readonly/>
                                 <!--<ul>-->
                                 <!--<li>正常</li>-->
@@ -995,16 +1196,18 @@
                             </span>
                             </div>
                             <div class="item_1" style="position:relative;">
-                            <span><label>性别</label><input class="input_select" value="男" type="text" id="USER_SEX"
-                                                         style="background: #ffffff url('../img/btn_dropmenu.png') no-repeat 100% 50%;background-size: 30px" readonly/>
-                                <ul class="vip_sex_select">
+                            <span><label>性别</label><input value="男" type="text" id="USER_SEX"
+                                                          style="background: #dfdfdf"
+                                                          readonly/>
+                                <ul class="vip_sex_select" id="vip_sex_select">
                                 <li>男</li>
                                 <li>女</li>
                                 </ul>
                             </span>
                             </div>
                             <div>
-                                <label>会员姓名</label><input class="disabled" id="vip_name_edit"/>
+                                <label>会员姓名</label><input class="disabled" id="vip_name_edit"
+                                                          style="background: #dfdfdf" readonly/>
                             </div>
                             <div>
                                 <label class="vip_color">会员卡号*</label><input class="disabled" id="vip_card_no_edit"
@@ -1026,15 +1229,13 @@
                                 <label class="vip_color">开卡日期</label><input class="disabled" id="open_card_date"
                                                                             style="background: #dfdfdf" readonly/>
                             </div>
-                            <div class="item_1">
-                            <span><label class="vip_color">会员类型*</label><input class="input_select"
-                                                                               id="vip_card_type_edit"
-                                                                               style="background: #dfdfdf" value="高级VIP"
-                                                                               type="text" readonly/>
-                                <!--<ul>-->
-                                <!--<li>高级VIP</li>-->
-                                <!--<li>中级VIP</li>-->
-                                <!--</ul>-->
+                            <div class="item_1" style="position:relative;">
+                            <span><label class="vip_color">会员类型*</label><input
+                                    id="vip_card_type_edit"
+                                    style="background: #dfdfdf" value="高级VIP"
+                                    type="text" readonly/>
+                                <ul class="vip_sex_select" id="vip_card_type_select">
+                                </ul>
                             </span>
                             </div>
                             <div>
@@ -1042,20 +1243,67 @@
                                                           readonly/>
                                 <!--<div style="padding-left:125px" class="hint"><div  hintinfo="手机号为必填项,不能为空!"></div></div>-->
                             </div>
-                            <div>
-                                <label>所属导购</label><input verify="Empty" id="user_name_edit" style="background: #dfdfdf"
+                            <div class="item_1" style="position:relative;">
+                                <label>所属导购</label><input data-code="" type="text" id="user_name_edit"
+                                                          style="background: #dfdfdf"
                                                           readonly/>
-                                <!--<div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>-->
+                                <ul class="vip_sex_select" id="user_name_select">
+                                </ul>
                             </div>
                             <div>
-                                <label>所属分组</label><input verify="Empty" id="user_group_edit"
-                                                          style="background: #dfdfdf" readonly/>
-                                <!--<div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>-->
+                                <label>出生日期</label><input verify='birthday' style="background: #dfdfdf"
+                                                          id="vip_birthday_edit" readonly>
                             </div>
                             <div>
-                                <label>会员生日</label><input verify='birthday' id="vip_birthday_edit" class="laydate-icon"
-                                                          value=""
-                                                          onclick="laydate({istime: false, format: 'YYYY-MM-DD'})"/>
+                                <label>积分</label><input verify='birthday' style="background: #dfdfdf" id="vip_points"
+                                                        value="" readonly>
+                            </div>
+                            <div>
+                                <label>保护积分</label><input verify='birthday' style="background: #dfdfdf"
+                                                          id="protective_integral" value="" readonly>
+                            </div>
+                            <div>
+                                <label>冻结状态</label><input verify='birthday' style="background: #dfdfdf" id="vip_state"
+                                                          value="" readonly>
+                            </div>
+                            <div class="item_1" style="position:relative;">
+                                <label>所属地区</label><input id="STORE_address" data-code="" type="text" placeholder="请选择省市区" style="background:#dfdfdf" readonly/>
+                                <div id="address_container" class="address_container">
+                                    <div class="address_nav_box">
+                                        <div class="address_nav" id="address_nav">
+                                            <a class="address_liActive" style="border-left: none">省份</a><a>城市</a><a style="border-right: none">县区</a>
+                                        </div>
+                                    </div>
+                                    <div class="address_content">
+                                        <div class="dl_box" id="province" style="display: block">
+                                            <dl>
+                                                <dd>
+                                                    <!--<a title="安徽"  href="javascript:;">安徽1</a>-->
+                                                    <!--<a title="北京"  href="javascript:;">北京</a>-->
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <div class="dl_box" id="city">
+                                            <dl>
+                                                <dd>
+
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <div class="dl_box" id="county">
+                                            <dl>
+                                                <dd>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label>活跃门店</label><input id="act_store_input" style="background: #dfdfdf;" readonly>
+                            </div>
+                            <div>
+                                <label>详细地址</label><input id="address_details_input" style="background: #dfdfdf;" readonly>
                             </div>
                             <div class="editor_detail_em  animated fadeInRight btn_margin">
                                 <div class="operedit_btn">
@@ -1067,33 +1315,6 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
-                    <!--右侧保持信息-->
-                    <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                        <!--<div class="operadd_btn">-->
-                        <!--<ul>-->
-                        <!--<li id="change_save" tyle="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>-->
-                        <!--&lt;!&ndash;<li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>&ndash;&gt;-->
-                        <!--</ul>-->
-                        <!--</div>-->
-                        <!--<form class="msg_detail">-->
-                        <!--<div>-->
-                        <!--<span><label>创建时间</label><input type="text" id="created_time" /></span>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                        <!--<span><label>创建人</label><input type="text" id="creator" /></span>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                        <!--<span><label>修改时间</label><input type="text" id="modify_time" /></span>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                        <!--<span><label>修改人</label><input type="text" id="modifier" /></span>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                        <!--<input type="checkbox" value="" name="test" class="check" id="is_active">-->
-                        <!--<label for="is_active"></label></em></span>-->
-                        <!--</div>-->
-                        <!--</form>-->
                     </div>
                 </div>
                 <!--信息扩展-->
@@ -1129,105 +1350,75 @@
                             <ul class="record_input">
                                 <li><label>订单号</label><input/></li>
                                 <li><label>商品名称</label><input/></li>
-                                <li><label>商品编号</label><input style="margin-right: 0px"/></li>
+                                <li><label>款号</label><input style="margin-right: 0px"/></li>
                             </ul>
-                            <span class="record_search">搜索</span>
+                            <span class="record_search" id="record_export" style="background: #c26555">导出</span>
+                            <span class="record_search" id="record_search">搜索</span>
                         </div>
                     </div>
-                    <div id="consum_all" style="background-color: #e8e8e8;margin-bottom: 30px"></div>
-                    <!--<div class="record_list">-->
-                    <!--<div class="order_list">-->
-                    <!--<div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>-->
-                    <!--<div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>-->
-                    <!--</div>-->
-                    <!--<hr/>-->
-                    <!--<table class="list_table">-->
-                    <!--<thead>-->
-                    <!--<tr>-->
-                    <!--<th>序号</th>-->
-                    <!--<th>商品图片</th>-->
-                    <!--<th class="product_name">商品名称</th>-->
-                    <!--<th class="product_name">商品编号</th>-->
-                    <!--<th>件数</th>-->
-                    <!--<th>价格</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td><img src="../img/vipImg.png" /></td>-->
-                    <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
-                    <!--<td class="product_name">1155404444</td>-->
-                    <!--<td>1</td>-->
-                    <!--<td class="money">￥9600</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                    <!--</table>-->
-                    <!--</div>-->
-                    <!--<div class="record_list">-->
-                    <!--<div class="order_list">-->
-                    <!--<div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>-->
-                    <!--<div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>-->
-                    <!--</div>-->
-                    <!--<hr/>-->
-                    <!--<table class="list_table">-->
-                    <!--<thead>-->
-                    <!--<tr>-->
-                    <!--<th>序号</th>-->
-                    <!--<th>商品图片</th>-->
-                    <!--<th class="product_name">商品名称</th>-->
-                    <!--<th class="product_name">商品编号</th>-->
-                    <!--<th>件数</th>-->
-                    <!--<th>价格</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td><img src="../img/vipImg.png" /></td>-->
-                    <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
-                    <!--<td class="product_name">1155404444</td>-->
-                    <!--<td>1</td>-->
-                    <!--<td class="money">￥9600</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                    <!--<td>2</td>-->
-                    <!--<td><img src="../img/vipImg.png" /></td>-->
-                    <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
-                    <!--<td class="product_name">1155404444</td>-->
-                    <!--<td>1</td>-->
-                    <!--<td class="money">￥9600</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                    <!--<td>3</td>-->
-                    <!--<td><img src="../img/vipImg.png" /></td>-->
-                    <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
-                    <!--<td class="product_name">1155404444</td>-->
-                    <!--<td>1</td>-->
-                    <!--<td class="money">￥9600</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                    <!--<td>4</td>-->
-                    <!--<td><img src="../img/vipImg.png" /></td>-->
-                    <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
-                    <!--<td class="product_name">1155404444</td>-->
-                    <!--<td>1</td>-->
-                    <!--<td class="money">￥9600</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                    <!--</table>-->
-                    <!--<div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>-->
-                    <!--</div>-->
+                    <div id="consum_all" style="background-color: #e8e8e8;margin-bottom: 30px;margin-top: 10px;max-height: 600px;overflow-y:auto "><p style='height: auto'>数据加载中...</p></div>
+                </div>
+                <div class="record points">
+                    <div>
+                        <div class="record_head">
+                            总积分<span class="consume_total" id="points_total"></span>
+                            <ul>
+                                <li>会员卡类型:<span id="points_card_grade"></span></li>
+                                <li>会员卡号:<span id="points_card_num"></span></li>
+                                <li>顾客: <span id="points_vip_name"></span></li>
+                            </ul>
+                        </div>
+                        <hr style="margin: 0"/>
+                        <div class="record_head_down">
+                            <ul class="record_date">
+                                <!--<li><input type="text" id="point_start" readonly="true" placeholder="请输入日期"-->
+                                           <!--class="laydate-icon"-->
+                                           <!--onclick="laydate({elem: '#point_start',istime: false, format: 'YYYY-MM-DD'})">-->
+                                <!--</li>-->
+                                <!--<li><span>至</span><input type="text" id="point_end" readonly="true" placeholder="请输入日期"-->
+                                                         <!--class="laydate-icon"-->
+                                                         <!--onclick="laydate({elem: '#point_end',istime: false, format: 'YYYY-MM-DD'})">-->
+                                <!--</li>-->
+                                <span class="record_search" id="point_export" style="background: #c26555">导出</span>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <div class="table">
+                            <table id="point_table" class="point_table" cellpadding="0" cellspacing="0" width="100%">
+                                <thead>
+                                <tr class="th">
+                                    <th style="width: 50px">序号</th>
+                                    <th>单据日期</th>
+                                    <th>单据编号</th>
+                                    <th>是否生效</th>
+                                    <th>生效日期</th>
+                                    <th style="width: 20%">积分</th>
+                                    <th>备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="album">
+                    <!--<div style="color: #888;height: 30px;line-height: 30px;padding-left: 10px;background-color: #FFFFFF"><span>上传图片大小限制在5M以内</span><span class="icon-ishop_6-12 noTaskStore_tip_close" id="noTaskStore_tip_close" onclick="$(this).parent().slideUp()"></span></div>-->
                     <ul id="Ablum-all">
                         <li>
-                        <span class="add_new_album" style="position: relative;">
-                        <input type="file" id="upAlbum" accept="image/jpg,image/jpeg,image/png,img/bmp"
-                               style="font-size: 10px;">+<em>添加图片</em>
-                        </span>
+                            <span class="add_new_album" style="position: relative;overflow: hidden;font-size: 90px;line-height: 80px" id="add_new_album">
+                            <input type="file" id="upAlbum" name="fileInput" accept="image/jpg,image/jpeg,image/png,img/bmp"
+                                   style="font-size: 100px;width: 115px;height: 114px;" autocomplete="off" unselectable="on">+<em style="line-height: 10px">(5M以内)</em><em >添加图片</em>
+                            </span>
+                            </span>
                         </li>
                     </ul>
+                    <!--<iframe name="fileUpload" style="display:none"></iframe>-->
+                    <!--<form method="post" action="/goods/uploadOss" enctype="multipart/form-data" name="fileForm" target="fileUpload">-->
+                        <!--<input type="file" class="fileInput" name="fileInput">-->
+                        <!--<input type="submit" value="提交" />-->
+                    <!--</form>-->
                     <!--<div class="album_shade"></div>-->
                 </div>
                 <div class="viplabel">
@@ -1247,10 +1438,6 @@
                             <div class="label_box" id="label_box" ondrop="drop(event)" ondragover="allowDrop(event)">
                                 <!--<span class="label_u_active">老同学<i class="icon-ishop_6-12"></i></span>-->
                                 <!--<span class="label_u_active">家有地暖<i class="icon-ishop_6-12"></i></span>-->
-                                <!--<span class="label_u_active">买2套浴巾送人<i class="icon-ishop_6-12"></i></span>-->
-                                <!--<span class="label_g_active">有品位<i class="icon-ishop_6-12"></i></span>-->
-                                <!--<span class="label_u_active">8月31生日<i class="icon-ishop_6-12"></i></span>-->
-                                <!--<span class="label_u_active">喜欢红色<i class="icon-ishop_6-12"></i></span>-->
                             </div>
                         </div>
                     </div>
@@ -1316,7 +1503,12 @@
                         <table id="table" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr class="th">
-                                <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                                <th width="50px;" style="text-align: left;">
+                                    <div class="checkbox"><input
+                                            onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }"
+                                            type="checkbox" value="" name="test" title="全选/取消" class="check"
+                                            id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div>
+                                </th>
                                 <th style="text-align: left;" id="tableOrder">序号</th>
                                 <th>商品图片</th>
                                 <th>商品编号</th>
@@ -1345,10 +1537,65 @@
                         </table>
                     </div>
                 </div>
+                <div class="vip_call_back">
+                    <div class="vip_call_back_header">
+                        <div style="text-align: right;margin-bottom: 15px">
+                            <span class="vip_call_back_btn" style="background: #8C9DB4;margin-right: 10px" id="callbackEmpty">清空</span>
+                            <span class="vip_call_back_btn" id="callbackEnter">筛选</span>
+                        </div>
+                        <ul class=vip_call_back_filter id="vip_call_back_filter">
+                            <li><label>方式</label><input value="全部" class="callback_input" type="text" readonly><i class="icon-ishop_8-02 callback_input"></i><ul class="callback_select"><li>全部</li><li>电话</li><li>微信</li><li>短信</li></ul></li>
+                            <li><label>发起方</label><input value="全部" class="callback_input" type="text" readonly><i class="icon-ishop_8-02 callback_input"></i><ul class="callback_select"><li>全部</li><li>导购</li><li>顾客</li></ul></li>
+                            <li><label>员工名称</label><input type="text"></li>
+                            <li><label>状态</label><input value="全部" class="callback_input" type="text" readonly><i class="icon-ishop_8-02 callback_input"></i><ul class="callback_select"><li>全部</li><li>未审核</li><li>已审核</li></ul></li>
+                            <li><label>类型</label><input value="全部" class="callback_input" type="text" readonly><i class="icon-ishop_8-02 callback_input"></i><ul class="callback_select"><li>全部</li><li>投诉</li><li>咨询</li><li>爱秀回放</li></ul></li>
+                            <li><label>时间范围</label><input id="callback_time_start" type="text" class="laydate-icon" readonly UNSELECTABLE="on"><span style="margin: 0 10px">至</span><input  id="callback_time_end" type="text" class="laydate-icon" readonly UNSELECTABLE="on"></li>
+                        </ul>
+                    </div>
+                    <div class="vip_call_back_content">
+                        <div style="margin-top: 10px">
+                            <div>
+                                <table id="point_table_1" class="point_table" cellpadding="0" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr class="th">
+                                        <th width="5%">序号</th>
+                                        <th width="10%">方式</th>
+                                        <th width="10%">发起方</th>
+                                        <th width="10%">员工名称</th>
+                                        <th width="20%">内容</th>
+                                        <th width="10%">状态</th>
+                                        <th width="10%">处理结果</th>
+                                        <th width="10%">类型</th>
+                                        <th width="15%">时间</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="callback_table" style="max-height: 500px;overflow-y: auto">
+                                <table class="point_table" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 0">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="activityAnalyze">-->
+                    <!--<div class="activityHeader">-->
+                        <!--<div class="activityAnalyzeChange"><span>会员活动分析</span><span class="changeAcitve">会员任务分析</span></div>-->
+                        <!--<div>-->
+                            <!--会员等级: <span class="colorC26555">高级VIP</span> 会员卡号: <span class="color999">FGD13e432434</span> 顾客: <span class="color999">刘洋</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="activityMid">-->
+                        <!--<div><span>5</span><br>被通知次数</div><div><span>5</span><br>关注次数</div><div><span>5</span><br>报名次数</div>-->
+                    <!--</div>-->
+                    <!--<div></div>-->
+                <!--</div>-->
                 <div class="memorandum">
                     <div class="memorandum_top">
                         <span style="display: inline-flex">
-                            <label>添加备忘</label>
+                            <label style="margin-top: 6px;">添加备忘</label>
                             <textarea placeholder="请输入备忘内容" maxlength="100"></textarea>
                         </span>
                         <div>
@@ -1356,7 +1603,8 @@
                         </div>
                     </div>
                     <div>
-                        <table class="memorandum_table" id="memorandum_table" cellpadding="0" cellspacing="0" width="100%">
+                        <table class="memorandum_table" id="memorandum_table" cellpadding="0" cellspacing="0"
+                               width="100%">
                             <thead>
                             <tr>
                                 <th>添加时间</th>
@@ -1369,8 +1617,84 @@
                         </table>
                     </div>
                 </div>
+                <!--优惠券-->
+                <div class="coupon">
+                  <ul class="coupon_nav" style="overflow: hidden">
+                      <li>已使用</li>
+                      <li>未使用</li>
+                      <li>已过期</li>
+                  </ul>
+                    <div class="coupon_num" id="coupon_num">共0张</div>
+                    <ul class="coupon_main">
+                        <!--单条优惠券-->
+                        <!--<li>-->
+                            <!--<div class="coupon_main_l">-->
+                                <!--<span>${num}</span>元-->
+                                <!--<p>使用期限 ${startTime} 至 ${endTime}</p>-->
+                            <!--</div>-->
+                            <!--<div class="coupon_main_r">-->
+                                <!--<p>${textTitle}</p>-->
+                                <!--<p>${textText}</p>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--&lt;!&ndash;单条优惠券&ndash;&gt;-->
+                        <!--<li>-->
+                            <!--<div class="coupon_main_l">-->
+                                <!--<span>50</span>元-->
+                                <!--<p>使用期限 201704017-12-01 至 201704017-12-31</p>-->
+                            <!--</div>-->
+                            <!--<div class="coupon_main_r">-->
+                                <!--<p>使用规则</p>-->
+                                <!--<p>1、使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则</p>-->
+                                <!--<p>1、使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用</p>-->
+                                <!--<p>1、使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用</p>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--&lt;!&ndash;单条优惠券&ndash;&gt;-->
+                        <!--<li>-->
+                            <!--<div class="coupon_main_l">-->
+                                <!--<span>50</span>元-->
+                                <!--<p>使用期限 201704017-12-01 至 201704017-12-31</p>-->
+                            <!--</div>-->
+                            <!--<div class="coupon_main_r">-->
+                                <!--<p>使用规则</p>-->
+                                <!--<p>1、使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则</p>-->
+                                <!--<p>1、使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用</p>-->
+                                <!--<p>1、使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用规则使用</p>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
                 <div class="shopping_cart">
-                    暂无相关数据.
+                    <div class="table" style="margin-bottom: 10px">
+                        <table cellpadding="0" cellspacing="0" width="100%">
+                            <thead>
+                            <tr class="th">
+                                <th width="50px" style="text-align: left;">
+                                    <div class="checkbox"><input
+                                            onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }"
+                                            type="checkbox" value="" name="test" title="全选/取消" class="check"
+                                            id="shoppingCartAll"/><label for="shoppingCartAll"></label></div>
+                                </th>
+                                <th width="5%">序号</th>
+                                <th width="7%">商品图片</th>
+                                <th width="15%">条码</th>
+                                <th width="15%">商品名称</th>
+                                <th width="10%">原价</th>
+                                <th width="10%">现价</th>
+                                <th width="10%">数量</th>
+                                <th width="10%">金额</th>
+                                <th width="15%">加购日期</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="table"  id="shoppingCart" style="max-height: 500px;overflow-y: auto">
+                        <table cellpadding="0" cellspacing="0" width="100%" class="cart_table">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="remark">
                     <span>
@@ -1383,7 +1707,96 @@
         </div>
     </div>
 </div>
-<div class="tk" id="tk" style="display: none; left: 543px; top: 248px;">
+<div class="p" id="p"></div>
+<div class="tk" id="download_consume" style="display: none;">
+    <span class="icon-ishop_6-12 download_close"></span>
+    <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+    <div class="btn">
+        <em class="cancel">返回</em>
+        <em class="album_enter"><a
+                href="">下载</a></em>
+    </div>
+</div>
+<div class="file" id="export_consumeExport" style="display: none;position: fixed">
+    <div class="file_content">
+        <div id="download"></div>
+        <div  class="icon-ishop_6-12" id="file_close"></div>
+    </div>
+    <div id="file_list">
+        <div id="file_list_l">
+            <ul>
+                <li data-name="order_id"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput'/><label for='checkboxInput'></label></div><span class='p15'>订单号</span></li>
+                <li data-name="buy_time"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput1'/><label for='checkboxInput1'></label></div><span class='p15'>订单日期</span></li>
+                <li data-name="user_name"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput2'/><label for='checkboxInput2'></label></div><span class='p15'>导购</span></li>
+                <li data-name="goods_id"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput3'/><label for='checkboxInput3'></label></div><span class='p15'>款号</span></li>
+                <li data-name="goods_name"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput4'/><label for='checkboxInput4'></label></div><span class='p15'>商品名称</span></li>
+                <li data-name="sku_code"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput5'/><label for='checkboxInput5'></label></div><span class='p15'>商品条码</span></li>
+                <li data-name="goods_price"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput6'/><label for='checkboxInput6'></label></div><span class='p15'>商品价格</span></li>
+                <!--<li data-name="points"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput7'/><label for='checkboxInput7'></label></div><span class='p15'>积分</span></li>-->
+                <li data-name="goods_num"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput8'/><label for='checkboxInput8'></label></div><span class='p15'>件数</span></li>
+                <li data-name="discount"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput9'/><label for='checkboxInput9'></label></div><span class='p15'>折扣</span></li>
+                <li data-name="goods_img"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput10'/><label for='checkboxInput10'></label></div><span class='p15'>商品图片</span></li>
+            </ul>
+        </div>
+        <div id="file_list_z">
+            <div class="c_shift">
+                <div id="left_shift" class="shift" title="右移">></div>
+                <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                <div id="right_shift" class="shift" title="左移"><</div>
+                <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+            </div>
+        </div>
+        <div id="file_list_r">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="file_btn">
+        <div class="file_submit" id="record_enter">提交</div>
+    </div>
+</div>
+<div class="tk" id="download_points" style="display: none;">
+    <span class="icon-ishop_6-12 download_close"></span>
+    <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+    <div class="btn">
+        <em class="cancel">返回</em>
+        <em class="album_enter"><a
+                href="">下载</a></em>
+    </div>
+</div>
+<div class="file" id="export_points" style="display: none;position: fixed">
+    <div class="file_content">
+        <div  class="icon-ishop_6-12" id="X_points"></div>
+    </div>
+    <div id="file_list_t">
+        <div id="file_list_left">
+            <ul>
+                <li data-name="time"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput01'/><label for='checkboxInput01'></label></div><span class='p15'>单据日期</span></li>
+                <li data-name="docno"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput05'/><label for='checkboxInput05'></label></div><span class='p15'>单据编号</span></li>
+                <li data-name="is_valis"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput02'/><label for='checkboxInput02'></label></div><span class='p15'>是否生效</span></li>
+                <li data-name="validdate"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput03'/><label for='checkboxInput03'></label></div><span class='p15'>生效日期</span></li>
+                <li data-name="point"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput00'/><label for='checkboxInput00'></label></div><span class='p15'>积分</span></li>
+                <li data-name="memo"><div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput04'/><label for='checkboxInput04'></label></div><span class='p15'>备注</span></li>
+            </ul>
+        </div>
+        <div id="file_list_zhong">
+            <div class="c_shift">
+                <div id="left_shift_t" class="shift" title="右移">></div>
+                <div id="left_shift_all_t" class="shift" title="右移全部">>></div>
+                <div id="right_shift_t" class="shift" title="左移"><</div>
+                <div id="right_shift_all_t" class="shift" title="左移全部"><<</div>
+            </div>
+        </div>
+        <div id="file_list_right">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="file_btn">
+        <div class="file_submit" id="points_enter">提交</div>
+    </div>
+</div>
+<div class="tk" id="tk" style="display: none;z-index:10001">
     <span class="icon-ishop_6-12" id="X"></span>
     <p style="height: 120px;line-height: 120px;"><i class="icon-ishop_6-14"></i>是否确认删除照片?</p>
     <div class="btn">
@@ -1391,46 +1804,39 @@
         <em class="delete" id="delete">删除</em>
     </div>
 </div>
-
+<div class="tk_warp" id="tkWarp"></div>
+<div class="tk" id="editTk" style="z-index: 10001;position: fixed;height: auto">
+    <span class="icon-ishop_6-12" id="editX"></span>
+    <div id="msg" style="text-align: left;padding: 0 10px 0 16px;overflow-x:hidden;overflow-y:auto;max-height: 110px;margin:20px 0;"></div>
+    <div class="btn" style="margin-bottom: 10px;">
+        <em class="album_enter" id="editEnter" style="margin: 0">确认</em>
+    </div>
+</div>
+<img id="tempimg" dynsrc="" src="" style="display:none" />
 </body>
-<script src="../table/js/jquery.min.js"></script>
 <script src="../js/jquery.dad.min.js"></script>
 <!-- oss存储 -->
+<!--<script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>-->
 <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
-<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript" src="/js/insidePostRequire.js?201715"></script>
-<script src="/js/loading.js?201715"></script>
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
-<script src="../js/silide.js?201715"></script>
-<script src="../js/echarts.js?201715"></script>
-<script src="../js/dist/chart/china.js?201715"></script>
-<!-- 带搜索的下拉框 -->
-<script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>
-<!--<script src="../js/dist/echarts.js?201715"></script>-->
-<!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
-<script src="../js/vip/vip_data.js?201715"></script>
-<script src="../js/vip/vip_data1.js?201715"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script src="../js/silide.js?2017040170331"></script>
+<script src="../js/echarts.js?2017040170331"></script>
+<script src="../js/dist/chart/china.js?2017040170331"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<!--<script src="../js/dist/echarts.js?2017040170331"></script>-->
+<script src="../js/vip/vip_data.js?20180124"></script>
+<script src="../js/vip/vip_data_info.js?20180126"></script>
 <!--滚动条-->
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!--充值、退款弹窗页面-->
-<script src="../js/vip/vip_dataPage.js"></script>
-<script>
-    var timer=setInterval(function(){
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().show();
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").addClass("icon-ishop_8-01");
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("a").css({color:"#6cc1c8"});
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().addClass("h1");
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().find("span").addClass("icon-ishop_8-02");
-        if($(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").hasClass("icon-ishop_8-01")){
-            clearInterval(timer);
-        }
-    },0);
-</script>
+<script src="../js/vip/vip_dataPage.js?20170718"></script>
 <script type="text/javascript">
     $(function () {
-        $(".item_1 .input_select").click(function (e) {
+        $(".item_1").on("click", ".input_select", function (e) {
             var ul = $($(e.target).next());
             if (ul.css("display") == "none") {
                 ul.show();
@@ -1447,7 +1853,7 @@
         touchbehavior: false,
         cursorminheight: 200,
         autohidemode: true,
-        cursorwidth: "9px",
+        cursorwidth: "6px",
         cursorborderradius: "10px"
     });
     $("#topUpShopSelcet").niceScroll({
@@ -1470,15 +1876,49 @@
         cursorwidth: "0px",
         cursorborderradius: "0px"
     });
-//    $("#topUpShopSelcet_ul").niceScroll({
-//        cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
-//        cursorcolor: " #dfdfdf",
-//        cursoropacitymax: 1,
-//        touchbehavior: false,
-//        cursorminheight: 200,
-//        autohidemode: true,
-//        cursorwidth: "0px",
-//        cursorborderradius: "0px"
-//    });
+    $(".callback_input").click(function () {
+        $(this).nextAll("ul").toggle();
+        $(this).parent().siblings("li").find(".callback_select").hide();
+    });
+    $(".callback_select li").click(function () {
+        $(this).parent().prevAll("input").val($(this).text());
+    });
+    $("#callbackEnter").click(function () {
+        back_num = 1;
+        getCallBack();
+    });
+    $("#callbackEmpty").click(function () {
+        back_num = 1;
+        $("#vip_call_back_filter .callback_input").val("全部");
+        $("#vip_call_back_filter input:not('.callback_input')").val("");
+        callback_start.max = '2099-06-16 23:59:59';
+        callback_end.min = '1949-01-01 00:00:00';
+        getCallBack();
+    });
+    var callback_start = {
+        elem: '#callback_time_start',
+        format: 'YYYY-MM-DD',
+        istime: false,
+        max: '2099-06-16 23:59:59', //最大日期
+        istoday: true,
+        fixed: false,
+        choose: function (datas) {
+            callback_end.min = datas; //开始日选好后，重置结束日的最小日期
+            callback_end.start = datas; //将结束日的初始值设定为开始日
+        }
+    };
+    var callback_end = {
+        elem: '#callback_time_end',
+        format: 'YYYY-MM-DD',
+        istime: false,
+        max: '2099-06-16 23:59:59',
+        istoday: true,
+        fixed: false,
+        choose: function (datas) {
+            callback_start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    laydate(callback_start);
+    laydate(callback_end);
 </script>
 </html>

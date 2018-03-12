@@ -22,7 +22,13 @@ public interface ValidateCodeMapper {
 
     List<ValidateCode> selectValidateCodeByCorp(@Param("corp_code")String corp_code,@Param("search_value")String search_value) throws SQLException;
 
+    List<ValidateCode> selectValidateCodeByCorp2(@Param("search_value")String search_value,@Param("manager_corp_arr")String[] manager_corp_arr) throws SQLException;
+
+
     List<ValidateCode> selectAllScreen(Map<String,Object> params) throws SQLException;
+
+    List<ValidateCode> selectAllScreen2(Map<String,Object> params) throws SQLException;
+
 
     List<ValidateCode> selectByCorpScreen(Map<String,Object> params) throws SQLException;
 

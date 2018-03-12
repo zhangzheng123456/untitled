@@ -132,9 +132,9 @@ package com.bizvane.ishop.controller.v2;//package com.bizvane.ishop.v2;
 //        try {
 //            String jsString = request.getParameter("param");
 //
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//             JSONObject jsonObj = JSONObject.parseObject(jsString);
 //            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String errorLog_id = jsonObject.get("id").toString();
 //
 //            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -171,10 +171,10 @@ package com.bizvane.ishop.controller.v2;//package com.bizvane.ishop.v2;
 //        String id = "";
 //        try {
 //            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//             JSONObject jsonObj = JSONObject.parseObject(jsString);
 //            id = jsonObj.get("id").toString();
 //            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String[] ids = jsonObject.get("id").toString().split(",");
 //
 //            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -296,10 +296,10 @@ package com.bizvane.ishop.controller.v2;//package com.bizvane.ishop.v2;
 //            String role_code = request.getSession(false).getAttribute("role_code").toString();
 //            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 //            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//             JSONObject jsonObj = JSONObject.parseObject(jsString);
 //            id = jsonObj.get("id").toString();
 //            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//             JSONObject jsonObject = JSONObject.parseObject(message);
 //            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
 //            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String search_value = jsonObject.get("searchValue").toString();

@@ -35,6 +35,9 @@ public class Corp {
     //图片路径
     private String avatar;
 
+    private String   use_offline;
+
+
     private List<CorpWechat> wechats;
 
     private List<JSONObject> cus_user;
@@ -181,5 +184,13 @@ public class Corp {
 
     public void setCus_user(List<JSONObject> cus_user) {
         this.cus_user = cus_user;
+    }
+
+    public String getUse_offline() {
+        return use_offline;
+    }
+
+    public void setUse_offline(String use_offline) {
+        this.use_offline = use_offline;
     }
 }

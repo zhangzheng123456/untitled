@@ -3,10 +3,12 @@ package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class ExecuteWebActionRequestParams  extends RequestParams {
 
-    public ExecuteWebActionRequestParams(String corpcode) {
-        super(corpcode);
+    public ExecuteWebActionRequestParams(List<String> drplist) {
+        super(drplist);
     }
 
     public class ExecuteWebActionTrans  extends BaseTrans{

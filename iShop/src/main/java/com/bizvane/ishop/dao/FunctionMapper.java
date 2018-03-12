@@ -27,4 +27,7 @@ public interface FunctionMapper {
     List<Function> selectPrivilege(@Param("user_code") String user_code, @Param("role_code") String role_code, @Param("group_code") String group_code,@Param("search_value") String search_value) throws SQLException;
 
     int insertFunction(Function function) throws SQLException;
+
+    List<Privilege> selectPrivilegeByAct(@Param("search_value") String search_value,@Param("action_name") String action_name,@Param("function_code") String function_code) throws SQLException;
+
 }

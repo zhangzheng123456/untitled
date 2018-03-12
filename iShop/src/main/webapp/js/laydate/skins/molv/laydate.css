@@ -21,8 +21,8 @@
 .laydate_body .laydate_box a, .laydate_body .laydate_box a:hover{color:#00625A;}
 .laydate_body .laydate_box a:hover{color:#666;}
 .laydate_body .laydate_click{background-color:#009F95!important; color:#fff!important;}
-.laydate_body .laydate_top{border-top:1px solid #6dc1c8; background-color:#6dc1c8;}
-.laydate_body .laydate_ym{border:1px solid #6dc1c8; background-color:#6dc1c8;}
+.laydate_body .laydate_top{background-color:#6dc1c8;}
+.laydate_body .laydate_ym{background-color:#6dc1c8;}
 .laydate_body .laydate_ym .laydate_yms{border:1px solid #6dc1c8; background-color:#6dc1c8; color:#fff;}
 .laydate_body .laydate_y .laydate_yms a{border-bottom:1px solid #6dc1c8;}
 .laydate_body .laydate_y .laydate_yms .laydate_chdown{border-top:1px solid #6dc1c8; border-bottom:none;}

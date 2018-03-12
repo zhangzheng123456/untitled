@@ -47,11 +47,48 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_area.corp_code = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_area.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (area_code LIKE concat('%',#{search_value},'%')
             OR area_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        Group By def_area.id
+        ORDER BY def_area.id DESC
+    </select>
+
+    <select id="selectAllAreaTwo" resultMap="Area">
+        SELECT
+        def_area.id,
+        area_code,
+        area_name,
+        def_area.corp_code,
+        def_area.modified_date,
+        def_area.modifier,
+        def_area.isactive,
+        def_corp.corp_name
+        FROM def_area,def_corp
+        WHERE def_area.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_area.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_area.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (area_code LIKE concat('%',#{search_value},'%')
+             OR area_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         Group By def_area.id
@@ -189,6 +226,12 @@
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                da.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="area_codes!=null">
             AND da.area_code IN
             <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
@@ -209,7 +252,7 @@
                 </otherwise>
             </choose>
         </foreach>
-        GROUP By da.id
+        GROUP BY da.id
         ORDER BY da.id DESC
     </select>
 
@@ -218,10 +261,12 @@
         FROM def_area
         WHERE 1=1
         AND corp_code=#{corp_code}
+        <if test="area_codes!=null and area_codes!=''">
         AND area_code IN
         <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>
+        </if>
         AND ISACTIVE = 'Y'
     </select>
 
@@ -263,6 +308,12 @@
         WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                da.corp_code =#{item}
+            </foreach>
         </if>
         <if test="area_codes!=null and area_codes != ''">
             AND da.area_code IN

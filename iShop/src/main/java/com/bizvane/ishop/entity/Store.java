@@ -41,6 +41,9 @@ public class Store {
     private String creater;
     //是否可用
     private String isactive;
+
+    //线下区域
+    private String offline_area;
     //店铺坐标
     private String store_location;
     //经度
@@ -49,13 +52,19 @@ public class Store {
     private String lat;
     //距离
     private String distance;
-
+    //所属品牌
     private String brand_name;
+    //所属企业
     private String corp_name;
     //是否为该区域店铺
     private String is_this_area;
-
+    //角色名称
     private String area_name;
+
+    //店铺未分配会员数
+    private String unassort_count;
+    //未分配会员平均时长
+    private String time_avg;
 
     public String getLogo() {
         return logo;
@@ -69,16 +78,88 @@ public class Store {
     private String logo;
 
     private Corp corp;
-
+    //二维码地址
     private String qrcode;
+
+    private String app_logo;
 
     private List<StoreQrcode> qrcodeList;
 
-    public Store(){}
+    //所属经销商
+    private String dealer;
+    //店铺类型
+    private String store_type;
+    //开启爱秀
+    private String isopen;
+    private String open_date;
+    private String close_date;
+    private String open_date_count;
+private String open_person;
+//二维码logo
+private String qrcode_logo;
+    public String getOpen_person() {
+        return open_person;
+    }
 
-    public Store(int id){
+    public void setOpen_person(String open_person) {
+        this.open_person = open_person;
+    }
+
+    public String getOpen_date() {
+        return open_date;
+    }
+
+    public void setOpen_date(String open_date) {
+        this.open_date = open_date;
+    }
+
+    public String getClose_date() {
+        return close_date;
+    }
+
+    public void setClose_date(String close_date) {
+        this.close_date = close_date;
+    }
+
+    public String getOpen_date_count() {
+        return open_date_count;
+    }
+
+    public void setOpen_date_count(String open_date_count) {
+        this.open_date_count = open_date_count;
+    }
+
+    public String getIsopen() {
+        return isopen;
+    }
+
+    public void setIsopen(String isopen) {
+        this.isopen = isopen;
+    }
+
+    public String getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(String dealer) {
+        this.dealer = dealer;
+    }
+
+    public String getStore_type() {
+        return store_type;
+    }
+
+    public void setStore_type(String store_type) {
+        this.store_type = store_type;
+    }
+
+    public Store() {
+    }
+
+    public Store(int id) {
         this.id = id;
     }
+
     public String getStore_id() {
         return store_id;
     }
@@ -94,6 +175,7 @@ public class Store {
     public void setStore_id(String store_id) {
         this.store_id = store_id;
     }
+
     public int getId() {
         return id;
     }
@@ -325,5 +407,45 @@ public class Store {
 
     public void setQrcodeList(List<StoreQrcode> qrcodeList) {
         this.qrcodeList = qrcodeList;
+    }
+
+    public String getOffline_area() {
+        return offline_area;
+    }
+
+    public void setOffline_area(String offline_area) {
+        this.offline_area = offline_area;
+    }
+
+    public String getUnassort_count() {
+        return unassort_count;
+    }
+
+    public void setUnassort_count(String unassort_count) {
+        this.unassort_count = unassort_count;
+    }
+
+    public String getTime_avg() {
+        return time_avg;
+    }
+
+    public void setTime_avg(String time_avg) {
+        this.time_avg = time_avg;
+    }
+
+    public String getApp_logo() {
+        return app_logo;
+    }
+
+    public void setApp_logo(String app_logo) {
+        this.app_logo = app_logo;
+    }
+
+    public String getQrcode_logo() {
+        return qrcode_logo;
+    }
+
+    public void setQrcode_logo(String qrcode_logo) {
+        this.qrcode_logo = qrcode_logo;
     }
 }

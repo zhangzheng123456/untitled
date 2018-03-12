@@ -4,10 +4,12 @@ package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class ProcessOrderRequestParams extends  RequestParams {
 
-	public ProcessOrderRequestParams(String corpcode) {
-		super(corpcode);
+	public ProcessOrderRequestParams(List<String> drplist) {
+		super(drplist);
 	}
 
 	public class ProcessOrderTrans extends  BaseTrans{

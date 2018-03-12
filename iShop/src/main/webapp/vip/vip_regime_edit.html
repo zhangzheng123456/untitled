@@ -7,13 +7,13 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link href="../table/css/inner.css?201715" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
-    <link href="../css/style.css?201715" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
-    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link href="../table/css/inner.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
     <style>
         body{
             margin-top:81px;
@@ -21,259 +21,791 @@
         .screen_area{
             position: fixed;
             top: 60px;
-            left: 0px;
-            right: 0px;
-            bottom: 0px;
+            left: 0;
+            right: 0;
+            bottom: 0;
             margin: auto;
             height:530px;
         }
         .shop{
             top: 100px;
-            height:570px;
+            height:490px;
+        }
+        .conpany_msg .holder_text{
+            top:5px;
+        }
+        #quan_select input,#rating_quan_select input{
+            max-width: 310px;
+            padding-right: 30px;
+            text-decoration: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        #quan_select ul li,#rating_quan_select ul li{
+            max-width: 100%;
+            text-decoration: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .conpany_msg .q_remove{
+            width: 30px;
+            padding-right: 0;
+        }
+        .conpany_msg .present_coupon ul{
+            width: 260px;
+            margin-left: 180px;
+        }
+        .coupon_line .input_select{
+            width: 240px;
+            margin-top: 10px;
+            background: url(../img/img_arrow_down.png) 97% 50% / 10px 5px no-repeat rgb(255, 255, 255);
+            border: 1px solid #e8e8e8;
+        }
+        #reserved_rating,#upgrade_time{
+            background: url(../img/img_arrow_down.png) 95% 50% / 10px 5px no-repeat rgb(255, 255, 255);
+        }
+        .coupon_line .icon-ishop_6-01{
+            margin-left: 5px;
+            vertical-align: middle;
+            text-align: center;
+            color: #6cc1c8;
+            border-radius:4px;
+            line-height:22px;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 1px solid #d7d7d7;
+            background-color:#FFFFFF
+        }
+        .coupon_line .icon-ishop_6-02{
+            margin-left: 5px;vertical-align: middle;text-align: center;color: #6cc1c8;border-radius:4px;line-height:22px;display: none;width: 24px;height: 24px;border: 2px solid #d7d7d7;background-color:#FFFFFF
+        }
+
+        .coupon_line ul{
+            display: none;
+            position: absolute;
+            width: 240px;
+            max-height: 150px;
+            overflow: hidden;
+            overflow-y: auto;
+            left: 0;
+            margin-left: 0;
+            background-color: #FFFFFF;
+            z-index: 100;
+            margin: 0;
+        }
+        .coupon_line ul li{
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .coupon_list .coupon_line:last-child .icon-ishop_6-01{
+            display: inline-block!important;
+        }
+        .give{
+            margin: 0;float: right;width: 330px;background-color: #f5f5f5;padding:0 10px;
+        }
+        .give .tabs{
+            width: 310px;
+        }
+        .tip{
+            text-align: center;
+            background-color: #6cc1c8;
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            border-radius: 50%;
+            font-size: 12px;
+            color: #fff;
+            position: absolute;
+            right: -25px;
+            top: 10px;
+            cursor: pointer;
+        }
+        .tipContent{
+            word-break: break-all;
+            display: none;
+            position: absolute;
+            left: 432px;
+            top: 30px;
+            width: 110px;
+            font-size: 12px;
+            background-color: #fff;
+            padding: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .tip:hover+.tipContent{
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-    <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title"><span id="back_regime">会员制度</span><i class="icon-ishop_8-03"></i><label>编辑会员制度</label></div>
-            <div class="editor_1 col-lg-7 editor_line animated fadeInRight">
-                <form class="conpany_msg">
-                    <div>
-                        <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">所属企业*</label></li>
-                            <li>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>会员类型</span><i class="icon-ishop_8-03"></i><span id="back_regime">会员制度</span><i class="icon-ishop_8-03"></i><label>编辑会员制度</label></div>
+    <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li>
+                        <span class="corp_select">
+                            <select id="OWN_CORP" style="display:inline-flex"></select>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <!--公众号-->
+            <div class="drop_down item_2">
+                <span><label >公众号</label><input data-value="1" class="input_select" value="请选择公众号" type="text" data-app_id="" id="vipCode" placeholder="" readonly="" >
+                     <ul style="display: none;" id="vipPublic">
+                         <!--动态加载-->
+                     </ul>
+                </span>
+            </div>
+            <!--<div class="drop_down item_1">-->
+                <!--<span><label style="color:#c26655">会员类型*</label><input class="input_select" data-value=""  type="text" id="vip_type" verify="Empty" maxlength="50" placeholder="" readonly=""/>-->
+                    <!--<ul style="display: none;">-->
+
+                    <!--</ul>-->
+                <!--</span>-->
+            <!--</div>-->
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">会员类型*</label></li>
+                    <li id="vip_type_select">
                                 <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                    <select id="VIP_TYPE" style="display:inline-flex"></select>
                                 </span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="drop_down item_1">
-                        <span><label style="color:#c26655">会员类型*</label><input class="input_select" data-value=""  type="text" id="vip_type" verify="Empty" maxlength="50" placeholder="" readonly=""/>
-                            <ul style="display: none;">
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <span class="t_parent" style="display: inline-block;height: 30px"><label>有效期限</label><input placeholder="未填写或填写0时为永久有效" verify="Number" type="text" id="effective_time" maxlength="50"/><span class="holder_text">月</span>
+                <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
+                </span>
+            </div>
+            <div>
+                <span class="t_parent" style="display: inline-block;height: 30px"><label>会员折扣</label><input verify="Number" type="text" id="discount" maxlength="50"/>
+                <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
+                </span>
+            </div>
+            <div>
+               <span class="t_parent" style="/* overflow: hidden; */display: inline-block;/* height: 50px; */"><label style="line-height: 50px">积分比例</label>
+                    <span style="position: relative;float: right;display: inline-block;background: #fff;width: 420px;height: 50px;"><span class="r" style="margin-top: 16px;width: 60px">1元 =</span>
+                    <input type="text" class="join_threshold" verify="Number1" id="points_value" maxlength="50" style="width: 60px;border: 1px solid #d7d7d7;">
+                        <span class="holder_text" style="right: 0;left: 145px;top: 17px;">积分</span><span></span>
+                        <div class="hint" style="margin: 0;position: absolute;bottom: -20px;padding: 0!important;"><div hintinfo="" style="margin:0;" class=""></div></div>
+                    </span>
+                </span>
+            </div>
+            <div>
+                <span class="t_parent">
+                    <label>限制开卡店铺</label><span style="height: 50px;width:420px;line-height:50px;background-color: #FFFFFF;display: inline-block">
+                        <span class="r">
+                           <label> <em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_shop"><label for="is_shop" style="left: -30px;top: -1px;"></label></em>
+                               <span class="r_text">限制</span>
+                           </label>
+                        </span>
+                        <input type="text" value="选择店铺" class="join_threshold arrow_right" readonly="true" id="get_store" maxlength="50" style="background-color: #6dc1c8;width: 90px;color: #fff;float: right;margin-right: 10px;margin-top: 10px;">
+                        <span style="float: right;margin-right: 10px;">已选 <span id="shop_list">0</span> 个</span>
+                    </span>
+                </span>
+            </div>
+            <!--<div>-->
+                <!--<span class="t_parent" style="display: inline-block;height: 30px"><label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50" placeholder="填写金额" verify="Number" ><span class="holder_text">元</span>-->
+                <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+                <!--</span>-->
+            <!--</div>-->
+            <!--<div style="padding-left: 60px">-->
+                <!--<label>赠送</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_point"><label for="is_present_point"></label></em><span class="r_text">积分</span></span><input type="text" style="width: 290px;" class="join_threshold" id="present_point" readonly="" verify="Number" maxlength="50"/>-->
+                <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+            <!--</div>-->
+            <!--<div class="present_coupon drop_down item_2" style="overflow: hidden;padding-left: 60px">-->
+                <!--<div class="quan_left" style="margin-bottom: 0">-->
+                            <!--<span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_coupon"><label for="is_present_coupon"></label></em><span class="r_text">券</span>-->
+                            <!--</span>-->
+                <!--</div>-->
+                <!--<div class="quan_right" style="margin-bottom: 0;width: 290px">-->
+                    <!--<div id="quan_select" style="margin-bottom:0;">-->
+                    <!--</div>-->
+                    <!--<div class="add_quan" id="add_quan" style="margin-bottom: 0;width: 290px">添加券<span class="icon-ishop_6-01"></span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div id="recruitment_threshold" class="drop_down">
+                <span><label style="float: left;color: #c26555;">招募门槛*</label></span><span style="padding: 10px;position:relative;background-color: #FFFFFF;display: inline-block;width: 420px">
+                            <span style="position: relative;overflow: hidden;display: inline-block;margin-bottom: 10px;">
+                                <span style="width: 60px;display: inline-block;text-align: right;margin-right: 10px;line-height: 50px;height: 50px;float: left">消费条件</span>
+                                <span style="display: inline-block;width: 330px;height:50px;float:left;background-color:#f5f5f5;padding: 10px"><span>单笔消费满</span><input placeholder="填写金额" id="join_threshold" type="text" class="inputNum" style="background: #FFFFFF;margin-left: 15px;padding-right: 25px;width: 160px;border: 1px solid #d7d7d7"></span><span style="position: absolute;top: 15px;right:84px;">元</span>
+                            </span>
+                            <span>
+                                <span  style="width: 60px;display: inline-block;text-align: right">赠送</span>
+                                <div class="give" >
+                                 <span class="tabs" style="display: inline-block;height: 40px;border-bottom: 1px solid #d4d8e1;line-height: 40px">
+                                    <label style="width: auto" class="tabs_integral">
+                                        <span class="r"><em class="checkbox_isactive"><input checked="checked" type="checkbox" value="" name="test" class="check" id="is_present_point"><label for="is_present_point"></label></em><span class="r_text" style="vertical-align: middle">积分</span></span>
+                                    </label>
+                                    <label style="width: auto" class="tabs_coupon">
+                                        <span class="r"><em class="checkbox_isactive"><input checked="checked" type="checkbox" value="" name="test" class="check" id="is_present_coupon"><label for="is_present_coupon"></label></em><span class="r_text" style="vertical-align: middle">券</span></span>
+                                    </label>
+                                </span>
+                                 <span style="display: inline-block;padding: 10px 0">
+                                        <div style="display: block;margin: 0"><span>奖励积分</span><input id="present_point" class="inputNum" type="text" style="background:#FFFFFF;width: 60px;border: 1px solid #d7d7d7;margin-left: 15px;margin-right: 10px;">分</div>
+                                        <span class="coupon_list">
+                                            <span class="coupon_line" style=" position: relative;display: inline-block">
+                                               <input class="input_select w" data-value="" autocomplete="off" value="" type="text" data-couponcode="" placeholder="请选择优惠券">
+                                               <ul>
 
-                            </ul>
-                        </span>
-                    </div>
-                    <div class="drop_down item_1">
-                        <span><label>上级会员类型</label><input class="input_select" value="无上级会员类型" id="high_vip_type" type="text" placeholder="" readonly="">
-                            <ul style="display: none;">
-                            </ul>
-                        </span>
-                    </div>
-                    <div>
-                        <span class="t_parent"><label>会员折扣</label><input verify="Number" type="text" id="discount" maxlength="50"/><span class="holder_text">折</span>
-                        <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
-                        </span>
-                    </div>
-                    <div>
-                        <span class="t_parent"><label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50" placeholder="填写金额" verify="Number" ><span class="holder_text">元</span>
-                        <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
-                        </span>
-                    </div>
-                    <div class="drop_down item_2 upgrade_amount">
-                        <span class="t_parent"><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input style="background-image: none;" verify="Number" type="text" class="w" id="upgrade_amount" placeholder="填写金额"><span class="holder_text">元</span>
-                            <ul style="display: none;">
-                                <li data-value="3">最近三个月</li>
-                                <li data-value="6">最近六个月</li>
-                                <li data-value="9">最近九个月</li>
-                                <li data-value="12">最近一年</li>
-                                <li data-value="0">累计</li>
-                            </ul>
-                            <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
-                        </span>
-                    </div>
-                    <div>
-                        <span class="t_parent"><label style="color:#c26655">积分比例*</label><span class="r">1元 =</span><input type="text" class="join_threshold" verify="Number1" id="points_value" maxlength="50"/><span class="holder_text">积分</span><span></span>
-                        <div class="hint"><div  hintinfo="积分比例不能为空！"></div></div>
-                        </span>
-                    </div>
-                    <div>
-                        <span class="t_parent"><label>限制开卡店铺</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_shop" readonly=""><label for="is_shop"></label></em><span class="r_text"></span></span><input type="text" class="join_threshold arrow_right" readonly="true" id="shop_list" maxlength="50" />
-                        </span>
-                    </div>
-                    <div>
-                        <div>
-                            <label>赠送</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_point"><label for="is_present_point"></label></em><span class="r_text">积分</span></span><input type="text" class="join_threshold" id="present_point" readonly="" verify="Number" maxlength="50"/>
-                            <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
-                        </div>
-                        <div>
-                            <div class="present_coupon drop_down item_2" >
-                                    <div class="quan_left">
-                                        <span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_coupon"><label for="is_present_coupon"></label></em><span class="r_text">券</span>
+                                               </ul>
+                                                <span class="icon-ishop_6-01"></span>
+                                                <span class="icon-ishop_6-02"></span>
+                                           </span>
                                         </span>
-                                    </div>
-                                    <div class="quan_right">
-                                        <div id="quan_select" style="margin-bottom:0;">
-                                        </div>
-                                        <div class="add_quan" id="add_quan">添加券<span class="icon-ishop_6-01"></span></div>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                                </span>
+                                </div>
+                            </span>
+                            <span class="tip">!</span>
+                            <span class="tipContent" id="">用于会员类型招募</span>
+                        </span>
             </div>
-            <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
-                <div class="areaedit_oper_btn">
-                    <ul>
-                        <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
-                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
-                    </ul>
-                </div>
-                 <form class="msg_detail">
-                    <div>
-                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
-                    </div>
-                    <div>
-                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
-                    </div>
-                </form>
+            <!--<div class="drop_down item_1">-->
+                        <!--<span><label>上级会员类型</label><input class="input_select"  value="" id="high_vip_type" type="text"  data-value="" data-degree="" placeholder="请选择上级会员类型" readonly="">-->
+                            <!--<ul style="display: none;">-->
+                            <!--</ul>-->
+                        <!--</span>-->
+            <!--</div>-->
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label >上级会员类型</label></li>
+                    <li id="vip_type_high_select">
+                                <span class="corp_select">
+                                    <select id="VIP_TYPE_HIGH" style="display:inline-flex"></select>
+                                </span>
+                    </li>
+                </ul>
             </div>
+            <!--<div>-->
+            <!--<span class="t_parent" style="display: inline-block;height: 30px"><label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50" placeholder="填写金额" verify="Number" ><span class="holder_text">元</span>-->
+            <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+            <!--</span>-->
+            <!--</div>-->
+            <div id="upgrade" class="drop_down item_2 upgrade_amount">
+                        <span class="t_parent" style="display: inline-block;/* height: 30px */">
+                            <label>升级门槛</label><span style="position: relative;display: inline-block;height: 50px;/* line-height: 50px; */background-color: #FFFFFF;padding:0 10px">
+                               <span style=" position: relative;">
+                                   <input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly="" style="width: 145px;margin-top: 10px;border: 1px solid #e8e8e8;">
+                                   <ul style="display: none;margin-left: -11px;width: 145px;">
+                                       <li data-value="3">最近三个月</li>
+                                       <li data-value="6">最近六个月</li>
+                                       <li data-value="9">最近九个月</li>
+                                       <li data-value="12">最近一年</li>
+                                       <li data-value="0">累计</li>
+                                   </ul>
+                               </span>
+                               <span class="r">消费满</span>
+                               <input style="background-image: none;padding-right: 30px;max-width: 175px;border: 1px solid #e8e8e8" verify="Number" type="text" class="w" id="upgrade_amount" placeholder="填写金额">
+                               <span class="holder_text" style="margin-top: 10px;right: 17px;">元</span>
+                            <div class="hint" style="position: absolute;margin: 0;bottom: -20px;margin-left: 70px;"><div hintinfo="" class="error_tips" style="margin: 0;"></div></div>
+                            <span class="tip">!</span>
+                            <span class="tipContent">用于会员类型升级为上级会员类型</span>
+                        </span>
+                        </span>
+            </div>
+            <div class="drop_down" id="rating">
+                <span><label style="float: left">保留等级条件</label></span><span style="padding: 10px;background-color: #FFFFFF;display: inline-block;width: 420px">
+                            <span style="width: 410px;position: relative;display: inline-block;margin-bottom: 10px;">
+                                <span style="position: relative">
+                                     <span style="width: 60px;display: inline-block;text-align: right;margin-right: 10px;line-height: 50px;height: 50px;float: left">消费条件</span>
+                                     <input class="input_select w" data-value="" value="" id="reserved_rating" type="text" placeholder="选择时间段" readonly="" style="width: 135px;margin-top: 10px;border: 1px solid #e8e8e8;">
+                                     <!--<span class="icon-ishop_8-02" style="position: absolute;right: 10px;top: 5px;color: #6cc1c8;"></span>-->
+                                </span>
+                               <span style="position: relative;">
+                                    <input placeholder="填写金额" style="border: 1px solid #d7d7d7;background-image: none;width: 175px;max-width:180px;padding-right:20px;margin-left: 15px;" verify="Number" type="text" class="w" id="amount_start"><span class="holder_text" style="right: 7px;top: 0;">元</span>
+                               </span>
+                                <ul style="display: none;width:135px;margin-left: 60px;">
+                                    <li data-value="3">最近三个月</li>
+                                    <li data-value="6">最近六个月</li>
+                                    <li data-value="9">最近九个月</li>
+                                    <li data-value="12">最近一年</li>
+                                    <li data-value="0">累计</li>
+                                </ul>
+                            </span>
+                            <span>
+                                <span  style="width: 60px;display: inline-block;text-align: right">赠送</span>
+                                <div class="give" >
+                                 <span class="tabs" style="display: inline-block;height: 40px;border-bottom: 1px solid #d4d8e1;line-height: 40px">
+                                    <label style="width: auto" class="tabs_integral">
+                                        <span class="r"><em class="checkbox_isactive"><input checked="checked" type="checkbox" value="" name="test" class="check" id="rating_is_present_point"><label for="rating_is_present_point"></label></em><span class="r_text" style="vertical-align: middle">积分</span></span>
+                                    </label>
+                                    <label style="width: auto" class="tabs_coupon">
+                                        <span class="r"><em class="checkbox_isactive"><input checked="checked" type="checkbox" value="" name="test" class="check" id="rating_is_present_coupon"><label for="rating_is_present_coupon"></label></em><span class="r_text" style="vertical-align: middle">券</span></span>
+                                    </label>
+                                </span>
+                                 <span style="display: inline-block;padding: 10px 0">
+                                        <div style="display: block;margin: 0"><span>奖励积分</span><input id="rating_present_point"  class="inputNum" type="text" style="width: 60px;background:none;background-color:#FFFFFF;border: 1px solid #d7d7d7;margin-left: 15px;margin-right: 10px;">分</div>
+                                        <span class="coupon_list">
+                                            <span class="coupon_line" style=" position: relative;">
+                                               <input class="input_select w" data-value="" value=""   autocomplete="off" type="text" data-couponcode="" placeholder="请选择优惠券">
+                                               <!--<span class="icon-ishop_8-02" ></span>-->
+                                               <ul>
+
+                                               </ul>
+                                                <span class="icon-ishop_6-01" ></span>
+                                                <span class="icon-ishop_6-02" ></span>
+                                            </span>
+                                        </span>
+                                </span>
+                                </div>
+                            </span>
+                        </span>
+            </div>
+            <!--<div class="drop_down item_2 upgrade_amount">-->
+                        <!--<span class="t_parent" style="display: inline-block;height: 30px">-->
+                           <!--<label>保留等级条件</label><input class="input_select w" data-value="" value="" id="reserved_rating" type="text" placeholder="选择时间段" readonly="">-->
+                           <!--<input style="background-image: none;width: 105px;max-width:105px;padding-right:20px;margin-left: 10px;" verify="Number" type="text" class="w" id="amount_start" placeholder="填写金额"><span class="holder_text" style="right: 7px">元</span><span style="display: inline-block;width: 20px;text-align: center">~</span><input style="background-image: none;width: 105px;padding-right: 20px;" verify="Number" type="text" class="w" id="amount_end" placeholder="填写金额"><span class="holder_text" style="right: 132px">元</span>-->
+                            <!--<ul style="display: none;">-->
+                                <!--<li data-value="3">最近三个月</li>-->
+                                <!--<li data-value="6">最近六个月</li>-->
+                                <!--<li data-value="9">最近九个月</li>-->
+                                <!--<li data-value="12">最近一年</li>-->
+                                <!--<li data-value="0">累计</li>-->
+                            <!--</ul>-->
+                             <!--<div class="hint" style="margin-left: 190px"><div  hintinfo="" class="error_tips"></div></div>-->
+                        <!--</span>-->
+            <!--</div>-->
+            <!--<div style="margin-top: 20px;padding-left: 60px">-->
+                <!--<label>赠送</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="rating_is_present_point"><label for="rating_is_present_point"></label></em><span class="r_text">积分</span></span><input type="text" style="width: 290px" class="join_threshold" id="rating_present_point" readonly="" verify="Number" maxlength="50"/>-->
+                <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+            <!--</div>-->
+            <!--<div class="present_coupon drop_down item_2" style="overflow: hidden;padding-left: 60px;">-->
+                <!--<div class="quan_left" style="margin-bottom: 0">-->
+                                    <!--<span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="rating_is_present_coupon"><label for="rating_is_present_coupon"></label></em><span class="r_text">券</span>-->
+                                    <!--</span>-->
+                <!--</div>-->
+                <!--<div class="quan_right" style="margin-bottom: 0;width: 290px">-->
+                    <!--<div id="rating_quan_select" style="margin-bottom:0;">-->
+                    <!--</div>-->
+                    <!--<div class="add_quan" id="rating_add_quan" style="margin-bottom: 0;width: 290px;">添加券<span class="icon-ishop_6-01"></span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="drop_down item_1">-->
+                        <!--<span><label>降级会员类型</label><input class="input_select" id="down_vip_type" value="" type="text"  data-value="" data-degree="" placeholder="请选择降级会员类型" readonly="">-->
+                            <!--<ul style="display: none;">-->
+                            <!--</ul>-->
+                        <!--</span>-->
+            <!--</div>-->
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label>降级会员类型</label></li>
+                    <li id="vip_type_down_select">
+                        <span class="corp_select">
+                            <select id="VIP_TYPE_DOWN" style="display:inline-flex"></select>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </form>
     </div>
-    <!-- 拉取区域 -->
-    <div id="screen_area" class="screen_area">
-        <div class="screen_title">
-            <h4>筛选区域</h4>
-            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
+    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+        <div class="areaadd_oper_btn">
+            <ul>
+                <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
         </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="area_search">
-                <span class="icon-ishop_3-05" id="area_search_f"></span>
+        <form class="msg_detail">
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
             </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                </ul>
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_area">确定</div>
+        </form>
     </div>
-    <!-- 拉取店铺 -->
-    <div id="screen_shop" class="screen_area shop">
-        <div class="screen_title">
-            <h4>筛选店铺</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input class="brand_num" type="text" value="全部" id="brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input class="area_num" type="text" value="全部" readonly="true" id="area_num"
-                                              data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                </div>
-            </div>
-            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="store_search">
-                <span class="icon-ishop_3-05" id="store_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-
-                </ul>
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_shop">确定</div>
+</div>
+<!-- 拉取区域 -->
+<div id="screen_area" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选区域</h4>
+        <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
     </div>
-    <!-- 拉取品牌 -->
-    <div id="screen_brand" class="screen_area">
-        <div class="screen_title">
-            <h4>筛选品牌</h4>
-            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="area_search">
+            <span class="icon-ishop_3-05" id="area_search_f"></span>
         </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="brand_search">
-                <span class="icon-ishop_3-05" id="brand_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-
-                </ul>
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
-    <!-- Mainly scripts -->
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script type="text/javascript" src="../js/moni_select.js?201715"></script>
-    <script src="../js/loading.js?201715"></script>
-   <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
-    <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
-    <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>
-    <!-- error tips -->
-    <script type="text/javascript" src="../js/vip/vip_regime_operate.js?201715"></script>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_area">确定</div>
+</div>
+<!-- 拉取店铺 -->
+<div id="screen_shop" class="screen_area shop">
+    <div class="screen_title">
+        <h4>筛选店铺</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input class="brand_num" type="text" value="全部" id="brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input class="area_num" type="text" value="全部" readonly="true" id="area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+            </div>
+        </div>
+        <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="store_search">
+            <span class="icon-ishop_3-05" id="store_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_shop">确定</div>
+</div>
+<!-- 拉取品牌 -->
+<div id="screen_brand" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选品牌</h4>
+        <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="brand_search">
+            <span class="icon-ishop_3-05" id="brand_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_brand">确定</div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<script src="../js/loading.js?2017040170331"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<!-- error tips -->
+<script type="text/javascript" src="../js/vip/vip_regime_operate.js?20180129"></script>
 </body>
+<!--<body>-->
+    <!--<div id="page-wrapper" class="gray-bg dashbard-1">-->
+        <!--<div class="col-lg-12 pre_title"><span id="back_regime">会员制度</span><i class="icon-ishop_8-03"></i><label>编辑会员制度</label></div>-->
+            <!--<div class="editor_1 col-lg-7 editor_line animated fadeInRight">-->
+                <!--<form class="conpany_msg">-->
+                    <!--<div>-->
+                        <!--<ul style="display:inline-flex;">-->
+                            <!--<li><label style="color:#c26555;">所属企业*</label></li>-->
+                            <!--<li>-->
+                                <!--<span class="corp_select">-->
+                                    <!--<select id="OWN_CORP" style="display:inline-flex"></select>-->
+                                <!--</span>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <!--<div class="drop_down item_1">-->
+                        <!--<span><label style="color:#c26655">会员类型*</label><input class="input_select" data-value=""  type="text" id="vip_type" verify="Empty" maxlength="50" placeholder="" readonly=""/>-->
+                            <!--<ul style="display: none;">-->
+
+                            <!--</ul>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span class="t_parent" style="display: inline-block;height: 30px"><label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50" placeholder="填写金额" verify="Number" ><span class="holder_text">元</span>-->
+                        <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span class="t_parent" style="display: inline-block;height: 30px"><label>会员折扣</label><input verify="Number" type="text" id="discount" maxlength="50"/><span class="holder_text">折</span>-->
+                        <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="drop_down item_1">-->
+                        <!--<span><label>上级会员类型</label><input class="input_select" value="无上级会员类型" id="high_vip_type" type="text" placeholder="" readonly="">-->
+                            <!--<ul style="display: none;">-->
+                            <!--</ul>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="drop_down item_2 upgrade_amount">-->
+                        <!--<span class="t_parent" style="display: inline-block;height: 30px"><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input style="background-image: none;" verify="Number" type="text" class="w" id="upgrade_amount" placeholder="填写金额"><span class="holder_text">元</span>-->
+                            <!--<ul style="display: none;">-->
+                                <!--<li data-value="3">最近三个月</li>-->
+                                <!--<li data-value="6">最近六个月</li>-->
+                                <!--<li data-value="9">最近九个月</li>-->
+                                <!--<li data-value="12">最近一年</li>-->
+                                <!--<li data-value="0">累计</li>-->
+                            <!--</ul>-->
+                            <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span class="t_parent" style="display: inline-block;height: 30px"><label style="color:#c26655">积分比例*</label><span class="r">1元 =</span><input type="text" class="join_threshold" verify="Number1" id="points_value" maxlength="50"/><span class="holder_text">积分</span><span></span>-->
+                        <!--<div class="hint"><div  hintinfo="积分比例不能为空！"></div></div>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span class="t_parent"><label>限制开卡店铺</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_shop" readonly=""><label for="is_shop"></label></em><span class="r_text"></span></span><input type="text" class="join_threshold arrow_right" readonly="true" id="shop_list" maxlength="50" />-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<div>-->
+                            <!--<label>赠送</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_point"><label for="is_present_point"></label></em><span class="r_text">积分</span></span><input type="text" class="join_threshold" id="present_point" readonly="" verify="Number" maxlength="50"/>-->
+                            <!--<div class="hint"><div  hintinfo="" class="error_tips"></div></div>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;公众号&ndash;&gt;-->
+                        <!--<div class="drop_down item_2" style="margin-left: 70px;">-->
+                        <!--<span><label >公众号</label><input data-value="1" class="input_select" value="请选择公众号" type="text" id="vipCode" placeholder="" readonly=""style="width: 350px">-->
+                            <!--<ul style="display: none;margin-left: 190px;width: 350px" id="vipPublic">-->
+                                <!--&lt;!&ndash;动态加载&ndash;&gt;-->
+                            <!--</ul>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<div class="present_coupon drop_down item_2" >-->
+                                    <!--<div class="quan_left">-->
+                                        <!--<span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_coupon"><label for="is_present_coupon"></label></em><span class="r_text">券</span>-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                    <!--<div class="quan_right">-->
+                                        <!--<div id="quan_select" style="margin-bottom:0;">-->
+                                        <!--</div>-->
+                                        <!--<div class="add_quan" id="add_quan">添加券<span class="icon-ishop_6-01"></span></div>-->
+                                    <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+            <!--<div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">-->
+                <!--<div class="areaedit_oper_btn">-->
+                    <!--<ul>-->
+                        <!--<li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>-->
+                        <!--<li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                 <!--<form class="msg_detail">-->
+                    <!--<div>-->
+                        <!--<span><label>创建时间</label><input type="text" id="created_time" readonly/></span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span><label>创建人</label><input type="text" id="creator" readonly/></span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span><label>修改人</label><input type="text" id="modifier" readonly/></span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                    <!--<span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash; 拉取区域 &ndash;&gt;-->
+    <!--<div id="screen_area" class="screen_area">-->
+        <!--<div class="screen_title">-->
+            <!--<h4>筛选区域</h4>-->
+            <!--<div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>-->
+            <!--<div class="xian"></div>-->
+        <!--</div>-->
+        <!--<div class="input_s">-->
+            <!--<div class="input_search">-->
+                <!--<input type="text" placeholder="搜索" id="area_search">-->
+                <!--<span class="icon-ishop_3-05" id="area_search_f"></span>-->
+            <!--</div>-->
+            <!--<div class="s_center"></div>-->
+            <!--<div class="s_pitch">-->
+                <!--已添加&nbsp;<span>0</span>&nbsp;个-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="screen_content">-->
+            <!--<div class="screen_content_l">-->
+                <!--<ul>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="screen_content_z">-->
+                <!--<div class="shift shift_right" title="右移">&gt;</div>-->
+                <!--<div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>-->
+                <!--<div class="shift shift_left" title="左移">&lt;</div>-->
+                <!--<div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>-->
+            <!--</div>-->
+            <!--<div class="screen_content_r">-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="screen_que" id="screen_que_area">确定</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash; 拉取店铺 &ndash;&gt;-->
+    <!--<div id="screen_shop" class="screen_area shop">-->
+        <!--<div class="screen_title">-->
+            <!--<h4>筛选店铺</h4>-->
+            <!--<div class="xuanzhong">-->
+                <!--<div class="xuanzhong_p">-->
+                    <!--<label>已选品牌</label><input class="brand_num" type="text" value="全部" id="brand_num" data-brandcode="">-->
+                    <!--<span class="icon_r icon-ishop_8-03" id="shop_brand"></span>-->
+                <!--</div>-->
+                <!--<div class="xuanzhong_p">-->
+                    <!--<label>已选区域</label><input class="area_num" type="text" value="全部" readonly="true" id="area_num"-->
+                                              <!--data-areacode="">-->
+                    <!--<span class="icon_r icon-ishop_8-03" id="shop_area"></span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>-->
+            <!--<div class="xian"></div>-->
+        <!--</div>-->
+        <!--<div class="input_s">-->
+            <!--<div class="input_search">-->
+                <!--<input type="text" placeholder="搜索" id="store_search">-->
+                <!--<span class="icon-ishop_3-05" id="store_search_f"></span>-->
+            <!--</div>-->
+            <!--<div class="s_center"></div>-->
+            <!--<div class="s_pitch">-->
+                <!--已添加&nbsp;<span>0</span>&nbsp;个-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="screen_content">-->
+            <!--<div class="screen_content_l">-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="screen_content_z">-->
+                <!--<div class="shift shift_right" title="右移">&gt;</div>-->
+                <!--<div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>-->
+                <!--<div class="shift shift_left" title="左移">&lt;</div>-->
+                <!--<div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>-->
+            <!--</div>-->
+            <!--<div class="screen_content_r">-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="screen_que" id="screen_que_shop">确定</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash; 拉取品牌 &ndash;&gt;-->
+    <!--<div id="screen_brand" class="screen_area">-->
+        <!--<div class="screen_title">-->
+            <!--<h4>筛选品牌</h4>-->
+            <!--<div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>-->
+            <!--<div class="xian"></div>-->
+        <!--</div>-->
+        <!--<div class="input_s">-->
+            <!--<div class="input_search">-->
+                <!--<input type="text" placeholder="搜索" id="brand_search">-->
+                <!--<span class="icon-ishop_3-05" id="brand_search_f"></span>-->
+            <!--</div>-->
+            <!--<div class="s_center"></div>-->
+            <!--<div class="s_pitch">-->
+                <!--已添加&nbsp;<span>0</span>&nbsp;个-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="screen_content">-->
+            <!--<div class="screen_content_l">-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="screen_content_z">-->
+                <!--<div class="shift shift_right" title="右移">&gt;</div>-->
+                <!--<div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>-->
+                <!--<div class="shift shift_left" title="左移">&lt;</div>-->
+                <!--<div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>-->
+            <!--</div>-->
+            <!--<div class="screen_content_r">-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="screen_que" id="screen_que_brand">确定</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash; Mainly scripts &ndash;&gt;-->
+    <!--<script src="../js/jquery-2.1.1.min.js"></script>-->
+    <!--<script src="../js/bootstrap.min.js?v=3.4.0"></script>-->
+    <!--<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>-->
+    <!--<script src="../js/loading.js?2017040170331"></script>-->
+   <!--&lt;!&ndash; Dialog &ndash;&gt;-->
+    <!--<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>-->
+    <!--<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>-->
+    <!--&lt;!&ndash; ajax &ndash;&gt;-->
+    <!--<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>-->
+    <!--&lt;!&ndash; 带搜索的下拉框 &ndash;&gt;-->
+    <!--<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>-->
+    <!--&lt;!&ndash; error tips &ndash;&gt;-->
+    <!--<script type="text/javascript" src="../js/vip/vip_regime_operate.js?2017040170331"></script>-->
+<!--</body>-->
 
 </html>

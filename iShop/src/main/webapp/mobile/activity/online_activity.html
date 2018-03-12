@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="mui/mui.min.css">
+    <link rel="stylesheet" href="css/online_activity.css?t=20810202">
+    <script src="js/flexible.js"></script>
+    <title>线上报名活动</title>
+
+    <style>
+        .mui-control-content {
+            background-color: white;
+            min-height: 215px;
+        }
+        .mui-table-view{
+            background-color: inherit;
+        }
+        .mui-table-view li{
+            padding: 10px;
+            background-color: #ffffff;
+            margin: 10px 0;
+        }
+        .mui-control-content .mui-loading {
+            margin-top: 50px;
+        }
+        .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar{
+            background-color: rgba(0,0,0,0);
+        }
+        .mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{
+            color: black;
+            font-weight: bold;
+        }
+
+        .mui-control-content{
+            background-color: #EFEFEF!important;
+        }
+        .mui-slider{
+            background-color: #ffffff!important;
+        }
+    </style>
+</head>
+<body>
+<div id="slider" class="mui-slider">
+    <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+        <a class="mui-control-item mui-active" href="#item1mobile">未报名</a>
+        <a class="mui-control-item" href="#item2mobile">已报名</a>
+    </div>
+    <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6">
+        <div style="height: 100%;background-color: black;width: 50%;margin: 0 auto"></div>
+    </div>
+    <div class="mui-slider-group">
+        <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+            <div id="scroll1" class="mui-scroll-wrapper">
+                <div class="mui-scroll" style="height: 100%">
+                    <div class="noDataTip">加载中...</div>
+                </div>
+            </div>
+        </div>
+        <div id="item2mobile" class="mui-slider-item mui-control-content">
+            <div id="scroll2" class="mui-scroll-wrapper">
+                <div class="mui-scroll" style="height: 100%">
+                    <div class="noDataTip">加载中...</div>
+                    <!--<ul class="mui-table-view">-->
+                        <!--<li>-->
+                            <!--<dd>-->
+                                <!--<h4 class="activity_title">标题</h4>-->
+                                <!--<div class="list_detail">-->
+                                    <!--<div>-->
+                                        <!--<div class="activity_dec">活动地点: <span></span><br>活动时间: <span></span><br>活动场次: <span>9次</span></div>-->
+                                    <!--</div>-->
+                                    <!--<button type="button" class="mui-btn applyBtn">查看详情</button>-->
+                                <!--</div>-->
+                            <!--</dd>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<dd>-->
+                                <!--<h4 class="activity_title">标题</h4>-->
+                                <!--<div class="list_detail">-->
+                                    <!--<div>-->
+                                        <!--<div class="activity_dec">活动地点: <span></span><br>活动时间: <span></span><br>活动场次: <span>9次</span></div>-->
+                                    <!--</div>-->
+                                    <!--<button type="button" class="mui-btn applyBtn">查看详情</button>-->
+                                <!--</div>-->
+                            <!--</dd>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="mask_loading" id="mask_loading" >
+    <div>请稍后...</div>
+</div>
+</body>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script src="mui/mui.min.js"></script>
+<script>
+    var oc = new ObjectControl();
+    var theRequest={};
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    var tabs_index=sessionStorage.getItem("tabs_index");
+
+    if(tabs_index && tabs_index=="enroll"){
+        mui('.mui-slider').slider().gotoItem(1,300);
+        sessionStorage.removeItem("tabs_index");
+    }
+
+    mui.init({
+        swipeBack: false
+    });
+    function getActivityList(){
+        var _params={
+//            card_no:"18014802011",
+//            app_id:"wxc9c9111020955324",
+//            open_id:"otctQwN0NMWXtS5TrWH_km1BRvx0"
+                card_no:theRequest.card_no,
+                app_id:theRequest.app_id,
+                open_id:theRequest.open_id
+        };
+        oc.postRequire("post", "/vipActivity/detail/mobile/applyList","", _params, function(data){
+            if(data.code==0){
+                initListData(data)
+            }else if(data.code==1){
+                var url=data.message;
+                window.location.href=url;
+            }else {
+                jQuery(".noDataTip").html("获取数据失败");
+            }
+        },function(){
+            jQuery(".noDataTip").html("获取数据失败")
+        });
+    }
+    function initListData(data){
+        var  msg=JSON.parse(data.message);
+        var uncompl=msg.uncompl;
+        var coml=msg.coml;
+        if(uncompl && uncompl.length>0){
+            var html='<ul class="mui-table-view">';
+            for(var u=0;u<uncompl.length;u++){
+                html+='<li style="overflow: hidden">'+
+//                       ' <span style="width: 20%;text-align: center; display: inline-block;height: 100%;vertical-align: middle;"> <img src="http://2.dev.bizvane.com/img/icon_radio_S.png" alt="" style="display: inline-block; vertical-align: middle;max-width:100%;width: auto;"> </span>'+
+                        '<dd style="width: 100%;padding-left: 10px;display: inline-block;vertical-align: middle">'+
+                        '<h4 class="activity_title">'+uncompl[u].activity_theme+'</h4>'+
+                        '<div class="list_detail">'+
+                        '<div class="activity_dec">'+(uncompl[u].activity_desc).replace(/\n/g,"<br>")+'</div>' +
+                        '<div class="ope_btn"><button type="button" class="mui-btn applyBtn" data-code="'+uncompl[u].activity_code+'">立即报名</button></div>'+
+                        '</div>'+
+                        '</dd>'+
+                        '</li>'
+            }
+            html+='</ul>';
+            jQuery("#scroll1 .mui-scroll").html(html).height("auto")
+        }else{
+            jQuery("#scroll1 .mui-scroll").html('<div class="noDataTip">暂无报名活动</div>')
+        }
+        if(coml && coml.length>0){
+            var html='<ul class="mui-table-view">';
+            for(var c=0;c<coml.length;c++){
+                html+='<li>'+
+                        '<dd>'+
+                        '<h4 class="activity_title">'+coml[c].activity_theme+'</h4>'+
+                        '<div class="list_detail">'+
+                        '<div class="activity_dec">'+(coml[c].activity_desc).replace(/\n/g,"<br>")+'</div>' +
+                        '<div class="ope_btn"><button type="button" data-id="'+coml[c].id+'" data-code="'+coml[c].activity_code+'" class="mui-btn applyBtn">查看详情</button></div>'+
+                        '</div>'+
+                        '</dd>'+
+                        '</li>'
+            }
+            html+='</ul>';
+            jQuery("#scroll2 .mui-scroll").html(html).height("auto")
+        }else{
+            jQuery("#scroll2 .mui-scroll").html('<div class="noDataTip">暂无已报名活动</div>')
+        }
+    }
+    (function($){
+        $("body").on("click","#scroll1 .applyBtn",function(){
+            var activity_code=$(this).attr("data-code");
+            window.location.href="online_activity_details.html?activity_code="+activity_code+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&card_no="+theRequest.card_no
+        });
+        $("body").on("click","#scroll2 .applyBtn",function(){
+            var activity_code=$(this).attr("data-code");
+            window.location.href="online_success_detail.html?activity_code="+activity_code+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&card_no="+theRequest.card_no;
+//            window.location.href="online_success_detail.html?activity_code="+activity_code+"&app_id=wxc9c9111020955324"+"&open_id=otctQwN0NMWXtS5TrWH_km1BRvx0"+"&card_no=18014802011"
+        });
+        var height=document.body.offsetHeight;
+        document.getElementsByClassName('mui-slider-group')[0].style.height=height-40+"px";
+//        document.querySelector('body').addEventListener('touchstart', function (ev) {
+//            var  event=event || window.event;
+//            event.preventDefault();
+//        },false);
+        var overscroll = function(el){
+            el.addEventListener('touchstart', function(){
+                var top = el.scrollTop;
+                var totalScroll = el.scrollHeight;
+                var currentScroll = top + el.offsetHeight;
+                if(top === 0) {
+                    el.scrollTop = 1;
+                }else if(currentScroll === totalScroll){
+                    el.scrollTop = top - 1;
+                }
+            });
+            el.addEventListener('touchmove', function(evt){
+                if(el.offsetHeight < el.scrollHeight){
+                    evt._isScroller = true;
+                }
+            });
+        };
+        for(var i=0;i<document.querySelectorAll('.mui-scroll').length;i++){
+            overscroll(document.querySelectorAll('.mui-scroll')[i]);
+        }
+        document.body.addEventListener('touchmove', function(evt) {
+            if(!evt._isScroller){
+                evt.preventDefault();
+            }
+        });
+        getActivityList();
+    })(jQuery);
+    (function($) {
+        $('.mui-scroll-wrapper').scroll({
+            indicators: true //是否显示滚动条
+        });
+    })(mui);
+</script>
+</html>

@@ -1,0 +1,83 @@
+<div class="message_body" id="download_body">
+    <div class="slide_hide" ><span id="download_slide_hide" style="cursor:pointer;"><i class="icon-ishop_8-05" style="vertical-align: middle"></i><span style="vertical-align: middle">收起</span></span></div>
+    <div class="msg_list"  id="download_list">
+        <span class="msg_loading" id="download_loading">暂无内容</span>
+    </div>
+</div>
+<script>
+    function getMsg(){
+        oc.postRequire("get", "/excel/getOutputExcel","", "", function(data) {
+            var msglist=JSON.parse(data.message);
+            console.log(msglist.length);
+            var div="";
+            if(data.code=="0"){
+                if(msglist.length==0){
+                    $("#download_loading").show();
+                }
+                if(msglist.length>0){
+                    $("#download_loading").hide();
+                }
+                console.log(msglist);
+                for(var i=0;i<msglist.length;i++){
+//                      var name=msglist[i].substring(8,msglist[i].length);
+//                      var index=name.lastIndexOf("_");
+//                      var data=name.substring(index+1,name.length);
+
+                      var url="";
+                      if(msglist[i].file_type=="oss"){
+                          url=msglist[i].url;
+                      }else {
+                          url="/"+msglist[i].url;
+                      }
+                      var name=msglist[i].file_name;
+                      var data=msglist[i].time;
+                      data=data.substring(0,14);
+                      var year=data.substring(0,4);
+                      var month=data.substring(4,6);
+                      var day=data.substring(6,8);
+                      var hour=data.substring(8,10)
+                      var minute=data.substring(10,12);
+                      var seconds=data.substring(12,14);
+                      data=year+"-"+month+"-"+day+" "+hour+":"+minute+":"+seconds+"";
+                      div+="<div style='overflow:hidden'><div class='line' style='width: 100%;'><div style='width: 240px;word-break: break-all;'>"+name+"</div><div style='position: absolute;right:0;top:5px;heioght:20px;line-height: 20px;'><a href='"+url+"' style='color: #337ab7'>下载</a></div><div style='position: absolute;height: 20px;line-height: 20px;bottom: 5px;right: 0;color: #337ab7'>"+data+"</div></div></div>"
+                }
+                $("#download_list").append(div);
+            }else{
+            }
+        });
+    }
+    getMsg();
+    $("#download_list").niceScroll({
+        cursorcolor: "#ccc",//#CC0071 光标颜色
+        cursoropacitymax: 1, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+        touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+        cursorwidth: "5px", //像素光标的宽度
+        cursorborder: "0", //     游标边框css定义
+        cursorborderradius: "5px",//以像素为光标边界半径
+        autohidemode: false //是否隐藏滚动条
+    });
+    $("#download_body").animate({right:"0px"},200);
+    $("#download_slide_hide").click(function(){
+        if($("#download_body").css("right")=="280px"){
+            $("#download_body").animate({right:"0px"},200);
+        }else if($("#download_body").css("right")=="0px"){
+            $("#message_content").hide();
+            $("#download_body").animate({right:"-320px"},200,function(){
+                $("#download_body").css({
+                    top:"80px"
+                });
+                $("#download_body").remove();
+            });
+        }
+    });
+    $(window).scroll(function(){
+        if($("#download_body").css("right")=="-320px"){
+            return
+        }
+        var top=(80-$(window).scrollTop())<0?"0":(80-$(window).scrollTop());
+        $("#download_body").css({
+            top:top+"px"
+        });
+        $("#download_list").getNiceScroll().resize();
+    });
+</script>

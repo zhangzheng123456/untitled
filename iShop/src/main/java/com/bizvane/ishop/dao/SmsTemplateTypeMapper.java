@@ -15,7 +15,7 @@ public interface SmsTemplateTypeMapper {
 
     SmsTemplateType selectSmsTemplateById(int id) throws SQLException;
 
-    List<SmsTemplateType> selectAllSmsTemplateType(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<SmsTemplateType> selectAllSmsTemplateType(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr") String[] manager_corp_arr) throws SQLException;
 
     List<SmsTemplateType> selectSmsTwmplateTypes(@Param("corp_code") String corp_code) throws SQLException;
 
@@ -32,5 +32,6 @@ public interface SmsTemplateTypeMapper {
 
     List<SmsTemplateType> selectSmsTemplateTypeScreen(Map<String, Object> params) throws SQLException;
 
+    List<SmsTemplateType> selectTemplateTypeCountByBrand(Map<String, Object> params) throws SQLException;
 
 }

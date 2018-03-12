@@ -10,7 +10,7 @@ import java.util.Map;
 public interface AreaMapper {
     Area selectByAreaId(int id) throws SQLException;
 
-    List<Area> selectAllArea(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<Area> selectAllArea(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr")String[] manager_corp_arr) throws SQLException;
 
     int insertArea(Area area) throws SQLException;
 
@@ -30,4 +30,8 @@ public interface AreaMapper {
     List<Area> selAreaByCorpCode(Map<String, Object> params) throws SQLException;
 
     List<Area>  selectArea(Map<String, Object> params) throws SQLException;
+
+    List<Area> selectAllAreaTwo(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr")String[] manager_corp_arr) throws SQLException;
+
+
 }

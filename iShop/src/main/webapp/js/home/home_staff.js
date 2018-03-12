@@ -2,12 +2,64 @@ var oc = new ObjectControl();
 $(function(){
     var Time=getNowFormatDate();
     $(".icon-text").val(Time);
+    weekFun('date1',Time,'week');
     staffRanking(Time);
     achAnalysis(Time);
     getShopList();
     vipRanking(Time);
     achieveChart(Time)
 });
+function strReponse(str){
+    var time='';
+    if(str.search('至')!=-1){//周
+        time=str.split('至')[0]
+    }else{//日月年
+        if(str.split('-').length==1){//年
+            time=str+'0101';
+        }else if(str.split('-').length==2){//月
+            time=str+'01'
+        }else if(str.split('-').length==3){//月
+            time=str;
+        }
+    }
+    return time;
+}
+function weekFun(node,date,role){
+    var value='';
+    var time=getNowFormatDate();
+    //周数据处理
+    if(role=='week'){
+        var start_week=new Date(date).getDay();
+        var start_s='';
+        var end_s='';
+        if(date==time&&node=="date1"){
+            start_s=new Date(date).setDate(new Date(date).getDate()+1-7);
+            end_s=new Date(date).setDate(new Date(date).getDate());
+        }else {
+            if(start_week==0){
+                start_s=new Date(date).setDate(new Date(date).getDate()-6);
+                end_s=new Date(date);
+            }else{
+                start_s=new Date(date).setDate(new Date(date).getDate()+1-start_week);
+                end_s=new Date(date).setDate(new Date(date).getDate()+(7-start_week));
+            }
+        }
+        var start=new Date(start_s).getFullYear()+'-'+((new Date(start_s).getMonth()+1)<=9?('0'+(new Date(start_s).getMonth()+1)):(new Date(start_s).getMonth()+1))+'-'+(new Date(start_s).getDate()<=9?('0'+new Date(start_s).getDate()):new Date(start_s).getDate());
+        var  end=new Date(end_s).getFullYear()+'-'+((new Date(end_s).getMonth()+1)<=9?('0'+(new Date(end_s).getMonth()+1)):(new Date(end_s).getMonth()+1))+'-'+(new Date(end_s).getDate()<=9?('0'+new Date(end_s).getDate()):new Date(end_s).getDate());
+        value=start+' 至 '+end;
+        document.getElementById(node).style.width='200px';
+    }else if(role=='month'){
+        value=date.split('-').slice(0,2).join('-');
+        document.getElementById(node).style.width='100px';
+    }else if(role=='day'){
+        value=date.split('-').join('-');
+        document.getElementById(node).style.width='100px';
+    }else if(role=='year'){
+        value=date.split('-')[0];
+        document.getElementById(node).style.width='70px';
+    }
+    document.getElementById(node).value=value;
+};
 function getNowFormatDate() {//获取当前日期
     var date = new Date();
     var seperator1 = "-";
@@ -28,20 +80,33 @@ function lay1(InputID){//定义日期格式
         elem:InputID,
         format: 'YYYY-MM-DD',
         max: laydate.now(), //最大日期
-        istime: true,
+        istime: false, //是否开启时间选择
+        isclear:false, //是否显示清空
         istoday: false,
+        issure: false,// 是否显示确认
         choose: function(datas) {
             var type=Number(InputID.slice(-1));
-            switch (type){
-                case 0:
-                    achAnalysis(datas);
-                    break;
-                case 1:
-                    achieveChart(datas);
-                    break;
-                case 2:
-                    staffRanking(datas);
-                    break;
+            if(type==0){
+                if ($('#sm_achv_prev').html() == '按周查看') {
+                    weekFun('date0', datas, 'week');
+                } else if ($('#sm_achv_prev').html() == '按月查看') {
+                    weekFun('date0', datas, 'month');
+                } else document.getElementById('date0').style.width = '100px';
+                achAnalysis(datas);
+            }else if(type==1){
+                if($('#chart_prev').html()=='按周查看'){
+                    weekFun('date1',datas,'week');
+                }else if($('#chart_prev').html()=='按月查看'){
+                    weekFun('date1',datas,'month');
+                }else document.getElementById('date1').style.width='100px';
+                achieveChart(datas);
+            }else if(type==2){
+                if ($('#daoGouRanking_prev').html() == '按周查看') {
+                    weekFun('date2', datas, 'week');
+                } else if ($('#daoGouRanking_prev').html() == '按月查看') {
+                    weekFun('date2', datas, 'month');
+                } else document.getElementById('date2').style.width = '100px';
+                staffRanking(datas);
             }
         }
     };
@@ -60,10 +125,10 @@ function superadditionStaff(c) {
     for (var i = 0; i < c.length; i++) {
         var a = i + 1;
         var b="";
-        if(c[i].devote_rate==0){
+        if(c[i].devote_rate<=0){
             b=0;
         }
-        if(c[i].devote_rate<=20){
+        if(c[i].devote_rate<=20&&c[i].devote_rate>0){
             b=10;
         }
         if(c[i].devote_rate<=30&&c[i].devote_rate>20){
@@ -90,11 +155,11 @@ function superadditionStaff(c) {
         if(c[i].devote_rate<100&&c[i].devote_rate>90){
             b=90;
         }
-        if(c[i].devote_rate=="100"){
+        if(c[i].devote_rate>=100){
             b=100;
         }
-        staff_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].user_name//导购名称
-            + "</td><td>" + c[i].amount //业绩
+        staff_list += "<tr><td style='width:97px'>" + a + "</td><td style='width:97px'>" + c[i].user_name//导购名称
+            + "</td><td style='width:97px'>" + c[i].amount //业绩
             + "</td><td><img src='../img/contribution_"+b+".png' style='width:4px;height: 20px'>"
             + c[i].devote_rate //贡献度
             + "%</td></tr>"
@@ -255,7 +320,6 @@ function getShopList(){//切换店铺
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            //console.log(list);
             $(".area_name").html(list[0].store_name);
             $(".area_name").attr("title",list[0].store_name);
             $(".area_name").attr("data-code",list[0].store_code);
@@ -272,9 +336,9 @@ function getShopList(){//切换店铺
                 $(".area_name").attr("data-code",area_code);
                 $(".area_name").html($(this).html());
                 //$(".c_a_shoppe ul").hide();
-                staffRanking($("#date2").val());
-                achAnalysis($("#date0").val());
-                achieveChart($("#date1").val());
+                staffRanking(strReponse($("#date2").val()));
+                achAnalysis(strReponse($("#date0").val()));
+                achieveChart(strReponse($("#date1").val()));
                 vipRanking(getNowFormatDate())
             })
         }
@@ -291,7 +355,41 @@ $(".reg_testdate li").click(function() {
     var dateType=$(this).attr("date-type");
     $(this).parent("ul").prev(".title").attr("date-type",dateType);
   if(id == "chart"){
-      achieveChart(getTime);
+      var time=[];
+      var role=this.innerHTML=='按周查看'?'week':'month';
+      time.push(new Date().getFullYear());
+      time.push((new Date().getMonth()+1)<=9?'0'+(new Date().getMonth()+1):(new Date().getMonth()+1));
+      time.push(new Date().getDate()<=9?'0'+new Date().getDate():new Date().getDate());
+      weekFun('date1',time.join('-'),role);
+      achieveChart(time.join(''));
+  }else if(id=='sm_achv'){
+      var time=[];
+      var role='';
+      if(this.innerHTML=='按日查看'){
+          role='day'
+      }else if(this.innerHTML=='按周查看'){
+          role='week'
+      }else if(this.innerHTML=='按月查看'){
+          role='month'
+      }
+      time.push(new Date().getFullYear());
+      time.push((new Date().getMonth()+1)<=9?'0'+(new Date().getMonth()+1):(new Date().getMonth()+1));
+      time.push(new Date().getDate()<=9?'0'+new Date().getDate():new Date().getDate());
+      weekFun('date0',time.join('-'),role);
+  }else if(id=='daoGouRanking'){
+      var time=[];
+      var role='';
+      if(this.innerHTML=='按日查看'){
+          role='day'
+      }else if(this.innerHTML=='按周查看'){
+          role='week'
+      }else if(this.innerHTML=='按月查看'){
+          role='month'
+      }
+      time.push(new Date().getFullYear());
+      time.push((new Date().getMonth()+1)<=9?'0'+(new Date().getMonth()+1):(new Date().getMonth()+1));
+      time.push(new Date().getDate()<=9?'0'+new Date().getDate():new Date().getDate());
+      weekFun('date2',time.join('-'),role);
   }
 });
 
@@ -389,3 +487,8 @@ $(".select_Date").mouseout(function(){
     $(this).parent(".choose").removeClass("cur");
     $(this).hide()
 });
+$(document).click(function(e){
+    if(!$(e.target).parents('.c_a_shoppe').length){
+        $('.c_a_shoppe ul').hide();
+    }
+})

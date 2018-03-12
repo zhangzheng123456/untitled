@@ -24,7 +24,10 @@ public interface CorpParamService {
 
     int delete(int id) throws Exception;
 
-     PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception ;
+    PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception ;
 
+    CorpParam selectByParamName(String param_name,String isactive) throws Exception;
 
-    }
+    List<CorpParam> selectParamByName(String corp_code,String param_name) throws Exception;
+
+}

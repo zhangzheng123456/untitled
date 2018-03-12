@@ -235,15 +235,15 @@ whir.loading ={
         if (yScroll < windowHeight) {  
             pageHeight = windowHeight;  
         } else {  
-            pageHeight = yScroll;  
+            pageHeight = yScroll;
         }  
         // for small pages with total width less then width of the viewport      
-        if (xScroll < windowWidth) {  
-            pageWidth = xScroll;  
+        if (xScroll < windowWidth) {
+            pageWidth = xScroll;
         } else {  
             pageWidth = windowWidth;  
         }  
         var arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);  
-        return arrayPageSize;  
+        return arrayPageSize;
     }  
 };

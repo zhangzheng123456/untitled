@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>秀搭管理</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20170105">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <style>
-        #sxk .isActive_select_down li {
-            width: 44px;
+        #sxk .isActive_select2 .isActive_select_down li {
+                width: 44px;
+        }
+        .table tr td span {
+            max-width: 75px;
         }
     </style>
 </head>
@@ -25,7 +28,7 @@
                 </ul>
                 <ul>
                     <li class="li">
-                        <input type="text" class="input" id="search" placeholder="暂未却定">
+                        <input type="text" class="input" id="search" placeholder="秀搭标题/搭配描述/创建人编号">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
@@ -109,7 +112,7 @@
                 <tr class="th">
                     <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                     <th style="text-align: center;width: 50px" id="tableOrder">序号</th>
-                    <!--<th>操作者</th>-->
+                    <!--<th>操作者<span class="icon-ishop_7-03 sort_list"></span></th>-->
                     <!--<th>功能</th>-->
                     <!--<th>动作</th>-->
                     <!--<th>企业名称</th>-->
@@ -176,19 +179,45 @@
 <script src="../table/js/jquery.min.js"></script>
 <script src="/js/loading.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-<script src="../js/insidePostRequire.js?20170105"></script>
+<script src="../js/insidePostRequire.js?2017040170331"></script>
 <!--js控制文件-->
-<script src="../js/goods/xiuda.js"></script>
+<script src="../js/goods/xiuda.js?201706015"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="../js/silide.js?20170105"></script>
+<script src="../js/silide.js?2017040170331"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
 <script>
+     $('.inputs').on('click','ul li.isActive_select2 ul li',function () {
+            $(this).parents("li").find(".isactive").nextAll('input').remove();
+            $(this).parents("li").find(".isactive").val($(this).text());
+            if($(this).text()=='介于'){
+                $(this).parent().before('<input>');
+                $(this).parent().before('<input >');
+            }else if($(this).text()=='全部'){
+                return
+            }else{
+                $(this).parent().before('<input >');
+            }
+         $(this).parents("li").find(".isactive").nextAll('input').attr('style','background:#fff;width: 66px');
+            //验证input值
+         $(this).parents("li").find(".isactive").nextAll('input').on('blur',function () {
+                    var reg=/^[0-9]*$/g
+                    if(!reg.test($(this).val())){
+                        test_value=false;
+                        frame();
+                        $('.frame').html('请输入数字');
+                    }else{
+                        test_value=true;
+                    }
+            });
+        });
     var timer=setInterval(function(){
-        $(window.parent.document).find("#navbar li dd[data-code='F0042']").parent().show();
-        $(window.parent.document).find("#navbar li dd[data-code='F0042']").find("span").addClass("icon-ishop_8-01");
-        $(window.parent.document).find("#navbar li dd[data-code='F0042']").find("a").css({color:"#6cc1c8"});
-        $(window.parent.document).find("#navbar li dd[data-code='F0042']").parent().siblings().addClass("h1");
-        $(window.parent.document).find("#navbar li dd[data-code='F0042']").parent().siblings().find("span").addClass("icon-ishop_8-02");
-        if($(window.parent.document).find("#navbar li dd[data-code='F0042']").find("span").hasClass("icon-ishop_8-01")){
+        $(window.parent.document).find("#navbar li dd[data-code='F0014']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0014']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0014']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0014']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0014']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0014']").find("span").hasClass("icon-ishop_8-01")){
             clearInterval(timer);
         }
     },0);

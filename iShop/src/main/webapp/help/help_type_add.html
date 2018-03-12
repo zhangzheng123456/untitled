@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>新增品牌</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div id="wrapper">
+    </div> -->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span id="back_brand">品牌管理</span><i class="icon-ishop_8-03"></i><label>新增品牌</label></div>
+            <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
+                <form class="conpany_msg">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
+                       <!--  <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span> -->
+                    </div>
+                    <div>
+                        <span><label style="color:#c26655">品牌编号*</label><input type="text" id="BRAND_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="品牌编号不能为空！"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label style="color:#c26655">品牌名称*</label><input type="text" id="BRAND_NAME" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属品牌不能为空！"></div></div></span>
+                    </div>
+                    <div>
+                        <div class="drop_down">
+                        <span><label>所属公众号</label><input class="input_select" id="Accounts" data-appid="" type="text" placeholder="选取公众号" readonly />
+                            <ul class="Acc_dropdown" id="Acc_dropdown">
+                                <li>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">默认客服</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming" id="services">
+
+                            </div>
+                            <div id="test">
+                                <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+                <div class="distribution_frame" id="distribution_frame">
+                    <div id="area_code" class="drop-down">
+                        <h5>所属区域</h5>
+                        <input type="text" class="input" readonly="true" id="area_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="area_search">
+                            <i class="icon-ishop_3-05" id="area_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+
+                            </ul>
+                            <div class="area_more" id="area_more">加载更多</div>
+                        </div>
+                        <div id="area_code_drop" class="drop_q">确定</div>
+                    </div>
+                    <div id="store_code" class="drop-down">
+                        <h5>所属店铺</h5>
+                        <input type="text" class="input" readonly="true" id="store_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="store_search">
+                            <i class="icon-ishop_3-05" id="store_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+
+                            </ul>
+                            <div class="area_more" id="store_more">加载更多</div>
+                        </div>
+                        <div id="store_code_drop" class="drop_q">确定</div>
+                    </div>
+                    <div id="staff_code" class="drop-down">
+                        <h5>员工名称</h5>
+                        <input type="text" class="input" readonly="true" id="staff_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="staff_search">
+                            <i class="icon-ishop_3-05" id="staff_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+
+                            </ul>
+                            <div class="area_more" id="staff_more">加载更多</div>
+                        </div>
+                        <div id="staff_code_drop" class="drop_q">确定</div>
+                    </div>
+                </div>
+            </div>
+            <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+                <div class="brandadd_oper_btn">
+                    <ul>
+                        <li class="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    </ul>
+                </div>
+                 <form class="msg_detail">
+                    <div>
+                    <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                    </div>
+                </form>
+            </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js?2017040170331"></script>
+    <!-- Custom and plugin javascript -->
+     <!-- moni select -->
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <script src="../js/loading.js?2017040170331"></script>
+   <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js?2017040170331"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/brand/brand_operate.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/brand/get_staff.js?2017040170331"></script>
+</body>
+</html>

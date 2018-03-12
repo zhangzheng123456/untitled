@@ -6,38 +6,19 @@
     <title>新增搭配</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
-    <script src="../js/loading.js?20170105"></script>
-    <style type="text/css">
-        div{
-            width:100%;
-        }
-        #edui1_elementpath{
-            display: none;
-        }
-        .good_imgs .fileBoxUl .check_public{
-            width: 16px;
-            height: 16px;
-            background-color: #d5d5d5;
-            border-radius: 15px;
-            position: absolute;
-            left: -15px;
-            top: 8px;
-            background-size: 22px 22px;
-            margin-left: 28px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?20170714" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <script src="../js/loading.js?2017040170331"></script>
     <style>
+        div{
+            width: 100%;
+        }
         body{
             margin-top:81px;
-        }
-        #edui1_elementpath{
-            display: none;
         }
         .good_imgs .fileBoxUl .check_public{
             width: 16px;
@@ -94,7 +75,7 @@
         .conpany_msg  span:nth-of-type(1){display:block; width: 150px;height: 30px;margin-top: 10px;font-size: 14px;color: #888888;text-align: center;margin-right: 20px}
         /*文字*/
         .conpany_msg span:nth-of-type(2){display: none;}
-       /*删除*/
+        /*删除*/
         .conpany_msg i{display:none;background-color: #e58080;color: white;border-radius: 300px;width: 17px;height: 17px;position: absolute;top: -7px;right: -7px;text-align: center;line-height: 17px;}
         #d_search:hover{
             cursor:hand;
@@ -113,7 +94,7 @@
     <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="changePage()">搭配管理</span><i class="icon-ishop_8-03"></i><label>新增搭配</label></div>
     <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
         <!--搭配名称-->
-        <div style="margin-top: 50px;margin-left: 60px">
+        <div style="margin-top: 50px;">
            <span>
                <label style="font-size:14px;color:#c26555;float: left;width: 105px;height: 30px;text-align: right;margin-right: 18px;line-height: 30px;font-size: 14px;text-indent: 10px;">搭配名称*</label>
                 <input type="text" id="goodsTitle"  verify="Empty"  style="margin-bottom:15px;float: left;width: 480px;height: 30px;border-radius: 4px;border: none;text-indent: 10px;outline: none;color: #888888" maxlength="200"/>
@@ -122,28 +103,48 @@
                 </div>
             </span>
         </div>
-        <!--搭配描述-->
-        <div style="clear:both;">
-            <span style="display: inline-flex;width:100%;margin-left: 60px">
+        <div class="dapei" style="clear: both;">
+            <div class="dapei_left">
+                搭配效果图
+            </div>
+            <div class="daipei_right">
+                <div class="daipei_list" id="daipei_list">
+                    <ul>
+                        <li class="add">
+                            <input accept="image/jpg,image/jpeg,image/png,img/bmp"  type="file" name="upload" id="upFile"/>
+                            <div class="addAdd">
+                                +
+                                <div class="addText">添加图片</div>
+                            </div>
+                            <div class="jianyi">建议尺寸：1000*1000</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--</div>-->
+            <!--搭配描述-->
+            <div style="clear:both;">
+            <span style="display: inline-flex;width:100%;">
                 <label style="font-size:14px;color:#c26555;float: left;width: 105px;height: 30px;text-align: right;margin-right: 18px;line-height: 30px;font-size: 14px;">搭配描述*</label>
                 <textarea id="goodsDescribe" maxlength="600" style="width: 480px;height: 180px;padding: 8px;outline:none;resize: none;border: none; border-radius: 4px;font-family: inherit;font-size: inherit;line-height: inherit;" id="message_content" ></textarea></span></span>
-        </div>
-        <div style="margin-left: 60px;padding-bottom: 10px" class="hint" id="areaTemp">
-            <div hintinfo="搭配描述不能为空！" class="error_tips"style="">搭配描述不能为空！</div>
-        </div>
-        <span style="clear:both;float: left;font-size: 14px;color: #c26555;margin-left:100px;margin-top: 10px;">商品搭配*</span>
-        <form class="conpany_msg" style="float: left;margin-top: 15px;margin-left: 20px;width: 495px">
-            <!--商品模板-->
-            <!--<div class="itembox" style="width: 150px;height: 190px;margin-bottom: 20px;margin-right:20px;float: left">-->
+            </div>
+            <div style="padding-bottom: 10px" class="hint" id="areaTemp">
+                <div hintinfo="搭配描述不能为空！" class="error_tips"style="">搭配描述不能为空！</div>
+            </div>
+            <span style="clear:both;float: left;font-size: 14px;color: #c26555;margin-top: 10px;width: 105px;text-align: right;">商品搭配*</span>
+            <form class="conpany_msg" style="float: left;margin-top: 15px;margin-left: 20px;width: 495px">
+                <!--商品模板-->
+                <!--<div class="itembox" style="width: 150px;height: 190px;margin-bottom: 20px;margin-right:20px;float: left">-->
                 <!--<div class="itemArea"></div>-->
                 <!--<div class="itemText">AJEL55598</div>-->
-            <!--</div>-->
-            <!--添加模板-->
-            <div id="add">
-                <div class="addAdd">+</div>
-                <div class="addText">添加商品</div>
-            </div>
-        </form>
+                <!--</div>-->
+                <!--添加模板-->
+                <div id="add">
+                    <div class="addAdd">+</div>
+                    <div class="addText">添加商品</div>
+                </div>
+            </form>
+        </div>
     </div>
     <div id="search_match_goods" style="top:50px;left:250px;position: absolute;z-index: 1000;" onmousedown="mouseDown(this,event)"
          onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">
@@ -165,33 +166,22 @@
             </ul>
         </div>
         <form class="msg_detail">
-            <!--<div>-->
-                <!--<span><label>创建时间</label><input type="text" id="created_time" readonly=""></span>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<span><label>创建人</label><input type="text" id="creator" readonly=""></span>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<span><label>修改时间</label><input type="text" id="modify_time" readonly=""></span>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<span><label>修改人</label><input type="text" id="modifier" readonly=""></span>-->
-            <!--</div>-->
             <div>
                 <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="checked"  id="is_active"><label for="is_active"></label></em></span>
             </div>
         </form>
     </div>
 </div>
+<script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<div style="display:none"><div id="container"><div id="selectfiles"></div></div></div>
 <div id="goods_box"></div>
 <!-- ajax -->
-<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <!--匹配js文件-->
-<script type="text/javascript" src="../js/goods/fab_matchAdd.js?20170105"></script>
+<script type="text/javascript" src="../js/goods/fab_matchAdd.js?2017040170331"></script>
 <script>
     var mouseX, mouseY;
     var objX, objY;
@@ -234,7 +224,54 @@
             window.event.cancelBubble = true;
         }
     }
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        secure:true,
+        bucket: 'products-image'
+    });
+    $("#upFile").change(function(e){
+        var file = e.target.files[0];
+        var storeAs="/collocation/rendering"+new Date().getTime()+'.jpg';
+        if($("#daipei_list img").length>=2){
+            art.dialog({
+                time: 1,
+                lock:true,
+                cancel: false,
+                content: "最多能添加两张"
+            });
+            $("#upFile").val("");
+            return;
+        }
+        client.multipartUpload(storeAs, file).then(function (result) {
+            var storeAs='https://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
+            $("#daipei_list ul .add").before("<li><i class='icon-ishop_6-12'></i><img src='"+storeAs+"@150h_150w_1e_1c' alt='' data-src='"+result.name+"' data-img='"+storeAs+"'></li>");
+            $("#upFile").val("");
+        }).catch(function (err) {
+            // console.log(err);
+        });
+    })
+    $("#daipei_list").on("click","li i",function(){
+        var key=$(this).parent("li").find("img").attr("data-src");
+        deleteUrl(key);
+        $(this).parent("li").remove();
+    });
+    function deleteUrl(key){
+        console.log(key);
+        var storeAs=key;
+        client.delete(storeAs).then(function (result) {
+            console.log(result);
+        }).catch(function (err) {
 
+        });
+    };
+    $("#daipei_list").on("mouseover","li",function(){
+        $(this).find("i").show();
+    });
+    $("#daipei_list").on("mouseout","li",function(){
+        $(this).find("i").hide();
+    });
 </script>
 </body>
 </html>

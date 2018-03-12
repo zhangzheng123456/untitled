@@ -41,6 +41,13 @@
         WHERE status = 'N'
     </select>
 
+    <!--获取所有未执行的任务-->
+    <select id="selectJobByGroup" resultMap="ScheduleJob">
+        SELECT *
+        FROM schedule_job
+        WHERE job_group=#{job_group}
+    </select>
+
     <insert id="insertScheduleJob" parameterType="com.bizvane.ishop.entity.ScheduleJob">
         INSERT INTO schedule_job
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -159,4 +166,16 @@
         WHERE schedule_job_id = #{schedule_job_id}
     </delete>
 
+    <delete id="deleteScheduleByName">
+        DELETE FROM
+        schedule_job
+        WHERE job_name = #{job_name}
+    </delete>
+
+
+    <delete id="deleteScheduleByGroup">
+        DELETE FROM
+        schedule_job
+        WHERE job_group = #{job_group}
+    </delete>
 </mapper>

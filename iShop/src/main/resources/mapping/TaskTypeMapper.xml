@@ -67,6 +67,12 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_task_type.corp_code = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_task_type.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (task_type_code LIKE concat('%',#{search_value},'%')
@@ -182,6 +188,12 @@
         WHERE dt.CORP_CODE = dc.CORP_CODE
         <if test="corp_code != null and corp_code !=''">
             AND dt.CORP_CODE = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dt.corp_code =#{item}
+            </foreach>
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">

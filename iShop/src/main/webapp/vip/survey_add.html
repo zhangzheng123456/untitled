@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>问卷调查-新增</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170830">
+    <link rel="stylesheet" href="../css/survey.css?v=1.0.2">
+</head>
+<style>
+    .bg_btn_wrap{
+        position: relative;
+        display: inline-block;
+        width: 70px;
+        height: 70px;
+        border: 1px dashed #999;
+        border-radius: 5px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 12px;
+    }
+    .bg_btn_wrap i{
+        display: block;
+        font-size: 22px;
+        margin: 5px 0;
+    }
+    .bg_btn_wrap input{
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        top:0;
+        left: 0;
+        filter: alpha(opacity:0);
+        opacity: 0;
+    }
+    .bg_img_wrap{
+        position: relative;
+    }
+    .bg_img_wrap img{
+        width: 70px;
+        height: 70px;
+        margin-right: 10px;
+    }
+    .bg_img_wrap i{
+        display: none;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: -23px;
+        right: 12px;
+        cursor: pointer;
+        background: url(../img/x_alt.png) no-repeat;
+    }
+    .bg_img_wrap:hover i{
+        display: block;
+    }
+    .operate_btn_box .copy_btn{
+        display: none;
+    }
+</style>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_regime">问卷调查</span><i class="icon-ishop_8-03"></i><label id="survey_label">新增问卷</label></div>
+    <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
+        <form class="conpany_msg">
+            <div class="the_listTitle">
+           <span>
+               <label class="red" style="color:#c26655">所属企业*</label><span class="corp_select" style="width: 412px"><select id="OWN_CORP" style="display: inline-flex"></select></span>
+            </span>
+            </div>
+            <div>
+                 <span><label style="color:#c26655">问卷名称*</label><input type="text" id="survey_name" maxlength="50"></span>
+            </div>
+            <div><span><label style="vertical-align: top">问卷说明</label><textarea id="survey_desc" type="text" maxlength="200"></textarea></span></div>
+            <div>
+                <label style="color:#c26655;vertical-align:top">模版配置*</label><div class="survey_template_wrap">
+                    <div class="survey_template_header" id="survey_template_header">
+                        <ul>
+                            <li data-type="radio">
+                                <img src="../img/icon_radio.png"><br/>
+                                单选题
+                            </li>
+                            <li data-type="checkbox">
+                                <img src="../img/icon_check.png"><br/>
+                                多选题
+                            </li>
+                            <li data-type="input">
+                                <img src="../img/icon_input.png"><br/>
+                                填空题
+                            </li>
+                            <li data-type="grade">
+                                <img src="../img/icon_grade.png"><br/>
+                                评分题
+                            </li>
+                            <li data-type="title">
+                                <img src="../img/icon_title.png"><br/>
+                                分段标题
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="survey_template_content" id="survey_template_content">
+                        <!--<div class="template_box">-->
+                            <!--<span class="template_box_index">1.</span><span><input type="text" class="template_input change_title" maxlength="20" placeholder="点击输入您的问题"></span>-->
+                            <!--<div style="margin-bottom: 0;padding: 0 30px">-->
+                                <!--<ul>-->
+                                    <!--<li><input type="radio" id="radio_1" name="radio"><label-->
+                                            <!--for="radio_1"></label><span><span class="change_radio_input">选项</span></span></li>-->
+                                    <!--<li><input type="radio" id="radio_2" name="radio"><label-->
+                                            <!--for="radio_2"></label><span><span class="change_radio_input">选项</span></span></li>-->
+                                <!--</ul>-->
+                                <!--<div class="radio_add_btn"><i class="icon-ishop_6-01"></i>添加选项</div>-->
+                                <!--<span class="template_drag_area"></span>-->
+                                <!--<span class="template_delete_btn icon-ishop_6-12"></span>-->
+                                <!--<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn"><label for="setting_btn"></label>必填</span></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="template_box">-->
+                            <!--<span class="template_box_index">2.</span><span><input type="text" class="template_input change_title" maxlength="20" placeholder="点击输入您的问题"></span>-->
+                            <!--<div style="margin-bottom: 0;padding: 0 30px">-->
+                                <!--<ul>-->
+                                    <!--<li><input type="checkbox" id="check_1"><label-->
+                                            <!--for="check_1"></label><span><span class="change_radio_input">选项</span></span></li>-->
+                                    <!--<li><input type="checkbox" id="check_2"><label-->
+                                            <!--for="check_2"></label><span><span class="change_radio_input">选项</span></span></li>-->
+                                <!--</ul>-->
+                                <!--<div class="radio_add_btn checkbox_add_btn"><i class="icon-ishop_6-01"></i>添加选项</div>-->
+                                <!--<span class="template_drag_area"></span>-->
+                                <!--<span class="template_delete_btn icon-ishop_6-12"></span>-->
+                                <!--<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn_2"><label for="setting_btn_2"></label>必填</span></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="template_box">-->
+                            <!--<span class="template_box_index">3.</span><span><input type="text" class="template_input change_title" maxlength="20" placeholder="点击输入您的问题"></span>-->
+                            <!--<div style="padding: 0 30px;margin: 0">-->
+                                <!--<input type="text" class="template_input_border">-->
+                            <!--</div>-->
+                            <!--<span class="template_drag_area"></span>-->
+                            <!--<span class="template_delete_btn icon-ishop_6-12"></span>-->
+                            <!--<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn_3"><label for="setting_btn_3"></label>必填</span></span>-->
+                        <!--</div>-->
+                        <!--<div class="template_box">-->
+                            <!--<span class="template_box_index">4.</span><span><input type="text" class="template_input change_title" maxlength="20" placeholder="点击输入您的问题"></span>-->
+                            <!--<div style="padding: 0 30px;margin: 0">-->
+                                <!--<ul class="grade_star_box">-->
+                                    <!--<li class="grade_star"></li>-->
+                                    <!--<li class="grade_star"></li>-->
+                                    <!--<li class="grade_star"></li>-->
+                                    <!--<li class="grade_star"></li>-->
+                                    <!--<li class="grade_star"></li>-->
+                                <!--</ul>-->
+                                <!--<span class="template_drag_area"></span>-->
+                                <!--<span class="template_delete_btn icon-ishop_6-12"></span>-->
+                                <!--<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn_4"><label for="setting_btn_4"></label>必填</span></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="template_box" style="padding-left: 10px">-->
+                            <!--<span class="template_title"><input type="text" class="template_input change_title" maxlength="20" placeholder="点击输入分段标题"></span>-->
+                            <!--<span class="template_drag_area"></span>-->
+                            <!--<span class="template_delete_btn icon-ishop_6-12"></span>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+            <div><span><label>背景图</label><span class="bg_img_wrap" id="bg_img_wrap"></span><span class="bg_btn_wrap"><input id="upload_bg" type="file"><i class="icon-ishop_6-01"></i>建议尺寸800*1218</span></span></div>
+        </form>
+    </div>
+    <div class="col-lg-5 col-md-7 animated fadeInRight">
+        <div class="operate_btn_box" style="text-align: right">
+            <ul>
+                <li id="copy_btn" class="copy_btn">复制</li><li style="background: #4a5f7c" id="publish_btn">发布</li><li id="preview_btn">预览</li><li id="edit_save">保存</li><li id="edit_close" style="background: #cccccc">关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail" id="msg_detail" style="display: none">
+            <div>
+                <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+            </div>
+            <!--<div>-->
+                <!--<span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>-->
+            <!--</div>-->
+        </form>
+    </div>
+    <div class="preview_wrap" id="preview_wrap">
+        <div class="preview_content_wrap">
+            <div class="preview_header_left">问卷预览</div><div class="preview_header_right"><span id="preview_phone_btn"><i class="icon_phone"></i>手机预览</span></div>
+            <div class="survey_view_web" id="survey_view_wrap">
+                <div class="survey_title" id="preview_name">五一调查促销</div>
+                <div class="survey_desc" id="preview_desc">说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明</div>
+                <div id="survey_view_web">
+                    <div class="exercise_box">
+                        <span class="exercise_index">1.</span><span class="must_fill">*必填</span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                        <ul>
+                            <li><input type="radio" id="radio_11" name="radio"><label
+                                    for="radio_11"></label><span><span>选项</span></span></li>
+                            <li><input type="radio" id="radio_21" name="radio"><label
+                                    for="radio_21"></label><span><span>选项</span></span></li>
+                            <li><input type="radio" id="radio_31" name="radio"><label
+                                    for="radio_31"></label><span><span>选项</span></span></li>
+                        </ul>
+                    </div>
+                    <div class="exercise_box">
+                        <span class="exercise_index">2.</span><span class="must_fill">*必填</span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                        <ul>
+                            <li><input type="checkbox" id="check1"><label
+                                    for="check1"></label><span><span>选项</span></span></li>
+                            <li><input type="checkbox" id="check2"><label
+                                    for="check2"></label><span><span>选项</span></span></li>
+                            <li><input type="checkbox" id="check3"><label
+                                    for="check3"></label><span><span>选项</span></span></li>
+                        </ul>
+                    </div>
+                    <div class="exercise_box">
+                        <span class="exercise_index">4.</span><span class="must_fill"></span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                        <ul>
+                            <li>
+                                <input type="text" class="exercise_input">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="exercise_box">
+                        <span>分段标题</span>
+                    </div>
+                    <div class="exercise_box">
+                        <span class="exercise_index">4.</span><span class="must_fill"></span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                        <ul style="padding-left: 30px">
+                            <li class="grade_star"></li>
+                            <li class="grade_star"></li>
+                            <li class="grade_star"></li>
+                            <li class="grade_star"></li>
+                            <li class="grade_star"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="preview_phone_wrap">
+            <span class="preview_phone_tips">点击任意处关闭预览</span>
+            <div class="preview_phone_bg">
+                <iframe width="100%" height="100%" frameborder="0" scrolling="no" id="iframe"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/jquery-ui-1.10.4.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<script src="../js/loading.js?2017040170331"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<script>
+    var oc = new ObjectControl();
+    var survey = {
+        index_num: 1,//当前题目序号
+        init:function () {
+            this.allEvent();
+            this.getSurveyDetail();
+            this.uploadOSS();
+        },
+        allEvent:function () {
+            $("#survey_template_header li").click(function () {
+                var date = new Date();
+                date = date.getTime();
+                var type = $(this).attr("data-type");
+                var template = '';
+                if(type == "radio"){
+                    template = '<div class="template_box" data-type="radio">'
+                             + '<span class="template_box_index">'+survey.index_num+'.</span><span><input type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                             + '<div style="margin-bottom: 0;padding: 0 30px"><ul>'
+                             + '<li><input type="radio" id="radio_1'+date+'" name="radio"><label for="radio_1'+date+'"></label><span><span class="change_radio_input">选项一</span></span></li>'
+                             + '<li><input type="radio" id="radio_2'+date+'" name="radio"><label for="radio_2'+date+'"></label><span><span class="change_radio_input">选项二</span></span></li>'
+                             + '<li><input type="radio" id="radio_3'+date+'" name="radio"><label for="radio_3'+date+'"></label><span><span class="change_radio_input">选项三</span></span></li>'
+                             + '</ul><div class="radio_add_btn"><i class="icon-ishop_6-01"></i>添加选项</div>'
+                             + '<span class="template_drag_area"></span>'
+                             + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                             + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn'+date+'"><label for="setting_btn'+date+'"></label>必填</span></span></div></div>'
+                }else if(type == "checkbox"){
+                    template = '<div class="template_box" data-type="checkbox">'
+                             + '<span class="template_box_index">'+survey.index_num+'.</span><span><input type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                             + '<div style="margin-bottom: 0;padding: 0 30px"><ul>'
+                             + '<li><input type="checkbox" id="check_1'+date+'"><label for="check_1'+date+'"></label><span><span class="change_radio_input">选项一</span></span></li>'
+                             + '<li><input type="checkbox" id="check_2'+date+'"><label for="check_2'+date+'"></label><span><span class="change_radio_input">选项二</span></span></li>'
+                             + '<li><input type="checkbox" id="check_3'+date+'"><label for="check_3'+date+'"></label><span><span class="change_radio_input">选项三</span></span></li>'
+                             + '</ul><div class="radio_add_btn checkbox_add_btn"><i class="icon-ishop_6-01"></i>添加选项</div>'
+                             + '<span class="template_drag_area"></span>'
+                             + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                             + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn'+date+'"><label for="setting_btn'+date+'"></label>必填</span></span></div></div>'
+                }else if(type == "input"){
+                    template = '<div class="template_box" data-type="input">'
+                             + '<span class="template_box_index">'+survey.index_num+'.</span><span><input type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                             + '<div style="padding: 0 30px;margin: 0"><input type="text" class="template_input_border"></div>'
+                             + '<span class="template_drag_area"></span>'
+                             + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                             + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn'+date+'"><label for="setting_btn'+date+'"></label>必填</span></span></div>'
+                }else if(type == "grade"){
+                    template = '<div class="template_box" data-type="grade">'
+                             + '<span class="template_box_index">'+survey.index_num+'.</span><span><input type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                             + '<div style="padding: 0 30px;margin: 0"><ul class="grade_star_box">'
+                             + '<li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li>'
+                             + '</ul><span class="template_drag_area"></span>'
+                             + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                             + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input type="checkbox" id="setting_btn'+date+'"><label for="setting_btn'+date+'"></label>必填</span></span></div></div>'
+                }else if(type == "title"){
+                    template = '<div class="template_box" data-type="title" style="padding-left: 10px">'
+                             + '<span class="template_title"><input type="text" class="template_input change_title" maxlength="100" placeholder="点击输入分段标题"></span>'
+                             + '<span class="template_drag_area"></span>'
+                             + '<span class="template_delete_btn icon-ishop_6-12"></span></div>'
+                }
+                $("#survey_template_content").append(template);
+                type == 'title' ? survey.index_num = 1 : survey.index_num++;
+            });
+            //点击区域切换input/标题
+            $("#survey_template_content").on("focus",".template_input",function () {
+                $(this).addClass("template_input_focus");
+            });
+            $("#survey_template_content").on("blur",".template_input",function () {
+                $(this).removeClass("template_input_focus");
+            });
+            //单选,多选题添加／删除／编辑／移动选项
+            $("#survey_template_content").on("click",".radio_add_btn",function () {//新增
+                var date = new Date();
+                date = date.getTime();
+                if($(this).hasClass("checkbox_add_btn")){
+                    var li = '<li><input type="checkbox" id="check'+date+'"><label for="check'+date+'"></label><span><input maxlength="50" class="radio_name_input" type="text"><span class="icon_arrow_up"></span><span class="icon_arrow_down icon_arrow_down_disabled"></span><span class="radio_delete icon-ishop_6-12"></span></span></li>';
+                }else {
+                    var li = '<li><input type="radio" id="radio_'+date+'" name="radio"><label for="radio_'+date+'"></label><span><input maxlength="50" class="radio_name_input" type="text"><span class="icon_arrow_up"></span><span class="icon_arrow_down icon_arrow_down_disabled"></span><span class="radio_delete icon-ishop_6-12"></span></span></li>';
+                }
+
+                //关闭其他input并赋值
+                var _this = $(this).parent().find(".radio_name_input");
+                var val = $(_this).val() == '' ? '选项' : $(_this).val();
+                $(_this).parent().html('<span class="change_radio_input">'+val+'</span>');
+
+                $(this).parent().find("ul").append(li);
+                $(this).parent().find("ul .radio_name_input").focus();
+            });
+            $("#survey_template_content").on("click",".radio_delete",function () {//删除
+                $(this).parents("li").remove();
+            });
+            $("#survey_template_content").on("click",".change_radio_input",function () {//编辑
+                var up_disabled = $(this).parents("li").prev("li").length == 0 ? "icon_arrow_up_disabled" : "";
+                var down_disabled = $(this).parents("li").next("li").length == 0 ? "icon_arrow_down_disabled" : "";
+                var parent = $(this).parent();
+                var original = $(this).text() == '选项' ? '' : $(this).text();
+
+                //关闭其他input并赋值
+                var input = $(this).parents('li').siblings("li").children("span").find("input");
+                if(input.length != 0){
+                    var val = $(input).val();
+                    val = val == '' ? '选项' : val;
+                    $(input).parent().html('<span class="change_radio_input">'+val+'</span>');
+                }
+
+                $(parent).html('<input placeholder="请输入选项" maxlength="50" class="radio_name_input" type="text"><span class="icon_arrow_up '+up_disabled+'"></span><span class="icon_arrow_down '+down_disabled+'"></span><span class="radio_delete icon-ishop_6-12"></span>');
+                $(parent).find("input").focus().val(original);
+            });
+            $("#survey_template_content").on("click",".icon_arrow_up",function () {//上移动
+                var parent = $(this).parents("li");
+                $(parent).prev("li").before($(parent));
+                $(parent).find(".radio_name_input").focus();
+                $(this).next("span").removeClass("icon_arrow_down_disabled");
+                if($(parent).prev("li").length == 0){
+                    $(this).addClass("icon_arrow_up_disabled")
+                }
+            });
+            $("#survey_template_content").on("click",".icon_arrow_down",function () {//下移动
+                var parent = $(this).parents("li");
+                $(parent).next("li").after($(parent));
+                $(parent).find(".radio_name_input").focus();
+                $(this).prev("span").removeClass("icon_arrow_up_disabled");
+                if($(parent).next("li").length == 0){
+                    $(this).addClass("icon_arrow_down_disabled")
+                }
+            });
+            $(document).click(function (e) {
+                var e = e || window.event ;
+                if(!($(e.target).is(".radio_name_input")||$(e.target).is(".change_radio_input")||$(e.target).is(".radio_add_btn")||$(e.target).is(".radio_add_btn i")||$(e.target).is(".icon_arrow_down")||$(e.target).is(".icon_arrow_up"))){
+                    var parent = $(".radio_name_input").parent();
+                    var val = $(".radio_name_input").length == 0 ? '' : $(".radio_name_input").val().trim() == '' ? '选项' : $(".radio_name_input").val();
+                    $(parent).html('<span class="change_radio_input">'+val+'</span>');
+                }
+            });
+            //评分操作
+            $("#survey_template_content,#survey_view_web").on("mouseover",".grade_star",function () {
+                var index = $(this).index()+1;
+                $(this).parent().find("li:lt("+index+")").css({"background":"url('../img/star_S.png')no-repeat","background-size":"20px"});
+            });
+            $("#survey_template_content,#survey_view_web").on("mouseleave",".grade_star",function () {
+                var index = $(this).index();
+                $(this).parent().find("li:gt("+index+")").css({"background":"url('../img/star.png')no-repeat","background-size":"20px"});
+            });
+            //删除当前题目
+            $("#survey_template_content").on("click",".template_delete_btn",function () {
+                var new_index = 1;
+                $(this).parents(".template_box").remove();
+                $("#survey_template_content .template_box").map(function (index,item) {
+                    if($(item).find(".template_box_index").length != 0){
+                        $(item).find(".template_box_index").text(new_index+'.');
+                        new_index ++;
+                    }else {
+                        new_index = 1;
+                    }
+                });
+                survey.index_num = new_index;
+            });
+            //删除背景图
+            $("#bg_img_wrap").on("click","i",function () {
+                $("#bg_img_wrap").html("");
+            });
+            //web预览
+            $("#preview_btn").click(function () {
+                $("#preview_name").text($("#survey_name").val());
+                $("#preview_desc").html($("#survey_desc").val().replace(/\n/g,'<br />'));
+                var templte = '';
+                var url = $("#bg_img_wrap img").attr("src");
+                $("#survey_template_content .template_box").map(function (indexs,item) {
+                    var type = $(item).attr("data-type");
+                    var index = $(item).find(".template_box_index").text();
+                    var is_fill = $(item).find(".is_fill_bpx input").prop('checked') ? "*必填" : '';
+                    var name = $(item).find(".template_input").val();
+                    if(type == "radio"){
+                        var li = '';
+                        $(item).find("li").map(function (i,items) {
+                            var option  = $(items).find(".change_radio_input").text();
+                            li += '<li><input type="radio" id="radio_'+indexs+i+'" name="radio"><label for="radio_'+indexs+i+'"></label><span><span>'+option+'</span></span></li>'
+                        });
+                        templte += '<div class="exercise_box">'
+                                + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>【单选题】</span><ul>'
+                                + li
+                                + '</ul></div>';
+                    }else if(type == "checkbox"){
+                        var li = '';
+                        $(item).find("li").map(function (i,items) {
+                            var option  = $(items).find(".change_radio_input").text();
+                            li += '<li><input type="checkbox" id="radio_'+indexs+i+'"><label for="radio_'+indexs+i+'"></label><span><span>'+option+'</span></span></li>'
+                        });
+                        templte += '<div class="exercise_box">'
+                            + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>【多选题】</span><ul>'
+                            + li
+                            + '</ul></div>';
+                    }else if(type == "input"){
+                        templte += ' <div class="exercise_box">'
+                            + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>【填空题】</span><ul>'
+                            + '<li><input type="text" class="exercise_input"></li></ul></div>';
+                    }else if(type == "grade"){
+                        templte += ' <div class="exercise_box">'
+                                + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>【评分题】</span><ul>'
+                                + '<ul style="padding-left: 30px"><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li></ul></div>'
+                    }else if(type == "title"){
+                        templte += '<div class="exercise_box"><span>'+name+'</span></div>';
+                    }
+                });
+                $("#survey_view_web").html(templte);
+                url != undefined ? $("#survey_view_wrap").css({"background":"url("+url+") no-repeat","background-size":"cover"}) : $("#survey_view_wrap").css("background","#fff");
+                $("#preview_wrap").show();
+            });
+            $("#preview_wrap").click(function (e) {
+                var e = e || window.event;
+                if($(e.target).is(".preview_wrap")){
+                    $("#preview_wrap").hide();
+                }
+            });
+            //手机预览
+            $("#preview_phone_btn").click(function () {
+                var date = new Date();
+                var url = $("#bg_img_wrap img").attr("src");
+                date = date.getTime();
+                $("#iframe").attr("src","survey_mobile.html?"+date);
+                url != undefined ? $("#iframe").css({"background":"url("+url+") no-repeat","background-size":"cover"}) : $("#iframe").css("background","#fff");
+                $(".preview_phone_wrap").show();
+            });
+            $(".preview_phone_wrap").click(function () {
+               $(this).hide();
+            });
+            //问卷保存,发布
+            $("#edit_save").click(function () {
+                if($(this).attr("data-publish") == "Y"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "请勿修改已发布的问卷"
+                    });
+                    return;
+                }
+                if($("#survey_name").val().trim() == ''){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "问卷名称不能为空"
+                    });
+                    return;
+                }
+                survey.surveyAdd();
+            });
+            $("#publish_btn").click(function () {
+                if($(this).attr("data-publish") == "Y"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "请勿重复发布"
+                    });
+                    return;
+                }
+                if($("#survey_name").val().trim() == ''){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "问卷名称不能为空"
+                    });
+                    return;
+                }
+                var isrelease = true;
+                survey.surveyAdd(isrelease);
+            });
+            //问卷关闭
+            $("#edit_close,#back_regime").click(function () {
+                $(window.parent.document).find('#iframepage').attr("src","/vip/survey.html?t="+ $.now());
+            });
+            //问卷复制
+            $("#copy_btn").click(function () {
+                sessionStorage.setItem("copy","true");
+                $(window.parent.document).find('#iframepage').attr("src","/vip/survey_add.html?t="+ $.now());
+            });
+        },
+        getNowFormatDate: function () {//获取时间戳
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            var H = date.getHours();
+            var M = date.getMinutes();
+            var S = date.getSeconds();
+            var m = date.getMilliseconds();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = "" + year + month + strDate + H + M + S + m;
+            return currentdate
+        },
+        uploadOSS: function () {//上传logo OSS
+            var _this = this;
+            var client = new OSS.Wrapper({
+                region: 'oss-cn-hangzhou',
+                accessKeyId: 'O2zXL39br8rSn1zC',
+                accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+                bucket: 'products-image'
+            });
+            document.getElementById('upload_bg').addEventListener('change', function (e) {
+                var file = e.target.files[0];
+                var time = _this.getNowFormatDate();
+                var corp_code = $("#OWN_CORP").val();
+                var fileSize = 0;
+                var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+                if (isIE) {
+                    var filePath = e.value;
+                    var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+                    var files = fileSystem.GetFile(filePath);
+                    fileSize = files.Size;
+                } else {
+                    fileSize = e.target.files[0].size;
+                }
+                if (fileSize / 1024 / 1024 > 5) {//限制大小为5M
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "请上传小于5M的图片"
+                    });
+                    $("#upload_logo").val("");
+                    return;
+                }
+                whir.loading.add("上传中,请稍后...", 0.5);
+                var storeAs = 'Album/Vip/iShow/survey' + corp_code + '_' + time + '.jpg';
+                client.multipartUpload(storeAs, file).then(function (result) {
+                    var url = "http://products-image.oss-cn-hangzhou.aliyuncs.com/" + result.name;
+                     $("#upload_bg").val("");
+                    var img = "<img src='" + url + "' alt='暂无图片'><i></i>";
+                    $("#bg_img_wrap").html(img);
+                    whir.loading.remove();
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            });
+        },
+        getcorplist:function (a) {
+            oc.postRequire("post", "/user/getCorpByUser", "", "", function (data) {
+                if (data.code == "0") {
+                    var msg = JSON.parse(data.message);
+                    var corp_html = '';
+                    for (var i=0;i<msg.corps.length;i++) {
+                        corp_html += '<option value="' + msg.corps[i].corp_code + '">' + msg.corps[i].corp_name + '</option>';
+                    }
+                    $("#OWN_CORP").append(corp_html);
+                    if (a !== "") {
+                        $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
+                    }
+                    $('.corp_select select').searchableSelect();
+                } else if (data.code == "-1") {
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: data.message
+                    });
+                }
+            });
+        },
+        surveyAdd:function (isrelease) {//新增问卷
+            var surveyArr = [];
+            var isEmpty = false;
+            $("#survey_template_content .template_box").map(function (i,item) {
+                var obj = {};
+                var type = $(item).attr("data-type");
+                if($(item).find(".template_input").val().trim() == ''){
+                    isEmpty = true;
+                }
+                obj.type = type;
+                obj.check = $(item).find(".is_fill_bpx input").prop("checked") != undefined ? $(item).find(".is_fill_bpx input").prop("checked").toString() : "";
+                obj.name = $(item).find(".template_input").val();
+                if(type == 'radio' || type == 'checkbox'){
+                    var arr = [];
+                    $(item).find("li").map(function (i,items) {
+                        arr.push($(items).find(".change_radio_input").text());
+                    });
+                    obj.options = arr;
+                }
+                surveyArr.push(obj);
+            });
+            if(isEmpty){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "您有题目的问题未输入，请完善问卷"
+                });
+                return;
+            }
+            var param = {};
+            var id = sessionStorage.getItem("id");
+            var url = '';
+            param.corp_code = $("#OWN_CORP").val();
+            param.title = $("#survey_name").val();
+            param.illustrate = $("#survey_desc").val();
+            param.template = surveyArr;
+            param.isactive = true;
+            param.isrelease = isrelease? "Y" : "N";
+            param.bg_url = $("#bg_img_wrap img").attr("src") != undefined ? $("#bg_img_wrap img").attr("src") : "";
+            if(id != undefined){
+                url = '/questionnaire/update';
+                param.id = id;
+            }else {
+                url = '/questionnaire/insert';
+            }
+            oc.postRequire("post",url,"",param,function (data) {
+                if(data.code == 0){
+                    if(id == undefined){
+                        var msg = JSON.parse(data.message);
+                        sessionStorage.setItem("id",msg.id);
+                        $("#survey_label").text("编辑问卷");
+                        $("#copy_btn").css("display","inline-block");
+                    }
+                    if(isrelease){
+                        $("#publish_btn").css("background","#ccc");
+                        $("#publish_btn").attr("data-publish","Y");
+                        $("#edit_save").css("background","#ccc");
+                        $("#edit_save").attr("data-publish","Y");
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "发布成功"
+                        });
+                        $("#survey_label").text("问卷详情");
+                    }else {
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "保存成功"
+                        });
+                    }
+                }else {
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: data.message
+                    });
+                }
+            });
+        },
+        getSurveyDetail:function () {
+            var id = sessionStorage.getItem("id");
+            var copy = sessionStorage.getItem("copy");
+            if(id != undefined){
+                var param = {"id":id};
+                oc.postRequire("post","/questionnaire/select","",param,function (data) {
+                    if(data.code == 0){
+                        var msg = JSON.parse(data.message);
+                        var templateArr = JSON.parse(msg.template);
+                        var template = '';
+                        var n = 1;
+                        var img = msg.bg_url != '' ? "<img src='" + msg.bg_url + "' alt='暂无图片'><i></i>" : "";
+                        $("#survey_desc").val(msg.illustrate);
+                        $("#bg_img_wrap").html(img);
+                        for(var i = 0;i < templateArr.length; i++){
+                            var type = templateArr[i].type;
+                            if(type == "radio"){
+                                var option = templateArr[i].options;
+                                var li = '';
+                                var check = templateArr[i].check == "true" ? "checked='true'" : '';
+                                for(var j = 0;j < option.length;j++){
+                                    li += '<li><input type="radio" id="radio'+i+j+'" name="radio"><label for="radio'+i+j+'"></label><span><span class="change_radio_input">'+option[j]+'</span></span></li>'
+                                }
+                                template += '<div class="template_box" data-type="radio">'
+                                    + '<span class="template_box_index">'+n+'.</span><span><input value="'+templateArr[i].name+'" type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                                    + '<div style="margin-bottom: 0;padding: 0 30px"><ul>'
+                                    + li
+                                    + '</ul><div class="radio_add_btn"><i class="icon-ishop_6-01"></i>添加选项</div>'
+                                    + '<span class="template_drag_area"></span>'
+                                    + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                                    + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input '+check+' type="checkbox" id="setting_btn'+i+'"><label for="setting_btn'+i+'"></label>必填</span></span></div></div>'
+                            }else if(type == "checkbox"){
+                                var option = templateArr[i].options;
+                                var li = '';
+                                var check = templateArr[i].check;
+                                for(var j = 0;j < option.length;j++){
+                                    li += '<li><input type="checkbox" id="check'+i+j+'" name="radio"><label for="check'+i+j+'"></label><span><span class="change_radio_input">'+option[j]+'</span></span></li>'
+                                }
+                                template += '<div class="template_box" data-type="checkbox">'
+                                    + '<span class="template_box_index">'+n+'.</span><span><input value="'+templateArr[i].name+'" type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                                    + '<div style="margin-bottom: 0;padding: 0 30px"><ul>'
+                                    + li
+                                    + '</ul><div class="radio_add_btn checkbox_add_btn"><i class="icon-ishop_6-01"></i>添加选项</div>'
+                                    + '<span class="template_drag_area"></span>'
+                                    + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                                    + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input '+check+' type="checkbox" id="setting_btn'+i+'"><label for="setting_btn'+i+'"></label>必填</span></span></div></div>'
+                            }else if(type == "input"){
+                                template += '<div class="template_box" data-type="input">'
+                                    + '<span class="template_box_index">'+n+'.</span><span><input value="'+templateArr[i].name+'" type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                                    + '<div style="padding: 0 30px;margin: 0"><input type="text" class="template_input_border"></div>'
+                                    + '<span class="template_drag_area"></span>'
+                                    + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                                    + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input '+check+' type="checkbox" id="setting_btn'+i+'"><label for="setting_btn'+i+'"></label>必填</span></span></div>'
+                            }else if(type == "grade"){
+                                template += '<div class="template_box" data-type="grade">'
+                                    + '<span class="template_box_index">'+n+'.</span><span><input value="'+templateArr[i].name+'" type="text" class="template_input change_title" maxlength="100" placeholder="点击输入您的问题"></span>'
+                                    + '<div style="padding: 0 30px;margin: 0"><ul class="grade_star_box">'
+                                    + '<li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li>'
+                                    + '</ul><span class="template_drag_area"></span>'
+                                    + '<span class="template_delete_btn icon-ishop_6-12"></span>'
+                                    + '<span class="template_setting"><span class="setting_btn icon-ishop_3-04"></span><span class="is_fill_bpx"><input '+check+' type="checkbox" id="setting_btn'+i+'"><label for="setting_btn'+i+'"></label>必填</span></span></div></div>'
+                            }else if(type == "title"){
+                                template += '<div class="template_box" data-type="title" style="padding-left: 10px">'
+                                    + '<span class="template_title"><input value="'+templateArr[i].name+'" type="text" class="template_input change_title" maxlength="100" placeholder="点击输入分段标题"></span>'
+                                    + '<span class="template_drag_area"></span>'
+                                    + '<span class="template_delete_btn icon-ishop_6-12"></span></div>'
+                            }
+                            $("#survey_template_content").html(template);
+                            if(type != 'title'){
+                                n++;
+                                survey.index_num++;
+                            }else {
+                                n = 1;
+                                survey.index_num = 1;
+                            }
+                        }
+                        if(copy == "true"){
+                            $("#survey_name").val(msg.title+"-副本");
+                            sessionStorage.removeItem("id");
+                            sessionStorage.removeItem("copy");
+                        }else {
+                            $("#survey_name").val(msg.title);
+                            $("#copy_btn").css("display","inline-block");
+                            if(msg.isrelease == "Y"){
+                                $("#survey_label").text("问卷详情");
+                                $("#publish_btn").css("background","#ccc");
+                                $("#publish_btn").attr("data-publish","Y");
+                                $("#edit_save").css("background","#ccc");
+                                $("#edit_save").attr("data-publish","Y");
+                            }else {
+                                $("#survey_label").text("编辑问卷");
+                            }
+                        }
+                        survey.getcorplist(msg.corp_code);
+                    }
+                });
+            }else {
+                survey.getcorplist();
+                return;
+            }
+        }
+    };
+    $(function () {
+        survey.init();
+        $( "#survey_template_content" ).sortable({
+            handle: ".template_drag_area",
+            revert: true,
+            scroll:true,
+            axis: 'y',
+            start:function () {
+                var len = $("#survey_template_content .template_box").length;
+                if(len == 3){
+                    $(window).scrollTop(250);
+                }
+            },
+            stop: function( event, ui ) {
+                var new_index = 1;
+                $("#survey_template_content .template_box").map(function (index,item) {
+                    if($(item).find(".template_box_index").length != 0){
+                        $(item).find(".template_box_index").text(new_index+'.');
+                        new_index ++;
+                    }else {
+                        new_index = 1;
+                    }
+                });
+                survey.index_num = new_index;
+            }
+        });
+        $( ".template_box" ).draggable({
+            handle: ".template_drag_area",
+            connectToSortable: "#survey_template_content",
+            cursor:"move",
+            helper: "original",
+            containment:"parent",
+            scroll:true
+        });
+        $( "#survey_template_content, .template_box" ).disableSelection();
+    });
+</script>
+</body>
+</html>

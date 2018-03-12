@@ -6,15 +6,75 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
-    <link href="../css/style.css?201715?v=2.2.0" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
-	<link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
 	<!-- <script src="../table/js/jquery.min.js"></script> -->
     <script src="/js/loading.js"></script>
+    <style>
+        #coupon{
+            margin-top: 0!important;
+        }
+        .coupon_pop{
+            background-color: #FFFFFF;
+            width: 430px;
+            border-radius: 5px;
+            position: fixed;
+            top:54%;
+            left: 50%;
+            -webkit-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            -o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            box-shadow:0 0 10px rgba(0,0,0,0.35);
+            color: #4a5f7c;
+            font-size: 13px;
+            z-index: 10001;
+        }
+        .coupon_pop_title,.coupon_pop .coupon_pop_info_title,.coupon_pop .coupon_pop_detail_title, .coupon_pop .coupon_pop_info_content div,.coupon_pop .coupon_pop_detail_content div{
+            height: 30px;
+            line-height: 30px;
+        }
+        .coupon_pop .coupon_pop_info_content, .coupon_pop .coupon_pop_detail_content{
+            min-height:180px;
+            overflow: hidden;
+            overflow-y: auto;
+            max-height: calc(100vh - 350px * 2);
+            background-color: #f5f5f5;
+            padding: 10px;
+        }
+        .coupon_pop_detail_content img{
+            max-width:100%;
+            max-height: 100%;
+        }
+        .coupon_pop .coupon_pop_detail_content div span:first-child,.coupon_pop .coupon_pop_info_content div span:first-child{
+            width: 110px;
+            display: inline-block;
+        }
+        .coupon_pop_detail_content{
+            min-height:180px;
+            overflow: hidden;
+            overflow-y: auto;
+            max-height: calc(100vh - 350px * 2);
+        }
+        .coupon_pop_info_content div{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        .coupon_pop_footer{
+            margin-top: 10px;
+        }
+        .coupon_pop_footer .close_coupon_pop{
+            display: block;text-align:center;color:#fff;border-radius:3px;width: 90px;height: 25px;line-height: 25px;background-color: #c4c8d4;margin: 0 auto;cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div id="content">
@@ -31,7 +91,7 @@
                         </ul>
                         <ul>
                             <li class="li">
-                                <input type="text" class="input" id="search" placeholder="任务编号/名称/类型/描述/所属企业">
+                                <input type="text" class="input" id="search" placeholder="任务编号/名称/类型/描述/企业名称">
                                 <i class="icon-ishop_3-05" id="d_search"></i>
                             </li>
                         </ul>
@@ -188,6 +248,14 @@
                 <em class="delete" id="delete">删除</em>
             </div>
         </div>
+        <div class="tk" id="code_ma">
+            <span class="icon-ishop_6-12" id="dao"></span>
+            <p>是否下载文件?</p>
+            <div class="btn">
+                <em class="cancel" id="code_q">取消</em>
+                <em class="album_enter" id="enter">确认</em>
+            </div>
+        </div>
         <div id="side_bar">
             <div class="gotop">
                 <span class="icon-ishop_4-03"></span>
@@ -218,7 +286,9 @@
                             <tr class="th">
                                 <th style="text-align:center;width: 50px;">序号</th>
                                 <th>姓名</th>
+                                <th>所属店铺</th>
                                 <th>完成状态</th>
+                                <th>凭证</th>
                                 <th>开始时间</th>
                                 <th>截止时间</th>
                             </tr>
@@ -230,180 +300,38 @@
             </div>
        </div>
     </div>
-    <div id="page-wrapper" class="gray-bg dashbard-1" style="display: none;">
-        <div class="col-lg-12 pre_title"><span>任务管理</span><i class="icon-ishop_8-03"></i><span id="back_task">任务列表</span><i class="icon-ishop_8-03"></i><label>编辑任务</label></div>
-            <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
-                <form class="conpany_msg" style="margin-left:0px">
-                    <div>
-                        <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">所属企业*</label></li>
-                            <li id="corp_select">
-                                <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex" >
-                                    </select>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">任务类型*</label></li>
-                            <li id="task_type_list">
-                                <span class="corp_select">
-                                    <select id="task_type_code" style="display:inline-flex" >
-                                    </select>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <span><label style="color:#c26555;">任务名称*</label><input type="text" id="task_title_e" verify="Empty" maxlength="200"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div>
-                            <input type="hidden" id="task_id" />
-                            <input type="hidden" id="task_code_e"/>
-                        </span>
-                    </div>
-                    <div>
-                        <span style="display: inline-flex;width:100%"><label style="height:180px;color:#c26555">任务描述*</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="task_describe" maxlength="500"></textarea></span></span>
-                    </div>
-                    <div>
-                        <!--<span><label style="margin-right:14px;">分配任务</label></span>-->
-                        <!--<span class="good_imgs" style="display: inline-block;width:420px">-->
-                            <!--<ul class="xingming"></ul>-->
-                            <!--<span class="add_new_touxiang" style="position: relative;"><span id="test">-->
-                                <!--<div class="webuploader-pick"><i class="icon-ishop_6-01"></i></div>-->
-                            <!--</span></span>-->
-                        <!--</span>-->
-                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">分配任务*</div>
-                        <div class="good_imgs" style="display: inline-block;width:420px">
-                                <div class="xingming">
-                                    <!--<p>-->
-                                        <!--<input type='text'readonly='readonly'style='width: 348px;margin-right: 10px'>-->
-                                        <!--<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>-->
-                                    <!--</p>-->
-                                </div>
-                                <div id="test">
-                                    <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;margin-left: 0px">
-                                    新增 <span>+</span>
-                                    </div>
-                                </div>
+    <div class="coupon_pop" id="coupon_pop" style="padding: 10px 20px;display: none;">
+        <div class="coupon_pop_title" style="border-bottom: 1px solid #d4d8e1;margin-bottom: 10px">
+            <span style="display: inline-block;width: 5px;height: 12px;background-color: #5f8bc8;margin-right: 5px"></span><span>查看任务描述</span>
+        </div>
+        <div class="coupon_pop_detail">
+            <div class="coupon_pop_detail_content" id="coupon_pop_detail_content">
 
-                        </div>
-                    </div>
-                    <div>
-                        <span><label style="color:#c26555;">开始时间*</label><input type="text" id="target_start_time_e" placeholder="请输入日期" class="laydate-icon"/>
-                        <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
-                        </span>
-                    </div>
-                    <div>
-                        <span><label style="color:#c26555;">截止时间*</label><input type="text" id="target_end_time_e" placeholder="请输入日期" class="laydate-icon" />
-                        <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
-                        </span>
-                    </div>
-                </form>
-                <div class="distribution_frame" id="distribution_frame">
-                    <div id="area_code" class="drop-down">
-                        <h5>所属区域</h5>
-                        <input type="text" class="input" readonly="true" id="area_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="area_search">
-                            <i class="icon-ishop_3-05" id="area_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-
-                            </ul>
-                            <div class="area_more" id="area_more">加载更多</div>
-                        </div>
-                        <div id="area_code_drop" class="drop_q">确定</div>
-                    </div>
-                    <div id="store_code" class="drop-down">
-                        <h5>所属店铺</h5>
-                        <input type="text" class="input" readonly="true" id="store_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="store_search">
-                            <i class="icon-ishop_3-05" id="store_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-
-                            </ul>
-                            <div class="area_more" id="store_more">加载更多</div>
-                        </div>
-                        <div id="store_code_drop" class="drop_q">确定</div>
-                    </div>
-                    <div id="staff_code" class="drop-down">
-                        <h5>员工名称</h5>
-                        <input type="text" class="input" readonly="true" id="staff_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="staff_search">
-                            <i class="icon-ishop_3-05" id="staff_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-
-                            </ul>
-                            <div class="area_more" id="staff_more">加载更多</div>
-                        </div>
-                        <div id="staff_code_drop" class="drop_q">确定</div>
-                    </div>
-                </div>
             </div>
-            <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
-                <div class="fabadd_oper_btn">
-                    <ul>
-                        <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
-                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
-                    </ul>
-                </div>
-                 <form class="msg_detail">
-                    <div>
-                        <span>
-                            <label>创建时间</label>
-                            <input type="text" id="created_time" readonly/>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <label>创建人</label>
-                            <input type="text" id="creator" readonly/>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <label>修改时间</label>
-                            <input type="text" id="modify_time" readonly/>
-                        </span>
-                    </div>
-                    <div>
-                        <span>
-                            <label>修改人</label>
-                            <input type="text" id="modifier" readonly/>
-                        </span>
-                    </div>
-                    <div>
-                    <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
-                    </div>
-                </form>
-            </div>
+        </div>
+        <div class="coupon_pop_footer" >
+            <span class="close_coupon_pop" id="close_coupon_pop">返回</span>
+        </div>
     </div>
 </body>
     <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="/js/loading.js?201715"></script>
+    <script src="/js/loading.js?2017040170331"></script>
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script type="text/javascript" src="../js/moni_select.js?201715"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/multiple_choice.js?201715"></script>
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="../js/task/task_operate.js?201715"></script>
-    <script src="/js/task/task.js?201715"></script>
-    <script src="/js/silide.js?201715"></script>
+    <script type="text/javascript" src="../js/task/task_operate.js?20170801"></script>
+    <script type="text/javascript" src="../js/brand/screen_staff.js?20170724"></script>
+    <script src="/js/task/task.js?20170802"></script>
+    <script src="/js/silide.js?2017040170331"></script>
     <script>
         var start = {
             elem: '#target_start_time_e',

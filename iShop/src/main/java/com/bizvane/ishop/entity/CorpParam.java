@@ -30,9 +30,10 @@ public class CorpParam {
     //参数类型
     private String param_type;
 
+    //参数定义表
     //参数值
     private String param_values;
-    //参数值
+    //备注
     private String param_desc;
 
     public String getParam_values() {

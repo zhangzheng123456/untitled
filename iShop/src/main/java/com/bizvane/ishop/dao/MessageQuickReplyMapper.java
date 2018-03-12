@@ -17,7 +17,7 @@ public interface MessageQuickReplyMapper {
 
     List<MessageQuickReply> selectMessageQuickReplys(@Param("corp_code") String corp_code) throws SQLException;
 
-    List<MessageQuickReply> selectAllMessageQuickReply(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<MessageQuickReply> selectAllMessageQuickReply(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr") String[] manager_corp_arr) throws SQLException;
 
 
     int insertMessageQuickReply(MessageQuickReply messageQuickReply) throws SQLException;
@@ -29,4 +29,6 @@ public interface MessageQuickReplyMapper {
     MessageQuickReply selectByMessageQuickReplyCode(@Param("corp_code") String corp_code, @Param("content") String content, @Param("isactive") String isactive) throws SQLException;
 
     List<MessageQuickReply> selectQuickReplyScreen(Map<String, Object> params) throws SQLException;
+
+    List<MessageQuickReply> selQuickReplyCountByBrand(Map<String, Object> params) throws SQLException;
 }

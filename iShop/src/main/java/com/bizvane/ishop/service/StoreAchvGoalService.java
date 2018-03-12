@@ -68,6 +68,9 @@ public interface StoreAchvGoalService {
     PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String user_id, String search_value,String area_store_code)
             throws Exception;
 
+    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code,
+                                           String user_id, String search_value,String area_store_code,String manager_corp)
+            throws Exception;
     /**
      * 判断商品编号是否存在
      *
@@ -77,7 +80,15 @@ public interface StoreAchvGoalService {
      */
     String storeAchvExist(String corp_code, String store_code) throws Exception;
 
+
     StoreAchvGoal getStoreAchvForID(String corp_code, String store_code,String target_time) throws Exception;
 
     PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map,String area_store_code) throws Exception;
+
+    PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code,
+                                                  String area_code, String store_code, Map<String, String> map,String area_store_code,String manager_corp) throws Exception;
+
+
+    int getAchExist(String corp_code,String store_code,String time_type,String target_time,String isactive) throws Exception;
+
 }

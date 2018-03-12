@@ -3,10 +3,12 @@ package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class SendSMSRequestParams extends  RequestParams {
 
-	public SendSMSRequestParams(String corpcode) {
-		super(corpcode);
+	public SendSMSRequestParams(List<String> drplist) {
+		super(drplist);
 	}
 
 	public class SendSMSTrans extends  BaseTrans{

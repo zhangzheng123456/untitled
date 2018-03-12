@@ -17,6 +17,8 @@ public interface AppversionService {
     //分页查询
     PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws Exception;
 
+    PageInfo<Appversion> selectAllAppversion1(int page_number, int page_size, String search_value) throws Exception;
+
     PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String,String> map) throws Exception;
     //根据ID查询
     Appversion selAppversionById(int id)throws Exception;

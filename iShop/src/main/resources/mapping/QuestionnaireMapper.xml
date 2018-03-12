@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.QuestionnaireMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.Questionnaire" id="Qtnaire">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="title" property="title"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="illustrate" property="illustrate"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template" property="template"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isrelease" property="isrelease" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bg_url" property="bg_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="Qtnaire">
+        SELECT *
+        FROM def_questionnaire
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectByQtnaireName" resultMap="Qtnaire">
+        SELECT *
+        FROM def_questionnaire
+        WHERE
+        def_questionnaire.title=#{title}
+        <if test="corp_code != null and corp_code !=''">
+            AND def_questionnaire.corp_code = #{corp_code}
+        </if>
+    </select>
+
+    <select id="selectAll" resultMap="Qtnaire">
+        SELECT def_questionnaire.*,def_corp.corp_name
+        FROM def_questionnaire,def_corp
+        WHERE def_questionnaire.corp_code=def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_questionnaire.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_questionnaire.title LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+           <!--OR corp_code LIKE concat('%',#{search_value},'%')-->
+            )
+        </if>
+        Group By def_questionnaire.id
+        ORDER BY def_questionnaire.id DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM
+        def_questionnaire
+        WHERE id=#{id}
+    </delete>
+
+
+    <insert id="insertQtnaire" parameterType="com.bizvane.ishop.entity.Questionnaire">
+        INSERT INTO def_questionnaire
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="title!=null">
+                title,
+            </if>
+            <if test="illustrate!=null">
+                illustrate,
+            </if>
+            <if test="template!=null">
+                template,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="isrelease!=null">
+                isrelease,
+            </if>
+            <if test="bg_url!=null">
+                bg_url,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="title!=null">
+                #{title},
+            </if>
+            <if test="illustrate!=null">
+                #{illustrate},
+            </if>
+            <if test="template!=null">
+                #{template},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="isrelease!=null">
+                #{isrelease},
+            </if>
+            <if test="bg_url!=null">
+                #{bg_url},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateQtnaire" parameterType="com.bizvane.ishop.entity.Questionnaire">
+        UPDATE def_questionnaire
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="illustrate!=null">
+                illustrate=#{illustrate},
+            </if>
+            <if test="template!=null">
+                template=#{template},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="isrelease!=null">
+                isrelease=#{isrelease},
+            </if>
+            <if test="bg_url!=null">
+                bg_url=#{bg_url},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+
+    <select id="selectAllScreen" resultMap="Qtnaire">
+        SELECT def_questionnaire.*,def_corp.corp_name
+        FROM def_questionnaire,def_corp
+        WHERE def_questionnaire.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_questionnaire.corp_code=#{corp_code}
+        </if>
+
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  def_questionnaire.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  def_questionnaire.created_date &lt;= #{created_date_end}
+        </if>
+
+        <if test="modified_date_start!=null and modified_date_start!=''">
+            AND  def_questionnaire.modified_date &gt;= #{modified_date_start}
+        </if>
+        <if test="modified_date_end!=null and modified_date_end!=''">
+            AND  def_questionnaire.modified_date &lt;= #{modified_date_end}
+        </if>
+
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+
+                <when test="entryValue!=''">
+                    def_questionnaire.${entryKey} REGEXP ${entryValue}
+                </when>
+
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By def_questionnaire.id
+        ORDER BY def_questionnaire.id DESC
+    </select>
+
+
+    <select id="selectAllQtNaire" resultMap="Qtnaire">
+        SELECT def_questionnaire.*,def_corp.corp_name
+        FROM def_questionnaire,def_corp
+        WHERE def_questionnaire.corp_code=def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_questionnaire.corp_code = #{corp_code}
+        </if>
+        AND def_questionnaire.isrelease='Y'
+        Group By def_questionnaire.id
+        ORDER BY def_questionnaire.id DESC
+    </select>
+
+</mapper>

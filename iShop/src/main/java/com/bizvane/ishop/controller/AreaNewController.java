@@ -464,9 +464,9 @@
 //        String id = "";
 //        try {
 //            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//             JSONObject jsonObj = JSONObject.parseObject(jsString);
 //            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String area_code = jsonObject.get("area_code").toString();
 //            String corp_code = jsonObject.get("corp_code").toString();
 //            AreaNew area = areaService.getAreaByCode(corp_code, area_code,Common.IS_ACTIVE_Y);
@@ -494,9 +494,9 @@
 //        String id = "";
 //        try {
 //            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//             JSONObject jsonObj = JSONObject.parseObject(jsString);
 //            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String area_name = jsonObject.get("area_name").toString();
 //            String corp_code = jsonObject.get("corp_code").toString();
 //            AreaNew area = areaService.getAreaByName(corp_code, area_name,Common.IS_ACTIVE_Y);
@@ -528,9 +528,9 @@
 //        String errormessage = "数据异常，导出失败";
 //        try {
 //            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//             JSONObject jsonObj = JSONObject.parseObject(jsString);
 //            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String role_code = request.getSession().getAttribute("role_code").toString();
 //            String corp_code = request.getSession().getAttribute("corp_code").toString();
 //            String search_value = jsonObject.get("searchValue").toString();

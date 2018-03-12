@@ -1,0 +1,373 @@
+.editor_em{
+    padding-bottom: 50px;
+}
+.conpany_msg{
+    color: #888;
+}
+.conpany_msg .taskTime{
+    width: 190px;
+}
+.conpany_msg .TimeShortInput{
+    width: 150px;
+    border: 1px solid #ddd;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.line{
+    margin: 0 16px;
+}
+.conpany_msg .change_wrap{
+    width: 420px;
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 0;
+    display: inline-block;
+}
+.conpany_msg .change_wrap .couponOperate{
+    display: inline-block;
+    vertical-align: middle;
+}
+.conpany_msg .change_wrap .couponOperate span{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #d7d7d7;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #fff;
+    color: #6dc1c8;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.conpany_msg .inviteInput{
+    width: 60px;
+    margin: 5px 10px;
+    border: 1px solid #ddd;
+}
+.conpany_msg .selectInput{
+    background: url('../img/icon_list_down.png') no-repeat 97% center;
+    padding-right: 20px;
+}
+.conpany_msg .input320px{
+    width: 320px;
+    margin: 5px 10px;
+    border: 1px solid #ddd;
+}
+.conpany_msg .input250px{
+    width: 250px;
+    margin: 5px 10px;
+    border: 1px solid #ddd;
+}
+.change_wrap div{
+    margin-bottom: 0;
+    position: relative;
+}
+.conpany_msg .checkbox_isactive{
+    width: 25px;
+}
+.conpany_msg .checkbox_isactive label{
+    width: 16px;
+    height:16px;
+    margin-left: 15px;
+}
+.change_wrap .giftWrapHead{
+    height: 30px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.conpany_msg input[type=button]{
+    width: 130px;
+    text-indent: 0;
+    background: #ccc;
+    color: #fff;
+}
+#task_filtrate{
+    background: #6cc1c8;
+}
+.conpany_msg textarea{
+    padding: 5px;
+    width: 420px;
+    height: 70px;
+    border: none;
+    border-radius: 4px;
+    text-indent: 10px;
+    outline: none;
+    color: #888888;
+}
+.addConditionWrap{
+    position: relative;
+    margin-top: -5px;
+    float: right;
+}
+.addConditionWrap i{
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    color: #fff;
+}
+.taskCondition .change_wrap>div{
+    display: none;
+    position: relative;
+}
+.conpany_msg .inputWrap{
+    display: inline-block;
+}
+.conpany_msg .couponsWrap{
+    width:328px;
+}
+.CouponsTitle{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+}
+.conpany_msg .infoMsg{
+    display: block;
+    color: #fff;
+    width: 15px;
+    font-size: 12px;
+    border-radius: 20px;
+    text-align: center;
+    height: 15px;
+    background: #6cc1c8;
+    position: absolute;
+    right: -35px;
+    top:0;
+    cursor: pointer;
+}
+.infoContent{
+    display: none;
+    background: #fff;
+    font-size: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    width: 110px;
+    padding: 5px;
+    position: absolute;
+    right: -130px;
+    top:20px;
+}
+.conpany_msg .conditionWrap{
+    width: 400px;
+    /*height: 50px;*/
+    line-height: 50px;
+    background: #f0f0f0;
+}
+.messageSend_wrap{
+    display: none;
+    width: 100%;
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.1);
+}
+.messageSend_wrap>div{
+    position: absolute;
+    background: #fff;
+    width: 360px;
+    border-radius: 5px;
+    box-shadow: 0 0 13px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    top:50%;
+    left: 50%;
+    -webkit-transform:translate(-50%, -50%);
+    -moz-transform:translate(-50%, -50%);
+    -ms-transform:translate(-50%, -50%);
+    -o-transform:translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    font-size: 12px;
+}
+.message_top {
+    width: 100%;
+    border-bottom: 1px solid #d4d8e1;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    color: #4a5f7c;
+}
+.message_icon {
+    display: inline-block;
+    width: 5px;
+    height: 10px;
+    background: #5f8bc8;
+    margin-right: 5px;
+}
+.message_content {
+    margin-top: 15px;
+}
+.message_label {
+    color: #c26555;
+}
+.message_content textarea {
+    width: 240px;
+    height: 100px;
+    color: #888;
+    overflow-y: auto;
+    outline: none;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    margin-left: 15px;
+}
+.input240px{
+    width: 240px;
+    height: 30px;
+    margin-bottom: 10px;
+    color: #888;
+    outline: none;
+    padding-left: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+.message_footer div {
+    width: 100px;
+    height: 30px;
+    display: inline-block;
+    margin-top: 30px;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+.message_close {
+    background: #c4c8d4;
+}
+.message_send {
+    background: #41c7db;
+    float: right;
+}
+.selects{
+    display: none;
+    max-height: 180px;
+    overflow-y: scroll;
+    position: absolute;
+    z-index: 50;
+    left: 10px;
+    top: 35px;
+    width: 250px;
+    background: #f5f5f5;
+}
+.selects li ,.wxSelect li,.conditionSelect li{
+    cursor: pointer;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+}
+.selects li:hover, .wxSelect li:hover,.conditionSelect li:hover{
+    background: #4a5f7c;
+    color: #fff;
+}
+.conpany_msg .input130{
+    width: 130px;
+    margin: 0 10px;
+}
+.conpany_msg .input288{
+    width: 288px;
+    margin: 0 10px;
+}
+.conpany_msg .input80{
+    width: 80px;
+    margin: 0 10px;
+}
+.removeContidion{
+    display: inline-block;
+    font-size: 18px;
+    color: #c77769;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.conpany_msg .conditionWrap label{
+    width: 70px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    margin-right: 0;
+    color: #888;
+}
+#expend_attribute {
+    max-height: 250px;
+    overflow-y: scroll;
+}
+.wxSelect{
+    display: none;
+    max-height: 180px;
+    overflow-y: scroll;
+    position: absolute;
+    z-index: 50;
+    right:14px;
+    top: 35px;
+    width: 320px;
+    background: #f5f5f5;
+}
+.conditionSelect{
+    display: none;
+    max-height: 180px;
+    overflow-y: scroll;
+    position: absolute;
+    z-index: 50;
+    left:12px;
+    top: 35px;
+    width: 320px;
+    background: #f5f5f5;
+}
+.imgUploadWrap{
+    display: block;
+    margin-top: 10px;
+}
+.imgBox{
+    display: inline-block;
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    margin: 0 15px;
+    /*border: 1px solid #ccc;*/
+    background: #f5f5f5;
+}
+.imgBox img{
+    width: 60px;
+    height: 60px;
+}
+.imgUploadWrap .imgInput{
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.imgBtn{
+    display: inline-block;
+    margin-left: -60px;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 5px;
+    background: #6cc1c8;
+    color: #fff;
+}
+.conpany_msg .drop_down ul{
+    left: 0;
+    top: 30px;
+}
+.drop_down{
+    position: relative;
+}
+.msg_detail label{
+    white-space: nowrap;
+}
+.batch_num{
+    padding-left: 56px;
+}

@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.MessageQuickReply;
@@ -12,7 +13,6 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,10 +98,10 @@ public class MessageQuickReplyController {
             JSONObject result = new JSONObject();
             String jsString = request.getParameter("param");
             logger.info("json-select-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
             data = JSON.toJSONString(messageQuickReplyService.getQuickReplyById(Integer.parseInt(id)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -129,7 +129,7 @@ public class MessageQuickReplyController {
             String jsString = request.getParameter("param");
             logger.info("json--addQuickReply add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
@@ -191,7 +191,7 @@ public class MessageQuickReplyController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json------updateQuickReply---------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = messageQuickReplyService.update(message, user_id);
@@ -251,10 +251,10 @@ public class MessageQuickReplyController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--------deleteQuickReply-------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String quickReplyId = jsonObject.get("id").toString();
             String[] ids = quickReplyId.split(",");
             String msg = null;
@@ -315,9 +315,9 @@ public class MessageQuickReplyController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String content = jsonObject.get("content").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             MessageQuickReply messageQuickReply = messageQuickReplyService.getQuickReplyByCode(corp_code, content, Common.IS_ACTIVE_Y);
@@ -351,10 +351,10 @@ public class MessageQuickReplyController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -366,7 +366,14 @@ public class MessageQuickReplyController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, "", search_value);
-            } else {
+            } else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, corp_code, search_value);
+                //  list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, "", search_value,manager_corp);
+            }else {
                 list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
@@ -398,10 +405,10 @@ public class MessageQuickReplyController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
@@ -411,9 +418,16 @@ public class MessageQuickReplyController {
             JSONObject result = new JSONObject();
             PageInfo<MessageQuickReply> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageQuickReplyService.getAllQuickReplyScreen(page_number, page_size, "", map);
-            } else {
-                list = messageQuickReplyService.getAllQuickReplyScreen(page_number, page_size, corp_code, map);
+                list = messageQuickReplyService.getAllQuickReplyScreen(page_number, page_size, "","", map);
+            }  else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = messageQuickReplyService.getAllQuickReplyScreen(page_number, page_size, corp_code, "",map);
+                // list = messageQuickReplyService.getAllQuickReplyScreen(page_number, page_size, "", map,manager_corp);
+            }else {
+                list = messageQuickReplyService.getAllQuickReplyScreen(page_number, page_size, corp_code, "",map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -442,9 +456,9 @@ public class MessageQuickReplyController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
@@ -460,9 +474,9 @@ public class MessageQuickReplyController {
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = messageQuickReplyService.getAllQuickReplyScreen(1, Common.EXPORTEXECLCOUNT, "", map);
+                    list = messageQuickReplyService.getAllQuickReplyScreen(1, Common.EXPORTEXECLCOUNT, "", "",map);
                 } else {
-                    list = messageQuickReplyService.getAllQuickReplyScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map);
+                    list = messageQuickReplyService.getAllQuickReplyScreen(1, Common.EXPORTEXECLCOUNT, corp_code,"", map);
                 }
             }
             List<MessageQuickReply> messageQuickReplies = list.getList();
@@ -476,7 +490,7 @@ public class MessageQuickReplyController {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json, messageQuickReplies, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, messageQuickReplies, map, response, request,"快捷回复");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

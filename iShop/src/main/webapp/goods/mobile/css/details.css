@@ -8,7 +8,6 @@ body {
   background-color: #ededed; }
 
 .warp {
-  margin-top: 0.04831rem;
   overflow-x: hidden;
   overflow-y: auto; }
 
@@ -33,6 +32,7 @@ body {
   bottom: 15px;
   right: 0%;
   width: 30%;
+  z-index: 9;
   height: 1.20773rem; }
 
 .main_btn .editor {
@@ -67,7 +67,7 @@ body {
   margin-left: 2%;
   height: 0.70048rem;
   line-height: 0.70048rem;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #dddddd;
   text-align: center;
   font-size: 0.31401rem;
   color: #929eae; }
@@ -171,7 +171,8 @@ body {
   width: 100%;
   color: #b2b2b2;
   font-size: 0.31401rem;
-  background-color: white; }
+  background-color: white;
+  box-shadow: 0 -2px 2px #c5c5c5; }
 
 .bottom div {
   margin-top: 0.24155rem;
@@ -201,15 +202,16 @@ body {
   display: none; }
 
 .bottom_input input {
-  position: absolute;
-  bottom: 0.12077rem;
-  left: 3%;
-  border: none;
-  border-radius: 5px;
-  width: 71%;
-  padding-left: 3%;
-  height: 1.0628rem;
-  line-height: 1.0628rem; }
+  position: absolute !important;
+  bottom: 0.12077rem !important;
+  left: 3% !important;
+  border: none !important;
+  border-radius: 5px !important;
+  width: 71% !important;
+  padding-left: 3% !important;
+  height: 1.0628rem !important;
+  line-height: 1.0628rem !important;
+  margin: 0 !important; }
 
 .bottom_input img {
   position: absolute;
@@ -237,7 +239,8 @@ body {
   bottom: 0px;
   width: 100%;
   display: none;
-  opacity: 0.7; }
+  opacity: 0.7;
+  z-index: 1; }
 
 .outWindow_main {
   position: absolute;
@@ -318,7 +321,7 @@ body {
   width: 100%;
   margin-bottom: 0.12077rem; }
 
-/*qq表情*/
+/*qq锟斤拷锟斤拷*/
 .comment {
   width: 680px;
   margin: 20px auto;
@@ -378,3 +381,178 @@ span.emotion:hover {
   background-color: white;
   border: 1px #dfe6f6 solid;
   -webkit-overflow-scrolling: touch; }
+
+#loading {
+  z-index: 9999;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+  #loading .tip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    width: 6.03865rem;
+    height: 2.41546rem;
+    background: rgba(59, 59, 59, 0.7);
+    color: #fff;
+    border-radius: 0.12077rem; }
+    #loading .tip .tip_box {
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%); }
+    #loading .tip .icon_err {
+      display: inline-block;
+      width: 0.60386rem;
+      height: 0.60386rem; }
+    #loading .tip .loading_txt {
+      margin-top: 0.12077rem; }
+      [data-dpr="1"] #loading .tip .loading_txt {
+        font-size: 13px; }
+      [data-dpr="2"] #loading .tip .loading_txt {
+        font-size: 26px; }
+      [data-dpr="3"] #loading .tip .loading_txt {
+        font-size: 39px; }
+
+.share_bottom {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  height: 1.3285rem;
+  box-shadow: 0 -2px 2px #c5c5c5;
+  background-color: #ffffff;
+  z-index: 3;
+  display: none; }
+  .share_bottom div {
+    width: 25%;
+    height: 1.30435rem;
+    line-height: 1.30435rem;
+    text-align: center; }
+    .share_bottom div img {
+      width: 0.48309rem;
+      margin-right: 0.19324rem;
+      vertical-align: middle;
+      margin-top: -0.09662rem; }
+  .share_bottom .buy {
+    background-color: #e4796d;
+    width: 100%;
+    color: #fff; }
+    .share_bottom .buy .buy_bg {
+      display: inline-block;
+      vertical-align: middle;
+      width: 0.48309rem;
+      height: 0.48309rem;
+      margin-top: -0.09662rem;
+      margin-right: 0.12077rem;
+      background: url("../image/icon_cart.png") no-repeat;
+      background-size: 0.48309rem 0.48309rem; }
+
+.dapei_del {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  -ms-transform: translate3d(-50%, -50%, 0);
+  -moz-transform: translate3d(-50%, -50%, 0);
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  -o-transform: translate3d(-50%, -50%, 0);
+  display: none; }
+
+.share_content {
+  padding-top: 0.72464rem;
+  overflow: hidden; }
+
+.share_content .left {
+  width: 50%;
+  float: left;
+  text-align: center; }
+  .share_content .left .shopMoney {
+    height: 0.48309rem;
+    line-height: 0.48309rem;
+    color: #d6746d; }
+    [data-dpr="1"] .share_content .left .shopMoney {
+      font-size: 18px; }
+    [data-dpr="2"] .share_content .left .shopMoney {
+      font-size: 36px; }
+    [data-dpr="3"] .share_content .left .shopMoney {
+      font-size: 54px; }
+  .share_content .left .shopCount {
+    height: 0.48309rem;
+    line-height: 0.48309rem;
+    color: #9686d4; }
+    [data-dpr="1"] .share_content .left .shopCount {
+      font-size: 18px; }
+    [data-dpr="2"] .share_content .left .shopCount {
+      font-size: 36px; }
+    [data-dpr="3"] .share_content .left .shopCount {
+      font-size: 54px; }
+  .share_content .left .shopName {
+    margin-top: 0.24155rem; }
+    [data-dpr="1"] .share_content .left .shopName {
+      font-size: 12px; }
+    [data-dpr="2"] .share_content .left .shopName {
+      font-size: 24px; }
+    [data-dpr="3"] .share_content .left .shopName {
+      font-size: 36px; }
+
+.seen_content {
+  margin-top: 0.72464rem;
+  margin-bottom: 0.72464rem; }
+  .seen_content .seen_garnish {
+    margin-left: 0.72464rem;
+    margin-right: 0.72464rem;
+    height: 0.48309rem;
+    text-align: center;
+    background: url("../image/icon_xian.png") no-repeat center center;
+    background-size: 100% 1px; }
+    .seen_content .seen_garnish .text {
+      padding: 0 15px;
+      display: inline-block;
+      background-color: #fff; }
+      .seen_content .seen_garnish .text span {
+        color: #d6746d; }
+  .seen_content .seen_list {
+    overflow: hidden;
+    padding-top: 0.72464rem;
+    padding-bottom: 0.72464rem;
+    width: 100%; }
+    .seen_content .seen_list ul {
+      width: 80%;
+      margin: 0 auto;
+      overflow: hidden;
+      text-align: center; }
+    .seen_content .seen_list .omit {
+      border-radius: 0.96618rem;
+      background: url("../image/icon_omit.png") no-repeat center center;
+      background-size: 0.60386rem;
+      background-color: #eaeaea; }
+    .seen_content .seen_list li {
+      width: 0.96618rem;
+      height: 0.96618rem;
+      line-height: 0.7971rem;
+      margin-left: 0.16908rem;
+      text-align: center;
+      display: inline-block;
+      vertical-align: middle;
+      border-radius: 0.96618rem; }
+      .seen_content .seen_list li img {
+        width: 0.96618rem;
+        height: 0.96618rem;
+        border-radius: 0.96618rem;
+        border: 1px solid #f1f1f1;
+        vertical-align: middle; }
+
+/*# sourceMappingURL=details.css.map */

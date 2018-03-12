@@ -62,6 +62,8 @@ public interface SmsTemplateService {
      */
     PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
+    PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception;
+
     /**
      * 通过模板编号，判断模板在企业内是否存在
      *
@@ -86,6 +88,8 @@ public interface SmsTemplateService {
     //PageInfo<SmsTemplate> selectAllSmsTemplate(int page_number, int page_size, Map<String, String> map);
 
     PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String s, Map<String, String> map)throws Exception;
+
+    PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String s, Map<String, String> map,String  manager_corp)throws Exception;
 
 //    List<TemplateType> getTypes();
 

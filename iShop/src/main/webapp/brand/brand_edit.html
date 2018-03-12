@@ -6,11 +6,12 @@
     <title>编辑品牌信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?20170401715">
     <style>
         body{
             margin-top:81px;
@@ -49,11 +50,25 @@
                     <div>
                         <span><label style="color:#c26655">品牌名称*</label><input type="text" id="BRAND_NAME" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属品牌不能为空！"></div></div></span>
                     </div>
+                    <div class="drop_down item_1" id="marke_parent">
+                        <span><label>营销短信通道</label><input class="input_select" value="" id="Marketing" type="text" data-type="" placeholder="选取短信通道" readonly="true"/>
+                            <ul>
+
+                            </ul>
+                        </span>
+                    </div>
+                    <div class="drop_down item_1" id="production_parent">
+                        <span><label>生产短信通道</label><input class="input_select" value="" id="Production" type="text" data-type="" placeholder="选取短信通道" readonly="true"/>
+                            <ul>
+
+                            </ul>
+                        </span>
+                    </div>
                     <div>
                         <div class="drop_down">
                         <span><label>所属公众号</label><input class="input_select" id="Accounts" data-appid="" type="text" placeholder="选取公众号" readonly />
                             <ul class="Acc_dropdown" id="Acc_dropdown">
-                                 
+
                             </ul>
                         </span>
                     </div>
@@ -61,7 +76,7 @@
                         <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">默认客服</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
                             <div class="xingming" id="services">
-                                
+
                             </div>
                             <div id="test">
                                 <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;margin-left: 0px">
@@ -72,53 +87,6 @@
                     </div>
                     </div>
                 </form>
-                <div class="distribution_frame" id="distribution_frame">
-                    <div id="area_code" class="drop-down">
-                        <h5>所属区域</h5>
-                        <input type="text" class="input" readonly="true" id="area_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="area_search">
-                            <i class="icon-ishop_3-05" id="area_search_d"></i>
-                        </div>    
-                        <div class="drop_down_ul">
-                            <ul>
-                                
-                            </ul>
-                            <div class="area_more" id="area_more">加载更多</div>
-                        </div>
-                        <div id="area_code_drop" class="drop_q">确定</div>
-                    </div>
-                    <div id="store_code" class="drop-down">
-                        <h5>所属店铺</h5>
-                        <input type="text" class="input" readonly="true" id="store_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="store_search">
-                            <i class="icon-ishop_3-05" id="store_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-                                
-                            </ul>
-                            <div class="area_more" id="store_more">加载更多</div>
-                        </div>
-                        <div id="store_code_drop" class="drop_q">确定</div>   
-                    </div>
-                    <div id="staff_code" class="drop-down">
-                        <h5>员工名称</h5>
-                        <input type="text" class="input" readonly="true" id="staff_input">
-                        <div class="search">
-                            <input type="text" placeholder="请输入搜索信息" id="staff_search">
-                            <i class="icon-ishop_3-05" id="staff_search_d"></i>
-                        </div>
-                        <div class="drop_down_ul">
-                            <ul>
-                                
-                            </ul>
-                            <div class="area_more" id="staff_more">加载更多</div>
-                        </div>
-                        <div id="staff_code_drop" class="drop_q">确定</div>  
-                    </div>
-                </div>
             </div>
             <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
                 <div class="brandedit_oper_btn">
@@ -146,24 +114,199 @@
                 </form>
             </div>
         </div>
+    <!-- 拉取区域 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺群组</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取导购  -->
+    <div id="screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                              data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
     <!-- Custom and plugin javascript -->
-    <script src="../js/loading.js?20170105"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <script src="../js/loading.js?2017040170331"></script>
    <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
-    <script type="text/javascript" src="../js/multiple_choice.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/brand/brand_operate.js?20170105"></script>
-    <script type="text/javascript" src="../js/brand/get_staff.js?20170105"></script>
+    <script type="text/javascript" src="../js/brand/brand_operate.js?20170925"></script>
+    <script type="text/javascript" src="../js/brand/screen_staff.js?20170925"></script>
 </body>
 
 </html>

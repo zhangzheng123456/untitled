@@ -5,25 +5,19 @@
     <resultMap type="com.bizvane.ishop.entity.VipActivity" id="Activity">
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
-        <result column="activity_code" property="activity_code"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_theme" property="activity_theme"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_state" property="activity_state"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_id" property="app_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_name" property="app_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_theme" property="activity_theme" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_vips" property="target_vips" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_store_code" property="activity_store_code"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_desc" property="activity_desc"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_desc" property="activity_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sms_code" property="sms_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -31,6 +25,14 @@
         <result column="target_vips_count" property="target_vips_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="task_status" property="task_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="send_status" property="send_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="run_scope" property="run_scope" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_condition" property="vip_condition" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_task" property="vip_task" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="batch_no" property="batch_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_status" property="bill_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_import" property="target_vips_import" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="qrcode" property="qrcode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="qrcode_content" property="qrcode_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
@@ -50,6 +52,7 @@
             def_vip_activity.activity_theme LIKE concat('%', #{search_value},'%')
             OR def_vip_activity.run_mode LIKE concat('%', #{search_value},'%')
             OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            OR def_vip_activity.activity_code LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY def_vip_activity.id DESC
@@ -58,8 +61,17 @@
     <insert id="insertActivity" parameterType="com.bizvane.ishop.entity.VipActivity">
         INSERT INTO def_vip_activity
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="run_scope!=null">
+                run_scope,
+            </if>
             <if test="corp_code!=null">
                 corp_code,
+            </if>
+            <if test="app_name!=null">
+                app_name,
+            </if>
+            <if test="app_id!=null">
+                app_id,
             </if>
             <if test="activity_code!=null">
                 activity_code,
@@ -82,9 +94,6 @@
             </if>
             <if test="target_vips!=null">
                 target_vips,
-            </if>
-            <if test="activity_store_code!=null">
-                activity_store_code,
             </if>
             <if test="activity_desc!=null">
                 activity_desc,
@@ -119,10 +128,34 @@
             <if test="send_status!=null">
                 send_status,
             </if>
+            <if test="vip_condition!=null">
+                vip_condition,
+            </if>
+            <if test="vip_task!=null">
+                vip_task,
+            </if>
+            <if test="batch_no!=null">
+                batch_no,
+            </if>
+            <if test="bill_status!=null">
+                bill_status,
+            </if>
+            <if test="target_vips_import!=null">
+                target_vips_import,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="run_scope!=null">
+                #{run_scope},
+            </if>
             <if test="corp_code!=null">
                 #{corp_code},
+            </if>
+            <if test="app_name!=null">
+                #{app_name},
+            </if>
+            <if test="app_id!=null">
+                #{app_id},
             </if>
             <if test="activity_code!=null">
                 #{activity_code},
@@ -145,9 +178,6 @@
             </if>
             <if test="target_vips!=null">
                 #{target_vips},
-            </if>
-            <if test="activity_store_code!=null">
-                #{activity_store_code},
             </if>
             <if test="activity_desc!=null">
                 #{activity_desc},
@@ -182,14 +212,38 @@
             <if test="send_status!=null">
                 #{send_status},
             </if>
+            <if test="vip_condition!=null">
+                #{vip_condition},
+            </if>
+            <if test="vip_task!=null">
+                #{vip_task},
+            </if>
+            <if test="batch_no!=null">
+                #{batch_no},
+            </if>
+            <if test="bill_status!=null">
+                #{bill_status},
+            </if>
+            <if test="target_vips_import!=null">
+                #{target_vips_import},
+            </if>
         </trim>
     </insert>
 
     <update id="updateActivity" parameterType="com.bizvane.ishop.entity.VipActivity">
         UPDATE def_vip_activity
         <trim prefix="SET" suffixOverrides=",">
+            <if test="run_scope!=null">
+                run_scope=#{run_scope},
+            </if>
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
+            </if>
+            <if test="app_name!=null">
+                app_name=#{app_name},
+            </if>
+            <if test="app_id!=null">
+                app_id=#{app_id},
             </if>
             <if test="activity_code!=null">
                 activity_code=#{activity_code},
@@ -212,9 +266,6 @@
             </if>
             <if test="target_vips!=null">
                 target_vips=#{target_vips},
-            </if>
-            <if test="activity_store_code!=null">
-                activity_store_code=#{activity_store_code},
             </if>
             <if test="activity_desc!=null">
                 activity_desc=#{activity_desc},
@@ -243,6 +294,27 @@
             <if test="send_status!=null">
                 send_status= #{send_status},
             </if>
+            <if test="vip_condition!=null">
+                vip_condition=#{vip_condition},
+            </if>
+            <if test="vip_task!=null">
+                vip_task=#{vip_task},
+            </if>
+            <if test="batch_no!=null">
+                batch_no=#{batch_no},
+            </if>
+            <if test="bill_status!=null">
+                bill_status=#{bill_status},
+            </if>
+            <if test="target_vips_import!=null">
+                target_vips_import=#{target_vips_import},
+            </if>
+            <if test="qrcode!=null">
+                qrcode=#{qrcode},
+            </if>
+            <if test="qrcode_content!=null">
+                qrcode_content=#{qrcode_content},
+            </if>
         </trim>
         WHERE activity_code=#{activity_code};
     </update>
@@ -269,11 +341,38 @@
         <if test="created_date_end!=null and created_date_end!=''">
             AND def_vip_activity.created_date &lt;= #{created_date_end}
         </if>
+        <if test="start_time_start!=null and start_time_start!=''">
+            AND def_vip_activity.start_time &gt;= #{start_time_start}
+        </if>
+        <if test="start_time_end!=null and start_time_end!=''">
+            AND def_vip_activity.start_time &lt;= #{start_time_end}
+        </if>
+        <if test="end_time_start!=null and end_time_start!=''">
+            AND def_vip_activity.end_time &gt;= #{end_time_start}
+        </if>
+        <if test="end_time_end!=null and end_time_end!=''">
+            AND def_vip_activity.end_time &lt;= #{end_time_end}
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='3'.toString()">
+                    ( def_vip_activity.bill_status = '0' OR  def_vip_activity.bill_status = '' OR def_vip_activity.bill_status IS  NULL )
+                    AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='4'.toString()">
+                    def_vip_activity.bill_status = '1'  AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='5'.toString()">
+                    def_vip_activity.bill_status = '2'  AND def_vip_activity.activity_state = '0'
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue!='3'.toString()  and entryValue!='4'.toString() and entryValue!='5'.toString()">
+                    def_vip_activity.${entryKey} = ${entryValue}
                 </when>
                 <when test="entryValue!=''">
                     def_vip_activity.${entryKey} REGEXP ${entryValue}
@@ -304,6 +403,16 @@
         AND def_vip_activity.activity_code = #{activity_code}
     </select>
 
+
+        <!-- czy -->
+    <select id="selActivityByCodeAndName" resultMap="Activity">
+        SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE def_vip_activity.corp_code=def_corp.corp_code
+        AND def_vip_activity.activity_code = #{activity_code}
+    </select>
+
     <update id="updActiveCodeByType" parameterType="com.bizvane.ishop.entity.VipActivity">
         UPDATE  def_vip_activity SET ${line_code}=#{line_value} WHERE corp_code=#{corp_code} AND activity_code =#{activity_code}
     </update>
@@ -318,6 +427,56 @@
             AND def_vip_activity.CORP_CODE = #{corp_code}
         </if>
         AND def_vip_activity.activity_theme = #{activity_theme}
+    </select>
+
+    <select id="getVipActivityByAppid" resultMap="Activity">
+        SELECT *
+        FROM def_vip_activity
+        WHERE 1=1
+        <if test="app_id!=null and app_id!=''">
+            AND app_id= #{app_id}
+        </if>
+        <if test="activity_state!=null and activity_state!=''">
+            AND activity_state=#{activity_state}
+        </if>
+        <if test="run_mode!=null and run_mode!=''">
+           AND run_mode=#{run_mode}
+        </if>
+        AND isactive='Y'
+        ORDER BY id DESC
+    </select>
+
+    <select id="getVipActivityByCorpCode" resultMap="Activity">
+        SELECT *
+        FROM def_vip_activity
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND corp_code= #{corp_code}
+        </if>
+        <if test="activity_state!=null and activity_state!=''">
+            AND activity_state=#{activity_state}
+        </if>
+        <if test="run_mode!=null and run_mode!=''">
+            AND run_mode=#{run_mode}
+        </if>
+        AND isactive='Y'
+    </select>
+
+
+    <select id="selectAllActivityByState" resultMap="Activity">
+        SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE def_vip_activity.corp_code = def_corp.corp_code
+        AND activity_state &lt;&gt; '0'
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_vip_activity.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND def_vip_activity.creater = #{user_code}
+        </if>
+        AND def_vip_activity.isactive='Y'
+        ORDER BY def_vip_activity.id DESC
     </select>
 
 </mapper>

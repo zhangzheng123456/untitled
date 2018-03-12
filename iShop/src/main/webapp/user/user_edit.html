@@ -7,12 +7,12 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
-    <link href="../css/style.css?201715" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
-    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?20171106" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
 </head>
 
 <body>
@@ -45,7 +45,7 @@
                         <span><label title="客户业务系统下的员工ID">员工ID</label><input type="text" id="user_id" readonly="true"><div style="padding-left:125px" class="hint"><div></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">姓名*</label><input type="text" id="USER_NAME" verify="Empty" maxlength="20"/><div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项，不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">姓名*</label><input type="text" id="USER_NAME" verify="Empty" maxlength="20" autocomplete="off"/><div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>职务</label><input type="text" id="position" maxlength="20"/><div style="padding-left:125px" class="hint"><div  hintinfo="职务为必填项，不能为空！"></div></div></span>
@@ -74,7 +74,7 @@
                     <div id="per_type" >
                         <span onclick="selectownrole(this)"><label style="color:#c26555;">所属群组*</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" data-myrcode="" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
                             <ul id="role_list">
-                            </ul></span><span class="add_per_icon" id="edit_power"><i class="icon-ishop_8-03"></i>编辑权限</span>
+                            </ul></span><span class="add_per_icon" id="edit_power">编辑权限<i class="icon-ishop_8-03"></i></span>
                             <div style="padding-left:125px" class="hint"><div  hintinfo="可不填！" id="group"></div></div>
                     </div>
                     <div id="all_type">
@@ -124,6 +124,26 @@
                     <div class="er_code">
                         <div id="add_app_id">新增<span>+</span></div>
                     </div>
+                    <div>
+                        <div class="drop_down">
+                        <span><label>允许回访类型</label><input class="input_select" id="Accounts" data-appid="" type="text" placeholder="选取回访类型" readonly />
+                            <ul class="Acc_dropdown" id="Acc_dropdown">
+                                <li style="height:30px!important;line-height: 30px!important;" id="wx">
+                                    <p class="checkbox_isactive"><input type="checkbox" value="wx"  data-name="微信"  name="test" class="check"><label style="height: 16px;"></label></p>
+                                    <span class="p16">微信</span>
+                                </li>
+                                <li style="height:30px!important;line-height: 30px!important;" id="sms">
+                                    <p class="checkbox_isactive"><input type="checkbox" value="msg"  data-name="短信" name="test" class="check"><label style="height: 16px;"></label></p>
+                                    <span class="p16">短信</span>
+                                </li>
+                                <li style="height:30px!important;line-height: 30px!important;" id="call">
+                                    <p class="checkbox_isactive"><input type="checkbox" value="call" data-name="电话" name="test" class="check"><label style="height: 16px;"></label></p>
+                                    <span class="p16">手机</span>
+                                </li>
+                            </ul>
+                        </span>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
@@ -162,13 +182,13 @@
     <!-- 拉取区域 -->
     <div id="screen_area" class="screen_area">
         <div class="screen_title">
-            <h4>筛选区域</h4>
+            <h4>筛选店铺群组</h4>
             <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索区域" id="area_search">
+                <input type="text" placeholder="搜索" id="area_search">
                 <span class="icon-ishop_3-05" id="area_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -201,7 +221,7 @@
             <h4>筛选店铺</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="" readonly="true" id="area_num" data-areacode="">
+                    <label>已选店铺群组</label><input type="text" value="" readonly="true" id="area_num" data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
                 </div>
                 <div class="xuanzhong_p">
@@ -319,10 +339,56 @@
         </div>
         <div class="screen_que" id="screen_que_city">确定</div>
     </div>
+    <!-- 拉取企业-->
+    <div id="screen_corp" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选企业</h4>
+            <div class="screen_close" id="screen_close_corp"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="corp_search">
+                <span class="icon-ishop_3-05" id="corp_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_corp">确定</div>
+    </div>
+    <!--确认弹框-->
+    <!--<div class="tk" id="tk" style="position: fixed;">-->
+        <!--<span class="icon-ishop_6-12" id="X"></span>-->
+        <!--<p>是否确带有品牌logo?</p>-->
+        <!--<div class="btn">-->
+            <!--<em class="cancel" id="cancel">否</em>-->
+            <!--<em class="album_enter" id="delete">是</em>-->
+        <!--</div>-->
+    <!--</div>-->
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- oss存储 -->
-    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
@@ -331,19 +397,19 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script src="/js/loading.js"></script>
     <!-- 上传头像 -->
-    <script type="text/javascript" src="../js/upload_touxiang.js?201715"></script>
+    <script type="text/javascript" src="../js/upload_touxiang.js?2017040170331"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
      <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script src="/js/login_account/md5.js"></script>
-    <script type="text/javascript" src="../js/user/user_operate.js?201715"></script>
-    <script src="/js/user/usercheck_power.js?201715"></script>
-    <script src="/js/user/screen.js?201715"></script>
+    <script type="text/javascript" src="../js/user/user_operate.js?20180201"></script>
+    <script src="/js/user/usercheck_power.js?2017040170331"></script>
+    <script src="/js/user/screen.js?2017040170331"></script>
 <script>
     function chongzhi() {
         $("#chongzhi_pwd").css('display','block');

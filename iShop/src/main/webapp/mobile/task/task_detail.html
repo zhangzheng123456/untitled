@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务详情</title>
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/task_detail.css?t=201705310">
+</head>
+<body>
+    <div class="detail_content">
+        <div class="detail_title text-center"><p><em></em></p></div>
+        <div class="detail_line">
+            <span class="detail_left">任务时间</span><span class="detail_right" id="activity_date" style="color: #888"></span>
+        </div>
+        <div class="detail_line">
+            <span class="detail_left">任务说明</span><span class="detail_right" id="description"></span>
+        </div>
+        <div class="detail_line">
+            <span class="detail_left">任务奖励</span><span class="detail_right" id="point" style="color: #1b1b1f"></span>
+        </div>
+        <div class="detail_line" id="task_progressbar">
+           <div style="overflow: hidden"><span style="float: left">任务完成度</span><span style="float: right;width: auto">(<a id="complete_count"></a>/<a id="target_count"></a>)</span></div>
+            <div class="task_progressbar"><div style="width: 0%" id="complete_count_bi"></div></div>
+        </div>
+        <div class="detail_line">
+            <div class="to_do text-center" id="to_do">加载中...</div>
+        </div>
+    </div>
+    <div id="loading">
+        <div class="tip">
+            <div class="tip_box">
+                <div class="icon_err rotate"><img src="img/icon_apply.png" width="100%" height="100%" alt="icon_error.png"></div>
+                <div class="loading_txt">加载中...</div>
+            </div>
+        </div>
+    </div>
+    <div id="tip">
+        <div class="tip">
+            <div class="tip_box">
+                <div class="loading_txt"></div>
+            </div>
+        </div>
+    </div>
+    <div id="mask" class="mask"><img src="img/share.png"></div>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/config.js?20170412"></script>
+    <script src="js/sha1.js"></script>
+    <script src="../../js/insidePostRequire.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        var oc = new ObjectControl();
+        var theRequest={};
+        var param={};
+        var ticket="";
+        var time= $.now();
+        var url=window.location.href;
+        var isShare=false;
+        var shareTitle="";//分享的标题
+        var share_desc="";//分享的描述
+        var shareUrl="";//要分享的地址
+        var shareIcon="";//要分享的地址
+        var isShowMask=false;  //当点击分享按钮时判断wx.config是否配置成功
+        function geUrl(){
+            var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                var strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+        }
+        geUrl();
+        param=theRequest;
+        $("#loading").show();
+        oc.postRequire("post",ajaxUrl.taskDetail,"", param, function(data){
+            if(data.code=="0"){
+                $("#loading").hide();
+                var message=JSON.parse(data.message);
+                var msg=message.task;
+                shareTitle=message.share_title;
+                share_desc=message.share_desc;
+                shareIcon=message.share_pic!=""?message.share_pic:'http://2.dev.bizvane.com/mobile/task/img/logo.png';
+                shareUrl=message.share_url+"?id="+msg.id+"&app_id="+theRequest.app_id+"&card_no="+theRequest.card_no+"&open_id="+theRequest.open_id;
+                var present_coupon=msg.present_coupon==""?"":JSON.parse(msg.present_coupon);
+                var present_coupon_html="";
+                $(".detail_title em").html(msg.task_title);
+                $("#activity_date").html(msg.start_time+"~"+msg.end_time);
+                if(present_coupon!="" && present_coupon.length>0){
+                    for(var i=0;i<present_coupon.length;i++){
+                        present_coupon_html+='<div class="detail_line" style="margin-top: 10px">'
+                                +'<span class="detail_left"></span>'
+                                +'<span class="detail_right" style="color: #1b1b1f">'+present_coupon[i].coupon_name+'</span>'
+                                +'</div>'
+                    }
+                    $("#point").parents(".detail_line").after(present_coupon_html);
+                }
+                if(msg.present_point==""){
+                    $("#point").html("");
+                    $("#point").parent().next().addClass("noPoint")
+                }else{
+                    $("#point").html(msg.present_point+"积分");
+                }
+                if(msg.task_type=="share_counts" || msg.task_type=="invite_registration"){
+                    isShare=true;
+                }
+                $("#to_do").attr("data-id",msg.id);
+                $("#to_do").attr("data-corp_code",msg.corp_code);
+                if(msg.task_type=="integral_accumulate" || msg.task_type=="ticket_sales" || msg.task_status=="0" || msg.task_type=="questionnaire"){
+                    $("#task_progressbar").hide();
+                }else{
+                    $("#complete_count").html(msg.complete_count);
+                    $("#target_count").html(msg.target_count);
+                    $("#complete_count_bi").css("width",(msg.complete_count/msg.target_count)*100+"%");
+                }
+                switch (msg.task_type){
+                    case "improve_data":      //完善资料
+//                        $("#task_progressbar").hide();
+                        $("#to_do").html("去完成任务");
+                        $("#description").append("<div>点击下方按钮完善资料</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+                            window.location.href="list/perfect_information.html?id="+$(this).attr("data-id")+"&corp_code="+$(this).attr("data-corp_code")+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&card_no="+theRequest.card_no+"&t="+$.now();
+                        });
+                        break;
+                    case "share_goods":      //分享商品
+                        $("#to_do").html("去完成任务");
+                        $("#description").append("<div>分享商品<a style='color: #1b1b1f'> "+(msg.target_count==''?0:msg.target_count)+" </a>次</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+                            window.location.href=shareUrl;
+                        });
+                        break;
+                    case "share_counts":     //分享次数
+                        $("#to_do").html("去完成任务");
+                        var task_condition=JSON.parse(msg.task_condition);
+                        $("#description").append("<div>分享次数<a style='color: #1b1b1f'> "+(msg.target_count==''?0:msg.target_count)+" </a>次</div>");
+//                        $("#description").append("<div>分享链接<a> "+task_condition.shareUrl+"</a></div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+                            isShowMask && $("#mask").show();
+                            if(!isShowMask){
+                                $("#tip .loading_txt").html("稍后重试");
+                                $("#tip").show();
+                                setTimeout(function(){
+                                    $("#tip").hide();
+                                },2000)
+                            }
+                        });
+                        break;
+                    case "integral_accumulate":       //积分积累
+                        $("#description").append("<div>积分积累<a style='color: #1b1b1f'> "+(msg.target_count==''?0:msg.target_count)+" </a>分</div>");
+                        $("#to_do").hide();
+                        break;
+                    case "consume_count":       //累计消费次数
+                        $("#to_do").html("去完成任务");
+                        if(msg.task_condition.indexOf("{")!="-1"){
+                            var task_condition=JSON.parse(msg.task_condition);
+                            if(task_condition.start_time!="" && task_condition.end_time!=""){
+                                $("#description").append("<div>"+task_condition.start_time+"~"+task_condition.end_time+" 内</div>");
+                            }
+                        }
+                        $("#description").append("<div>累计消费<a style='color: #1b1b1f'>"+(msg.target_count==''?0:msg.target_count)+" </a>次</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+//                        window.location.href="list/perfect_information.html?id="+$(this).attr("data-id")+"&corp_code="+$(this).attr("data-corp_code");
+                            window.location.href=shareUrl;
+                        });
+                        if(message.share_url==""){
+                            $("#to_do").hide();
+                        }
+                        break;
+                    case "consume_money":      //累计消费金额
+                        $("#to_do").html("去完成任务");
+
+                        if(msg.task_condition.indexOf("{")!="-1"){
+                            var task_condition=JSON.parse(msg.task_condition);
+                            if(task_condition.start_time!="" && task_condition.end_time!=""){
+                                $("#description").append("<div>"+task_condition.start_time+"~"+task_condition.end_time+" 内</div>")
+                            }
+                        }
+
+                        $("#description").append("<div>累计消费<a style='color: #1b1b1f'> "+(msg.target_count==''?0:msg.target_count)+" </a>元</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+//                        window.location.href="list/perfect_information.html?id="+$(this).attr("data-id")+"&corp_code="+$(this).attr("data-corp_code");
+                            window.location.href=shareUrl;
+                        });
+                        if(message.share_url==""){
+                            $("#to_do").hide();
+                        }
+                        break;
+                    case "ticket_sales":       //最高客单价
+                        $("#to_do").html("去完成任务");
+                        if(msg.task_condition.indexOf("{")!="-1"){
+                            var task_condition=JSON.parse(msg.task_condition);
+                            if(task_condition.start_time!="" && task_condition.end_time!=""){
+                                $("#description").append("<div>"+task_condition.start_time+"~"+task_condition.end_time+" 内</div>");
+                            }
+                        }
+                        $("#description").append("<div>最高客单价<a style='color: #1b1b1f'> "+(msg.target_count==''?0:msg.target_count)+" </a>元</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+                            window.location.href=shareUrl;
+//                        window.location.href="list/perfect_information.html?id="+$(this).attr("data-id")+"&corp_code="+$(this).attr("data-corp_code");
+                        });
+                        if(message.share_url==""){
+                            $("#to_do").hide();
+                        }
+                        break;
+                    case "invite_registration":    //邀请注册、
+                        $("#to_do").html("去完成任务");
+                        $("#description").append("<div>成功邀请<a style='color: #1b1b1f'> "+(msg.target_count==''?0:msg.target_count)+" </a>人</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+                            isShowMask && $("#mask").show();
+                            if(!isShowMask){
+                                $("#tip .loading_txt").html("稍后重试");
+                                $("#tip").show();
+                                setTimeout(function(){
+                                    $("#tip").hide();
+                                },2000)
+                            }
+                        });
+                        break;
+                    case "activity_count":        //参与活动次数
+                        var task_condition=JSON.parse(msg.task_condition);
+                        $("#description").append("<div>活动类型<a style='color: #1b1b1f'> "+task_condition.activity_type+" </a></div>");
+                        $("#description").append("<div>参与活动<a style='color: #1b1b1f'> "+task_condition.count+" </a>次</div>");
+                        $("#to_do").hide();
+                        break;
+                    case "questionnaire":        //问卷调查
+                        var task_condition=JSON.parse(msg.task_condition);
+                        $("#to_do").html("去完成任务");
+                        $("#description").append("<div>点击下方按钮填写问卷调查</div>");
+                        $("#to_do").unbind("click").bind("click",function(){
+                            window.location.href="../survey/survey_phone.html?id="+$(this).attr("data-id")+"&corp_code="+$(this).attr("data-corp_code")+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&card_no="+theRequest.card_no+"&t="+$.now()+"&questionId="+task_condition.id;
+                        });
+                }
+                if(msg.task_status!="1" && $("#to_do").is(":visible")){
+                    $("#to_do").css("backgroundColor","#ddd");
+                    $("#to_do").after("<div style='height: 20px;line-height: 20px;text-align: center;margin-top: 5px'>该任务将于"+msg.start_time+"正式开始<div>");
+                    $("#to_do").unbind("click");
+                }
+                var reg = new RegExp("\n", "g");
+                msg.task_description=msg.task_description.replace(reg,"<br>");
+                $("#description").append("<div>"+(msg.task_description==""?"":msg.task_description)+"</div>");
+                if(isShare){
+                    oc.postRequire("get",ajaxUrl.jsTicket+"?app_id="+theRequest.app_id,"","", function(data){
+                        ticket=data.message;
+                        var string="jsapi_ticket="+ticket+"&noncestr=5dJCd1ztKKRPMclhiPKeTRbMbr7vjSsrPPdBlLv6O4r&timestamp="+time+"&url="+url;
+                        wx.config({
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId:theRequest.app_id, // 必填，公众号的唯一标识
+                            timestamp: time, // 必填，生成签名的时间戳
+                            nonceStr: '5dJCd1ztKKRPMclhiPKeTRbMbr7vjSsrPPdBlLv6O4r', // 必填，生成签名的随机串
+                            signature:sha1(string),// 必填，签名，见附录1
+                            jsApiList: ["onMenuShareTimeline","onMenuShareAppMessage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        });
+                        wx.ready(function(){
+                            wx.checkJsApi({
+                                jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                                success: function(res) {
+                                    // 以键值对的形式返回，可用的api值true，不可用为false
+                                    // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                                    isShowMask=true;
+                                }
+                            });
+                            wx.onMenuShareTimeline({
+                                title: shareTitle, // 分享标题
+                                link: shareUrl, // 分享链接
+                                imgUrl: shareIcon, // 分享图标
+                                success: function () {
+                                    var param=theRequest;
+                                    oc.postRequire("post",ajaxUrl.shareUrl,"",param, function(data){
+                                    })
+                                },
+                                cancel: function () {
+                                    // 用户取消分享后执行的回调函数
+                                }
+                            });
+                            wx.onMenuShareAppMessage({
+                                title: shareTitle, // 分享标题
+                                desc: share_desc, // 分享描述
+                                link: shareUrl, // 分享链接
+                                imgUrl: shareIcon, // 分享图标
+                                type: '', // 分享类型,music、video或link，不填默认为link
+                                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                                success: function () {
+                                    // 用户确认分享后执行的回调函数
+                                    var param=theRequest;
+                                    oc.postRequire("post",ajaxUrl.shareUrl,"",param, function(data){
+                                    })
+                                },
+                                cancel: function () {
+                                    // 用户取消分享后执行的回调函数
+                                }
+                            });
+                        });
+                        wx.error(function(res){
+                            isShowMask=false;
+                        });
+                    });
+                }
+            }else if(data.code=="-1"){
+                $("#loading").hide();
+                $("#tip .loading_txt").html("请求失败");
+                $("#tip").show();
+                setTimeout(function(){
+                    $("#tip").hide();
+                },2000)
+            }
+        });
+        $("#mask").click(function(){
+            $(this).hide();
+        })
+    </script>
+</body>
+</html>

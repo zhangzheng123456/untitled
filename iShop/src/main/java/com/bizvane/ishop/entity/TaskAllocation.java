@@ -5,7 +5,7 @@ package com.bizvane.ishop.entity;
  */
 public class TaskAllocation {
     private int id;
-//任务编号
+    //任务编号
     private String task_code;
     //企业编号
     private String corp_code;
@@ -27,6 +27,8 @@ public class TaskAllocation {
     private String task_proof_image;
     //完成任务凭证(文字)
     private String task_proof_text;
+    //完成任务凭证(显示111)
+    private String task_proof_img_pz;
     //完成任务评分
     private String task_proof_mark;
     private User user;
@@ -43,6 +45,36 @@ public class TaskAllocation {
     private String isactive;
 
     private String store_code;
+
+    private String count;
+
+    private String store_name;
+    private String task_back;
+
+    public String getTask_back() {
+        return task_back;
+    }
+
+    public void setTask_back(String task_back) {
+        this.task_back = task_back;
+    }
+
+    public String getTask_proof_img_pz() {
+        return task_proof_img_pz;
+    }
+
+    public void setTask_proof_img_pz(String task_proof_img_pz) {
+        this.task_proof_img_pz = task_proof_img_pz;
+    }
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
 
     public String getPhone() {
         return phone;
@@ -210,5 +242,13 @@ public class TaskAllocation {
 
     public void setStore_code(String store_code) {
         this.store_code = store_code;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 }

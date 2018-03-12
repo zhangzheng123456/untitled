@@ -296,7 +296,6 @@ jQuery(document).ready(function(){
 		key_val=JSON.parse(key_val);
 		var funcCode=key_val.func_code;
 		$.get("/detail?funcCode="+funcCode+"", function(data){
-			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
@@ -575,30 +574,39 @@ function year(){
     	var value=$(this).html();
     	$('#year').val(value);
     	$('#week_p .year').hide();
+		month();
     })
 }
 function month(){
 	var myDate=new Date();
 	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+	var year=new Date().getFullYear();
 	month=month+1;
 	if(month<10){
 		month="0"+month;
 	}
 	$('#month').val(month);
+	var html="";
 	for(var i=1;i<=12;i++){
+		var style="";
 		if(i<10){
 			i="0"+i;
 		}
-		var li="<li>";
-		li+=""+i+"</li>"
-		$('#week_p .month').append(li);
+		if($("#year").val()==year&&i<month){
+			style="opacity:0.5";
+		}
+		html+="<li style='"+style+"'>"+i+"</li>";
 	}
+	$('#week_p .month').html(html);
 	$("#week_p .month>li").click(function(){
+		if($(this).attr("style")!==""){
+			return;
+		}
     	console.log(this);
     	var value=$(this).html();
     	$('#month').val(value);
     	$('#week_p .month').hide();
     })
 }
-month();
 year();
+month();

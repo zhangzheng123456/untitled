@@ -20,8 +20,10 @@ public interface PrivilegeMapper {
     int deleteActPrivileges(Map<String,Object> map)throws SQLException;
     //按功能获取user动作权限
     List<Privilege> selectActionByFun(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code, @Param("function_code") String function_code) throws SQLException;
-
+    //按功能获取user列表显示字段
     List<Privilege> selectColumnByFun(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code, @Param("function_code") String function_code) throws SQLException;
+    //按功能获取user详情可编辑字段
+    List<Privilege> selectRWByFun(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code, @Param("function_code") String function_code) throws SQLException;
 
     List<Privilege> selectPrivilegeAct(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code)  throws SQLException;
 
@@ -36,6 +38,8 @@ public interface PrivilegeMapper {
     int deleteUserColPrivileges(@Param("function_code") String function_code, @Param("master_code") String master_code)throws SQLException;
 
     List<Privilege> selectColPrivilegeByUser(@Param("function_code") String function_code, @Param("master_code") String master_code)  throws SQLException;
+
+    List<Privilege> selectMasterCodeByFunctionName(@Param("function_name")String function_name,@Param("action_name") String action_name)throws SQLException;
 
 
 }

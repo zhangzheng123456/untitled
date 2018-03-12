@@ -32,7 +32,6 @@ function homeGetSys(timeType){
                 +'</li>';
             $("#feed_back").html(feedbackHtml);
         }
-        console.log(errorlog)
         for(index in errorlog){
             errorhtml+='<li>'
                 +'<label><i class="icon-ishop_8-01"></i>'+errorlog[index].created_date+'</label>'

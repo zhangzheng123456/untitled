@@ -49,7 +49,22 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<MessageInfo> list = this.messageMapper.selectAllMessageInfo(corp_code, user_code, search_value);
+        List<MessageInfo> list = this.messageMapper.selectAllMessageInfo(corp_code, user_code, search_value,null);
+        for (MessageInfo message : list) {
+            message.setIsactive(CheckUtils.CheckIsactive(message.getIsactive()));
+        }
+        PageInfo<MessageInfo> page = new PageInfo<MessageInfo>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        PageHelper.startPage(page_number, page_size);
+        List<MessageInfo> list = this.messageMapper.selectAllMessageInfo(corp_code, user_code, search_value,manager_corp_arr);
         for (MessageInfo message : list) {
             message.setIsactive(CheckUtils.CheckIsactive(message.getIsactive()));
         }
@@ -88,7 +103,7 @@ public class MessageServiceImpl implements MessageService {
                 String store_code = "";
                 for (int i = 0; i < messageLists.size(); i++) {
                     store_code = messageLists.get(i).getMessage_receiver();
-                    List<User> users = userMapper.selectStoreUser(corp_code, store_code, "", "", Common.IS_ACTIVE_Y);
+                    List<User> users = userMapper.selectStoreUser(corp_code, store_code, "", "", Common.IS_ACTIVE_Y,"");
                     //去重
                     for (int j = 0; j <users.size() ; j++) {
                         Map<String,String> user = new HashMap<String, String>();
@@ -110,7 +125,7 @@ public class MessageServiceImpl implements MessageService {
                 String[] areas = area_code.split(",");
                 List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, null, Common.IS_ACTIVE_Y);
                 for (int i = 0; i < store.size(); i++) {
-                    List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y);
+                    List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y,"");
                     for (int j = 0; j <users.size() ; j++) {
                         Map<String,String> user = new HashMap<String, String>();
                         user.put("user_name",users.get(j).getUser_name());
@@ -229,12 +244,40 @@ public class MessageServiceImpl implements MessageService {
     public PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception {
 
         Map<String, Object> params = new HashMap<String, Object>();
-       JSONObject date = JSONObject.parseObject(map.get("modified_date"));
+        if (map.containsKey("modified_date")){
+            JSONObject date = JSONObject.parseObject(map.get("modified_date"));
+            params.put("created_date_start", date.get("start").toString());
+            params.put("created_date_end", date.get("end").toString()+"24:00:00");
+            map.remove("modified_date");
+        }
 
-        params.put("created_date_start", date.get("start").toString());
-        params.put("created_date_end", date.get("end").toString()+"24:00:00");
         params.put("corp_code", corp_code);
-        map.remove("modified_date");
+        params.put("user_code", user_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<MessageInfo> list = this.messageMapper.selectAllMessageInfoScreen(params);
+        for (MessageInfo message : list) {
+            message.setIsactive(CheckUtils.CheckIsactive(message.getIsactive()));
+        }
+        PageInfo<MessageInfo> page = new PageInfo<MessageInfo>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (map.containsKey("modified_date")){
+            JSONObject date = JSONObject.parseObject(map.get("modified_date"));
+            params.put("created_date_start", date.get("start").toString());
+            params.put("created_date_end", date.get("end").toString()+"24:00:00");
+            map.remove("modified_date");
+        }
+        params.put("manager_corp_arr", manager_corp_arr);
+        params.put("corp_code", corp_code);
         params.put("user_code", user_code);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);

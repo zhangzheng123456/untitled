@@ -21,7 +21,7 @@ var oc = new ObjectControl();
 	};
 	codejs.checkPhone = function(obj,hint){
 		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=isMob=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;//验证手机号码格式正不正确
+		var isMob=isMob=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8,9]{1}\d{9}$/;//验证手机号码格式正不正确
 		if(!this.isEmpty(obj)){
 			if(isPhone.test(obj)||isMob.test(obj)){
 				this.hiddenHint(hint);
@@ -57,12 +57,12 @@ var oc = new ObjectControl();
 				var phone=$('#phone').val();//手机号
 				var validate_code=$('#validate_code').val();//验证码
 				var platform=$('#platform').val();//来源
-				// var input=$("#is_active")[0];
-				// if(input.checked==true){
-				// 	ISACTIVE="Y";
-				// }else if(input.checked==false){
-				// 	ISACTIVE="N";
-				// }
+				var input=$("#is_active")[0];
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==false){
+					ISACTIVE="N";
+				}
 				var _command="/validatecode/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -73,7 +73,7 @@ var oc = new ObjectControl();
 					"phone": phone,
 					"validate_code": validate_code,
 					"platform": platform,
-					// "isactive": ISACTIVE
+					"isactive": ISACTIVE
 				};
 				codejs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -86,12 +86,12 @@ var oc = new ObjectControl();
 				var phone=$('#phone').val();//手机号
 				var validate_code=$('#validate_code').val();//验证码
 				var platform=$('#platform').val();//来源
-				// var input=$("#is_active")[0];
-				// if(input.checked==true){
-				// 	ISACTIVE="Y";
-				// }else if(input.checked==false){
-				// 		ISACTIVE="N";
-				// }
+				var input=$("#is_active")[0];
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==false){
+						ISACTIVE="N";
+				}
 				var _command="/validatecode/edit";//接口名
 				var opt = {//返回成功后的操作s
 					success:function(){
@@ -103,7 +103,7 @@ var oc = new ObjectControl();
 					"phone": phone,
 					"validate_code": validate_code,
 					"platform": platform,
-					// "isactive": ISACTIVE
+					"isactive": ISACTIVE
 				};
 				codejs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -181,7 +181,6 @@ jQuery(document).ready(function(){
 		key_val=JSON.parse(key_val);
 		var funcCode=key_val.func_code;
 		$.get("/detail?funcCode="+funcCode+"", function(data){
-			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
@@ -206,12 +205,12 @@ jQuery(document).ready(function(){
 				$("#created_date").val(msg.created_date);
 				$("#modified_date").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
-				// var input=$("#is_active")[0];
-				// if(msg.isactive=="Y"){
-				// 	input.checked=true;
-				// }else if(msg.isactive=="N"){
-				// 	input.checked=false;
-				// }
+				var input=$("#is_active")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,

@@ -3,59 +3,49 @@
 <head>
     <meta charset="utf-8">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">-->
-    <title>活动详情</title>
-    <!--<link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">-->
-    <!--<link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">-->
-    <!--<link href="../css/animate.css" rel="stylesheet">-->
-    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
-    <link href="../table/css/inner.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/activity_details.css?20170105"/>
-    <link rel="stylesheet" href="../css/active_detailNew.css">
-    <style>
-        #peopleContent li{
-            cursor: pointer;
-        }
-       #table_content{
-           height: 300px;
-           overflow-y: auto;
-       }
-        .no_data{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-        }
-        .data_detail .detail{
-            width: 60px;
-            height: 29px;
-            margin-top: 5px;
-            line-height: 29px;
-            /*border: 1px solid #f5f5f5;*/
-            border-radius: 5px;
-            /*background-color: #fcfcfc;*/
-            color: #5f8bc8;
-            text-align: center;
-        }
-    </style>
+    <title>
+        活动详情</title>
+    <link href="../css/style.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet"
+          type="text/css"
+          href="../css/tips.css?2017040170331">
+    <link rel="stylesheet"
+          type="text/css"
+          href="../js/artDialog/skins/default.css?2017040170331">
+    <link href="../table/css/inner.css?2017040170331"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="../css/activity_details.css?20180206"/>
+    <link rel="stylesheet"
+          href="../css/active_detailNew.css?20180226">
 </head>
 <body>
-<div id="page-wrapper" class="gray-bg dashbard-1">
+<div id="page-wrapper"
+     class="gray-bg dashbard-1">
     <div class="pre_title">
-        <span>会员管理</span><i class="icon-ishop_8-03"></i><span id="return_back">会员活动</span><i class="icon-ishop_8-03"></i><label>活动跟踪</label>
+        <span>会员营销</span><i
+            class="icon-ishop_8-03"></i><span
+            id="return_back">会员活动</span><i
+            class="icon-ishop_8-03"></i><label>活动跟踪</label>
     </div>
-      <!--header-->
-      <div id="header">
-        <div class="header_l">
+    <!--header-->
+    <div id="header">
+        <div class="header_l" style="width:39%;">
             <div class="name_title">
                 <span class="title_l"></span>
-                <span class="icon-ishop_6-29 title_action"id="cancel_box">
+                <span class="icon-ishop_6-29 title_action"
+                      id="cancel_box">
                     <div class="action_tip">
+                        <p class="action_set">查看活动设置</p>
+                        <p class="action_twoCode">查看活动二维码</p>
                         <p class="action_time">修改活动时间</p>
                         <p class="action_store">添加参与门店</p>
-                        <p class="action_btn">现在结束活动</p>
+                        <p class="action_openWeb">查看活动页面</p>
+                        <p class="action_btn"
+                           style="color: #bb5f77;">现在结束活动</p>
                     </div>
                 </span>
             </div>
@@ -72,29 +62,67 @@
         </div>
         <div class="header_sm">
             <div class="header_sm_c">
-                <p>参与门店数</p>
+                <p style="color: #dee2e8;">
+                    目标会员数</p>
+                <p class="p_2"></p>
+            </div>
+        </div>
+        <div class="header_sm">
+            <div class="header_sm_c">
+                <p style="color: #dee2e8;">
+                    参与门店数</p>
                 <p class="p_2"></p>
             </div>
         </div>
         <div class="header_m">
             <div class="header_m_c">
-                <p class="p_3">距离活动结束还剩</p>
+                <p class="p_3">
+                    距离活动结束还剩</p>
                 <p class="p_2"></p>
             </div>
         </div>
         <div class="header_r">
-            <div class="btn">策略补充</div>
+            <div class="btn">
+                策略补充
+            </div>
         </div>
     </div>
-      <!--navigation-->
-      <div id="nav">
-        <div class=" nav_btn nav_action">任务完成度分析</div>
-        <div class=" nav_btn">意向客户分析</div>
-        <div class=" nav_btn">导购影响力分析</div>
-        <div class=" nav_btn">通知传播分析</div>
+    <!--navigation-->
+    <div id="nav">
+        <div class=" nav_btn nav_action" id="task_nav">
+            任务完成度分析
+        </div>
+        <div class=" nav_btn" data-nav="customer" id="customer_nav">
+            意向客户分析
+        </div>
+        <div class=" nav_btn" data-nav="influence">
+            导购影响力分析
+        </div>
+        <div class=" nav_btn" data-nav="spread">
+            通知传播分析
+        </div>
+        <div class=" nav_btn" data-nav="coupon" style="display: none;" id="coupon_nav">
+            优惠券分析
+        </div>
+        <div class=" nav_btn" data-nav="signUp"  style="display: none;" id="btn_signUp">
+            报名会员
+        </div>
+        <div class=" nav_btn" data-nav="online"  style="display: none;" id="btn_online">
+            报名会员
+        </div>
+        <div class=" nav_btn" data-nav="vip_effect" id="vip_effect" style="display: none">
+            会员影响力分析
+        </div>
+        <div class=" nav_btn" data-nav="achievement_percent" id="achievement_percent">
+            业绩占比
+        </div>
     </div>
-      <!--进度分析-->
-      <div id="progress">
+    <div class="noTaskStore_tip" id="noTaskStore_tip">检测到您有未分配的任务，<span style="color: #41c7db;cursor: pointer;" id="setTask">点此设置</span>
+        <span class="icon-ishop_6-12 noTaskStore_tip_close" id="noTaskStore_tip_close"></span>
+    </div>
+    <div id="analyze_wrap">
+        <!--进度分析-->
+        <div id="progress">
             <div class="progress_nav">
                 <!--<div class="progress_nav_btn progress_nav_btn_action">任务1</div>-->
                 <!--<div class="progress_nav_btn">任务2</div>-->
@@ -105,67 +133,95 @@
                 <div class="task_detail">
                     <div class="task_detail_l task_block">
                         <div>
-                            <p class="task_title">任务标题</p>
+                            <p class="task_title">
+                                任务标题</p>
                             <p class="task_title_describe p1"></p>
                         </div>
                         <div>
-                            <p class="task_title">任务类型</p>
+                            <p class="task_title">
+                                任务类型</p>
                             <p class="task_title_describe p2"></p>
                         </div>
                         <div>
-                            <p class="task_title">任务状态</p>
-                            <p class="task_title_describe doing">正在执行</p>
+                            <p class="task_title">
+                                任务状态</p>
+                            <p class="task_title_describe doing p8">
+                                正在执行</p>
                         </div>
                         <div>
-                            <p class="task_title">参与门店</p>
-                            <p class="task_title_describe"><span class="count p3"></span>门店 <span class="task_list">参与门店列表 <span class="icon-ishop_8-03"></span></span></p>
+                            <p class="task_title">
+                                参与门店</p>
+                            <p class="task_title_describe">
+                                <span class="count p3"></span>门店
+                                <span class="task_list">参与门店列表 <span
+                                        class="icon-ishop_8-03"></span></span>
+                            </p>
                         </div>
                         <div>
-                            <p class="task_title">任务时间</p>
+                            <p class="task_title">
+                                任务时间</p>
                             <div class="task_title_describe">
                                 <p class="p4"></p>
                                 <p class="p5"></p>
-                                <p>还剩 <span class="count p6"></span>天</p>
+                                <p>
+                                    还剩
+                                    <span class="count p6"></span>天
+                                </p>
                             </div>
                         </div>
                         <div>
-                            <p class="task_title">任务简述</p>
+                            <p class="task_title">
+                                任务简述</p>
                             <p class="task_title_describe p7"></p>
                         </div>
                     </div>
                     <div class="task_blank"></div>
-                    <div  class="task_detail_m task_block">
-                        <p class="chart_title">任务完成度</p>
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            任务完成度</p>
                         <div id="chart_pie"></div>
                         <div class="chart_count">
                             <div class="blank_2"></div>
                             <div class="chart_count_l">
                                 <div>
-                                    <p>参与导购数</p>
-                                    <p class="shoppers">3074</p>
+                                    <p>
+                                        下达导购数</p>
+                                    <p class="shoppers">
+                                        0</p>
                                 </div>
                             </div>
                             <div class="blank_3"></div>
                             <div class="chart_count_m">
                                 <div>
-                                    <p>已覆盖会员数</p>
-                                    <p class="covers">10100</p>
+                                    <p>
+                                        已覆盖会员数</p>
+                                    <p class="covers">
+                                        10100</p>
                                 </div>
                             </div>
                             <div class="blank_3"></div>
                             <div class="chart_count_r">
                                 <div>
-                                    <p>目标会员数</p>
-                                    <p class="target">12663</p>
+                                    <p>
+                                        目标会员数</p>
+                                    <p class="target">
+                                        12663</p>
                                 </div>
                             </div>
                             <div class="blank_2"></div>
                         </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
                     </div>
                     <div class="task_blank"></div>
-                    <div  class="task_detail_r task_block">
-                        <p class="chart_title">任务完成度</p>
-                        <div id="chart_bar"></div>
+                    <div class="task_detail_r task_block">
+                        <p class="chart_title">
+                            任务完成度</p>
+                        <div id="chart_bar" style="line-height: 231px;text-align: center"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
                     </div>
                 </div>
                 <div class="task_list"></div>
@@ -174,38 +230,68 @@
                 <!--二级按钮-->
                 <div class="btnSecond">
                     <span style="margin-right: 5px">
-                 <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
+                 <input type="radio"
+                        name="ck"
+                        class="check"
+                        style="display: none;"
+                        id="ck_1">
                  <b class="radio_b"></b>
-                 <label for="ck_1"id="showDone">仅显示已完成</label>
+                 <label for="ck_1"
+                        id="showDone">仅显示已完成</label>
              </span>
                     <span style="margin-right: 5px">
-                 <input type="radio" name="ck" class="check"style="display: none" id="ck_2">
+                 <input type="radio"
+                        name="ck"
+                        class="check"
+                        style="display: none"
+                        id="ck_2">
                  <b class="radio_b"></b>
-                 <label for="ck_2"id="showDoing">仅显示未完成</label>
+                 <label for="ck_2"
+                        id="showDoing">仅显示未完成</label>
             </span>
                     <span style="margin-right: 5px">
-                 <input type="radio" name="ck"class="check" style="display: none" id="ck_3">
+                 <input type="radio"
+                        name="ck"
+                        class="check"
+                        style="display: none"
+                        id="ck_3">
                  <b class="radio_b"></b>
-                 <label for="ck_3" id="showAll">显示全部</label>
+                 <label for="ck_3"
+                        id="showAll">显示全部</label>
             </span>
-                    <span class="do" id="choose"style="background: #97b3db">筛选</span>
-                    <span class="do" id="empty"style="background: #c4c8d4">清空筛选</span>
+                    <span class="do choose"
+                          style="background: #97b3db">筛选</span>
+                    <span class="do empty"
+                          style="background: #c4c8d4" data-id="task">清空筛选</span>
                 </div>
-                <div id="screening">
-                    <div class="sxk" id="sxk">
+                <div class="screening" id="screening">
+                    <div class="sxk"
+                         id="sxk">
                         <div class="inputs">
                             <ul>
                                 <li>
-                                    <label>员工姓名</label><input type="text" id="p1"placeholder="请输入员工姓名">
+                                    <label>员工姓名</label><input
+                                        type="text"
+                                        id="p1"
+                                        placeholder="请输入员工姓名">
                                 </li>
                                 <li>
-                                    <label>员工编号</label><input type="text" id="p2"placeholder="请输入员工编号">
+                                    <label>员工编号</label><input
+                                        type="text"
+                                        id="p2"
+                                        placeholder="请输入员工编号">
                                 </li>
                                 <li>
-                                    <label>店铺编号</label><input type="text" id="p3"placeholder="请输入店铺编号">
+                                    <label>店铺编号</label><input
+                                        type="text"
+                                        id="p3"
+                                        placeholder="请输入店铺编号">
                                 </li>
                                 <li>
-                                    <label>所属店铺</label><input type="text" id="p4"placeholder="请输入所属店铺">
+                                    <label>所属店铺</label><input
+                                        type="text"
+                                        id="p4"
+                                        placeholder="请输入所属店铺">
                                 </li>
                             </ul>
                         </div>
@@ -214,74 +300,1198 @@
                 <!--人员区-->
                 <ul class="people_head">
                     <li class="people_title">
-                        <div class="people_title_order">序号</div>
-                        <div class="people_title_name">员工姓名</div>
-                        <div class="people_title_num">员工编号</div>
-                        <div class="people_title_area">店铺编号</div>
-                        <div class="people_title_shop">所属店铺</div>
-                        <div class="people_title_plan">完成进度</div>
+                        <div class="people_title_order">
+                            序号
+                        </div>
+                        <div class="people_title_name">
+                            员工姓名
+                        </div>
+                        <div class="people_title_num">
+                            员工编号
+                        </div>
+                        <div class="people_title_area">
+                            店铺编号
+                        </div>
+                        <div class="people_title_shop">
+                            所属店铺
+                        </div>
+                        <div class="people_title_plan">
+                            完成进度
+                        </div>
                     </li>
                 </ul>
                 <ul class="people">
                     <li class="people_content">
-                        <ui id ='peopleContent'>
+                        <ul id='peopleContent' class="peopleContent"></ul>
                             <!--js动态生成-->
-                           <li id="peopleError"> <div>没有匹配信息，请核对关键字重新搜索</div> </li>
-                        </ui>
+                    <li id="peopleError">
+                        <div>
+                            没有匹配信息，请核对关键字重新搜索
+                        </div>
                     </li>
 
                 </ul>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
             </div>
+        </div>
+        <!--客户分析-->
+        <div id="customer" style="display: none">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            意向客户占比</p>
+                        <div id="customer_pie" style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>目标会员数</p>
+                                    <p class="shoppers" id="all_customers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>意向会员数</p>
+                                    <p class="shoppers" id="intent_customers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>链接点击数</p>
+                                    <p class="target" id="click_customers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <p class="chart_title">
+                            意向客户统计</p>
+                        <div id="customer_bar" style="height: 231px;"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="doType_active" data-type="store">按门店查看</span>
+                    <span data-type="user" class="doType">按员工查看</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty"
+                          style="background: #c4c8d4" data-id="customer">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <li style="display: none">
+                                    <label>员工编号</label><input
+                                        type="text" id="customer_userCode"
+                                        placeholder="请输入员工编号">
+                                </li>
+                                <li style="display: none">
+                                    <label>员工姓名</label><input
+                                        type="text" id="customer_user"
+                                        placeholder="请输入员工姓名">
+                                </li>
+                                <li>
+                                    <label>店铺编号</label><input
+                                        type="text" id="customer_storeCode"
+                                        placeholder="请输入店铺编号">
+                                </li>
+                                <li>
+                                    <label>店铺名称</label><input
+                                        type="text" id="customer_store"
+                                        placeholder="请输入店铺名称">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+                <ul class="people_head">
+                    <li class="people_title">
+                        <!--js动态生成-->
+                    </li>
+                </ul>
+                <ul class="people">
+                    <li class="peopleContent">
+                        <ul>
+                            <!--<li>-->
+                            <!--<div class="influence_head">1</div>-->
+                            <!--<div class="influence_head">上海闵行分店</div>-->
+                            <!--<div class="influence_head">会员卡</div>-->
+                            <!--<div class="influence_head">1000</div>-->
+                            <!--<div class="influence_head">500</div>-->
+                            <!--<div class="influence_head">200</div>-->
+                            <!--<div class="influence_head">200</div>-->
+                            <!--</li>-->
+                            <!--js动态生成-->
+                        </ul>
+                    </li>
+                    <li class="peopleError">
+                        <div>
+                           未找到相关信息
+                        </div>
+                    </li>
+                </ul>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--影响分析-->
+        <div id="influence" style="display: none">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            已分享导购占比</p>
+                        <div id="user_pie_chart" style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>下达导购数</p>
+                                    <p class="shoppers" id="usersAll"></p>
+                                </div>
+                            </div>
+                            <div class="blank_3"></div>
+                            <div class="chart_count_m">
+                            </div>
+                            <div class="blank_3"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>已分享导购数</p>
+                                    <p class="target" id="shareUsers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <div id="influence_line_chart" style="height: 240px;line-height: 240px;text-align: center;font-size: 25px"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="do" style="background: #6cc1c8;border-radius: 0px">按员工查看</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty"
+                          style="background: #c4c8d4" data-id="influence">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <li>
+                                    <label>员工编号</label><input
+                                        type="text" id="influence_userCode"
+                                        placeholder="请输入员工编号">
+                                </li>
+                                <li>
+                                    <label>员工姓名</label><input id="influence_user" type="text" placeholder="请输入员工姓名">
+                                </li>
+                                <li>
+                                    <label>店铺编号</label><input
+                                        type="text" id="influence_storeCode"
+                                        placeholder="请输入店铺编号">
+                                </li>
+                                <li>
+                                    <label>所属店铺</label><input
+                                        type="text" id="influence_store"
+                                        placeholder="请输入所属店铺">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+                <ul class="people_head">
+                    <li class="people_title">
+                        <div class="people_title_order">
+                            序号
+                        </div>
+                        <div class="people_title_counts">
+                            员工编号
+                        </div>
+                        <div class="people_title_counts">
+                            员工姓名
+                        </div>
+                        <div class="people_title_counts">
+                            店铺编号
+                        </div>
+                        <div class="people_title_shop">
+                            所属店铺
+                        </div>
+                        <div class="influence_head">
+                            分享链接次数
+                        </div>
+                        <div class="influence_head">
+                           链接点击总数
+                        </div>
+                        <div class="influence_head">
+                            点击链接会员数
+                        </div>
+                        <div class="influence_head">
+                            会员点击次数
+                        </div>
+                        <div class="influence_head" style="width: 140px">
+                            点击链接非会员数
+                        </div>
+                        <div class="influence_head">
+                            非会员点击次数
+                        </div>
+                    </li>
+                </ul>
+                <ul class="people">
+                    <li class="peopleContent">
+                        <ul>
+                            <!--<li>-->
+                                <!--<div class="influence_head">1</div>-->
+                                <!--<div class="influence_head">上海闵行分店</div>-->
+                                <!--<div class="influence_head">会员卡</div>-->
+                                <!--<div class="influence_head">1000</div>-->
+                                <!--<div class="influence_head">500</div>-->
+                                <!--<div class="influence_head">200</div>-->
+                                <!--<div class="influence_head">200</div>-->
+                            <!--</li>-->
+                            <!--js动态生成-->
+                        </ul>
+                    </li>
+                    <li class="peopleError">
+                        <div>
+                            未找到相关信息
+                        </div>
+                    </li>
+                </ul>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--传播分析-->
+        <div id="spread" style="display: none">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_r task_block" style="width: 49.5%">
+                        <p class="chart_title">会员卡类型点击次数</p>
+                        <div id="cardTypeChart" style="height: 231px;text-align: center"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_m task_block" style="width: 49.5%">
+                        <p class="chart_title">
+                            店铺点击次数统计</p>
+                        <div id="shopChart" style="height: 231px"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <!--<div class="task_blank"></div>-->
+                    <!--<div class="task_detail_r task_block">-->
+                        <!--<p class="chart_title">-->
+                            <!--店铺-会员卡类型点击次数</p>-->
+                        <!--<div id="shopTypeChart" style="height: 231px"></div>-->
+                    <!--</div>-->
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="doType_active" data-type="store">按门店查看</span>
+                    <span data-type="user" class="doType">按员工查看</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty"
+                          style="background: #c4c8d4" data-id="spread">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <li>
+                                    <label>店铺名称</label><input id="spreadStorename" type="text" placeholder="请输入店铺名称">
+                                </li>
+                                <li style="display: none">
+                                    <label>员工姓名</label><input id="spreadUsername"  type="text" placeholder="请输入员工姓名">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+                <ul class="people_head">
+                    <li class="people_title">
+                        <div class="people_title_order">
+                            序号
+                        </div>
+                        <div class="people_title_shop">
+                            店铺名称
+                        </div>
+                        <div class="people_title_shop" style="width: 90px">
+                            分享链接次数
+                        </div>
+                        <div class="people_title_num">
+                            总点击数
+                        </div>
+                        <div class="people_title_num">
+                            点开1次
+                        </div>
+                        <div class="people_title_num">
+                            点开2次
+                        </div>
+                        <div class="people_title_num">
+                            点开3次
+                        </div>
+                        <div class="people_title_num">
+                            点开4次
+                        </div>
+                        <div class="people_title_num">
+                            点开5次
+                        </div>
+                        <div style="width:90px">
+                            5次及以上
+                        </div>
+                    </li>
+                </ul>
+                <ul class="people" id="spreadPeople">
+                    <li class="peopleContent">
+                        <ul>
+                            <!--js动态生成-->
+                        </ul>
+                    </li>
+                    <li class="peopleError">
+                        <div>
+                            未找到相关信息
+                        </div>
+                    </li>
+                </ul>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--优惠券分析-->
+        <div id="coupon" style="display: none;margin: 0!important;padding: 0">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            优惠券使用占比</p>
+                        <span class="coupon_percent couponUseper" id="couponUseper"></span>
+                        <span class="coupon_percent couponReceiveper" id="couponReceiveper"></span>
+                        <div id="coupon_chart_pie" style="height: 160px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>使用会员数</p>
+                                    <p class="shoppers" id="coupon_vipUse"></p>
+                                </div>
+                            </div>
+                            <div class="blank_3"></div>
+                            <div class="chart_count_m">
+                                <div>
+                                    <p>领取会员数</p>
+                                    <p class="covers" id="coupon_vipGet"></p>
+                                </div>
+                            </div>
+                            <div class="blank_3"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>目标会员数</p>
+                                    <p class="target" id="coupon_vipTarget"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <p class="chart_title">优惠券统计</p>
+                        <div id="couponbarChart" style="height: 231px"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <div class="coupon_inputs_box">
+                        <input type="text" id="choose_store_input" placeholder="请选择店铺" data-code="">
+                        <i class="icon-ishop_8-02"></i>
+                        <div class="screen_select">
+                            <ul id="store_select">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="coupon_inputs_box">
+                        <input type="text" id="choose_coupon_input" placeholder="请选择优惠券" data-code="">
+                        <i class="icon-ishop_8-02"></i>
+                        <div class="screen_select">
+                            <ul id="coupon_select">
+                            </ul>
+                        </div>
+                    </div>
+                    <span class="export" style="background: #4a5f7c;border-radius: 5px" id="couponListExport">导出</span>
+                </div>
+                <!--人员区-->
+                <ul class="people_head">
+                    <li class="people_title">
+                        <div class="people_title_order">
+                            序号
+                        </div>
+                        <div class="people_title_shop">
+                            门店名称
+                        </div>
+                        <div class="people_title_count">
+                            使用会员数
+                        </div>
+                        <div class="people_title_count">
+                            使用券数
+                        </div>
+                        <div class="people_title_count">
+                            卡均使用券数
+                        </div>
+                        <div class="people_title_count">
+                            券抵销售额
+                        </div>
+                        <div class="people_title_count">
+                            用券销售额
+                        </div>
+                        <div class="people_title_count">
+                            用券客单价
+                        </div>
+                        <!--<div class="people_title_count">-->
+                            <!--人均使用券数-->
+                        <!--</div>-->
+                        <div class="people_title_count">
+                            用券平均销售折扣
+                        </div>
+                        <div class="people_title_detadis">
+                            使用券会员统计
+                        </div>
+                        <!--<div class="people_title_detadis">-->
+                            <!--券使用分析-->
+                        <!--</div>-->
+                    </li>
+                </ul>
+                <ul class="people">
+                    <li class="peopleContent">
+                        <ul>
+                            <!--js动态生成-->
+                        </ul>
+                    </li>
+                    <li class="peopleError">
+                        <div>
+                            未找到相关信息
+                        </div>
+                    </li>
+                </ul>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--报名会员分析-->
+        <div id="page_signUp" style="display: none;">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            报名人数占比</p>
+                        <div id="pie_signUp" style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>报名人数</p>
+                                    <p class="shoppers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <!--<p>报名会员数</p>-->
+                                    <!--<p class="shoppers"></p>-->
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>目标会员数</p>
+                                    <p class="target"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <p class="chart_title">报名人数统计</p>
+                        <div id="axis_signUp" style="height: 231px"></div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="doType_active" data-type="store">按门店查看</span>
+                    <!--<span data-type="user" class="doType">按员工查看</span>-->
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <li>
+                                    <label>店铺编号</label><input
+                                        type="text"
+                                        placeholder="请输入店铺编号" id="signUpStoreCode">
+                                </li>
+                                <li>
+                                    <label>店铺名称</label><input
+                                        type="text"
+                                        placeholder="请输入店铺名称" id="signUpStoreName">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+                <div class="people_area" style="position: relative">
+                    <div id="chart_loading">
+                        <div id="chart_text">加载中，请稍候...</div>
+                    </div>
+                    <ul class="people_title_temp">
+                        <li style="background-color: #efefef;"> <span>序号</span> <span>店铺编号</span><span>店铺名称</span><span>所属店铺群组</span> <span>目标会员数</span><span>报名会员数</span><span>报名会员占比</span></li>
+                    </ul>
+                    <ul class="people" id="signUpPeople">
+                        <li class="peopleContent">
+                            <ul>
+                                <!--js动态生成-->
+                            </ul>
+                        </li>
+                        <li class="peopleError" style="background-color: white;display:none">
+                            <div>
+                                没有相关数据
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--线上报名会员-->
+        <div id="online_apply" class="online_store_class" style="display: none;">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            报名人数占比</p>
+                        <div id="pie_online_apply" style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>报名人数</p>
+                                    <p class="shoppers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <!--<p>报名会员数</p>-->
+                                    <!--<p class="shoppers"></p>-->
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>目标会员数</p>
+                                    <p class="target"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <p class="chart_title">报名人数统计</p>
+                        <div id="axis_online_apply" style="height: 231px"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="doType_active" data-type="store">按门店查看</span>
+                    <span data-type="vip" class="doType">按会员查看</span>
+                    <span class="export" style="background: #4a5f7c;border-radius: 5px" id="onlineExportBtn">导出</span>
+                    <span class="do enter" id="onlineEnter" style="background: #6cc2c8">查找</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty" style="background: #c4c8d4" data-id="online">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <li>
+                                    <label>店铺编号</label><input type="text" id="onlineStoreCode">
+                                </li>
+                                <li>
+                                    <label>店铺名称</label><input type="text" id="onlineStoreName">
+                                </li>
+                            </ul>
+                            <ul style="display: none">
+                                <li>
+                                    <label>会员编号</label><input type="text" id="onlineVipCode">
+                                </li>
+                                <li>
+                                    <label>会员名称</label><input type="text" id="onlineVipName">
+                                </li>
+                                <li>
+                                    <label>手机号</label><input type="text" id="onlineVipPhone">
+                                </li>
+                                <li>
+                                    <label>报名项目</label><input type="text" id="onlineItem">
+                                </li>
+                                <li>
+                                    <label>支付单号</label><input type="text" id="onlinePayCode">
+                                </li>
+                                <li>
+                                    <label>支付方式</label><input type="text" class="select_input" id="onlinePayType" readonly>
+                                    <div class="screen_select">
+                                        <ul><li>全部</li><li>积分</li><li>现金</li></ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>是否签到</label><input type="text" class="select_input" id="onlineSign" readonly>
+                                    <div class="screen_select">
+                                        <ul><li>全部</li><li>是</li><li>否</li></ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+                <div class="people_area">
+                    <ul class="people_title_temp">
+                        <li style="background-color: #efefef;"> <span>序号</span> <span>店铺编号</span><span>店铺名称</span><span>所属店铺群组</span> <span>目标会员数</span><span>报名会员数</span><span>报名会员占比</span></li>
+                    </ul>
+                    <ul class="people">
+                        <li class="peopleContent">
+                            <ul>
+                                <!--js动态生成-->
+                            </ul>
+                        </li>
+                        <li class="peopleError" style="background-color: white;display:none">
+                            <div>
+                                没有相关数据
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--会员影响力分析-->
+        <div id="vip_effect_content" style="display: none">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            邀请成功率</p>
+                        <div id="invitation_success_rate" style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>注册会员数</p>
+                                    <p class="shoppers" id="registered_members_num"></p>
+                                </div>
+                            </div>
+                            <div class="blank_3"></div>
+                            <div class="chart_count_m">
+                            </div>
+                            <div class="blank_3"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>分享次数</p>
+                                    <p class="target" id="link_open"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <div id="vip_effect_chart" style="height: 241px;line-height: 241px;font-size: 25px;text-align: center"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="do" style="background: #6cc1c8;border-radius: 0px">按会员查看</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <li>
+                                    <label>会员名称</label><input
+                                        type="text" id="vip_name"
+                                        placeholder="请输入会员名称">
+                                </li>
+                                <li>
+                                    <label>会员卡号</label><input id="vip_card" type="text" placeholder="请输入会员卡号">
+                                </li>
+                                <li>
+                                    <label>手机号</label><input
+                                        type="text" id="vip_phone"
+                                        placeholder="请输入手机号">
+                                </li>
+                                <li>
+                                    <label>会员类型</label><input
+                                        type="text" id="vip_card_type"
+                                        placeholder="请输入会员类型">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--人员区-->
+                <ul class="people_head">
+                    <li class="people_title">
+                        <span class="people_title_order" style="width: 4%">
+                            序号
+                        </span>
+                        <span class="people_title_counts">
+                            会员名称
+                        </span>
+                        <span class="people_title_counts">
+                            会员卡号
+                        </span>
+                        <span class="people_title_counts">
+                            手机号
+                        </span>
+                        <span class="people_title_shop">
+                            会员类型
+                        </span>
+                        <span class="influence_head">
+                            分享次数
+                        </span>
+                        <span class="influence_head">
+                            注册会员数
+                        </span>
+                        <span class="influence_head">
+                            注册详情
+                        </span>
+
+                    </li>
+                </ul>
+                <ul class="people" id="vip_effect_list">
+                    <!--list加载-->
+                </ul>
+                <div class="listLoading_box">
+                    <div>加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--业绩占比-->
+        <div id="page_achievement" style="display: none;">
+            <div class="task_box">
+                <div class="task_detail">
+                    <div class="task_detail_m task_block">
+                        <p class="chart_title">
+                            活动占比</p>
+                        <div id="pie_achievement" style="height: 165px"></div>
+                        <div class="chart_count">
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <p>活动金额</p>
+                                    <p class="shoppers"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_l">
+                                <div>
+                                    <!--<p>报名会员数</p>-->
+                                    <!--<p class="shoppers"></p>-->
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                            <div class="chart_count_r">
+                                <div>
+                                    <p>销售总额</p>
+                                    <p class="target"></p>
+                                </div>
+                            </div>
+                            <div class="blank_2"></div>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                    <div class="task_blank"></div>
+                    <div class="task_detail_r task_block_lg">
+                        <p class="chart_title">活动趋势统计</p>
+                        <div id="axis_achievement" style="height: 231px"></div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_list"></div>
+            </div>
+            <div class="list_box">
+                <!--二级按钮-->
+                <div class="btnSecond">
+                    <span class="doType_active" data-type="store">按门店查看</span>
+                    <!--<span data-type="user" class="doType">按员工查看</span>-->
+                    <span class="export" style="background: #4a5f7c;border-radius: 5px" id="achievementListExport">导出</span>
+                    <span class="do choose" style="background: #97b3db">筛选</span>
+                    <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                </div>
+                <div class="screening">
+                    <div class="sxk">
+                        <div class="inputs">
+                            <ul>
+                                <!--筛选框-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--列表-->
+                <div class="people_area" style="position: relative;">
+                    <div id="load_1">
+                        <div id="chart_1">加载中，请稍候...</div>
+                    </div>
+                    <ul class="people_title_temp">
+                        <li><span style="width: 4%">序号</span><span>店铺编号</span><span>店铺名称</span><span>总业绩</span><span>活动金额</span><span>会销金额</span><span>会员总数</span><span>新增会员数</span><span>销售件数</span><span>成交笔数</span><span style="width: 6%">业绩详情</span></li>
+                    </ul>
+                    <ul class="people" id="achievementPeople">
+                        <!--list加载-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--店铺报名会员列表-->
+        <div class="modify_time_box" id="table_signUp" style="display: none">
+            <div class="modify">
+                <div class="modify_l">
+                    <span class="icon-ishop_6-28 add_bar"></span>店铺报名会员列表
+                    <div style="margin-top: 10px;color: #637ea4;">店铺: <span id="table_shopName"></span> <span id="table_area"></span></div>
+                </div>
+                <ul>
+                    <li style="background-color:#efefef">
+                        <span>序号</span>
+                        <span>会员名称</span>
+                        <span>手机号</span>
+                        <span>报名时间</span>
+                    </li>
+                    <li style="height: 280px;overflow-y: auto;background-color: white">
+                        <ul id="table_signUp_area">
+                            <!--内容填充-->
+                        </ul>
+                    </li>
+
+                </ul>
+                <div class="modify_footer" style="margin-top: 0px">
+                    <div class="modify_footer_l" style="margin-top: 20px;margin-left: 360px;">
+                        关闭
+                    </div>
+                    <!--<div class="modify_footer_r">-->
+                    <!--保存修改-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <!--店铺线上报名会员列表-->
+        <div class="modify_time_box" id="online_vip_detail_wrap" style="display: none">
+            <div class="modify">
+                <div class="modify_l">
+                    <span class="icon-ishop_6-28 add_bar"></span>店铺报名会员列表
+                    <div style="margin-top: 10px;color: #637ea4;">店铺: <span class="shopName"></span> <span class="shopArea"></span></div>
+                </div>
+                <ul>
+                    <li style="background-color:#efefef">
+                        <span>序号</span>
+                        <span>会员名称</span>
+                        <span>手机号</span>
+                        <span>报名时间</span>
+                    </li>
+                    <li style="height: 280px;overflow-y: auto;background-color: white">
+                        <ul class="vip_detail">
+                            <!--内容填充-->
+                        </ul>
+                    </li>
+
+                </ul>
+                <div class="modify_footer" style="margin-top: 0px">
+                    <div class="modify_footer_l" style="margin-top: 20px;margin-left: 360px;">
+                        关闭
+                    </div>
+                    <!--<div class="modify_footer_r">-->
+                    <!--保存修改-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <!--线上活动会员报名资料查看-->
+        <div class="modify_time_box" id="online_apply_detail_wrap">
+            <div class="modify" style="height: auto;width: 400px">
+                <div class="modify_l">
+                    <span class="icon-ishop_6-28 add_bar"></span>会员资料完善详情
+                </div>
+                <div class="modify_content">
+
+                </div>
+                <div class="modify_footer" style="margin-top: 0px">
+                    <div class="modify_footer_l" style="margin-left: 120px">
+                        关闭
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--业绩详情-->
+        <div class="modify_time_box" id="table_achievement_area" style="display: none;">
+            <div class="modify" style="height: 400px">
+                <div class="modify_l">
+                    <span class="icon-ishop_6-28 add_bar"></span>业绩详情
+                    <div style="margin-top: 10px;color: #637ea4;"> <span id="achievement_shopName"></span> <span id="achievement_area"></span></div>
+                </div>
+                <ul>
+                    <li>
+                        <p>折扣</p>
+                        <span></span>
+                    </li>
+                    <li>
+                        <p>客单价</p>
+                        <span></span>
+                    </li>
+                    <li>
+                        <p>件单价</p>
+                        <span></span>
+                    </li>
+                    <li>
+                        <p>连带率</p>
+                        <span></span>
+                    </li>
+                    <li>
+                        <p>活动折扣</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>活动客单价</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>活动件单价</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>活动连带率</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>会销折扣</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>会销客单价</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>会销件单价</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>会销连带率</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>活动件数 </p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                    <li>
+                        <p>活动笔数</p>
+                        <span style="color: #41c7db;!important;"></span>
+                    </li>
+                </ul>
+                <div class="modify_footer" style="margin-top: 0px">
+                    <div class="modify_footer_l" style="margin-top: 15px;margin-left: 180px;">
+                        关闭
+                    </div>
+                    <!--<div class="modify_footer_r">-->
+                    <!--保存修改-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <!--查看活动设置-->
+        <div class="modify_time_box" id="activitySetPage">
+            <div class="modify" id="activitySet" style="padding-right: 0;">
+                <div class="modify_l" style="width: 620px"><span class="icon-ishop_6-28 add_bar"></span>查看活动设置</div>
+                <div class="activitySet">
+                    <div class="activitySet_header">
+                        <h3 id="activitySet_title"></h3>
+                        <div class="colorAaa">
+                            <span class="time_l"></span>
+                            <span class="">至</span>
+                            <span class="time_r"></span>
+                        </div>
+                    </div>
+                    <div class="activitySet_content">
+                        <div><span class="width52">参与会员</span><span class="color6cc1c8 width230"><span id="toSee">查看 <i class="icon-ishop_8-03"></i></span></span><span class="width52">公众号</span><span id="appName"></span></div>
+                        <div><span class="width52">活动类型</span><span class="width230" id="activityType">优惠券活动</span><span class="width52">所属企业</span><span id="corpName"></span></div>
+                        <div><span class="width52 floot-l" style="vertical-align: top;">活动简述</span><p id="activityDesc"></p></div>
+                    </div>
+                    <div class="activitySet_detail" id="activitySet_detail"></div>
+                </div>
+                <div class="activitySet_footer">
+                    <span id="toClose">关闭</span>
+                </div>
+            </div>
+        </div>
+        <!--参与会员列表-->
+        <div class="modify_time_box" id="activityVipListPage">
+            <div class="modify" id="activityVipList" style="margin-top: -180px;margin-left: -320px">
+                <div class="modify_l"><span class="icon-ishop_6-28 add_bar"></span><span id="listTitle">参与会员列表</span></div>
+                <div class="vip_list" id="vip_list">
+                    <div class="vip_list_title"></div>
+                    <ul class="vip_list_ul" style="text-align: center">
+
+                    </ul>
+                </div>
+                <div class="foot">
+                    <ul>
+                        <li class="foot-jum" style="width: 25%;opacity: 0">
+                            <span>跳转至</span>
+                            <input class="input-txt" value="" id="input-txt" style="border: 1px solid #ddd">
+                            <em>页</em>
+                        </li>
+                        <li class="foot-num" style="width: 50%">
+                            <ul id="foot-num" style="min-width: 290px;">
+                                <li class="icon-ishop_4-01" style="color: #afafaf">
+                                </li>
+                                <li class="icon-ishop_4-02">
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="foot-sum" style="width: 25%;opacity: 0">
+                            <div class="page_p">
+                                <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly" style="border: 1px solid #ddd;width: 100px;">
+                                <ul class="liebiao" style="display:none;" id="liebiao">
+                                    <li id="10">10行/页</li>
+                                    <li id="30">30行/页</li>
+                                    <li id="50">50行/页</li>
+                                    <li id="100">100行/页</li>
+                                </ul>
+                                <span class="icon-ishop_8-02 icon"></span>
+                            </div>
+                            <!--<span class="zy">共 0 页</span>-->
+                        </li>
+                    </ul>
+                </div>
+                <div class="modify_footer">
+                    <div style="position: absolute;bottom: 15px;right: 20px; width: 90px;height: 25px;background: #c4c8d4;color: #fff;text-align: center;line-height: 25px;border-radius: 5px;cursor: pointer;" id="toPre">
+                        返回
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--注册会员消费详情-->
+        <div class="modify_time_box" id="vip_consume_detail">
+            <div class="vip_consume_detail">
+                <div class="vip_consume_detail_title">
+                    <span></span>
+                    <span>注册会员消费详情</span>
+                </div>
+                <div class="vip_consume_detail_info">
+                    <div>
+                        <span>会员名称：</span><span id="detail_vip_name"></span>
+                    </div>
+                    <div>
+                        <span>会员卡号：</span><span id="detail_vip_card"></span>
+                    </div>
+                </div>
+                <div class="vip_consume_detail_list">
+                    <div class="head">
+                        <ul>
+                            <li>序号</li>
+                            <li>会员名称</li>
+                            <li>会员卡号</li>
+                            <li>手机号</li>
+                            <li>会员类型</li>
+                            <li>所属店铺</li>
+                            <li>所属导购</li>
+                            <li>首单消费金额</li>
+                        </ul>
+                    </div>
+                    <div id="vip_consume_detail_list">
+                    </div>
+                </div>
+                <div class="vip_consume_detail_foot" >
+                    <span id="hide_detail">返回</span>
+                </div>
+            </div>
+        </div>
     </div>
-      <!--客户分析-->
-      <div id="customer">
-          <div>
-              <p class="chart_title">意向客户统计</p>
-              <div id="customer_pie2"class="chart_h"></div>
-              <div class="intention">
-                  <div class="count1">
-                      <p>意向客户</p>
-                      <p class="_p">2000</p>
-                  </div>
-                  <div class="count2">
-                      <p>目标会员</p>
-                      <p>4000</p>
-                  </div>
-              </div>
-          </div>
-          <div>
-              <p class="chart_title">意向客户分类</p>
-              <div id="customer_pie"></div>
-              <div class="chart_count">
-                  <div class="blank_2"></div>
-                  <div class="chart_count_l">
-                      <div>
-                          <p>可能参加</p>
-                          <p class="shoppers">3074</p>
-                      </div>
-                  </div>
-                  <div class="blank_3"></div>
-                  <div class="chart_count_m">
-                      <div>
-                          <p>即将参加</p>
-                          <p class="covers">10100</p>
-                      </div>
-                  </div>
-                  <div class="blank_3"></div>
-                  <div class="chart_count_r">
-                      <div>
-                          <p>已经参加</p>
-                          <p class="target">12663</p>
-                      </div>
-                  </div>
-                  <div class="blank_2"></div>
-              </div>
-          </div>
-      </div>
-      <!--影响分析-->
-      <div id="influence"></div>
-      <!--传播分析-->
-      <div id="spread"></div>
     <!--添加活动参与门店-->
     <div class="add_store_box">
         <div class="add_store">
@@ -289,148 +1499,228 @@
                 <div class="add_header_l">
                     <span class="icon-ishop_6-28 add_bar"></span>活动参与门店
                 </div>
-                <div class="add_header_r">添加门店</div>
+                <div class="add_header_r">
+                    添加门店
+                </div>
             </div>
             <table id="add_store_tb">
                 <thead>
-                  <th>序号</th>
-                  <th>门店名称</th>
-                  <th>门店地址</th>
+                <th>
+                    序号
+                </th>
+                <th>
+                    门店名称
+                </th>
+                <th>
+                    门店地址
+                </th>
                 </thead>
             </table>
             <div id="showList_box">
                 <table id="showList">
                     <tbody>
-                    <!--<tr><td>1</td><td>上海徐汇分店一店</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>-->
                     </tbody>
                 </table>
             </div>
             <div class="add_footer">
-                <div class="add_footer_l">取消</div>
-                <div class="add_footer_r">保存</div>
+                <div class="add_footer_l">
+                    取消
+                </div>
+                <div class="add_footer_r">
+                    保存
+                </div>
             </div>
         </div>
-            <!-- 拉取区域 -->
-            <div id="screen_area" class="screen_area">
-                <div class="screen_title">
-                    <h4>筛选区域</h4>
-                    <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
-                    <div class="xian"></div>
+        <!-- 拉取区域 -->
+        <div id="screen_area"
+             class="screen_area">
+            <div class="screen_title">
+                <h4>
+                    筛选店铺群组</h4>
+                <div class="screen_close"
+                     id="screen_close_area">
+                    <span class="icon-ishop_6-12"></span>
                 </div>
-                <div class="input_s">
-                    <div class="input_search">
-                        <input type="text" placeholder="搜索" id="area_search">
-                        <span class="icon-ishop_3-05" id="area_search_f"></span>
-                    </div>
-                    <div class="s_center"></div>
-                    <div class="s_pitch">
-                        已添加&nbsp;<span>0</span>&nbsp;个
-                    </div>
-                </div>
-                <div class="screen_content">
-                    <div class="screen_content_l">
-                        <ul>
-                        </ul>
-                    </div>
-                    <div class="screen_content_z">
-                        <div class="shift shift_right" title="右移">&gt;</div>
-                        <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                        <div class="shift shift_left" title="左移">&lt;</div>
-                        <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-                    </div>
-                    <div class="screen_content_r">
-                        <ul>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="screen_que" id="screen_que_area">确定</div>
+                <div class="xian"></div>
             </div>
-            <!-- 拉取店铺 -->
-            <div id="screen_shop" class="screen_area">
-                <div class="screen_title">
-                    <h4>添加店铺</h4>
-                    <div class="xuanzhong">
-                        <div class="xuanzhong_p">
-                            <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"
-                                                      data-areacode="">
-                            <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                        </div>
-                        <div class="xuanzhong_p">
-                            <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
-                            <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
-                        </div>
-                    </div>
-                    <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
-                    <div class="xian"></div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text"
+                           placeholder="搜索"
+                           id="area_search">
+                    <span class="icon-ishop_3-05"
+                          id="area_search_f"></span>
                 </div>
-                <div class="input_s">
-                    <div class="input_search">
-                        <input type="text" placeholder="搜索" id="store_search">
-                        <span class="icon-ishop_3-05" id="store_search_f"></span>
-                    </div>
-                    <div class="s_center"></div>
-                    <div class="s_pitch">
-                        已添加&nbsp;<span>0</span>&nbsp;个
-                    </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加&nbsp;<span>0</span>&nbsp;个
                 </div>
-                <div class="screen_content">
-                    <div class="screen_content_l">
-                        <ul>
-
-                        </ul>
-                    </div>
-                    <div class="screen_content_z">
-                        <div class="shift shift_right" title="右移">&gt;</div>
-                        <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                        <div class="shift shift_left" title="左移">&lt;</div>
-                        <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-                    </div>
-                    <div class="screen_content_r">
-                        <ul>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="screen_que" id="screen_que_shop">确定</div>
             </div>
-            <!-- 拉取品牌 -->
-            <div id="screen_brand" class="screen_area">
-                <div class="screen_title">
-                    <h4>筛选品牌</h4>
-                    <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
-                    <div class="xian"></div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+                    </ul>
                 </div>
-                <div class="input_s">
-                    <div class="input_search">
-                        <input type="text" placeholder="搜索" id="brand_search">
-                        <span class="icon-ishop_3-05" id="brand_search_f"></span>
-                    </div>
-                    <div class="s_center"></div>
-                    <div class="s_pitch">
-                        已添加&nbsp;<span>0</span>&nbsp;个
-                    </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right"
+                         title="右移">
+                        &gt;</div>
+                    <div class="shift shift_right_all"
+                         title="右移全部">
+                        &gt;&gt;</div>
+                    <div class="shift shift_left"
+                         title="左移">
+                        &lt;</div>
+                    <div class="shift shift_left_all"
+                         title="左移全部">
+                        &lt;&lt;</div>
                 </div>
-                <div class="screen_content">
-                    <div class="screen_content_l">
-                        <ul>
+                <div class="screen_content_r">
+                    <ul>
 
-                        </ul>
-                    </div>
-                    <div class="screen_content_z">
-                        <div class="shift shift_right" title="右移">&gt;</div>
-                        <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                        <div class="shift shift_left" title="左移">&lt;</div>
-                        <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-                    </div>
-                    <div class="screen_content_r">
-                        <ul>
-
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
-                <div class="screen_que" id="screen_que_brand">确定</div>
             </div>
+            <div class="screen_que"
+                 id="screen_que_area">
+                确定
+            </div>
+        </div>
+        <!-- 拉取店铺 -->
+        <div id="screen_shop"
+             class="screen_area">
+            <div class="screen_title">
+                <h4>
+                    添加店铺</h4>
+                <div class="xuanzhong">
+                    <div class="xuanzhong_p">
+                        <label>已选店铺群组</label><input
+                            class="area_num"
+                            type="text"
+                            value=""
+                            readonly="true"
+                            id="area_num"
+                            data-areacode="">
+                        <span class="icon_r icon-ishop_8-03"
+                              id="shop_area"></span>
+                    </div>
+                    <div class="xuanzhong_p">
+                        <label>已选品牌</label><input
+                            class="brand_num"
+                            type="text"
+                            value=""
+                            id="brand_num"
+                            data-brandcode="">
+                        <span class="icon_r icon-ishop_8-03"
+                              id="shop_brand"></span>
+                    </div>
+                </div>
+                <div class="screen_close"
+                     id="screen_close_shop">
+                    <span class="icon-ishop_6-12"></span>
+                </div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text"
+                           placeholder="搜索"
+                           id="store_search">
+                    <span class="icon-ishop_3-05"
+                          id="store_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加&nbsp;<span>0</span>&nbsp;个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right"
+                         title="右移">
+                        &gt;</div>
+                    <div class="shift shift_right_all"
+                         title="右移全部">
+                        &gt;&gt;</div>
+                    <div class="shift shift_left"
+                         title="左移">
+                        &lt;</div>
+                    <div class="shift shift_left_all"
+                         title="左移全部">
+                        &lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que"
+                 id="screen_que_shop">
+                确定
+            </div>
+        </div>
+        <!-- 拉取品牌 -->
+        <div id="screen_brand"
+             class="screen_area">
+            <div class="screen_title">
+                <h4>
+                    筛选品牌</h4>
+                <div class="screen_close"
+                     id="screen_close_brand">
+                    <span class="icon-ishop_6-12"></span>
+                </div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text"
+                           placeholder="搜索"
+                           id="brand_search">
+                    <span class="icon-ishop_3-05"
+                          id="brand_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加&nbsp;<span>0</span>&nbsp;个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right"
+                         title="右移">
+                        &gt;</div>
+                    <div class="shift shift_right_all"
+                         title="右移全部">
+                        &gt;&gt;</div>
+                    <div class="shift shift_left"
+                         title="左移">
+                        &lt;</div>
+                    <div class="shift shift_left_all"
+                         title="左移全部">
+                        &lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que"
+                 id="screen_que_brand">
+                确定
+            </div>
+        </div>
     </div>
     <!--参与门店-->
     <div class="join_store_box">
@@ -442,109 +1732,89 @@
             </div>
             <table id="join_store_tb">
                 <thead>
-                <th>序号</th>
-                <th>门店名称</th>
-                <th>门店地址</th>
+                <th>
+                    序号
+                </th>
+                <th>
+                    门店名称
+                </th>
+                <th>
+                    门店地址
+                </th>
                 </thead>
                 <!--<tbody>-->
                 <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
+                <!--<td>1</td>-->
+                <!--<td>上海徐汇分店一店</td>-->
+                <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
                 <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>上海徐汇分店一店</td>-->
-                    <!--<td>上海市闵行区xxx路xxx号xxx楼</td>-->
-                <!--</tr>-->
-                <!--</tbody>-->
             </table>
             <div id="showList_box2">
                 <table id="showList2">
                     <tbody>
-                    <tr><td>1</td><td>上海徐汇分店一店</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
+
                     </tbody>
                 </table>
             </div>
             <div class="join_footer">
-                <div class="join_footer_btn">返回</div>
+                <div class="join_footer_btn">
+                    返回
+                </div>
             </div>
         </div>
     </div>
     <!--结束活动-->
     <div class="action_over_box">
         <div class="action_over">
-            <p>提示</p>
-            <p>您设定的活动时间尚未到达</p>
-            <p>是否现在提前结束活动?</p>
+            <p>
+                提示</p>
+            <p>
+                您设定的活动时间尚未到达</p>
+            <p>
+                是否现在提前结束活动?</p>
             <div class="action_footer">
-                <div class="action_footer_l">取消</div>
-                <div  class="action_footer_r">结束活动</div>
+                <div class="action_footer_l">
+                    取消
+                </div>
+                <div class="action_footer_r">
+                    结束活动
+                </div>
             </div>
         </div>
     </div>
     <!--修改活动时间-->
-    <div class="modify_time_box">
+    <div class="modify_time_box" id="changeTime">
         <div class="modify">
             <div class="modify_l">
                 <span class="icon-ishop_6-28 add_bar"></span>活动时间修改
             </div>
             <div class="modify_ipt">
                 <label>开始时间</label>
-                <input type="text" id="start_time" class="laydate-icon"onclick="laydate(laydate_start)">
+                <input type="text"
+                       id="start_time"
+                       class="laydate-icon"
+                       onclick="laydate(laydate_start)">
             </div>
             <div class="modify_ipt">
                 <label>结束时间</label>
-                <input type="text" id="over_time" class="laydate-icon" onclick="laydate(laydate_end)">
+                <input type="text"
+                       id="over_time"
+                       class="laydate-icon"
+                       onclick="laydate(laydate_end)">
             </div>
             <div class="modify_footer">
-                <div class="modify_footer_l">取消</div>
-                <div  class="modify_footer_r">保存修改</div>
+                <div class="modify_footer_l">
+                    取消
+                </div>
+                <div class="modify_footer_r">
+                    保存修改
+                </div>
             </div>
         </div>
     </div>
-    <div id='detail'>
-        <div class="vip_status_store">
+    <div id='detail' class="detailBox">
+        <div class="vip_status_store"
+             style="height: 460px">
             <div class="_header">
                 <div class="join_header_l">
                     <span class="icon-ishop_6-28 join_bar"></span>员工任务详情
@@ -554,16 +1824,25 @@
                         <span class="s3">华东一区</span>
                         <span class="s4">上海闵行分店</span>
                         <span class="s7">50%</span>
-                        <span class="s5"><span class="s6"></span></span>
+                        <span class="s5"><span
+                                class="s6"></span></span>
                     </div>
                 </div>
             </div>
             <table id="vip_status_tb">
                 <thead>
-                <th>序号</th>
-                <th>会员名称</th>
-                <th>会员编号</th>
-                <th>活动状态</th>
+                <th>
+                    序号
+                </th>
+                <th>
+                    会员名称
+                </th>
+                <th>
+                    手机号
+                </th>
+                <th>
+                    活动状态
+                </th>
                 </thead>
             </table>
             <div id="showList_box3">
@@ -576,14 +1855,319 @@
                 </table>
             </div>
             <div class="join_footer">
-                <div class="vip_status_btn">返回</div>
+                <div class="vip_status_btn">
+                    返回
+                </div>
             </div>
         </div>
     </div>
-    <!--暂无任务提示-->
-    <!--<div id="no_task">-->
-        <!--<span>尚未分配任务</span>-->
-    <!--</div>-->
+    <!--意向客户详情列表-->
+    <div id='customer_detail' class="detailBox">
+        <div class="vip_status_store"
+             style="height: 460px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>
+                    <span class="customer_title"></span>
+                    <div class="action_detail_box">
+                        <span class="s1"></span>
+                        <span class="s2"></span>
+                        <span class="s3"></span>
+                        <span class="s4"></span>
+                        <span class="s7"></span>
+                        <span class="s5"><span
+                                class="s6"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="customerDetails_tableBox">
+                <table class="customerDetails_thead" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>手机号</th>
+                    <th>会员卡号</th>
+                    <th>会员类型</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn" id="customerDetails_back">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--券会员统计-->
+    <div class="detailBox" id="couponVip" style="display: none">
+        <div class="vip_status_store"
+             style="height: 460px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>
+                    <span class="customer_title">使用券会员统计</span>
+                    <div class="action_detail_box">
+                        <span class="s1">店铺：上海闵行分店</span>
+                        <!--<span class="s2">优惠券：满200减200</span>-->
+                        <!--<div style="float: right;color: #888">-->
+                             <!--<span>-->
+                                 <!--<input type="radio" name="ck1" class="check" id="ck_11">-->
+                                 <!--<label for="ck_11" class="radio_b"></label>-->
+                                 <!--<label>仅显示已完成</label>-->
+                            <!--</span>-->
+                            <!--<span>-->
+                                 <!--<input type="radio"-->
+                                        <!--name="ck1"-->
+                                        <!--class="check"-->
+                                        <!--id="ck_22">-->
+                                 <!--<label for="ck_22" class="radio_b"></label>-->
+                                 <!--<label>仅显示未完成</label>-->
+                            <!--</span>-->
+                            <!--<span>-->
+                                 <!--<input type="radio"-->
+                                        <!--name="ck1"-->
+                                        <!--class="check"-->
+                                        <!--id="ck_33">-->
+                                 <!--<label for="ck_33" class="radio_b"></label>-->
+                                 <!--<label>显示全部</label>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="customerDetails_tableBox">
+                <table class="customerDetails_thead" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <th>序号</th>
+                    <th>会员名称</th>
+                    <th>会员卡号</th>
+                    <th>手机号</th>
+                    <!--<th>获券数</th>-->
+                    <th>券使用数</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--券使用统计-->
+    <div class="detailBox" id="couponUse" style="display: none">
+        <div class="vip_status_store"
+             style="height: 350px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>
+                    <span class="customer_title">券使用统计</span>
+                    <div class="action_detail_box">
+                        <span class="s1">店铺：上海闵行分店</span>
+                        <!--<span class="s2">优惠券：满200减200</span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="customerDetails_tableBox">
+                <div class="couponvipbox">
+                    <ul>
+                        <li>
+                            <span>券使用率</span><span>卡均使用券数</span><span>人均使用率</span><span>用券客单价</span><span>人均使用券数</span>
+                        </li>
+                        <li>
+                            <!--<span class="color5f8bc8">50%</span>-->
+                            <!--<span class="color6cc1c8">10000</span>-->
+                            <!--<span class="color6cc1c8">50%</span>-->
+                            <!--<span class="color5f8bc8">1000</span>-->
+                            <!--<span class="color5f8bc8">50%</span>-->
+                        </li>
+                    </ul>
+                </div>
+                <div class="couponvipbox">
+                    <ul>
+                        <li>
+                            <span>用券销售额</span><span>券抵销售额</span><span>用券平均销售折扣</span><span>过期券数</span><span>券过期率</span>
+                        </li>
+                        <li>
+                            <!--<span class="color5f8bc8">10000</span>-->
+                            <!--<span class="color5f8bc8">10000</span>-->
+                            <!--<span class="color6cc1c8">50%</span>-->
+                            <!--<span class="colorddd">1000</span>-->
+                            <!--<span class="colorddd">50%</span>-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--优惠券，业绩导出,线上活动-->
+    <div class="export_wrapper" id="coupon_export_wrapper">
+        <div class="tk" id="coupon_export_download" style="display: none;">
+            <span class="icon-ishop_6-12 download_close"></span>
+            <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+            <div class="btn">
+                <em class="cancel">返回</em>
+                <em class="album_enter"><a
+                        href="">下载</a></em>
+            </div>
+        </div>
+        <div class="export_list" id="export_list" style="display: none;">
+            <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+            <div style="height: 220px;">
+                <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+                <div class="export_list_all" id="export_list_all">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="hide_export">
+                <span id="hide_export" style="float: left">关闭</span>
+                <span id="to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+            </div>
+        </div>
+        <div class="file" id="export_chooseCondition" style="display:block;position: fixed">
+            <div class="file_content">
+                <div  class="icon-ishop_6-12" id="X_points"></div>
+            </div>
+            <div id="file_list_t">
+                <div id="file_list_left">
+                    <ul>
+                        <li data-name="store_name">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput001' /><label for='checkboxInput001'></label></div><span class='p15'>门店名称</span></li>
+                        <li data-name="verify_vip">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput03' /><label for='checkboxInput03'></label></div><span class='p15'>使用会员数</span></li>
+                        <li data-name="verify_count">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput04' /><label for='checkboxInput04'></label></div><span class='p15'>使用券数</span></li>
+                        <li data-name="num_coupon_card">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput07' /><label for='checkboxInput07'></label></div><span class='p15'>卡均使用券数</span></li>
+                        <li data-name="verify_coupon_offset_price">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput12' /><label for='checkboxInput12'></label></div><span class='p15'>券抵销售额</span></li>
+                        <li data-name="verify_coupon_total_price">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput11' /><label for='checkboxInput11'></label></div><span class='p15'>用券销售额</span></li>
+                        <li data-name="verify_coupon_price">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput09' /><label for='checkboxInput09'></label></div><span class='p15'>用券客单价</span></li>
+                        <!--<li data-name="coupon_rate">-->
+                            <!--<div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput10' /><label for='checkboxInput10'></label></div><span class='p15'>人均使用券数</span></li>-->
+                        <li data-name="verify_coupon_dis">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput13' /><label for='checkboxInput13'></label></div><span class='p15'>用券平均销售折扣</span></li>
+                    </ul>
+                </div>
+                <div id="file_list_zhong">
+                    <div class="c_shift">
+                        <div id="left_shift_t" class="shift" title="右移">></div>
+                        <div id="left_shift_all_t" class="shift" title="右移全部">>></div>
+                        <div id="right_shift_t" class="shift" title="左移"><</div>
+                        <div id="right_shift_all_t" class="shift" title="左移全部"><<</div>
+                    </div>
+                </div>
+                <div id="file_list_right">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="file_btn">
+                <div class="file_submit" id="points_enter">提交</div>
+            </div>
+        </div>
+    </div>
+    <div class="export_wrapper" id="achievement_export_wrapper">
+        <div class="tk" id="achievement_export_download" style="display: none;">
+            <span class="icon-ishop_6-12 close_achievement"></span>
+            <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+            <div class="btn">
+                <em class="cancel">返回</em>
+                <em class="album_enter"><a
+                        href="">下载</a></em>
+            </div>
+        </div>
+        <div class="file" id="achievement_chooseCondition" style="display:block;position: fixed">
+            <div class="file_content">
+                <div class="icon-ishop_6-12 close_achievement"></div>
+            </div>
+            <div id="file_list">
+                <div id="file_list_l">
+                    <ul>
+                    </ul>
+                </div>
+                <div id="file_list_z">
+                    <div class="c_shift">
+                        <div id="left_shift" class="shift" title="右移">></div>
+                        <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                        <div id="right_shift" class="shift" title="左移"><</div>
+                        <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+                    </div>
+                </div>
+                <div id="file_list_r">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="file_btn">
+                <div class="file_submit" id="record_enter">提交</div>
+            </div>
+        </div>
+    </div>
+    <div class="export_wrapper" id="online_export_wrapper">
+        <div class="tk" id="online_export_download" style="display: none;">
+            <span class="icon-ishop_6-12 download_close"></span>
+            <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+            <div class="btn">
+                <em class="cancel">返回</em>
+                <em class="album_enter"><a
+                        href="">下载</a></em>
+            </div>
+        </div>
+        <div class="export_list" id="online_export_list" style="display: none;">
+            <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+            <div style="height: 220px;">
+                <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+                <div class="export_list_all" id="online_export_list_all">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="hide_export">
+                <span id="online_hide_export" style="float: left">关闭</span>
+                <span id="online_to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+            </div>
+        </div>
+        <div class="file" id="online_export_chooseCondition" style="display:block;position: fixed">
+            <div class="file_content">
+                <div  class="icon-ishop_6-12 close_achievement"></div>
+            </div>
+            <div class="file_list_wrap">
+                <div class="file_list_left">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="file_list_zhong">
+                    <div class="c_shift">
+                        <div class="export_left_shift shift" title="右移">></div>
+                        <div class="export_left_shift_all shift" title="右移全部">>></div>
+                        <div class="export_right_shift shift" title="左移"><</div>
+                        <div class="export_right_shift_all shift" title="左移全部"><<</div>
+                    </div>
+                </div>
+                <div class="file_list_right">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="file_btn">
+                <div class="file_submit" id="online_export_submit">提交</div>
+            </div>
+        </div>
+    </div>
 </div>
 <!--side-->
 <div id="side_bar">
@@ -594,23 +2178,58 @@
         <span class="icon-ishop_4-04"></span>
     </div>
 </div>
+<!--任务新增门店后，提示是否给新增加的门店分配已有未完成的任务-->
+<div id="distribution" class="distribution" style="z-index: 201">
+    <div class="distribution_content" style="font-size: 13px">
+        <div class="distribution_title">提示</div>
+        <div class="distribution_text">
+            您的活动当前有 <span id="distribution_num">0</span> 个任务未完成 <br>是否将任务分配到新添加的门店?
+        </div>
+    </div>
+    <div class="distribution_footer">
+        <span style="background-color: #c4c8d4" class="cancel">以后再说</span>
+        <span style="background-color: #df7444" id="now_distribution">马上分配</span>
+    </div>
+</div>
+<p style="position: fixed;top:0;bottom: 0;left: 0;right: 0;background-color: rgba(0,0,0,0.5);display: none" id="P"></p>
+<div class="distribution_task" id="distribution_task" style="z-index: 201">
+    <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>分配任务</span></div>
+    <div class="distribution_task_content" id="task_all">
+        <ul>
+            <label for="checkboxInput01">
+                <li data-name="task_id" >
+                    <div class="checkbox1">
+                        <input type="checkbox" value="" name="test" class="check" id="checkboxInput01">
+                        <label for="checkboxInput01"></label>
+                    </div>
+                    <span class="p15">任务一</span>
+               </li>
+            </label>
+        </ul>
+    </div>
+    <div class="distribution_footer">
+        <span style="background-color: #c4c8d4" class="cancel">取消</span>
+        <span style="background-color: #41c7db" id="distribution_que">完成</span>
+    </div>
+</div>
 <script src="../js/jquery-2.1.1.min.js"></script>
-<!--<script src="../js/activity/echarts.js"></script>-->
 <script src="../js/activity/echarts.common.min.js"></script>
-<!--<script src="../js/activity/echarts.simple.min.js"></script>-->
 <!--<script src="../js/bootstrap.min.js?v=3.4.0"></script>-->
-<script src="../js/loading.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
 <!-- Dialog -->
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170401715"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170401715"></script>
 <!-- ajax -->
-<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
 <!--匹配js文件-->
-<script src="../js/laydate/laydate.js?20170105"></script>
-<script src="/js/loading.js?20170105"></script>
-<script type="text/javascript" src="../js/activity/activity_details.js?20170105"></script>
+<script src="../js/laydate/laydate.js?2017040170331"></script>
+<script src="/js/loading.js?2017040170331"></script>
+<script src="../js/silide.js?20180131"></script>
+<script type="text/javascript" src="../js/activity/activity_details.js?201800207"></script>
+<script type="text/javascript" src="../js/activity/activity_details_listPage.js?20180122"></script>
+<!--图表列表数据方法-->
+<script type="text/javascript" src="../js/vip/activity_chartData.js?20180301"></script>
 <script>
     $(function () {
         $(window).scroll(function () {
@@ -632,288 +2251,106 @@
             window.location.reload();
         });
         $(".people").niceScroll({
-            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-            cursorcolor:" #dfdfdf",
-            cursoropacitymax:1,
-            touchbehavior:false,
-            cursorminheight:200,
-            autohidemode:true,
-            cursorwidth:"9px",
-            cursorborderradius:"10px"});
+            cursorborder: "0 none",
+            cursoropacitymin: "0",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 200,
+            autohidemode: true,
+            cursorwidth: "9px",
+            cursorborderradius: "10px"
+        });
         $("#content").niceScroll({
-            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-            cursorcolor:" #dfdfdf",
-            cursoropacitymax:1,
-            touchbehavior:false,
-            cursorminheight:250,
-            autohidemode:true,
-            cursorwidth:"9px",
-            cursorborderradius:"10px"});
+            cursorborder: "0 none",
+            cursoropacitymin: "0",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 250,
+            autohidemode: true,
+            cursorwidth: "9px",
+            cursorborderradius: "10px"
+        });
         $("#table_content").niceScroll({
-            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-            cursorcolor:" #dfdfdf",
-            cursoropacitymax:1,
-            touchbehavior:false,
-            cursorminheight:100,
-            autohidemode:true,
-            cursorwidth:"9px",
-            cursorborderradius:"10px"});
-        $("#showList_box").niceScroll({
-            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-            cursorcolor:" #dfdfdf",
-            cursoropacitymax:1,
-            touchbehavior:false,
-            cursorminheight:100,
-            autohidemode:true,
-            cursorwidth:"9px",
-            cursorborderradius:"10px"});
-        $("#showList_box2").niceScroll({
-            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-            cursorcolor:" #dfdfdf",
-            cursoropacitymax:1,
-            touchbehavior:false,
-            cursorminheight:100,
-            autohidemode:true,
-            cursorwidth:"9px",
-            cursorborderradius:"10px"});
-    });
-    function pieChart2() {
-        var myChart = echarts.init(document.getElementById('customer_pie'));
-        var NoCover = ((12664 - 10100)/12664*100).toFixed(2);
-        var TheCover = (10100/12664*100).toFixed(2);
-        // 指定图表的配置项和数据
-        var labelTop = {
-            normal : {
-                color:'#7bc7cd',
-                label : {
-                    show : false,
-                    position : 'center',
-                    formatter : '{b}',
-                    textStyle: {
-                        baseline : 'bottom'
-                    }
-                },
-                labelLine : {
-                    show : false
-                }
-            }
-        };
-        var labelFromatter = {
-            normal : {
-                label : {
-                    formatter : function (params){
-                        var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
-                        data=data>100?100:data;
-                        return data+ '%'
-                    },
-                    textStyle: {
-                        color:'#7bc7cd',
-                        fontSize: 25
-                    }
-                }
-            },
-        }
-        var labelBottom = {
-            normal : {
-                color: '#eaeaea',
-                label : {
-                    show :false,
-                    position : 'center'
-                },
-                labelLine : {
-                    show : false
-                }
-            },
-            emphasis: {
-                color: '#eaeaea'
-            }
-        };
-        var radius = [55, 70];
-        var  option = {
-            tooltip: {
-                trigger: 'item',
-                formatter:  "{d}% {b}",
-                backgroundColor:'#9999cc'
-            },
-            series : [
-                {
-                    type : 'pie',
-                    center : ['50%', '50%'],
-                    radius : radius,
-                    x: '0%', // for funnel
-//                    itemStyle : labelFromatter,
-                    data : [
-                        {name:'未参加', value:NoCover,itemStyle :labelBottom },
-                        {name:'已参加', value:TheCover, itemStyle : labelTop}
-                    ]
-                }
-            ]
-        };
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
+            cursorborder: "0 none",
+            cursoropacitymin: "0",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 100,
+            autohidemode: true,
+            cursorwidth: "9px",
+            cursorborderradius: "10px"
         });
-    }
-    function pieChart3() {
-    var myChart = echarts.init(document.getElementById('customer_pie2'));
-    var NoCover = ((4000 - 2000)/4000*100).toFixed(2);
-    var TheCover = (2000/4000*100).toFixed(2);
-    // 指定图表的配置项和数据
-    var labelTop = {
-        normal : {
-            color:'#7bc7cd',
-            label : {
-                show : false,
-                position : 'center',
-                formatter : '{b}',
-                textStyle: {
-                    baseline : 'bottom'
-                }
-            },
-            labelLine : {
-                show : false
-            }
-        }
-    };
-    var labelFromatter = {
-        normal : {
-            label : {
-                formatter : function (params){
-                    var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
-                    data=data>100?100:data;
-                    return data+ '%'
-                },
-                textStyle: {
-                    color:'#7bc7cd',
-                    fontSize: 25
-                }
-            }
-        },
-    }
-    var labelBottom = {
-        normal : {
-            color: '#eaeaea',
-            label : {
-                show : true,
-                position : 'center'
-            },
-            labelLine : {
-                show : false
-            }
-        },
-        emphasis: {
-            color: '#eaeaea'
-        }
-    };
-    var radius = [55, 70];
-    var  option = {
-        series : [
-            {
-                type : 'pie',
-                center : ['50%', '50%'],
-                radius : radius,
-                x: '0%', // for funnel
-                itemStyle : labelFromatter,
-                data : [
-                    {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
-                    {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
-                ]
-            }
-        ]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
+        $("#showList_box,#showList_box2,#showList_box3,#vip_consume_detail_list").niceScroll({
+            cursorborder: "0 none",
+            cursoropacitymin: "0",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 100,
+            autohidemode: true,
+            cursorwidth: "9px",
+            cursorborderradius: "10px"
         });
-}
-    function barChart() {
-        var myChart = echarts.init(document.getElementById('chart_bar'));
-        var data = [220, 182, 191, 234, 290, 330, 310, 123];
-        var option = {
-            height:'140px',
-            top:0,
-            xAxis: {
-                data:['1-13', '1-14', '1-15', '1-16', '1-17', '1-18', '1-19', '1-20'],
-                axisLabel: {
-                    inside:false,
-                    textStyle: {
-                        color: '#000'
-                    }
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                z: 10
-            },
-            yAxis: {
-                axisLine: {
-                    show: false,
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: '#999'
-                    }
-                },
-                splitLine:{
-                    show:true,
-                    lineStyle:{
-                        type:'dashed'
-                    }
-                }
-            },
-            tooltip:{
-                show:true,
-                position:'top',
-                formatter:'{c}',
-                backgroundColor:'#9999cc',
-                padding:[2,8]
-            },
-            series: [
-                {
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: '#d8d8e1'
-                        },
-                        emphasis: {
-                            color:'#9999cc'
-                        }
-                    },
-                    barCategoryGap:'50%',
-                    data: data
-                }
-            ]
-        };
-        myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
+        $(".activitySet,.vip_list_ul").niceScroll({
+            cursorborder: "0 none",
+            cursoropacitymin: "1",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 100,
+            autohidemode: true,
+            cursorwidth: "6px",
+            cursorborderradius: "10px"
         });
-    }
-    barChart();
-//    $('.progress_nav').on('click','.progress_nav_btn',function () {
-//        $(this).addClass('progress_nav_btn_action').siblings('.progress_nav_btn_action').removeClass('progress_nav_btn_action');
-//    });
-    $('.title_action').click(function () {
-        $('.action_tip').toggle();
+        $("#table_signUp ul li").eq(1).niceScroll({
+            cursorborder: "0 none",
+            cursoropacitymin: "0",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 100,
+            autohidemode: true,
+            cursorwidth: "6px",
+            cursorborderradius: "10px"
+        });
     });
     $('.action_store').click(function () {
         $('.add_store_box').toggle();
         $('.add_store').hide();
-//        var tp=($('.add_store_box').height()-$("#screen_shop").height())/2;
-        var left=($('.add_store_box').width()-$("#screen_shop").width())/2-120;
-        var tp=25;
         $("#screen_shop").show();
-        $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+        $("#screen_shop").css({
+            "position":"fixed"
+        });
+        var store_code=[];
+        var store_name=[];
         $("#screen_staff .screen_content_l").unbind("scroll");
-        getstorelist(1)
+        whir.loading.add("", 0.5);
+        var param={};
+        param.activity_code=sessionStorage.getItem('activity_code');
+        oc.postRequire("post","/vipActivity/getStoreList","",param,function (data) {
+            var active_data=JSON.parse(data.message);
+            whir.loading.remove();
+            if(active_data.storeList!='') {
+                var store_obj = active_data.storeList;
+                action.store_code = store_obj;
+                for (var i = 0; i < store_obj.length; i++) {
+                    store_code.push(store_obj[i].store_code);
+                    store_name.push(store_obj[i].store_name);
+                }
+                add_store_code = store_code.join(',');
+                add_store_name = store_name.join(',');
+            }
+            getstorelist(1)
+        });
     });
     $('.add_footer_l').click(function () {
         $('.add_store_box').toggle();

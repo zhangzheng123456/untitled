@@ -1,27 +1,25 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.*;
-import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.controller.CorpParamController;
+import com.bizvane.ishop.dao.CorpMapper;
+import com.bizvane.ishop.dao.CorpParamMapper;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpParam;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.service.AreaService;
 import com.bizvane.ishop.service.CorpParamService;
-import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by ZhouZhou on 2016/8/11.
@@ -33,6 +31,7 @@ public class CorpParamServiceImpl implements CorpParamService {
     CorpParamMapper corpParamMapper;
     @Autowired
     CorpMapper corpMapper;
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(CorpParamServiceImpl.class);
     /**
      * 根据区域id
      * 获取某区域信息
@@ -73,6 +72,7 @@ public class CorpParamServiceImpl implements CorpParamService {
                 Corp corp=corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y);
                 if(corp!=null){
                     String corp_name = corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y).getCorp_name();
+
                     corpParam.setCorp_name(corp_name);
                 }else{
                     corpParam.setCorp_name("");
@@ -88,7 +88,7 @@ public class CorpParamServiceImpl implements CorpParamService {
     @Transactional
     public String insert(String message, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String param_id = jsonObject.get("param_id").toString();
@@ -118,7 +118,7 @@ public class CorpParamServiceImpl implements CorpParamService {
     @Transactional
     public String update(String message, String user_code) throws Exception {
         String result = "";
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         int id = Integer.parseInt(jsonObject.get("id").toString());
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
@@ -162,15 +162,33 @@ public class CorpParamServiceImpl implements CorpParamService {
         corpParams = corpParamMapper.selectAllParamScreen(params);
         for (CorpParam corpParam:corpParams) {
             String corp_code1 = corpParam.getCorp_code();
+
             if (corp_code1.equals("all")){
                 corpParam.setCorp_name("全部");
             }else {
-                String corp_name = corpMapper.selectByCorpId(0,corp_code1,Common.IS_ACTIVE_Y).getCorp_name();
-                corpParam.setCorp_name(corp_name);
+                Corp corp=corpMapper.selectByCorpId(0,corp_code1,Common.IS_ACTIVE_Y);
+                if(corp!=null){
+                    String corp_name =corp.getCorp_name();
+                    logger.info("============corp==================="+corp);
+                    corpParam.setCorp_name(corp_name);
+                }else{
+
+                    logger.info("============corp=============null======");
+                }
+
             }
             corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
         }
         PageInfo<CorpParam> page = new PageInfo<CorpParam>(corpParams);
         return page;
+    }
+
+    @Override
+    public CorpParam selectByParamName(String param_name, String isactive) throws Exception {
+        return corpParamMapper.selectByParamName(param_name,isactive);
+    }
+
+    public List<CorpParam> selectParamByName(String corp_code,String param_name) throws Exception {
+        return corpParamMapper.selectParamByName(corp_code,param_name);
     }
 }

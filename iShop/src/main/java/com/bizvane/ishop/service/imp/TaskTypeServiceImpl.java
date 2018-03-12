@@ -39,7 +39,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_num, page_size);
-        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value,"");
+        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value,"",null);
         for (TaskType taskType:task_types) {
             taskType.setIsactive(CheckUtils.CheckIsactive(taskType.getIsactive()));
         }
@@ -47,6 +47,19 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         return task;
     }
 
+    public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        PageHelper.startPage(page_num, page_size);
+        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value,"",manager_corp_arr);
+        for (TaskType taskType:task_types) {
+            taskType.setIsactive(CheckUtils.CheckIsactive(taskType.getIsactive()));
+        }
+        PageInfo<TaskType> task = new PageInfo<TaskType>(task_types);
+        return task;
+    }
     public String insertTaskType(String message, String user_code) throws Exception{
         JSONObject jsonObject = new JSONObject(message);
         String task_type_code = jsonObject.get("task_type_code").toString().trim();
@@ -135,6 +148,25 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map)throws Exception  {
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<TaskType> list = taskTypeMapper.selectAllTaskTypeScreen(params);
+        for (TaskType taskType:list) {
+            taskType.setIsactive(CheckUtils.CheckIsactive(taskType.getIsactive()));
+        }
+        PageInfo<TaskType> page = new PageInfo<TaskType>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map,String manager_corp)throws Exception  {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("manager_corp_arr", manager_corp_arr);
         params.put("corp_code", corp_code);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);

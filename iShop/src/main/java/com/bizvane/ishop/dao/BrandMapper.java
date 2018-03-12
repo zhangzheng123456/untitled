@@ -14,7 +14,7 @@ public interface BrandMapper {
 
     Brand selectByBrandName(@Param("corp_code") String corp_code, @Param("brand_name") String brand_name, @Param("isactive") String isactive) throws SQLException;
 
-    List<Brand> selectAllBrand(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<Brand> selectAllBrand(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr")String[] manager_corp_arr) throws SQLException;
 
     List<Brand> selectPartBrand(Map<String, Object> params) throws SQLException;
 
@@ -29,4 +29,6 @@ public interface BrandMapper {
     int getGoodsCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code) throws SQLException;
 
     List<Brand> selectAllBrandScreen(Map<String, Object> params) throws SQLException;
+
+    List<Brand> selectBrandByLabel(@Param("corp_code")String corp_code,@Param("brand_code") String[] brand_code)throws SQLException;
 }

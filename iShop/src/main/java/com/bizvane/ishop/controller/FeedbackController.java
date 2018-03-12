@@ -1,15 +1,10 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-
-import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Feedback;
-
-import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FeedbackService;
 import com.bizvane.ishop.service.FunctionService;
@@ -20,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -84,10 +77,10 @@ public class FeedbackController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //-------------------------------------------------------
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
@@ -113,10 +106,10 @@ public class FeedbackController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
@@ -149,10 +142,10 @@ public class FeedbackController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             Feedback feedback=new Feedback();
             feedback.setUser_code(jsonObject.get("user_code").toString());
             feedback.setFeedback_content(jsonObject.get("feedback_content").toString());
@@ -212,10 +205,10 @@ public class FeedbackController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String feed_id = jsonObject.get("id").toString();
             String[] ids = feed_id.split(",");
             for (int i = 0; i < ids.length; i++) {
@@ -271,10 +264,10 @@ public class FeedbackController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String feed_id = jsonObject.get("id").toString();
             Feedback feedback = feedbackService.selFeedbackById(Integer.parseInt(feed_id));
             JSONObject result = new JSONObject();
@@ -305,10 +298,10 @@ public class FeedbackController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             Feedback feedback = new Feedback();
             feedback.setUser_code(jsonObject.get("user_code").toString());
             feedback.setFeedback_content(jsonObject.get("feedback_content").toString());
@@ -368,9 +361,9 @@ public class FeedbackController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //系统管理员(官方画面)
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
@@ -392,7 +385,7 @@ public class FeedbackController {
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,feedbacks, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,feedbacks, map, response, request,"回访记录");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

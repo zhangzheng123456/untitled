@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>新增默认回复</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet?2017040170331">
+    <link href="../css/animate.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>客服管理</span><i class="icon-ishop_8-03"></i><span id="back">默认回复列表</span><i class="icon-ishop_8-03"></i><label>新增默认回复</label></div>
+            <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
+                <form class="conpany_msg">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span><label style="color:#c26655">名称*</label><input type="text" id="name" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="名称不能为空！"></div></div></span>
+                    </div>
+                    <div>
+                        <span style="display: inline-flex;width:100%;"><label style="height:100px;color:#c26655">内容*</label><span class="tempalte_area"><textarea id="default_content" verify="Empty" maxlength="300" style="height: 240px;"></textarea><div style="padding-left:0px!important" class="hint"><div  hintinfo="名称不能为空！"></div></div></span></span>
+                    </div>
+                    <div>
+                        <div class="text_color">
+                            <p>标记说明：</p>
+                            "#store#" 店铺名；"##" 导购名；
+                        </div>
+                    </div>
+                    <div>
+                        <div class="task_allot" style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">所属品牌*</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming" id="OWN_BRAND_All" style="max-height: 200px;overflow-y: auto">
+
+                            </div>
+                            <div>
+                                <div class="add_app_id" id="ADD_BRAND" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+                <div class="areaadd_oper_btn">
+                    <ul>
+                        <li class="edit_save" id="add_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    </ul>
+                </div>
+                 <form class="msg_detail">
+                    <div>
+                        <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                    </div>
+                </form>
+            </div>
+    </div>
+    <!--选取品牌操作-->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索品牌" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <script src="../js/loading.js?2017040170331"></script>
+   <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/reply/default_reply_operate.js?2017040170331"></script>
+</body>
+
+</html>

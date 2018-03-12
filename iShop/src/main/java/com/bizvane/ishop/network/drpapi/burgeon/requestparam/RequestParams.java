@@ -1,13 +1,6 @@
 package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 
-import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.CorpParam;
-import com.bizvane.ishop.entity.ParamConfigure;
-import com.bizvane.ishop.service.imp.CorpParamServiceImpl;
-import com.bizvane.ishop.service.imp.ParamConfigureServiceImpl;
 import com.bizvane.ishop.utils.CryptUtil;
-import com.bizvane.ishop.utils.SpringBeanFactoryUtils;
 import com.bizvane.ishop.utils.TimeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,48 +22,17 @@ public class RequestParams  {
     private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
     private  String url;  //服务器地址
 
+    public  RequestParams(List<String> drpinfo) {
 
-    public  RequestParams(String corpcode) {
-
-        connectionDRP(corpcode);
-    }
-
-
-    public  void  connectionDRP(String corpcode) {
-        //安正
-        try {
-            if (corpcode.equals("C10016")) {
-
-
-//            setSip_appkey("nea@burgeon.com.cn");
-//            setAppSecret("lifecycle");
-//            setSip_timestamp();
-//            setSip_sign();
-//            setUrl("http://60.190.132.114:8080/servlets/binserv/Rest");
-
-            ParamConfigureServiceImpl paramConfigureService = (ParamConfigureServiceImpl) SpringBeanFactoryUtils.getBean("paramConfigureServiceImpl");
-            CorpParamServiceImpl corpParamService = (CorpParamServiceImpl) SpringBeanFactoryUtils.getBean("corpParamServiceImpl");
-            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.CRM_DB_ACCOUNT, Common.IS_ACTIVE_Y);
-            List<CorpParam> corpParams = corpParamService.selectByCorpParam(corpcode, String.valueOf(param.getId()), Common.IS_ACTIVE_Y);
-
-                if (corpParams.size() > 0) {
-                String value = corpParams.get(0).getParam_value();
-                String[] paramvalues = value.split("§§");
-                setSip_appkey(paramvalues[1].toString());
-                setAppSecret(paramvalues[2].toString());
-                setSip_timestamp();
-                setSip_sign();
-                setUrl(paramvalues[0].toString());
-            }
-         }else{
-
-            }
-        }catch(Exception e){
-        e.printStackTrace();
-       }
+        if(drpinfo.get(3).toString().equals("C10016")) {
+            setSip_appkey(drpinfo.get(0).toString());
+            setAppSecret(drpinfo.get(1).toString());
+            setSip_timestamp();
+            setSip_sign();
+            setUrl(drpinfo.get(2).toString());
+        }
 
     }
-
 
 
     public String getUrl() {

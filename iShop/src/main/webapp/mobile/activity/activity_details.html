@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>活动详情</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/details.css?20170724">
+    <script src="js/flexible.js"></script>
+</head>
+<body>
+<div class="activityWrap" id="activityWrap">
+    <div class="activityHeader">
+        <div class="header-title"><p class="font-lg" id="activity_theme"></p></div>
+        <div class="header-time font-grey"><span id="start_time"></span> <span>至</span> <span id="end_time"></span></div>
+        <div><p class="font-sm" id="activity_desc"></p></div>
+        <div class="header-btn font-mid"><span id="activity_url">查看活动页面<i class="header-btn-icon"></i></span></div>
+    </div>
+    <div class="activityFooter">
+        <div class="footer-title font-mid"><span class="nav-icon"></span><span>活动详情</span></div>
+        <div class="footer-content font-mid" id="footer-content">
+            <div class="footer-content-type"><span id="activity_type-name">优惠券活动</span><span id="activity_type" class="font-5f8bc8 margin-l-10">消费后送券</span><span class="float-r"><span id="allowCount—name"></span><span class="font-5f8bc8 margin-l-10" id="allowCount"></span></span></div>
+            <!--<div class="footer-details">-->
+                <!--<div class="footer-details-list"><i class="icon-plan"></i><span>计划1</span> <span class="font-grey">-优先级1</span><span data-mark="down" class="float-r list-toggle-btn">展开<i class="icon-arrow_d margin-l-10"></i></span></div>-->
+                <!--<div class="footer-details-wraps" style="display: none">-->
+                    <!--<div class="footer-details-wrap">-->
+                        <!--<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>-->
+                        <!--<div><span class="width-half font-lg">招募级别</span><span class="width-half font-lg">招募金额</span></div>-->
+                        <!--<div><span class="width-half">钻石卡</span><span class="width-half">111</span></div>-->
+                    <!--</div>-->
+                    <!--<div class="footer-details-wrap">-->
+                        <!--<div class="footer-details-wrap-head"><i class="icon-gift"></i>奖励</div>-->
+                        <!--<div><span class="margin-bottom-25">20积分</span></div>-->
+                        <!--<div><span class="margin-bottom-25">满5000减500代金券</span></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script>
+    var oc = new ObjectControl();
+    var code = getActivityCode();
+    function getActivityCode(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("=");
+            var code = strs[1];
+            return code ;
+        }
+    }
+    $(function () {
+        getDetails();
+        $("#activityWrap").on("click",".list-toggle-btn",function () {
+            if($(this).attr("data-mark") == "down"){
+                $(this).attr("data-mark","up");
+                $(this).parents(".footer-details-list").next(".footer-details-wraps").slideDown();
+                $(this).html('收起<i class="icon-arrow_t margin-l-10"></i>');
+            }else {
+                $(this).attr("data-mark","down");
+                $(this).html('展开<i class="icon-arrow_d margin-l-10"></i>');
+                $(this).parents(".footer-details-list").next(".footer-details-wraps").slideUp();
+            }
+        });
+        $("#activityWrap").on("click","#activity_url",function () {
+            if($(this).attr("data-src") !== ""){
+                var activity_code = code;
+//                window.location.href=
+                window.open("http://" + window.location.host + "/goods/mobile/activity_web.html?activity_code="+activity_code,'_self');
+            }
+        });
+        function getDetails(){
+            var param={};
+            param.activity_code = code;
+            oc.postRequire("post","/vipActivity/select","0",param,function(data){
+                if(data.code == 0){
+                    var msg = JSON.parse(JSON.parse(data.message).activityVip);
+                    $("#activity_theme").text(msg.activity_theme);
+                    $("#start_time").text(msg.start_time);
+                    $("#end_time").text(msg.end_time);
+                    $("#activity_desc").text(msg.activity_desc);
+                }
+            });
+            oc.postRequire("post","/vipActivity/detail/select","0",param,function(data){
+                if(data.code == 0){
+                    var msg = JSON.parse(data.message).activityVip;
+                    var activity_type = msg.activity_type;
+                    msg.activity_url == "" ? $("#activity_url").addClass("no_url") : "";
+                    $("#activity_url").attr('data-src',msg.activity_url);
+                    var Html = "";
+                    if(activity_type == "优惠券活动"){
+                        var send_coupon_type = msg.send_coupon_type;
+                        $("#activity_type-name").text("优惠券类型");
+                        if(send_coupon_type == "consume"){
+                            $("#activity_type").text("消费后送券");
+                            $("#allowCount—name").text("允许参与总次数");
+                            $("#allowCount").text(msg.join_count);
+                            var coupon_type = JSON.parse(msg.consume_condition);
+                            for(var i=0;i<coupon_type.length;i++){
+                                var n = i+1;
+                                var point = coupon_type[i].send_points != "" ? '<div><span class="margin-bottom-25">'+coupon_type[i].send_points+'积分</span></div>' : "";
+                                var coupons = JSON.parse(coupon_type[i].coupon_type);
+                                var couponHtml = "";
+                                var trade = (coupon_type[i].trade_start != ""||coupon_type[i].trade_end != "") ? coupon_type[i].trade_start+"~"+coupon_type[i].trade_end : "";
+                                var discount = (coupon_type[i].discount_start != ""||coupon_type[i].discount_end != "") ? coupon_type[i].discount_start+"~"+coupon_type[i].discount_end : "";
+                                var num = (coupon_type[i].num_start != ""||coupon_type[i].num_end != "") ? coupon_type[i].num_start+"~"+coupon_type[i].num_end : "";
+                                for(var j=0;j<coupons.length;j++){
+                                    var className = j==coupons.length-1 ? "margin-bottom-0" : "margin-bottom-25";
+                                    couponHtml += '<div><span class='+className+'>'+coupons[j].coupon_name+'</span></div>';
+                                }
+                                var condition = JSON.parse(coupon_type[i].goods_condition);
+                                condition = condition.map(function (item) {
+                                    return item.value;
+                                }).join(",");
+                                Html += '<div class="footer-details">'
+                                    + '<div class="footer-details-list"><i class="icon-plan"></i><span>计划'+n+'</span> <span class="font-grey">-优先级'+n+'</span><span data-mark="down" class="float-r list-toggle-btn">展开<i class="icon-arrow_d margin-l-10"></i></span></div>'
+                                    + '<div class="footer-details-wraps" style="display: none"><div class="footer-details-wrap">'
+                                    + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                                    + '<div><span class="condition_l">优先级</span><span>'+coupon_type[i].priority+'</span></div>'
+                                    + '<div><span class="condition_l">允许参与次数</span><span>'+coupon_type[i].vip_join_count+'</span></div>'
+                                    + '<div><span class="condition_l">商品</span><span title="'+condition+'" content="ellipsis">'+condition+'</span></div>'
+                                    + '<div><span class="condition_l">整单消费</span><span>'+trade+'</span></div>'
+                                    + '<div><span class="condition_l">消费折扣</span><span>'+discount+'</span></div>'
+                                    + '<div><span class="condition_l margin-bottom-0">购买件数</span><span>'+num+'</span></div>'
+                                    + '</div><div class="footer-details-wrap">'
+                                    + '<div class="footer-details-wrap-head"><i class="icon-gift"></i>奖励</div>'
+                                    + point
+                                    + couponHtml
+                                    + '</div></div></div>';
+                            }
+                        }else if(send_coupon_type == "batch"){
+                            $("#activity_type").text("批量发券");
+                            var point = msg.present_point != ""?'<div><span class="margin-bottom-25">'+msg.present_point+'积分</span></div>':"";
+                            var coupons = JSON.parse(msg.coupon_type);
+                            var couponHtml = "";
+                            for(var i=0;i<coupons.length;i++){
+                                var className = i==coupons.length-1 ? "margin-bottom-0" : "margin-bottom-25";
+                                couponHtml += '<div><span class='+className+'>'+coupons[i].coupon_name+'</span></div>';
+                            }
+                            Html += '<div class="footer-details"><div class="footer-details-wraps" style="display: block">'
+                                + '<div class="footer-details-wrap"><div class="footer-details-wrap-head"><i class="icon-gift"></i>奖励</div>'
+                                + point
+                                + couponHtml
+                                + '</div></div></div>';
+                        }else if(send_coupon_type == "anniversary"){
+                            $("#activity_type").text("纪念日发券");
+                            var coupon_type = JSON.parse(msg.coupon_type);
+                            for(var i=0;i<coupon_type.length;i++){
+                                var n = i+1;
+                                var point = coupon_type[i].send_points != "" ? '<div><span class="margin-bottom-25">'+coupon_type[i].send_points+'积分</span></div>' : "";
+                                var anniversary_time = coupon_type[i].anniversary_time == "M" ? "当月" : "当日";
+                                var coupons = JSON.parse(coupon_type[i].coupon_type);
+                                var couponHtml = "";
+                                for(var j=0;j<coupons.length;j++){
+                                    var className = j==coupons.length-1 ? "margin-bottom-0" : "margin-bottom-25";
+                                    couponHtml += '<div><span class='+className+'>'+coupons[j].coupon_name+'</span></div>';
+                                }
+                                Html += '<div class="footer-details">'
+                                    + '<div class="footer-details-list"><i class="icon-plan"></i><span>计划'+n+'</span> <span class="font-grey">-优先级'+n+'</span><span data-mark="down" class="float-r list-toggle-btn">展开<i class="icon-arrow_d margin-l-10"></i></span></div>'
+                                    + '<div class="footer-details-wraps" style="display: none"><div class="footer-details-wrap">'
+                                    + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                                    + '<div><span class="condition_l">纪念日类型</span><span>'+coupon_type[i].param_desc+'</span></div>'
+                                    + '<div><span class="condition_l margin-bottom-0">执行时间</span><span>'+anniversary_time+'</span></div>'
+                                    + '</div><div class="footer-details-wrap">'
+                                    + '<div class="footer-details-wrap-head"><i class="icon-gift"></i>奖励</div>'
+                                    + point
+                                    + couponHtml
+                                    + '</div></div></div>';
+                            }
+                        }else {
+                            $("#activity_type").text("开卡送券");
+                            var coupon_type = JSON.parse(msg.coupon_type);
+                            for(var i=0;i<coupon_type.length;i++){
+                                var n = i+1;
+                                var point = coupon_type[i].present_point != "" ? '<div><span class="margin-bottom-25">'+coupon_type[i].present_point+'积分</span></div>' : "";
+                                var coupons = coupon_type[i].coupon_name.split(",");
+                                var couponHtml = "";
+                                for(var j=0;j<coupons.length;j++){
+                                    var className = j==coupons.length-1 ? "margin-bottom-0" : "margin-bottom-25";
+                                    couponHtml += '<div><span class='+className+'>'+coupons[j]+'</span></div>';
+                                }
+                                Html += '<div class="footer-details">'
+                                    + '<div class="footer-details-list"><i class="icon-plan"></i><span>计划'+n+'</span> <span class="font-grey">-优先级'+n+'</span><span data-mark="down" class="float-r list-toggle-btn">展开<i class="icon-arrow_d margin-l-10"></i></span></div>'
+                                    + '<div class="footer-details-wraps" style="display: none"><div class="footer-details-wrap">'
+                                    + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                                    + '<div><span class="condition_l margin-bottom-0">卡类型</span><span>'+coupon_type[i].vip_card_type_name+'</span></div>'
+                                    + '</div><div class="footer-details-wrap">'
+                                    + '<div class="footer-details-wrap-head"><i class="icon-gift"></i>奖励</div>'
+                                    + point
+                                    + couponHtml
+                                    + '</div></div></div>';
+                            }
+                        }
+                    }
+                    if(activity_type == "招募活动"){
+                        $("#activity_type-name").text("活动类型");
+                        $("#activity_type").text("招募活动");
+                        var recruit = JSON.parse(msg.recruit);
+                        var div = "";
+                        for(var i=0;i<recruit.length;i++){
+//                            var className = i==recruit.length-1 ? "width-half margin-bottom-0" : "width-half";
+                            div += '<div><span class="width-half">'+recruit[i].vip_card_type_name+'</span><span class="width-half">'+recruit[i].join_threshold+'</span></div>';
+                        }
+                        Html += '<div class="footer-details">'
+                            + '<div class="footer-details-wraps"><div class="footer-details-wrap">'
+                            + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                            + '<div><span class="width-half font-lg">招募级别</span><span class="width-half font-lg">招募金额</span></div>'
+                            + div
+                            + '</div></div>';
+                    }
+                    if(activity_type == "促销活动"){
+                        $("#activity_type-name").text("活动类型");
+                        $("#activity_type").text("促销活动");
+                        Html += '<div class="footer-details">'
+                            + '<div class="footer-details-wraps"><div class="footer-details-wrap">'
+                            + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                            + '<div><span class="margin-bottom-0">促销编号</span><span class="margin-l-10">'+msg.sales_no+'</span></div>'
+                            + '</div></div>';
+                    }
+                    if(activity_type == "网页活动"){
+                        $("#activity_type-name").text("活动类型");
+                        $("#activity_type").text("网页活动");
+                    }
+                    if(activity_type == "节日活动"){
+                        $("#activity_type-name").text("活动类型");
+                        $("#activity_type").text("节日活动");
+                        var time = msg.festival_start+"&nbsp;至&nbsp;"+msg.festival_end;
+                        Html += '<div class="footer-details">'
+                            + '<div class="footer-details-wraps"><div class="footer-details-wrap">'
+                            + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                            + '<div><span class="margin-bottom-0">时间范围</span><span class="margin-l-10">'+time+'</span></div>'
+                            + '</div></div>';
+                    }
+                    if(activity_type == "邀请注册"){
+                        $("#activity_type-name").text("活动类型");
+                        $("#activity_type").text("邀请注册");
+                        var coupon_type = JSON.parse(msg.register_data);
+                        for(var i=0;i<coupon_type.length;i++){
+                            var n = i+1;
+                            var point = coupon_type[i].present.point != "" ? '<div><span class="margin-bottom-25">'+coupon_type[i].present.point+'积分</span></div>' : "";
+                            var coupons = coupon_type[i].present.coupon;
+                            var couponHtml = "";
+                            for(var j=0;j<coupons.length;j++){
+                                var className = j==coupons.length-1 ? "margin-bottom-0" : "margin-bottom-25";
+                                couponHtml += '<div><span class='+className+'>'+coupons[j].coupon_name+'</span></div>';
+                            }
+                            Html += '<div class="footer-details">'
+                                + '<div class="footer-details-list"><i class="icon-plan"></i><span>计划'+n+'</span> <span class="font-grey">-优先级'+n+'</span><span data-mark="down" class="float-r list-toggle-btn">展开<i class="icon-arrow_d margin-l-10"></i></span></div>'
+                                + '<div class="footer-details-wraps" style="display: none"><div class="footer-details-wrap">'
+                                + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                                + '<div><span class="condition_l margin-bottom-0">人数区间</span><span>'+coupon_type[i].number_interval.start+'~'+coupon_type[i].number_interval.end+'</span></div>'
+                                + '<div><span class="condition_l margin-bottom-0">每邀请</span><span>'+coupon_type[i].invite+'人</span></div>'
+                                + '</div><div class="footer-details-wrap">'
+                                + '<div class="footer-details-wrap-head"><i class="icon-gift"></i>奖励</div>'
+                                + point
+                                + couponHtml
+                                + '</div></div></div>';
+                        }
+                    }
+                    if(activity_type == "线下报名活动"){
+                        $("#activity_type-name").text("活动类型");
+                        $("#activity_type").text("线下报名活动");
+                        if(msg.apply_title == ""){
+
+                        }else {
+                            var apply_allow_vip = msg.apply_allow_vip == "Y" ? "是" : "否";
+                            Html += '<div class="footer-details">'
+                                + '<div class="footer-details-wraps"><div class="footer-details-wrap">'
+                                + '<div class="footer-details-wrap-head"><i class="icon-condition"></i>条件</div>'
+                                + '<div><span class="condition_l">报名标题</span><span>'+msg.apply_title+'</span></div>'
+                                + '<div><span class="condition_l">截止时间</span><span>'+msg.apply_endtime+'</span></div>'
+                                + '<div><span class="condition_l">报名简介</span><span>'+msg.apply_desc+'</span></div>'
+                                + '<div><span class="condition_l">成功提示</span><span>'+msg.apply_success_tips+'</span></div>'
+                                + '<div><span class="condition_l">允许非会员</span><span>'+apply_allow_vip+'</span></div>'
+                                + '<div><span class="condition_l margin-bottom-0" style="vertical-align:top">logo图片</span><span><img class="logo" src="'+msg.apply_logo+'"></span></div>'
+                                + '</div></div>';
+                        }
+                    }
+                    $("#footer-content").append(Html);
+                }
+            });
+        }
+        $("#activityWrap").on("click",".footer-details img",function () {
+            if($(this).hasClass("logo")){
+                $(this).removeClass("logo").addClass("logo_lg");
+            }else {
+                $(this).removeClass("logo_lg").addClass("logo");
+            }
+        });
+    });
+</script>
+</body>
+</html>

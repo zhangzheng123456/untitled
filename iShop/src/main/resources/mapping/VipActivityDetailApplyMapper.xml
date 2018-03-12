@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipActivityDetailMapper">
+    <resultMap id="activityApply" type="com.bizvane.ishop.entity.VipActivityDetailApply">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="item_name" property="item_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sku_id" property="sku_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="limit_count" property="limit_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="last_count" property="last_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="fee_money" property="fee_money" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="fee_points" property="fee_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="item_picture" property="item_picture" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+
+    <select id="selectActivityApplyById" resultMap="activityApply">
+        SELECT *
+        FROM def_vip_activity_detail_apply
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectActivityApplyByCode" resultMap="activityApply">
+        SELECT *
+        FROM def_vip_activity_detail_apply
+        WHERE activity_code=#{activity_code}
+    </select>
+
+
+    <insert id="insertActivityApply" parameterType="com.bizvane.ishop.entity.VipActivityDetailApply" >
+        insert into def_vip_activity_detail_apply
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="corp_code != null" >
+                corp_code,
+            </if>
+            <if test="activity_code != null" >
+                activity_code,
+            </if>
+            <if test="item_name != null" >
+                item_name,
+            </if>
+            <if test="sku_id != null" >
+                sku_id,
+            </if>
+            <if test="limit_count != null" >
+                limit_count,
+            </if>
+            <if test="last_count != null" >
+                last_count,
+            </if>
+            <if test="fee_money != null" >
+                fee_money,
+            </if>
+            <if test="fee_points != null" >
+                fee_points,
+            </if>
+            <if test="item_picture!=null">
+                item_picture,
+            </if>
+            <if test="modified_date != null" >
+                modified_date,
+            </if>
+            <if test="modifier != null" >
+                modifier,
+            </if>
+            <if test="created_date != null" >
+                created_date,
+            </if>
+            <if test="creater != null" >
+                creater,
+            </if>
+            <if test="isactive != null" >
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="corp_code != null" >
+                #{corp_code,jdbcType=VARCHAR},
+            </if>
+            <if test="activity_code != null" >
+                #{activity_code,jdbcType=VARCHAR},
+            </if>
+            <if test="item_name != null" >
+                #{item_name,jdbcType=VARCHAR},
+            </if>
+            <if test="sku_id != null" >
+                #{sku_id,jdbcType=VARCHAR},
+            </if>
+            <if test="limit_count != null" >
+                #{limit_count,jdbcType=VARCHAR},
+            </if>
+            <if test="last_count != null" >
+                #{last_count,jdbcType=VARCHAR},
+            </if>
+            <if test="fee_money != null" >
+                #{fee_money,jdbcType=VARCHAR},
+            </if>
+            <if test="fee_points != null" >
+                #{fee_points,jdbcType=VARCHAR},
+            </if>
+            <if test="item_picture!=null">
+                #{item_picture},
+            </if>
+            <if test="modified_date != null" >
+                #{modified_date,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null" >
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="created_date != null" >
+                #{created_date,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null" >
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="isactive != null" >
+                #{isactive,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateActivityApply" parameterType="com.bizvane.ishop.entity.VipActivityDetailApply" >
+        update def_vip_activity_detail_apply
+        <set >
+            <if test="corp_code != null" >
+                corp_code = #{corp_code,jdbcType=VARCHAR},
+            </if>
+            <if test="activity_code != null" >
+                activity_code = #{activity_code,jdbcType=VARCHAR},
+            </if>
+            <if test="item_name != null" >
+                item_name = #{item_name,jdbcType=VARCHAR},
+            </if>
+            <if test="sku_id != null" >
+                sku_id = #{sku_id,jdbcType=VARCHAR},
+            </if>
+            <if test="limit_count != null" >
+                limit_count = #{limit_count,jdbcType=VARCHAR},
+            </if>
+            <if test="last_count != null" >
+                last_count = #{last_count,jdbcType=VARCHAR},
+            </if>
+            <if test="fee_money != null" >
+                fee_money = #{fee_money,jdbcType=VARCHAR},
+            </if>
+            <if test="fee_points != null" >
+                fee_points = #{fee_points,jdbcType=VARCHAR},
+            </if>
+            <if test="item_picture!=null">
+                item_picture=#{item_picture},
+            </if>
+            <if test="modified_date != null" >
+                modified_date = #{modified_date,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null" >
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="created_date != null" >
+                created_date = #{created_date,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null" >
+                creater = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="isactive != null" >
+                isactive = #{isactive,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateDetailApply" parameterType="com.bizvane.ishop.entity.VipActivityDetailApply">
+        UPDATE def_vip_activity_detail_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE activity_code=#{activity_code};
+    </update>
+
+    <delete id="deleteActivityApplyById">
+        DELETE FROM def_vip_activity_detail_apply
+        WHERE  id=#{id}
+    </delete>
+
+    <delete id="deleteActivityApplyByCode">
+        DELETE FROM def_vip_activity_detail_apply
+        WHERE  activity_code=#{activity_code}
+    </delete>
+
+</mapper>

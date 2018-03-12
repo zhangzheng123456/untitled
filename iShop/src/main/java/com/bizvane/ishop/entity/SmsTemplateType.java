@@ -11,6 +11,8 @@ public class SmsTemplateType {
     private String template_type_name;
     //企业编号
     private String corp_code;
+    //品牌编号
+    private String brand_code;
     //修改时间
     private String modified_date;
     //修改人
@@ -24,6 +26,9 @@ public class SmsTemplateType {
 
     private Corp corp;
     private String corp_name;
+    private String brand_name;
+
+
 
     public int getId() {
         return id;
@@ -55,6 +60,22 @@ public class SmsTemplateType {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getBrand_code() {
+        return brand_code;
+    }
+
+    public void setBrand_code(String brand_code) {
+        this.brand_code = brand_code;
+    }
+
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
     }
 
     public String getModified_date() {

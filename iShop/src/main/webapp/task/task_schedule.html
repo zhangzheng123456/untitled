@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务管理之任务进度</title>
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <script src="../table/js/jquery.min.js"></script>
+    <style>
+        #screen_filtrate{
+            width: 640px;
+            font-size: 14px;
+            color: #888888;
+            border-radius: 10px;
+            background: #fff;
+            padding: 0 10px 20px 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            z-index: 10001;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            display: none;
+        }
+        .screen_area{
+            min-height: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+    	<div class="con_table" id="con_table">
+    		<div class="title">
+                <span>任务管理</span>
+                <span class="icon-ishop_8-03"></span>
+    			<span id="back_task">任务列表</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>任务进度</span>
+    		</div>
+            <div class="list" style="margin-bottom: 20px;">
+                <div class="list_l">
+                    <ul>
+                        <li class="task_dao" id="task_dao">
+                            打包任务凭证
+                        </li>
+                    </ul>
+                </div>
+                <div class="list_r">
+                    <div id="filtrate" class="filtrate" style="letter-spacing: 10px"><span class="icon-ishop_6-05"></span>筛选
+                    </div>
+                    <div class="turnoff" id="turnoff"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-12"></i>关闭</div>
+                </div>
+            </div>
+    		<div class="table">
+    			<table id="table" cellpadding="0" cellspacing="0" width="100%">
+                 	<thead>
+                 		<tr class="th">
+                            <th style="text-align: center;width: 50px;">序号</th>
+                            <th>姓名</th>
+                            <th>所属店铺</th>
+                            <th>完成状态</th>
+                            <th>任务小结</th>
+                            <th>凭证</th>
+                            <th>开始时间</th>
+                            <th>截止时间</th>
+                        </tr>
+                 	</thead>
+                    <tbody>
+
+                    </tbody>
+    			</table>
+    		</div>
+            <div class="foot">
+                <ul>
+                    <li class="foot-jum">
+                        <span>跳转至</span>
+                        <input class="input-txt" value="" id="input-txt">
+                        <em>页</em>
+                    </li>
+                    <li class="foot-num" >
+                        <ul id="foot-num">
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="foot-sum">
+                        <span class="zy">共 0 页</span>
+                    </li>
+                </ul>
+            </div>
+    	</div>
+    </div>
+    <div class="p" id="p"></div>
+    <div class="tk"  id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否确认导出凭证 ?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
+    <div id="screen_filtrate">
+        <div class="screen_head">筛选<i class="icon-ishop_6-12" id="screen_close"></i></div>
+        <div class="contion">
+            <div class="contion_input">
+                <label>所属品牌</label><input type="text" readonly="readonly" class="input" id="screen_brand_num" data-code=""><span class="icon_r icon-ishop_8-03" id="brand_add"></span>
+            </div>
+            <div class="contion_input">
+                <label>店铺群组</label><input type="text" readonly="readonly" class="input" id="screen_area_num" data-code=""> <span class="icon_r icon-ishop_8-03" id="area_add"></span>
+            </div>
+            <div class="contion_input">
+                <label>所属店铺</label><input type="text" readonly="readonly" class="input" id="screen_store_num" data-code=""> <span class="icon_r icon-ishop_8-03" id="shop_add"></span>
+            </div>
+            <div class="contion_input">
+                <label>所属导购</label><input type="text" readonly="readonly" class="input" id="screen_staff_num" data-code=""><span class="icon_r icon-ishop_8-03" id="staff_add"></span>
+            </div>
+        </div>
+        <div class="ensure"><span id="screen_queding">确定</span></div>
+        <div id="empty_screen" class="empty_screen">清空筛选</div>
+    </div>
+    <!-- 拉取店铺群组 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺群组</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取导购  -->
+    <div id="screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                              data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="员工编号/所属群组" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
+    </div>
+    <!--图片盒子-->
+    <div class="img_box" id="img_box">
+        <span class="left icon-ishop_8-02" id="left"></span>
+        <span class="right icon-ishop_8-03" id="right"></span>
+        <div class="bg_img" id="bg_img"><img src="http://products-image.oss-cn-hangzhou.aliyuncs.com/FAB/C10141/01499936775121.jpg" alt=""></div>
+        <div class="img_num">
+            <span id="current_num" style="display: inline-block;"></span>/<span id="total_num" style="display: inline-block;"></span>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/insidePostRequire.js?20170801"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <script src="/js/task/task_schedule.js?20170802"></script>
+    <script src="/js/task/task_screen.js?20170802"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(window).scroll(function(){
+                if($(window).scrollTop()>100){
+                    $("#side_bar .gotop").fadeIn();
+                }
+                else{
+                    $("#side-bar .gotop").hide();
+                }
+            });
+            $("#side_bar .gotop").click(function(){
+                $('html,body').animate({'scrollTop':0},500);
+            });
+            $("#side_bar .gobottom").click(function(){
+                var btm=$('html,body').height();
+                $('html,body').animate({'scrollTop':btm},500);
+            })
+        });
+    </script>
+</body>
+</html>

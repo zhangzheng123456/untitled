@@ -18,20 +18,19 @@
     http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
 	<context:component-scan base-package="com.bizvane.ishop" />
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
-		init-method="init" destroy-method="close">
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 
 		<!-- 初始化连接大小 -->
-		<property name="initialSize" value="0" />
+		<property name="initialSize" value="10" />
 		<!-- 连接池最大使用连接数量 -->
-		<property name="maxActive" value="20" />
+		<property name="maxActive" value="200" />
 
 		<!-- 连接池最小空闲 -->
-		<property name="minIdle" value="0" />
+		<property name="minIdle" value="10" />
 		<!-- 获取连接最大等待时间 -->
 		<property name="maxWait" value="60000" />
 		<property name="poolPreparedStatements" value="true" />
@@ -48,8 +47,8 @@
 		<property name="minEvictableIdleTimeMillis" value="25200000" />
 		<!-- 打开removeAbandoned功能 -->
 		<property name="removeAbandoned" value="true" />
-		<!-- 1800秒，也就是30分钟 -->
-		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 1800秒，也就是30分钟 ,延迟为1h -->
+		<property name="removeAbandonedTimeout" value="3600" />
 		<!-- 关闭abanded连接时输出错误日志 -->
 		<property name="logAbandoned" value="true" />
 		<!-- 监控数据库 -->
@@ -93,6 +92,7 @@
 		<!--<property name="jdbcTemplate" ref="jdbcTemplate"/>-->
 	<!--</bean>-->
 
+	<!--<bean id="scheduler" class="com.bizvane.ishop.utils.SchedulerFactoryBeanWithShutdownDelay">-->
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="quartzProperties">
@@ -112,24 +112,19 @@
 				<prop key="org.quartz.jobStore.maxMisfiresToHandleAtATime">1</prop>
 
 				<prop key="org.quartz.jobStore.misfireThreshold">120000</prop>
-
 				<prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
+				<!-- 禁止并发执行任务，防止线程阻塞 -->
+				<prop key="concurrent">false</prop>
 			</props>
 		</property>
-
 		<property name="schedulerName" value="ClusterScheduler" />
-
 		<!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 -->
-		<property name="startupDelay" value="30" />
-
+		<property name="startupDelay" value="60" />
 		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
-
 		<!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
 		<property name="overwriteExistingJobs" value="true" />
-
 		<!-- 设置自动启动 -->
 		<property name="autoStartup" value="true" />
-
 		<!--<property name="configLocation" value="classpath:quartz.properties" />-->
 	</bean>
 

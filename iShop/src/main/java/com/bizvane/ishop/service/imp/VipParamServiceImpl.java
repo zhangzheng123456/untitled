@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by yin on 2016/9/7.
  */
-@Service
+@Service("vipParamService")
 public class VipParamServiceImpl implements VipParamService {
     @Autowired
     VipParamMapper vipParamMapper;
@@ -58,7 +58,13 @@ public class VipParamServiceImpl implements VipParamService {
         String result=Common.DATABEAN_CODE_ERROR;
         if(vipParams.size()==0){
             String order = vipParamMapper.selectMaxOrderByCorp(vipParam.getCorp_code().trim());
+            if (order == null || order.equals("")){
+                order = "0";
+            }else {
+                order = String.valueOf(Integer.parseInt(order)+1);
+            }
             vipParam.setShow_order(order);
+            vipParam.setParam_values(vipParam.getParam_values().replace("，",","));
             vipParamMapper.insert(vipParam);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(vipParams.size()>0){
@@ -77,6 +83,7 @@ public class VipParamServiceImpl implements VipParamService {
         String result=Common.DATABEAN_CODE_ERROR;
 
         if(vipParams.size()==0||vipParams.get(0).getParam_desc().equals(param_desc_new)){
+            vipParam.setParam_values(vipParam.getParam_values().replace("，",","));
             vipParamMapper.update(vipParam);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else{
@@ -119,6 +126,12 @@ public class VipParamServiceImpl implements VipParamService {
     @Override
     public List<VipParam> selectParamByCorp(String corp_code) throws Exception {
         List<VipParam> list = vipParamMapper.selectParamByCorp(corp_code);
+        return list;
+    }
+
+    @Override
+    public List<VipParam> selectParamByType(String corp_code, String param_type) throws Exception {
+        List<VipParam> list = vipParamMapper.selectParamByType(corp_code,param_type);
         return list;
     }
 

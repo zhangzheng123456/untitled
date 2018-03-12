@@ -53,10 +53,11 @@ function clacImgZoomParam(maxWidth, maxHeight, width, height) {
 }
 //上传头像至oss存储
 $(function(){
-        var client = new OSS.Wrapper({
+    var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
         accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        secure:true,   
         bucket: 'products-image'
     });
     document.getElementById('file').addEventListener('change', function (e) {
@@ -73,9 +74,11 @@ $(function(){
             storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
         }
         client.multipartUpload(storeAs, file).then(function (result) {
-            var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com'+result.name;
+            var storeAs='https://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
             // $("#imghead").attr(src",result.url);
+            console.log(result.name)
             $("#imghead").attr("data-src",storeAs);
+            console.log($("#imghead").attr("data-src"))
         }).catch(function (err) {
             // console.log(err);
         });

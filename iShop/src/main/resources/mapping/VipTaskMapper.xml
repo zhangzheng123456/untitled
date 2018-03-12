@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipTaskMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipTask" id="VipTask">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="task_code" property="task_code"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_title" property="task_title"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="start_time" property="start_time"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="end_time" property="end_time"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_type" property="task_type"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips" property="target_vips"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_" property="target_vips_"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_condition" property="target_vips_condition"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_type" property="target_type"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_condition" property="task_condition"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="present_coupon" property="present_coupon" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="present_point" property="present_point"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_description" property="task_description" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="share_content" property="share_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_id" property="app_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_status" property="task_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="is_send_notice" property="is_send_notice" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="is_advance_show" property="is_advance_show" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="batch_no" property="batch_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_status" property="bill_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectByTaskCode" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE task_code = #{task_code}
+    </select>
+
+    <select id="selectByTaskTitle" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE
+        task_title=#{task_title}
+        AND corp_code = #{corp_code}
+    </select>
+
+    <select id="selectAll" resultMap="VipTask">
+        SELECT def_vip_task.*,
+        def_corp.corp_name
+        FROM def_vip_task,def_corp
+        WHERE def_vip_task.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_vip_task.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_vip_task.task_title LIKE concat('%',#{search_value},'%')
+            OR def_vip_task.task_code LIKE concat('%',#{search_value},'%')
+            OR def_vip_task.task_description LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        <if test="status != null and status !=''">
+            AND def_vip_task.task_status = #{status}
+        </if>
+        <if test="is_advance_show != null and is_advance_show !=''">
+            AND def_vip_task.is_advance_show = #{is_advance_show}
+        </if>
+        Group By def_vip_task.id
+        ORDER BY def_vip_task.id DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM
+        def_vip_task
+        WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteByCode">
+        DELETE FROM
+        def_vip_task
+        WHERE task_code=#{task_code}
+    </delete>
+
+    <insert id="inserVipTask" parameterType="com.bizvane.ishop.entity.VipTask">
+        INSERT INTO def_vip_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="task_code!=null">
+                task_code,
+            </if>
+            <if test="task_title!=null">
+                task_title,
+            </if>
+            <if test="start_time!=null">
+                start_time,
+            </if>
+            <if test="end_time!=null">
+                end_time,
+            </if>
+            <if test="task_type!=null">
+                task_type,
+            </if>
+            <if test="target_vips!=null">
+                target_vips,
+            </if>
+            <if test="target_vips_!=null">
+                target_vips_,
+            </if>
+            <if test="target_vips_condition!=null">
+                target_vips_condition,
+            </if>
+            <if test="target_type!=null">
+                target_type,
+            </if>
+            <if test="task_condition!=null">
+                task_condition,
+            </if>
+            <if test="present_coupon!=null">
+                present_coupon,
+            </if>
+            <if test="present_point!=null">
+                present_point,
+            </if>
+            <if test="task_description!=null">
+                task_description,
+            </if>
+            <if test="share_content!=null">
+                share_content,
+            </if>
+            <if test="app_id!=null">
+                app_id,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="task_status!=null">
+                task_status,
+            </if>
+            <if test="is_send_notice!=null">
+                is_send_notice,
+            </if>
+            <if test="is_advance_show!=null">
+                is_advance_show,
+            </if>
+            <if test="batch_no!=null">
+                batch_no,
+            </if>
+            <if test="bill_status!=null">
+                bill_status,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="task_code!=null">
+                #{task_code},
+            </if>
+            <if test="task_title!=null">
+                #{task_title},
+            </if>
+            <if test="start_time!=null">
+                #{start_time},
+            </if>
+            <if test="end_time!=null">
+                #{end_time},
+            </if>
+            <if test="task_type!=null">
+                #{task_type},
+            </if>
+            <if test="target_vips!=null">
+                #{target_vips},
+            </if>
+            <if test="target_vips_!=null">
+                #{target_vips_},
+            </if>
+            <if test="target_vips_condition!=null">
+                #{target_vips_condition},
+            </if>
+            <if test="target_type!=null">
+                #{target_type},
+            </if>
+            <if test="task_condition!=null">
+                #{task_condition},
+            </if>
+            <if test="present_coupon!=null">
+                #{present_coupon},
+            </if>
+            <if test="present_point!=null">
+                #{present_point},
+            </if>
+            <if test="task_description!=null">
+                #{task_description},
+            </if>
+            <if test="share_content!=null">
+                #{share_content},
+            </if>
+            <if test="app_id!=null">
+                #{app_id},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="task_status!=null">
+                #{task_status},
+            </if>
+            <if test="is_send_notice!=null">
+                #{is_send_notice},
+            </if>
+            <if test="is_advance_show!=null">
+                #{is_advance_show},
+            </if>
+            <if test="batch_no!=null">
+                #{batch_no},
+            </if>
+            <if test="bill_status!=null">
+                #{bill_status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateVipTask" parameterType="com.bizvane.ishop.entity.VipTask">
+        UPDATE def_vip_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="task_code!=null">
+                task_code=#{task_code},
+            </if>
+            <if test="task_title!=null">
+                task_title=#{task_title},
+            </if>
+            <if test="start_time!=null">
+                start_time=#{start_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="task_type!=null">
+                task_type=#{task_type},
+            </if>
+            <if test="target_vips!=null">
+                target_vips=#{target_vips},
+            </if>
+            <if test="target_vips_!=null">
+                target_vips_=#{target_vips_},
+            </if>
+            <if test="target_vips_condition!=null">
+                target_vips_condition=#{target_vips_condition},
+            </if>
+            <if test="target_type!=null">
+                target_type=#{target_type},
+            </if>
+            <if test="task_condition!=null">
+              task_condition=#{task_condition},
+            </if>
+            <if test="present_coupon!=null">
+              present_coupon=#{present_coupon},
+            </if>
+            <if test="present_point!=null">
+               present_point=#{present_point},
+            </if>
+            <if test="task_description!=null">
+                task_description=#{task_description},
+            </if>
+            <if test="share_content!=null">
+                share_content=#{share_content},
+            </if>
+            <if test="app_id!=null">
+                app_id=#{app_id},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="modified_date!=null">
+                modified_date= #{modified_date},
+            </if>
+            <if test="created_date!=null">
+                created_date= #{created_date},
+            </if>
+            <if test="creater!=null">
+                creater= #{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive= #{isactive},
+            </if>
+            <if test="task_status!=null">
+                task_status= #{task_status},
+            </if>
+            <if test="is_send_notice!=null">
+                is_send_notice= #{is_send_notice},
+            </if>
+            <if test="is_advance_show!=null">
+                is_advance_show= #{is_advance_show},
+            </if>
+            <if test="batch_no!=null">
+                batch_no= #{batch_no},
+            </if>
+            <if test="bill_status!=null">
+                bill_status=#{bill_status},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectAllScreen" resultMap="VipTask">
+        SELECT def_vip_task.*,
+        def_corp.corp_name
+        FROM def_vip_task,def_corp
+        WHERE def_vip_task.corp_code = def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_vip_task.corp_code=#{corp_code}
+        </if>
+
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  def_vip_task.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  def_vip_task.created_date &lt;= #{created_date_end}
+        </if>
+        <!-- 任务开始时间-->
+        <if test="taskS_time_start!=null and taskS_time_start!=''">
+            AND  def_vip_task.start_time &gt;= #{taskS_time_start}
+        </if>
+        <if test="taskS_time_end!=null and taskS_time_end!=''">
+            AND  def_vip_task.start_time &lt;= #{taskS_time_end}
+        </if>
+        <!-- 任务结束时间-->
+        <if test="taskE_time_start!=null and taskE_time_start!=''">
+            AND  def_vip_task.end_time &gt;= #{taskE_time_start}
+        </if>
+        <if test="taskE_time_end!=null and taskE_time_end!=''">
+            AND  def_vip_task.end_time &lt;= #{taskE_time_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+
+                <when test="entryValue!='' and entryKey=='task_status' and entryValue== '3'.toString()">
+                    (def_vip_task.bill_status= '0'  OR   def_vip_task.bill_status= '' OR def_vip_task.bill_status IS NULL )
+                    AND def_vip_task.task_status = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='task_status' and entryValue=='4'.toString()">
+                    def_vip_task.bill_status= '1' AND def_vip_task.task_status = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='task_status' and entryValue=='5'.toString()">
+                    def_vip_task.bill_status= '2' AND def_vip_task.task_status = '0'
+                </when>
+                <when test="entryValue!='' and entryKey=='task_status'">
+                    def_vip_task.${entryKey} = ${entryValue}
+                </when>
+
+                <when test="entryValue!=''">
+                    def_vip_task.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By def_vip_task.id
+        ORDER BY def_vip_task.id DESC
+    </select>
+
+
+    <select id="selectMobileShow" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE isactive = 'Y'
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="app_id != null and app_id !=''">
+            AND app_id = #{app_id}
+        </if>
+        <if test="status != null and status !=''">
+            AND ( task_status = #{status}
+                OR ( task_status = '0.5'
+                AND is_advance_show = #{is_advance_show} )
+              )
+        </if>
+        Group By id
+        ORDER BY id DESC
+    </select>
+
+
+    <select id="selectAllByStatus" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE 1=1 AND task_status &lt;&gt; '0'
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        AND isactive='Y'
+        Group By id
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectVipTaskByTaskType" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="task_type!=null and task_type!=''">
+            AND task_type=#{task_type}
+        </if>
+        AND isactive='Y'
+        Group By id
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectVipTaskByTaskTypeAndTitle" resultMap="VipTask">
+        SELECT *
+        FROM def_vip_task
+        WHERE 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="task_type!=null and task_type!=''">
+            AND task_type=#{task_type}
+        </if>
+        <if test="task_condition!=null and task_condition!=''">
+            AND task_condition=#{task_condition}
+        </if>
+        AND isactive='Y'
+        Group By id
+        ORDER BY id DESC
+    </select>
+</mapper>

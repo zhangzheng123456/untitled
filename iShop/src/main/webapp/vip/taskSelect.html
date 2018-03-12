@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>新增会员任务</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../css/vip_task.css?20171211">
+    <style>
+        body{
+            margin-top:81px;
+        }
+        .conpany_msg .searchable-select-holder{
+            background: #fff url(../img/btn_dropRead.png) no-repeat 100% 50%;
+            background-size:30px;
+        }
+        .conpany_msg .drop_down input{
+            background: #fff url(../img/btn_dropRead.png) no-repeat 100% 50%;
+            background-size:30px;
+        }
+        .conpany_msg .checkbox_isactive .check:checked + label {
+            background: url(../img/icon_radio_S_U.png) center center / 16px 16px no-repeat;
+        }
+        .conditionWrap .removeContidion{
+            display: none;
+        }
+        .shadow{
+            width: 100%;
+            position: fixed;
+            top:0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 700;
+        }
+    </style>
+</head>
+<body>
+<!-- <div id="wrapper">
+</div> -->
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>会员营销</span><i class="icon-ishop_8-03"></i><span style="position: relative;z-index: 1000" id="back_vip_label">会员任务</span><i class="icon-ishop_8-03"></i><label>会员任务详情</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li>
+                        <span class="corp_select">
+                            <select id="OWN_CORP" style="display:inline-flex"></select>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="drop_down">
+                <label style="color:#c26555;">公众号*</label><input id="wechat_input" data-id="" data-empty="公众号" type="text" class="notEmpty" placeholder="请选择公众号" readonly><ul class="wxSelect"></ul>
+            </div>
+            <div>
+                <span><label>任务名称</label><input id="taskTitle" class="notEmpty" type="text" readonly/></span>
+            </div>
+            <div>
+                <span>
+                    <label>任务时间</label><input type="text" id="startTime" readonly="true"  class="laydate-icon taskTime notEmpty"/><span class="line">~</span><input type="text" id="endTime" readonly="true"  class="laydate-icon taskTime notEmpty"/>
+                </span>
+            </div>
+            <div>
+                <label style="vertical-align: top">目标会员</label><div class="change_wrap">
+                <div class="giftWrapHead" id="giftWrapHead">
+                    <span class="checkbox_isactive"><input type="radio"  name="test" class="check" id="allVips"><label for="allVips"></label></span><span style="margin-right: 40px">所有会员</span>
+                    <span class="checkbox_isactive"><input checked="true" type="radio"  name="test" class="check" id="chooseVips"><label for="chooseVips"></label></span>筛选会员
+                    <span class="addConditionWrap"><input  value="添加筛选条件" style=" background: #dfdfdf" type="button"/><i class="icon-ishop_8-03"></i></span>
+                </div>
+                <div class="conditionWrap" id="conditionWrap">
+                    <div style="text-align: center">暂无条件</div>
+                </div>
+            </div>
+            </div>
+            <div class="drop_down">
+                <label>任务类型</label><input  id="taskType" type="text" value="分享商品" readonly/><ul>
+                <li data-type="share_goods">分享商品</li>
+                <li data-type="share_counts">分享次数</li>
+                <li data-type="integral_accumulate">积分积累</li>
+                <li data-type="consume_count">累计消费次数</li>
+                <li data-type="consume_money">累计消费金额</li>
+                <li data-type="ticket_sales">最高客单价</li>
+                <li data-type="invite_registration">邀请注册</li>
+                <li data-type="activity_count">参与活动次数</li>
+                <li data-type="improve_data">完善资料</li>
+                <li data-type="activity">活动</li>
+                <li data-type="questionnaire">问卷调查</li>
+            </ul>
+            </div>
+            <div class="taskCondition" id="taskCondition">
+                <label style="vertical-align: top">任务条件</label><div class="change_wrap">
+                <div style="display: block">分享次数<input id="shareCount" type="text" class="inviteInput numberInput notEmpty" data-empty="分享次数">次</div>
+                <div>分享次数<input id="shareCounts" type="text" class="inviteInput numberInput" data-empty="分享次数" readonly>次<br>
+                    分享链接<input id="shareUrl" type="text" class="input320px urlInput notEmpty" data-empty="分享链接">配置内容<input style="margin: 5px 5px 0 10px;background: #dfdfdf"  value="编辑内容" type="button" class="templetBtn"/><span id="shareTemplet">已编辑</span></div>
+                <div>积分累计<input type="text" class="inviteInput numberInput notEmpty" data-empty="积分累计" readonly>分</div>
+                <div>时间范围<input type="text" id="CountstartTime" readonly data-empty="时间范围" class="laydate-icon TimeShortInput notEmpty"/><span style="margin-left: 10px">~</span><input type="text" id="CountendTime" readonly data-empty="时间范围"  class="laydate-icon TimeShortInput notEmpty"/>消费次数<input type="text" class="inviteInput numberInput notEmpty" data-empty="消费次数">次</div>
+                <div>时间范围<input type="text" id="PricestartTime" readonly data-empty="时间范围" class="laydate-icon TimeShortInput notEmpty"/><span style="margin-left: 10px">~</span><input type="text" id="PriceEndTime" readonly data-empty="时间范围"  class="laydate-icon TimeShortInput notEmpty"/>消费金额<input type="text" class="inviteInput numberInput notEmpty" data-empty="消费金额">元</div>
+                <div>时间范围<input type="text" id="HighPrcieStartTime" readonly data-empty="时间范围" class="laydate-icon TimeShortInput notEmpty"/><span style="margin-left: 10px">~</span><input type="text" id="HighPriceEndTime" data-empty="时间范围" readonly  class="laydate-icon TimeShortInput notEmpty"/>最高客单价<input type="text" class="inviteInput numberInput notEmpty" data-empty="客单价">元</div>
+                <div>成功邀请<input type="text" class="inviteInput numberInput notEmpty" data-empty="成功邀请人数" readonly>人<br>配置内容<input style="margin: 5px 5px 0 10px;background: #dfdfdf"  value="编辑内容" type="button" class="templetBtn"/><span id="inviteTemplet">已编辑</span></div>
+                <div>活动类型<input type="text" id="activityType" class="input320px selectInput notEmpty" data-empty="活动类型" placeholder="请选择活动类型" readonly><ul class="wxSelect selectWrap"><li data-type="recruit">招募活动</li>
+                    <li data-type="sales">促销活动</li><li data-type="h5">网页活动</li><li data-type="coupon">优惠券活动</li><li data-type="invite">线下报名活动</li><li data-type="festival">节日活动</li></ul><br>参与次数<input type="text" class="inviteInput notEmpty">次</div>
+                <div class="inputWrap" id="improve_dataWrap"><span class="infoMsg">!</span><span class="infoContent">*任务条件数据来源自定义的拓展字段</span><div><input type="text" data-empty="任务条件" class="input320px selectInput notEmpty" placeholder="请选择条件" readonly><ul class="improveDataWrap conditionSelect selectWrap"></ul><span class="couponOperate"><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02" style="display: none"></span></span></div></div>
+                <div>活动编号<input type="text" style="width: 250px" class="inviteInput numberInput notEmpty" readonly></div>
+                <div class="inputWrap" id=""><div><input type="text" data-empty="任务条件" class="input320px selectInput notEmpty" placeholder="请选择条件" readonly><ul class="surveySelect conditionSelect selectWrap"></ul></div></div>
+            </div>
+            </div>
+            <div class="task_title">
+                <label style="vertical-align: top">达成奖励</label><div class="change_wrap">
+                <div class="giftWrapHead">
+                    <span class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="points"><label id="pointLabel" for="points"></label></span><span style="margin-right: 40px">积分</span>
+                    <span class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="coupons"><label id="couponLabel" for="coupons"></label></span>优惠券
+                </div>
+                <div>
+                    <div id="pointWrap">奖励积分<input type="text" data-empty="奖励积分" class="inviteInput numberInput notEmpty">分</div>
+                    <div id="couponWrap">
+                        <div style="padding-left: 14px"><span class="CouponsTitle">优惠券</span><div class="inputWrap"><div class="couponsWrap"><input type="text" class="input250px selectInput notEmpty" data-empty="优惠券" placeholder="请选择优惠券" readonly><ul class="selects coupon_activity selectWrap"></ul><span class="couponOperate"><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02" style="display: none"></span></span></div></div></div>
+                    </div>
+                    <div class="batch_num"><input type="text" class="input250px notEmpty bath_num_input" placeholder="请输入批次号" id="bath_num_input"></div>
+                </div>
+            </div>
+            </div>
+            <div class="task_dec">
+                <span><label style="vertical-align: top">任务描述</label><span><textarea style="position: absolute;z-index: 800" id="task_dec" readonly></textarea></span></span>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+        <div class="operadd_btn">
+            <ul>
+                <!--<li class="edit_save" id="taskSave"><i class="icon-ishop_6-04"></i>保存</li>-->
+                <li class="edit_close" id="edit_close" style="position: relative;z-index: 1000"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                 <span><label>可用</label><em class="checkbox_isactive">
+                    <input checked="true" type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
+                <span><label>微信提醒</label><em class="checkbox_isactive">
+                    <input type="checkbox" value="" name="test" class="check" id="is_wx_tips">
+                    <label for="is_wx_tips"></label></em></span>
+                <span><label>提前显示</label><em class="checkbox_isactive">
+                    <input type="checkbox" value="" name="test" class="check" id="is_advance_show">
+                    <label for="is_advance_show"></label></em></span>
+            </div>
+        </form>
+    </div>
+    <div class="messageSend_wrap" id="messageSend_wrap">
+        <div>
+            <div class="message_top">
+                <span class="message_icon"></span>
+                <span>分享链接内容配置</span>
+            </div>
+            <div class="message_content">
+                <span class="message_label">推送标题*</span><input id="shareTitle" class="input240px" type="text">
+                <span class="message_label" style="vertical-align: top">消息内容*</span><textarea id="shareContent" name="message_content"></textarea>
+                <span class="imgUploadWrap"><span class="message_label">上传图片*</span><span id="imgBox" class="imgBox"></span><input class="imgInput" id="upload_img" type="file"><span class="imgBtn">上传图片</span></span>
+            </div>
+            <div class="message_footer">
+                <div class="message_close" id="message_close">取消</div>
+                <div class="message_send" id="message_send">保存</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="shadow"></div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/loading.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<!--<script src="../js/vip_screen.js"></script>-->
+<script src="../js/vip/vip_taskOperate.js?20180128"></script>
+</body>
+</html>

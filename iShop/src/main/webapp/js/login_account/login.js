@@ -14,6 +14,7 @@ function createCode() { //随机生成验证码
 	if (checkCode) {
 		checkCode.innerHTML = code;
 	}
+	console.log(code);
 }
 createCode();
 
@@ -55,19 +56,22 @@ function login(){
 			var user_type = message.user_type;
 			var user_id = message.user_id;
 			var val = message.menu;
+			sessionStorage.removeItem("sessionCorp");
 			console.log(message.menu);
 			if (user_type == "admin") {
-				window.location.href = "home/index_admin.html";
+				window.location.href = "home/index_admin.html?v="+$.now();
 			} else if (user_type == "am") {
-				window.location.href = "home/index_am.html";
+				window.location.href = "home/index_am.html?v="+$.now();
 			} else if (user_type == "gm") {
-				window.location.href = "home/index_gm.html";
+				window.location.href = "home/index_gm.html?v="+$.now();
 			} else if (user_type == "staff") {
-				window.location.href = "home/index_staff.html";
+				window.location.href = "home/index_staff.html?v="+$.now();
 			} else if(user_type == "sm"){
-				window.location.href="home/index_sm.html";
+				window.location.href="home/index_sm.html?v="+$.now();
 			} else if(user_type == "bm"){
-				window.location.href="home/index_bm.html";
+				window.location.href="home/index_bm.html?v="+$.now();
+			}else if(user_type=="cm"){
+				window.location.href="home/index_cm.html?v="+$.now();
 			}
 		} else if (data.code == "-1") {
 			$(".portlet-msg-error").html("手机号或密码错误");

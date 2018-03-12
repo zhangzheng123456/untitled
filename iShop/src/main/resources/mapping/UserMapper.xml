@@ -16,10 +16,12 @@
         <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="group_code" property="group_code"/>
         <result column="password" property="password"/>
-        <result column="login_time_recently" property="login_time_recently" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="login_time_recently" property="login_time_recently"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="can_login" property="can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -29,7 +31,12 @@
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isonline" property="isonline" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_back" property="user_back" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="role_code" property="role_code"/>
+        <result column="manager_corp" property="manager_corp" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="city" property="city" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="master_user_code" property="master_user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="master_group_code" property="master_group_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
@@ -45,7 +52,8 @@
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="group_code" property="group_code"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -53,6 +61,9 @@
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isonline" property="isonline" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="city" property="city" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_back" property="user_back" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="manager_corp" property="manager_corp" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="role_code" property="role_code"/>
         <association property="group" javaType="com.bizvane.ishop.entity.Group">
             <result column="group_name" property="group_name"/>
@@ -68,15 +79,22 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_user.corp_code = #{corp_code}
         </if>
-        AND def_user.can_login !='Y' OR def_user.isactive !='Y'
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
+        AND (def_user.can_login !='Y' OR def_user.isactive !='Y')
     </select>
-<!--列表上去掉了email, birthday,can_login, position,login_time_recently,  def_user.created_date, def_user.creater,-->
+    <!--列表上去掉了email, birthday,can_login, position,login_time_recently,  def_user.created_date, def_user.creater,-->
     <select id="selectAllUser" resultMap="UserInfo">
         SELECT def_user.id,
         user_id,
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         store_code,
@@ -88,6 +106,7 @@
         def_user.isactive,
         def_user.isonline,
         def_user.position,
+        def_user.user_back,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -98,6 +117,12 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_user.corp_code = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (user_name LIKE concat('%',#{search_value},'%')
@@ -107,11 +132,18 @@
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        -- {"call":"Y","wx":"Y","sms":"N"}
+        <if test="user_back != null and user_back !=''">
+            AND (def_user.user_back LIKE '%"call":"N"%' OR def_user.user_back LIKE '%"wx":"N"%' OR def_user.user_back
+            LIKE '%"sms":"N"%')
+        </if>
+        AND def_user.isactive ='Y'
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
+
 
     <!--获取店长区经下员工-->
     <!--列表上去掉了email, birthday,can_login, position,login_time_recently,  def_user.created_date, def_user.creater,-->
@@ -122,6 +154,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         store_code,
@@ -133,6 +166,7 @@
         def_user.isactive,
         def_user.isonline,
         def_user.position,
+        def_user.user_back,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -144,11 +178,14 @@
         AND def_group.role_code &lt; #{role_code}
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        <if test="store_regexp!=null and store_regexp != ''">
+            AND def_user.store_code REGEXP ${store_regexp}
+        </if>
         <if test="array != null">
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            def_user.store_code regexp #{item}
-        </foreach>
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code LIKE concat ('%',#{item},'%')
+            </foreach>
         </if>
         <if test="search_value != null and search_value !=''">
             AND
@@ -159,48 +196,68 @@
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        -- {"call":"Y","wx":"Y","sms":"N"}
+        <if test="user_back != null and user_back !=''">
+            AND (def_user.user_back LIKE '%"call":"N"%' OR def_user.user_back LIKE '%"wx":"N"%' OR def_user.user_back
+            LIKE '%"sms":"N"%')
+        </if>
+        AND def_user.isactive='Y'
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
+
 
     <select id="selUserByStoreCode" resultMap="UserInfo">
         SELECT
         def_user.id,
         user_code,
         user_name,
+        def_user.store_code,
         phone,
         def_user.corp_code
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
-        AND def_user.corp_code = #{corp_code}
+        <if test="corp_code != null and corp_code !=''">
+            AND def_user.CORP_CODE = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="role_code != null and role_code !=''">
-          AND def_group.role_code &gt;= #{role_code}
+            AND def_group.role_code &lt;= #{role_code}
+        </if>
+        <if test="can_login!=null and can_login!=''">
+            AND def_user.can_login=#{can_login}
         </if>
         <if test="array !=null">
-        AND (
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
-        </foreach>
-        <if test="areas !=null">
-            <!--拉取区经-->
-            OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP WHERE def_user.corp_code=#{corp_code}
-            AND DEF_USER.group_code = DEF_GROUP.group_code
-            AND DEF_GROUP.role_code='R4000' AND
-            <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
-                area_code REGEXP #{item}
+            AND (
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                store_code LIKE concat ('%',#{item},'%')
             </foreach>
+            <if test="areas !=null">
+                <!--拉取区经-->
+                OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP WHERE def_user.corp_code=#{corp_code}
+                AND DEF_USER.group_code = DEF_GROUP.group_code
+                AND DEF_GROUP.role_code='R4000' AND
+                <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
+                    area_code LIKE concat ('%',#{item},'%')
+                </foreach>
+                )
+            </if>
             )
-        </if>
-        )
         </if>
         AND def_corp.isactive = 'Y'
         AND def_group.isactive = 'Y'
         <if test="search_value != null and search_value !=''">
-            AND  USER_NAME LIKE concat('%',#{search_value},'%')
+            AND USER_NAME LIKE concat('%',#{search_value},'%')
         </if>
         AND def_user.isactive='Y'
+        AND(def_group.isshow IS NULL OR def_group.isshow != 'N' )
         GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
@@ -220,6 +277,7 @@
         login_time_recently,
         store_code,
         can_login,
+        user_back,
         def_user.group_code,
         def_user.version_id,
         def_user.area_code,
@@ -230,6 +288,8 @@
         def_user.created_date,
         def_user.creater,
         def_user.isactive,
+        def_user.manager_corp,
+         def_user.city,
         def_user.isonline,
         def_corp.corp_name,
         def_group.group_name,
@@ -254,6 +314,7 @@
         FROM def_user
         WHERE phone = #{phone}
         AND isactive = 'Y'
+        AND can_login ='Y'
     </select>
 
     <select id="selectByLogin" resultMap="BaseMap">
@@ -308,6 +369,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         email,
@@ -329,10 +391,10 @@
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = #{corp_code}
         <if test="store_code != null and store_code !=''">
-            AND def_user.store_code regexp #{store_code}
+            AND def_user.store_code LIKE concat ('%',#{store_code},'%')
         </if>
         <if test="area_code != null and area_code !=''">
-            AND def_user.area_code regexp #{area_code}
+            AND def_user.area_code LIKE concat ('%',#{area_code},'%')
         </if>
         <if test="role_code != null and role_code !=''">
             AND def_group.role_code &lt; #{role_code}
@@ -340,8 +402,12 @@
         <if test="isactive != null and isactive !=''">
             AND def_user.isactive = #{isactive}
         </if>
+        <if test="search_value != null and search_value !=''">
+            AND def_user.USER_NAME LIKE concat('%',#{search_value},'%')
+        </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        AND(def_group.isshow IS NULL OR def_group.isshow != 'N' )
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
@@ -353,6 +419,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         email,
@@ -383,14 +450,15 @@
             AND def_user.group_code = #{group_code}
         </if>
         <if test="search_value != null and search_value !=''">
-        AND
-        (  user_name LIKE concat('%',#{search_value},'%')
-           OR user_code LIKE concat('%',#{search_value},'%')
-           OR phone LIKE concat('%',#{search_value},'%')
+            AND
+            ( user_name LIKE concat('%',#{search_value},'%')
+            OR user_code LIKE concat('%',#{search_value},'%')
+            OR phone LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        AND def_user.isactive = 'Y'
         GROUP BY def_user.id
         ORDER BY def_user.ID DESC
     </select>
@@ -465,13 +533,19 @@
                 area_code,
             </if>
             <!--<if test="user_id != null">-->
-                <!--user_id,-->
+            <!--user_id,-->
             <!--</if>-->
             <if test="isonline != null">
                 isonline,
             </if>
             <if test="brand_code != null">
                 brand_code,
+            </if>
+            <if test="manager_corp != null">
+                manager_corp,
+            </if>
+            <if test="city != null">
+                city,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -536,13 +610,19 @@
                 #{area_code},
             </if>
             <!--<if test="user_id != null">-->
-                <!--#{user_id},-->
+            <!--#{user_id},-->
             <!--</if>-->
             <if test="isonline != null">
                 #{isonline},
             </if>
             <if test="brand_code != null">
                 #{brand_code},
+            </if>
+            <if test="manager_corp != null">
+                #{manager_corp},
+            </if>
+            <if test="city != null">
+                #{city},
             </if>
         </trim>
     </insert>
@@ -554,7 +634,7 @@
                 user_code = #{user_code},
             </if>
             <!--<if test="user_id!=null ">-->
-                <!--user_id = #{user_id},-->
+            <!--user_id = #{user_id},-->
             <!--</if>-->
             <if test="avatar!=null ">
                 avatar = #{avatar},
@@ -622,9 +702,39 @@
             <if test="version_id != null">
                 version_id = #{version_id},
             </if>
+            <if test="user_back != null">
+                user_back = #{user_back},
+            </if>
+            <if test="manager_corp != null">
+                manager_corp = #{manager_corp},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
         </trim>
         WHERE ID = #{id};
     </update>
+
+
+    <update id="updateUserByCode" parameterType="com.bizvane.ishop.entity.User">
+        UPDATE def_user
+        <trim prefix="SET" suffixOverrides=",">
+
+
+            <if test="modified_date!=null ">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier!=null ">
+                modifier = #{modifier},
+            </if>
+
+
+        </trim>
+        WHERE corp_code =#{corp_code} AND user_code =#{user_code} AND isactive ='Y';
+    </update>
+
+
+
 
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT count(1) from def_user
@@ -634,6 +744,19 @@
         </if>
     </select>
 
+    <select id="getUserCountByStore" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM def_user
+        WHERE 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="storeList!=null">
+            AND
+            <foreach collection="storeList" index="index" item="item" open="(" separator="or" close=")">
+                store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
+    </select>
     <select id="selectAllUserScreen" resultMap="UserInfo">
         SELECT
         def_user.id,
@@ -641,6 +764,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         store_code,
@@ -664,6 +788,12 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_user.corp_code = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
@@ -682,6 +812,48 @@
                     </otherwise>
                 </choose>
             </foreach>
+        </if>
+        <if test="exist_user_back =='Y'.toString()">
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
         </if>
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
@@ -694,6 +866,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         store_code,
@@ -717,10 +890,16 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_user.corp_code = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="storeList!=null">
             AND
             <foreach collection="storeList" index="index" item="item" open="(" separator="or" close=")">
-                store_code regexp #{item}
+                store_code LIKE concat ('%',#{item},'%')
             </foreach>
         </if>
         <if test="map!=null">
@@ -742,6 +921,48 @@
                 </choose>
             </foreach>
         </if>
+        <if test="exist_user_back =='Y'.toString()">
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+        </if>
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
@@ -753,6 +974,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         store_code,
@@ -775,10 +997,15 @@
         AND def_group.role_code &lt; #{role_code}
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
-        </foreach>
+        <if test="store_regexp!=null and store_regexp != ''">
+            AND def_user.store_code REGEXP ${store_regexp}
+        </if>
+        <if test="array != null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
@@ -797,6 +1024,48 @@
                     </otherwise>
                 </choose>
             </foreach>
+        </if>
+        <if test="exist_user_back =='Y'.toString()">
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
         </if>
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
@@ -810,6 +1079,7 @@
         user_code,
         user_name,
         sex,
+        can_login,
         def_user.avatar,
         phone,
         store_code,
@@ -832,14 +1102,19 @@
         AND def_group.role_code &lt; #{role_code}
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
-        </foreach>
+        <if test="store_regexp!=null and store_regexp != ''">
+            AND def_user.store_code REGEXP ${store_regexp}
+        </if>
+        <if test="array != null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
         <if test="storeList!=null">
             AND
             <foreach collection="storeList" index="index" item="item" open="(" separator="or" close=")">
-                store_code regexp #{item}
+                store_code LIKE concat ('%',#{item},'%')
             </foreach>
         </if>
         <if test="map!=null">
@@ -860,6 +1135,48 @@
                     </otherwise>
                 </choose>
             </foreach>
+        </if>
+        <if test="exist_user_back =='Y'.toString()">
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='N'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='Y'.toString() and call=='Y'.toString() and sms=='Y'.toString()">
+                AND def_user.user_back LIKE '%"wx":"Y"%'
+                AND def_user.user_back LIKE '%"call":"Y"%'
+                AND def_user.user_back LIKE '%"sms":"Y"%'
+            </if>
+            <if test="wx =='N'.toString() and call=='N'.toString() and sms=='N'.toString()">
+                AND def_user.user_back LIKE '%"wx":"N"%'
+                AND def_user.user_back LIKE '%"call":"N"%'
+                AND def_user.user_back LIKE '%"sms":"N"%'
+            </if>
         </if>
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
@@ -882,29 +1199,171 @@
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
-        AND def_user.corp_code = #{corp_code}
+        <if test="corp_code != null and corp_code !=''">
+            AND def_user.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="role_code != null and role_code != ''">
             AND def_group.role_code &lt; #{role_code}
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        AND def_user.isactive = 'Y'
+        AND(def_group.isshow IS NULL OR def_group.isshow != 'N' )
         <if test="array != null">
             AND(
-                <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-                    def_user.store_code regexp #{item}
-                </foreach>
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code LIKE concat ('%',#{item},'%')
+            </foreach>
 
-                <if test="areas !=null">
+            <if test="areas !=null">
                 <!--拉取区经-->
                 OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP
-                    WHERE def_user.corp_code=#{corp_code}
-                    AND DEF_USER.group_code = DEF_GROUP.group_code
-                    AND DEF_GROUP.role_code='R4000'
-                    AND
-                    <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
-                        area_code REGEXP #{item}
-                    </foreach>)
-                </if>
+                WHERE def_user.corp_code=#{corp_code}
+                AND DEF_USER.group_code = DEF_GROUP.group_code
+                AND DEF_GROUP.role_code='R4000'
+                AND
+                <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
+                    area_code LIKE concat ('%',#{item},'%')
+                </foreach>)
+            </if>
+            )
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_user.user_name LIKE concat('%',#{search_value},'%')
+            OR
+            def_group.group_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        GROUP BY def_user.id
+        ORDER BY def_user.id DESC
+    </select>
+
+
+    <select id="selectUsersByRoleAndGroup" resultType="com.bizvane.ishop.entity.User">
+        SELECT
+        def_user.id,
+        user_id,
+        user_code,
+        user_name,
+        phone,
+        store_code,
+        def_user.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_group.group_name,
+        def_group.role_code
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_user.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="role_code != null and role_code != ''">
+            AND def_group.role_code &lt; #{role_code}
+        </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        AND def_user.isactive = 'Y'
+        AND(def_group.isshow IS NULL OR def_group.isshow != 'N' )
+        <if test="array != null">
+            AND(
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+
+            <if test="areas !=null">
+                <!--拉取区经-->
+                OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP
+                WHERE def_user.corp_code=#{corp_code}
+                AND DEF_USER.group_code = DEF_GROUP.group_code
+                AND DEF_GROUP.role_code='R4000'
+                AND
+                <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
+                    area_code LIKE concat ('%',#{item},'%')
+                </foreach>)
+            </if>
+            )
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_user.user_name LIKE concat('%',#{search_value},'%')
+            OR
+            def_group.group_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        GROUP BY def_user.id
+        ORDER BY def_user.id DESC
+    </select>
+
+    <select id="selectUsersOfTask" resultType="com.bizvane.ishop.entity.User">
+        SELECT
+        def_user.id,
+        user_id,
+        user_code,
+        user_name,
+        phone,
+        store_code,
+        def_user.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_group.group_name,
+        def_group.role_code
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_user.corp_code = #{corp_code}
+        </if>
+
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.corp_code =#{item}
+            </foreach>
+        </if>
+
+        <if test="role_code != null and role_code != ''">
+            AND def_group.role_code &lt; #{role_code}
+        </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        AND def_user.isactive = 'Y'
+        AND(def_group.isshow IS NULL OR def_group.isshow != 'N' )
+        <if test="array != null">
+            AND(
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.group_code LIKE concat ('%',#{item},'%')
+            </foreach>
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+
+            <if test="areas !=null">
+                <!--拉取区经-->
+                OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP
+                WHERE def_user.corp_code=#{corp_code}
+                AND DEF_USER.group_code = DEF_GROUP.group_code
+                AND DEF_GROUP.role_code='R4000'
+                AND
+                <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
+                    area_code LIKE concat ('%',#{item},'%')
+                </foreach>)
+            </if>
             )
         </if>
         <if test="search_value != null and search_value !=''">
@@ -912,13 +1371,79 @@
             (def_user.user_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY def_user.id
+        ORDER BY def_user.id DESC
+    </select>
+
+
+    <select id="selectUsersByRoleByCm" resultType="com.bizvane.ishop.entity.User">
+        SELECT
+        def_user.id,
+        user_id,
+        user_code,
+        user_name,
+        phone,
+        store_code,
+        def_user.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_group.group_name,
+        def_group.role_code
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_user.CORP_CODE =#{item}
+            </foreach>
+        </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         AND def_user.isactive = 'Y'
+        AND(def_group.isshow IS NULL OR def_group.isshow != 'N' )
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_user.user_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        GROUP BY def_user.id
+        ORDER BY def_user.id DESC
+    </select>
+
+    <select id="selectPartUser2Code" resultMap="UserInfo">
+        SELECT
+        user_code
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.corp_code = #{corp_code}
+        AND def_group.role_code &lt; #{role_code}
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        <if test="array != null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_user.user_name LIKE concat('%',#{search_value},'%')
+            OR def_user.user_code LIKE concat('%',#{search_value},'%')
+            OR def_user.phone LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_group.group_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
         GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 
     <select id="selectUsersByUserCode" resultType="com.bizvane.ishop.entity.User">
-        SELECT  def_user.id,
+        SELECT def_user.id,
         user_id,
         user_code,
         user_name,
@@ -942,7 +1467,7 @@
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (  user_name LIKE concat('%',#{search_value},'%')
+            ( user_name LIKE concat('%',#{search_value},'%')
             OR user_code LIKE concat('%',#{search_value},'%')
             OR phone LIKE concat('%',#{search_value},'%')
             )
@@ -954,7 +1479,7 @@
     </select>
 
     <select id="selectSMByStoreCode" resultType="com.bizvane.ishop.entity.User">
-        SELECT  def_user.id,
+        SELECT def_user.id,
         user_id,
         user_code,
         user_name,
@@ -974,12 +1499,12 @@
             AND def_group.role_code = #{role_code}
         </if>
         <if test="store_code != null and store_code !='' and store_id !=null and store_id !=''">
-            AND (def_user.store_code regexp #{store_code}
-            OR def_user.store_code regexp #{store_id} )
+            AND (def_user.store_code LIKE concat('%',#{store_code},'%')
+            OR def_user.store_code LIKE concat('%',#{store_id},'%') )
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (  user_name LIKE concat('%',#{search_value},'%')
+            ( user_name LIKE concat('%',#{search_value},'%')
             OR user_code LIKE concat('%',#{search_value},'%')
             OR phone LIKE concat('%',#{search_value},'%')
             )
@@ -988,5 +1513,86 @@
         AND def_corp.isactive = 'Y'
         GROUP BY def_user.id
         ORDER BY def_user.ID DESC
+    </select>
+
+    <select id="selectUserByUserCode" resultMap="BaseMap">
+        SELECT *
+        FROM def_user
+        WHERE 1=1
+        <if test="corp_code != null and corp_code != ''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="user_code != null and user_code != ''">
+            AND user_code = #{user_code}
+        </if>
+        <if test="isactive != null and isactive != ''">
+            AND isactive = #{isactive}
+        </if>
+
+    </select>
+
+    <select id="selectUserCodeByNameOrCode" resultType="com.bizvane.ishop.entity.User">
+        SELECT
+        user_id,
+        user_code,
+        user_name,
+        store_code
+        FROM def_user
+        WHERE 1=1
+        AND def_user.corp_code = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND
+            ( user_name LIKE concat('%',#{search_value},'%')
+            OR user_code LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        AND def_user.isactive='Y'
+        AND def_user.can_login='Y'
+        GROUP BY def_user.id
+        ORDER BY def_user.id DESC
+    </select>
+
+
+    <!--通过MASTER_CODE  不允许使用列别名作为查询条件-->
+    <select id="selectUserByMasterCode" resultMap="BaseMap">
+        SELECT du.*,dg.role_code,concat(du.corp_code,'U',du.user_code) as master_user_code,
+        concat(du.corp_code,'G',du.group_code) as master_group_code
+        FROM def_user du,def_group dg
+        WHERE du.corp_code= dg.corp_code
+        AND du.group_code= dg.group_code
+        AND du.isactive= 'Y'
+        AND dg.isactive= 'Y'
+        <if test="corp_code!=null and corp_code!=''">
+            AND
+            du.corp_code=#{corp_code}
+        </if>
+        <if test="master_code != null and master_code!=''">
+            AND
+            (
+            concat(du.corp_code,'U',du.user_code) IN
+            <foreach collection="master_code" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            OR
+            concat(du.corp_code,'G',du.group_code) IN
+            <foreach collection="master_code" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            OR
+            dg.role_code IN
+            <foreach collection="master_code" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+        </if>
+
+        <if test="store_code!= null and store_code!=''">
+            AND
+            <foreach collection="store_code" index="index" item="item" open="(" separator="or" close=")">
+                du.store_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
+        GROUP BY du.id
+        ORDER BY du.id DESC
     </select>
 </mapper>

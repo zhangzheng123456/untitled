@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by nanji on 2016/8/24.
@@ -258,7 +256,7 @@ public class ErrorLogController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
-
+                result.put("total",dbCursor1.count());
             } else {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -269,6 +267,7 @@ public class ErrorLogController {
 
                 pages = MongoUtils.getPages(dbCursor2,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
+                result.put("total",dbCursor2.count());
             }
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
@@ -318,9 +317,10 @@ public class ErrorLogController {
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
-
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
+                result.put("total",dbCursor1.count());
+
             } else {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -331,6 +331,7 @@ public class ErrorLogController {
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
+                result.put("total",dbCursor1.count());
             }
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);

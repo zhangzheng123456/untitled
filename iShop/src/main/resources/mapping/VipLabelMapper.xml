@@ -6,12 +6,15 @@
         <id column="id" property="id"/>
         <result column="label_name" property="label_name"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="label_type" property="label_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="count" property="count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="count" property="cnt" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -21,7 +24,7 @@
     </resultMap>
 
     <select id="selectByPrimaryKey" resultMap="VipLabels">
-         SELECT
+        SELECT
         vt.id,
         vt.label_name,
         vt.label_type,
@@ -32,17 +35,18 @@
         vt.creater,
         vt.isactive,
         cc.corp_name
-        ,vt.label_group_code
---         dvg.label_group_name
+        ,vt.label_group_code,
+        vt.brand_code
+        -- dvg.label_group_name
         FROM
         def_vip_label vt,DEF_CORP cc
---         ,def_vip_label_group dvg
+        -- ,def_vip_label_group dvg
         WHERE
         vt.corp_code=cc.corp_code
---         AND
---         vt.label_group_code=dvg.label_group_code AND
---         cc.corp_code=dvg.corp_code
-        AND  vt.id=#{id}
+        -- AND
+        -- vt.label_group_code=dvg.label_group_code AND
+        -- cc.corp_code=dvg.corp_code
+        AND vt.id=#{id}
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipLabel">
@@ -76,6 +80,9 @@
             <if test="label_group_code!=null ">
                 label_group_code,
             </if>
+            <if test="brand_code != null ">
+                brand_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
@@ -105,6 +112,9 @@
             </if>
             <if test="label_group_code!=null ">
                 #{label_group_code},
+            </if>
+            <if test="brand_code!=null ">
+                #{brand_code},
             </if>
         </trim>
 
@@ -141,6 +151,9 @@
             <if test="label_group_code!=null ">
                 label_group_code=#{label_group_code},
             </if>
+            <if test="brand_code!=null ">
+                brand_code=#{brand_code},
+            </if>
         </trim>
         WHERE id=#{id}
     </update>
@@ -154,6 +167,7 @@
         SELECT
         vt.id,
         vt.label_name,
+        vt.count,
         vt.label_type,
         vt.corp_code,
         vt.modified_date,
@@ -162,6 +176,7 @@
         vt.creater,
         vt.isactive,
         cc.corp_name,
+        vt.brand_code,
         vt.label_group_code
         FROM
         def_vip_label vt,DEF_CORP cc
@@ -189,6 +204,7 @@
         SELECT
         vt.id,
         vt.label_name,
+        vt.count,
         vt.label_type,
         vt.corp_code,
         vt.modified_date,
@@ -196,6 +212,7 @@
         vt.created_date,
         vt.creater,
         vt.isactive,
+        vt.brand_code,
         cc.corp_name
         ,vt.label_group_code
         FROM
@@ -228,22 +245,34 @@
                 </otherwise>
             </choose>
         </foreach>
+        <if test="brandList!=null">
+            AND
+            <foreach collection="brandList" index="index" item="item" open="(" separator="or" close=")">
+                vt.brand_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
         GROUP BY vt.label_name
         ORDER BY vt.id DESC
     </select>
 
     <select id="selectVipLabelName" resultType="com.bizvane.ishop.entity.VipLabel">
         SELECT * FROM def_vip_label
-         WHERE
-         label_name=#{label_name}
-         AND
-        corp_code=#{corp_code}
+        WHERE label_name=#{label_name}
+        AND corp_code=#{corp_code}
+        <if test="brandList!=null">
+            AND
+            <foreach collection="brandList" index="index" item="item" open="(" separator="or" close=")">
+                brand_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
     </select>
 
     <select id="countLable" resultType="com.bizvane.ishop.entity.VipLabel">
-        SELECT count(1) countlable,corp_code,label_id FROM rel_vip_label
-        GROUP BY label_id
-        HAVING corp_code=#{corp_code}
+        SELECT count(1) countlable,
+        corp_code,
+        label_id
+        FROM rel_vip_label
+        WHERE corp_code=#{corp_code}
         AND label_id=#{label_id}
     </select>
 
@@ -268,7 +297,7 @@
         vt.corp_code,
         cc.corp_name,
         vt.label_group_code,
-        rvl.id  rid
+        rvl.id rid
         FROM
         def_vip_label vt,DEF_CORP cc,rel_vip_label rvl
         ,def_vip_label_group dvg
@@ -285,31 +314,33 @@
     </select>
 
 
-<!--热门标签-->
+    <!--热门标签-->
     <select id="findHotViplabel" resultMap="VipLabels">
-    SELECT
-    tvl.LABEL_ID id,
-    dl.LABEL_NAME,
-    dl.LABEL_TYPE,
-    COUNT(1) cnt
-    FROM
-    rel_vip_label tvl,
-    def_vip_label dl
-    WHERE
-    tvl.LABEL_ID = dl.ID
-    AND tvl.ISACTIVE = 'Y'
-    AND dl.ISACTIVE = 'Y'
-    AND tvl.corp_code = #{corp_code}
-    AND dl.corp_code =  #{corp_code}
-    GROUP BY
-    tvl.LABEL_ID,
-    dl.LABEL_NAME,
-    dl.LABEL_TYPE
-    ORDER BY
-    cnt DESC
-    LIMIT 0,20
+        SELECT
+        dl.ID ,
+        dl.LABEL_NAME,
+        dl.LABEL_TYPE,
+        dl.COUNT cnt
+        FROM
+        def_vip_label dl
+        WHERE 1=1
+        AND dl.ISACTIVE = 'Y'
+        AND dl.corp_code = #{corp_code}
+        <if test="brandList!=null">
+            AND
+            <foreach collection="brandList" index="index" item="item" open="(" separator="or" close=")">
+                brand_code LIKE concat ('%',#{item},'%')
+            </foreach>
+        </if>
+        GROUP BY
+        dl.ID,
+        dl.LABEL_NAME,
+        dl.LABEL_TYPE
+        ORDER BY
+        cnt DESC
+        LIMIT 0,20
     </select>
-<!--用户和官方标签-->
+    <!--用户和官方标签-->
     <select id="findViplabelByType" resultType="com.bizvane.ishop.entity.VipLabel">
         SELECT
         *
@@ -320,6 +351,12 @@
         </if>
         <if test="search_value!=null and search_value!=''">
             AND LABEL_NAME like concat('%',#{search_value},'%')
+        </if>
+        <if test="brandList!=null">
+            AND
+            <foreach collection="brandList" index="index" item="item" open="(" separator="or" close=")">
+                brand_code LIKE concat ('%',#{item},'%')
+            </foreach>
         </if>
         AND LABEL_TYPE !='sys'
         AND LABEL_TYPE !=''
@@ -366,6 +403,13 @@
             <if test="isactive!=null ">
                 isactive,
             </if>
+            <if test="vip_name!=null ">
+                vip_name,
+            </if>
+            <if test="vip_card_no!=null ">
+                vip_card_no,
+            </if>
+
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="label_id!=null ">
@@ -395,6 +439,12 @@
             <if test="isactive!=null ">
                 #{isactive},
             </if>
+            <if test="vip_name!=null ">
+                #{vip_name},
+            </if>
+            <if test="vip_card_no!=null ">
+                #{vip_card_no},
+            </if>
         </trim>
     </insert>
 
@@ -403,14 +453,51 @@
         WHERE id=#{rid}
     </delete>
 
+    <delete id="delAllRelViplabel">
+        delete from rel_vip_label
+        WHERE label_id=#{label_id}
+    </delete>
+
     <!--根据lable_name查出rel_vip_label的lable_id-->
     <select id="findViplabelID" resultType="com.bizvane.ishop.entity.VipLabel">
         SELECT id FROM def_vip_label
         WHERE corp_code=#{corp_code}
         AND label_name=#{label_name}
         <if test="isactive !=null and isactive!=''">
-          AND isactive=#{isactive}
+            AND isactive=#{isactive}
         </if>
+    </select>
+
+    <select id="selectVipsLabel" resultMap="VipLabels">
+        SELECT
+        vt.id,
+        vt.label_name,
+        vt.label_type,
+        rvl.vip_code,
+        rvl.vip_name,
+        rvl.vip_card_no,
+        rvl.store_code,
+        rvl.creater,
+        ds.store_name,
+        du.user_name,
+        rvl.created_date
+        FROM
+        def_vip_label vt,rel_vip_label rvl,def_store ds,def_user du
+        WHERE
+        vt.corp_code=rvl.corp_code
+        AND vt.corp_code = ds.corp_code
+        AND vt.corp_code = du.corp_code
+        AND vt.id = rvl.label_id
+        AND rvl.store_code = ds.store_code
+        AND rvl.creater = du.user_code
+        AND rvl.corp_code = #{corp_code}
+        AND rvl.vip_code IN
+        <foreach collection="vips" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.isactive = 'Y'
+        AND ds.isactive = 'Y'
+        ORDER BY vt.id DESC
     </select>
 
 </mapper>

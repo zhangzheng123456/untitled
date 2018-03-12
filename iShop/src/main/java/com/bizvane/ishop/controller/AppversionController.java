@@ -2,12 +2,10 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.Feedback;
-import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.AppversionService;
 import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FunctionService;
@@ -18,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,10 +79,10 @@ public class AppversionController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //-------------------------------------------------------
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
@@ -111,10 +108,10 @@ public class AppversionController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
@@ -147,10 +144,10 @@ public class AppversionController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             Appversion appversion=new Appversion();
             appversion.setPlatform(jsonObject.get("platform").toString());
             appversion.setDownload_addr(jsonObject.get("download_addr").toString());
@@ -212,10 +209,10 @@ public class AppversionController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String app_id = jsonObject.get("id").toString();
             String[] ids = app_id.split(",");
             for (int i = 0; i < ids.length; i++) {
@@ -269,10 +266,10 @@ public class AppversionController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String app_id = jsonObject.get("id").toString();
             final Appversion appversion = appversionService.selAppversionById(Integer.parseInt(app_id));
             JSONObject result = new JSONObject();
@@ -303,10 +300,10 @@ public class AppversionController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             Appversion appversion=new Appversion();
             appversion.setPlatform(jsonObject.get("platform").toString());
             appversion.setDownload_addr(jsonObject.get("download_addr").toString());
@@ -370,9 +367,9 @@ public class AppversionController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //系统管理员(官方画面)
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
@@ -394,7 +391,7 @@ public class AppversionController {
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,appversions, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,appversions, map, response, request,"App版本控制");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -411,4 +408,5 @@ public class AppversionController {
         }
         return dataBean.getJsonStr();
     }
+    
 }

@@ -1,0 +1,47 @@
+ .action_l .login_way,.action_l .login_times{
+     background: none;
+     margin-left: 10px;
+     width: 170px;
+     height: 30px;
+     border: none;
+     outline: none;
+     border-radius: 5px;
+     color: #888;
+     padding: 0;
+     text-indent: 5px;
+     position: relative;
+     background: #fff url('../img/btn_dropmenu.png') no-repeat 100% 50%;
+     background-size: 30px;
+}
+ #login_way,#login_times{
+     overflow: hidden;
+     width: 100%;
+     position: absolute;
+     left:0;
+     top:30px;
+     background: #f5f5f5;
+ }
+ #login_way li,#login_times li{
+     width: 100%;
+     background: none;
+     height: 35px;
+     margin: 0;
+     line-height: 35px;
+     text-indent: 10px;
+     color: #807a62;
+ }
+ #login_way li:hover,#login_times li:hover{
+     color: #fff!important;
+     background: #4a5f7c;
+
+ }
+ .fade-enter-active, .fade-leave-active {
+     height: 105px;
+     transition: height .5s
+ }
+ .fade-leave{
+     transition: height .5s
+ }
+ .fade-enter, .fade-leave-active {
+     height: 0
+ }

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>优惠券查询</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <style>
+        .coupon_pop{
+            background-color: #FFFFFF;
+            width: 430px;
+            border-radius: 5px;
+            position: fixed;
+            top:50%;
+            left: 50%;
+            -webkit-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            -o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            box-shadow:0 0 10px rgba(0,0,0,0.35);
+            color: #4a5f7c;
+            font-size: 13px;
+            z-index: 1001;
+        }
+        .coupon_pop_title,.coupon_pop .coupon_pop_info_title,.coupon_pop .coupon_pop_detail_title, .coupon_pop .coupon_pop_info_content div,.coupon_pop .coupon_pop_detail_content div{
+            height: 30px;
+            line-height: 30px;
+        }
+        .coupon_pop .coupon_pop_info_content, .coupon_pop .coupon_pop_detail_content{
+            background-color: #f5f5f5;
+            padding: 10px;
+        }
+        .coupon_pop .coupon_pop_detail_content div span:first-child,.coupon_pop .coupon_pop_info_content div span:first-child{
+            width: 110px;
+            display: inline-block;
+        }
+        .coupon_pop_detail_content{
+            min-height:180px;
+            overflow: hidden;
+            overflow-y: auto;
+            max-height: calc(100vh - 350px * 2);
+        }
+        .coupon_pop_footer{
+            margin-top: 10px;
+        }
+        .coupon_pop_footer .close_coupon_pop{
+           display: block;text-align:center;color:#fff;border-radius:3px;width: 90px;height: 25px;line-height: 25px;background-color: #c4c8d4;margin: 0 auto;cursor: pointer;
+        }
+
+        .select_title{
+            height: 20px;
+            color:#4a5f7c;
+            border-bottom: 1px solid #e1e1e1;
+            font-size: 13px;
+        }
+        .select_title i{
+            color:#5f8bc8;
+            float: left;
+            margin-right: 5px;;
+        }
+        .select_title span{
+            float: left;
+            margin-top: -3px;
+        }
+        .export_list{
+            display: none;
+            width: 370px;
+            height: 320px;
+            color:#4a5f7c;
+            border-radius:5px;
+            padding:20px;
+            box-sizing:border-box;
+            background-color: #FFFFFF;
+            position: fixed;
+            left: 50%;
+            top:50%;
+            -webkit-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            -moz-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            box-shadow: 0 0 10px rgba(0,0,0,0.335);
+            z-index: 1001;
+        }
+        .export_list_tip{
+            font-size: 12px;margin: 10px 0 20px 0;line-height: 20px
+        }
+        .export_list_all{
+            height: 230px;max-height: 150px;overflow: hidden;overflow-y:auto;font-size: 12px;
+        }
+        .export_list_all li{
+            height: 20px;line-height: 20px;margin-bottom: 10px;
+        }
+        .export_list_all li span{
+            float: right;
+            display: inline-block;
+        }
+        .export_list_btn{
+            display: inline-block;
+            background-color: #41c7db;
+            border-radius: 3px;
+            width:50px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            color: #FFFFFF;
+            cursor: pointer
+        }
+        .hide_export{
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hide_export span{
+            display: inline-block;
+            color:#FFFFFF;
+            cursor:pointer;
+            background-color:#c4c8d4;
+            width: 90px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 5px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<!-- <div id="navbar">
+
+</div> -->
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>报表中心</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>优惠券查询</span>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul id="jurisdiction">
+                </ul>
+                <ul>
+                    <li class="li">
+                        <input type="text" class="input" id="search" placeholder="券号/单据编号">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="filtrate">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                    <!--<li class="bg">-->
+                    <!--<span class="icon-ishop_6-06"></span>-->
+                    <!--配置-->
+                    <!--</li>-->
+                    <li class="bg">
+                        <span class="icon-ishop_6-07"></span>
+                        刷新
+                    </li>
+                    <li id="more">
+                        <span class="icon-ishop_6-08"></span>
+                        更多
+                        <div class="more_down" id="more_down">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 导出-->
+        <div class="file" style="z-index: 1001">
+            <div class="file_content">
+                <div id="download"></div>
+                <div  class="icon-ishop_6-12" id="file_close"></div>
+            </div>
+            <div id="file_list">
+                <div id="file_list_l">
+                    <ul>
+                    </ul>
+                </div>
+                <div id="file_list_z">
+                    <div class="c_shift">
+                        <div id="left_shift" class="shift" title="右移">></div>
+                        <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                        <div id="right_shift" class="shift" title="左移"><</div>
+                        <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+                    </div>
+                </div>
+                <div id="file_list_r">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="file_btn">
+                <div class="file_submit" id="file_submit">提交</div>
+            </div>
+        </div>
+        <div class="sxk" id="sxk">
+            <div class="sbtn">
+                <div class="empty" id="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <!--<span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>-->
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                <ul></ul>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: left;" id="tableOrder">序号</th>
+                    <!--<th>分组编号</th>-->
+                    <!--<th>分组名称</th>-->
+                    <!--<th>所属企业</th>-->
+                    <!--<th>所属员工</th>-->
+                    <!--<th>备注</th>-->
+                    <!--<th>修改时间</th>-->
+                    <!--<th>修改人</th>-->
+                    <!--<th>可用</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num" >
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+                        </li>
+                        <li class="icon-ishop_4-02">
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 0 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="coupon_pop" style="padding: 10px 20px;display: none">
+    <div class="coupon_pop_title" style="border-bottom: 1px solid #d4d8e1;margin-bottom: 10px">
+        <span style="display: inline-block;width: 5px;height: 12px;background-color: #5f8bc8;margin-right: 5px"></span><span>查看优惠券使用详情</span>
+    </div>
+    <div class="coupon_pop_info">
+        <div class="coupon_pop_info_title">优惠券</div>
+        <div class="coupon_pop_info_content">
+           <div><span>券号</span><span id="VOU_NO"></span></div>
+           <div><span>所属会员</span><span id="B_VIP_NAME"></span></div>
+           <div><span>是否原会员使用</span><span id="SAME_BV_VIP"></span></div>
+        </div>
+    </div>
+    <div class="coupon_pop_detail">
+        <div class="coupon_pop_detail_title">使用情况</div>
+        <div class="coupon_pop_detail_content">
+            <div><span>抵用金额</span><span id="DEDUCT_TRADE"></span></div>
+            <div><span>使用会员</span><span id="V_VIP_NAME"></span></div>
+            <div><span>使用会员卡号</span><span id="V_VIP_CARD_NO"></span></div>
+            <div><span>使用会员手机号</span><span id="V_VIP_PHONE"></span></div>
+            <div><span>使用时间</span><span id="VERIFYED_TIME"></span></div>
+
+            <div><span>单据编号</span><span id="VERIFYED_ORDER"></span></div>
+            <div><span>单据金额</span><span id="TOTAL_TRADE"></span></div>
+            <div><span>件数</span><span id="NUM_SALES"></span></div>
+            <div><span>核销店仓</span><span id="VERIFYED_STORE"></span></div>
+            <div><span>核销员工</span><span id="EMP_ID"></span></div>
+        </div>
+    </div>
+    <div class="coupon_pop_footer" >
+        <span class="close_coupon_pop">返回</span>
+    </div>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+
+<div class="tk" id="download_all" style="position: fixed">
+    <span class="icon-ishop_6-12" id="X_download"></span>
+    <p>请点击"确认",下载压缩文件</p>
+    <div class="btn">
+        <em class="cancel" id="cancel_download">取消</em>
+        <em class="album_enter" id="enter_download"><a>确认</a></em>
+    </div>
+</div>
+<div class="export_list" id="export_list" >
+    <!--<div><span class="icon-ishop_6-12"></span></div>-->
+    <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+    <div style="height: 220px;">
+        <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+        <div class="export_list_all" id="export_list_all">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="hide_export">
+        <span id="hide_export" style="float: left">关闭</span>
+        <span id="to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+    </div>
+</div>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!--<script src="../table/js/inner.js"></script>-->
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/artDialog/jquery.artDialog.js?201704017824"></script>
+<script src="../js/laydate/laydate.js"></script>
+<script src="../js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="../js/vip/vip_coupon.js?20170919"></script>
+<script src="../js/silide.js?2017040170331"></script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").siblings().find("span").removeClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").siblings().find("a").css({color:"#FFF"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0074']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0074']").find("span").hasClass("icon-ishop_8-01")){
+            var aa=$(window.parent.document).find(".icon-ishop_8-01").parents("dd").position().top;
+            $(window.parent.document).find(".sidebar").scrollTop(aa);
+            clearInterval(timer);
+        }
+    },0);
+    $(".coupon_pop_detail_content").niceScroll({
+        cursorborder:"0 none",
+        cursoropacitymin:"0",
+        boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:50,
+        autohidemode:false,
+        cursorwidth:"5px",
+        cursorborderradius:"10px"});
+</script>
+</body>
+</html>

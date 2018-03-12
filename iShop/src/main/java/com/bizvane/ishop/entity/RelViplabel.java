@@ -15,6 +15,8 @@ public class RelViplabel {
     private String creater;
     private String modifier;
     private String isactive;
+    private String vip_name;
+    private String vip_card_no;
 
     public String getIsactive() {
         return isactive;
@@ -94,5 +96,21 @@ public class RelViplabel {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
+    }
+
+    public String getVip_name() {
+        return vip_name;
+    }
+
+    public void setVip_name(String vip_name) {
+        this.vip_name = vip_name;
+    }
+
+    public String getVip_card_no() {
+        return vip_card_no;
+    }
+
+    public void setVip_card_no(String vip_card_no) {
+        this.vip_card_no = vip_card_no;
     }
 }

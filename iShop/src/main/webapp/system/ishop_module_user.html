@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>编辑图标管理</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div id="wrapper">
+    </div> -->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="col-lg-12 pre_title"><span>系统管理</span>
+            <i class="icon-ishop_8-03"></i><label>爱秀模块管理</label></div>
+            <div class="editor_1 col-lg-12  animated fadeInRight" style="margin-top:20px;">
+                <form class="conpany_msg" style="width: 420px;margin: 0 auto;">
+                    <div class="standard" id="standard" style="display: block;margin: 0 auto;margin-left: -17px;">
+                        <div class="standard_pice"></div>
+                        <div class="silider_parent">
+                            <div class="silider_heaader icons_heaader">
+                                <ul>
+                                    <li style="width: 25%;text-align: center">序号</li>
+                                    <li style="width: 25%;text-align: center">板块名称</li>
+                                    <li style="width: 25%;text-align: center">板块图标</li>
+                                    <li style="width: 25%;text-align: center">是否显示</li>
+                                </ul>
+                            </div>
+                            <div class="standard_pice_list icons_list" id="icons_list" style="max-height: 420px;height: 420px;">
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="compile" style="display: block"><div class='shop_editor' style="width: 420px;margin-left:0;cursor: pointer"></div></div>
+                </form>
+            </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../js/loading.js"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <script type="application/javascript">
+        var oc = new ObjectControl();
+        var module={};
+        module.geticonlist=function(){
+            oc.postRequire("get","/appBottomIconCfg/list_user","","", function(data){
+                var message=JSON.parse(data.message);
+                var list=JSON.parse(message.list);
+                module.superaddition(list);
+                if(message.state=="edit"){
+                    $("#compile .shop_editor").html("编辑");
+                    sessionStorage.setItem("id",message.id);
+                }
+                if(message.state=="add"){
+                    $("#compile .shop_editor").html("新增");
+                }
+            })
+        };
+        module.superaddition=function(list){
+            var html='';
+            var num=0;
+            for (var key in list) {
+                var img="";
+                num++;
+                if(num=="5"){
+                    break;
+                }
+                var name="";
+                if(key=="vips"){
+                    img="../img/vip.png";
+                    name="会员"
+                }
+                if(key=="community"){
+                    img="../img/shequ.png";
+                    name="社区"
+                }
+                if(key=="achievement"){
+                    img="../img/achv.png";
+                    name="业绩"
+                }
+                if(key=="goods"){
+                    img="../img/mall.png";
+                    name="商品"
+                }
+                if(list[key]=="Y"){
+                    html+="<ul data-flag='"+key+"'><li style='text-align: center;width: 25%;'><span class='icon-ishop_6-27'></span>"+
+                            num+"</li><li style='width: 25%;text-align: center;'>"+
+                            name+"</li><li style='text-align: center;width: 25%;'><img src='"+
+                            img+"'></li><li style='width: 25%;text-align: center;' class='isactive'><em class='checkbox_isactive' style='margin-left: -20px;'><input type='checkbox' checked='true'  value='' name='test' class='check' ><label for=''></label></em></li></ul>";
+                }else if(list[key]=="N"){
+                    html+="<ul data-flag='"+key+"'><li style='text-align: center;width: 25%;'><span class='icon-ishop_6-27'></span>"+
+                            num+"</li><li style='width: 25%;text-align: center;'>"+
+                            name+"</li><li style='text-align: center;width: 25%;'><img src='"+
+                            img+"'></li><li style='width: 25%;text-align: center;' class='isactive'><em class='checkbox_isactive' style='margin-left: -20px;'><input type='checkbox' value='' name='test' class='check' ><label for=''></label></em></li></ul>";
+                }
+
+            }
+            $("#icons_list").html(html);
+        };
+        $(function(){
+            module.geticonlist();
+            $("#compile").click(function(){
+                if($(this).text()=="编辑"){
+                    $(window.parent.document).find('#iframepage').attr("src","/system/ishop_module_edit.html");
+                }
+                if($(this).text()=="新增"){
+                    $(window.parent.document).find('#iframepage').attr("src","/system/ishop_module_add.html");
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

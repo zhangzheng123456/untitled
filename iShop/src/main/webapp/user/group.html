@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>权限管理</title>
-	<link rel="stylesheet" href="../table/css/inner.css?201715">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?201715"></script>
+    <script src="/js/loading.js?2017040170331"></script>
 </head>
 <body>
     <div class="content">
@@ -43,7 +43,7 @@
                     </ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="群组编号/群组名称/所属角色/所属企业">
+                            <input type="text" class="input" id="search" placeholder="群组编号/群组名称/所属角色/企业名称">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -217,6 +217,14 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
+    <div class="tk" id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
     <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -226,9 +234,9 @@
         </div>
     </div>
 </body>
-<script type="text/javascript" src="/js/insidePostRequire.js?201715"></script>
-<script src="/js/user/group.js?201715"></script>
-<script src="/js/silide.js?201715"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+<script src="/js/user/group.js?2017040170331"></script>
+<script src="/js/silide.js?2017040170331"></script>
 <script type="text/javascript">
     $(function(){
         $(window).scroll(function(){

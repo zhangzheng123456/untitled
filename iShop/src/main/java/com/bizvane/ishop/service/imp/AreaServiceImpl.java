@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
@@ -11,7 +12,7 @@ import com.bizvane.ishop.service.AreaService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
+import org.apache.hadoop.mapred.IFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,7 @@ public class AreaServiceImpl implements AreaService {
     public PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         List<Area> areas;
         PageHelper.startPage(page_number, page_size);
-        areas = areaMapper.selectAllArea(corp_code, search_value);
+        areas = areaMapper.selectAllArea(corp_code, search_value,null);
         for (Area area : areas) {
             area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
         }
@@ -62,10 +63,39 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
+    public List<Area> getAllAreaByPage(String corp_code, String search_value) throws Exception {
+        List<Area> areas;
+        areas = areaMapper.selectAllAreaTwo(corp_code, search_value,null);
+        for (Area area : areas) {
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        }
+        return areas;
+    }
+
+    /**
+     * 分页显示区域
+     */
+    @Override
+    public PageInfo<Area> getAllAreaByPageByCm(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception {
+        List<Area> areas;
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        PageHelper.startPage(page_number, page_size);
+        areas = areaMapper.selectAllArea(corp_code, search_value,manager_corp_arr);
+        for (Area area : areas) {
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        }
+        PageInfo<Area> page = new PageInfo<Area>(areas);
+
+        return page;
+    }
+    @Override
     @Transactional
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         String area_code = jsonObject.get("area_code").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String area_name = jsonObject.get("area_name").toString().trim();
@@ -98,7 +128,7 @@ public class AreaServiceImpl implements AreaService {
         String old_area_code = null;
         String new_area_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         int area_id = Integer.parseInt(jsonObject.get("id").toString().trim());
 
         String area_code = jsonObject.get("area_code").toString().trim();
@@ -209,6 +239,11 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
+    public String updateExecl(Area area) throws Exception {
+        areaMapper.updateArea(area);
+        return "upd success";
+    }
+    @Override
     public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
@@ -231,6 +266,34 @@ public class AreaServiceImpl implements AreaService {
         return page;
     }
 
+
+    @Override
+    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map,String manager_corp) throws Exception {
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            areaArray = area_codes.split(",");
+            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
+                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
+            }
+        }
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        List<Area> areas;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("area_codes", areaArray);
+        params.put("corp_code", corp_code);
+        params.put("manager_corp_arr", manager_corp_arr);
+        params.put("map", map);
+        areas = areaMapper.selectAllAreaScreen(params);
+        for (Area area : areas) {
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        }
+        PageInfo<Area> page = new PageInfo<Area>(areas);
+        return page;
+    }
 
     @Override
     public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
@@ -256,9 +319,9 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<Area> selectArea(String corp_code, String area_codes) throws SQLException {
         String[] areaArray = null;
-        if (null != area_codes && !area_codes.isEmpty()) {
-            if (area_codes.contains(Common.SPECIAL_HEAD))
-                area_codes = area_codes.replace(Common.SPECIAL_HEAD, "");
+        if (null != area_codes ){
+            area_codes = area_codes.replace(Common.SPECIAL_HEAD, "");
+            if (!area_codes.isEmpty())
                 areaArray = area_codes.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
@@ -303,6 +366,57 @@ public class AreaServiceImpl implements AreaService {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
+        params.put("area_codes", areaArray);
+        params.put("search_value", search_value);
+        PageHelper.startPage(page_number, page_size);
+        List<Area> areas = areaMapper.selAreaByCorpCode(params);
+//        for (Area area : areas) {
+//            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+//        }
+        PageInfo<Area> page = new PageInfo<Area>(areas);
+        return page;
+    }
+
+
+    @Override
+    public PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes, String store_code, String search_value,String manager_corp) throws SQLException {
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
+            areaArray = area_codes.split(",");
+        }
+
+        String[] storeArray = null;
+        String area_code1 = "";
+        if (null != store_code && !store_code.isEmpty()) {
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+            storeArray = store_code.split(",");
+            Map<String, Object> params1 = new HashMap<String, Object>();
+            params1.put("store_codes", storeArray);
+            params1.put("corp_code", corp_code);
+            params1.put("search_value", "");
+            params1.put("isactive", "Y");
+            List<Store> stores = storeMapper.selectByStoreCodes(params1);
+            if (stores.size() > 0){
+                for (int i = 0; i < stores.size(); i++) {
+                    String area_code = stores.get(i).getArea_code();
+                    area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                    if (!area_code.endsWith(","))
+                        area_code = area_code + ",";
+                    area_code1 = area_code1 + area_code;
+                }
+                if(!area_code1.equals("")&& !area_code1.equals(",")) {
+                    areaArray = area_code1.split(",");
+                }
+            }
+        }
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("manager_corp_arr", manager_corp_arr);
         params.put("area_codes", areaArray);
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);

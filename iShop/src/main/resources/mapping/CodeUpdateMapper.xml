@@ -408,19 +408,6 @@
         </if>
     </update>
 
-    <update id="updateRelVipEmp">
-        UPDATE rel_vip_emp
-        <trim prefix="set" suffixOverrides=",">
-            <if test="new_emp_id!=null and new_emp_id!='' ">
-                emp_id = #{new_emp_id},
-            </if>
-        </trim>
-        WHERE app_user_name = #{app_user_name}
-        <if test="old_emp_id!=null and old_emp_id!='' ">
-            AND emp_id = #{old_emp_id}
-        </if>
-    </update>
-
     <update id="updateRelVipStore">
         UPDATE rel_vip_store
         <trim prefix="set" suffixOverrides=",">

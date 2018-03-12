@@ -28,7 +28,14 @@ public interface MessageService {
 
     PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) throws Exception;
 
+    PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value,String manager_corp) throws Exception;
+
+
     List<MessageType> selectAllMessageType() throws Exception;
 
     PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception;
+
+    PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map,String manager_corp) throws Exception;
+
+
 }

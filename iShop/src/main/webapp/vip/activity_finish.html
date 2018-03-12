@@ -1,38 +1,195 @@
+<style>
+    .bg_normal{
+        background: #41c7db;
+    }
+    .bg_danger{
+        background: #c26555;
+    }
+    .bg_default{
+        background: #cccccc;
+    }
+    .bg_enter{
+        background: #8f9ad2;
+    }
+    .last_finish li{
+        display: inline-block;
+        width: 140px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+    .last_finish li + li{
+        margin-left: 10px;
+    }
+    .last_finish .cancel_submit{
+        display: none;
+    }
+</style>
 <div>
     <div class="last_content">
         <div class="last_txt">
-            <span class="activity_title" id="them">2017新年感恩特惠</span>
+            <span class="activity_title" id="them">活动标题</span>
             <span class="activity_time"><span id="startTime"></span> 至 <span id="endTime"></span></span>
             <span id="mode"></span>
         </div>
         <div class="last_finish">
-            <div class="last_finish_btn" id="execute">完成</div>
-            <div class="last_finish_tip">点击"完成"后活动将按照您的设定开始实行</div>
+            <div>
+                <ul>
+                    <li class="bg_normal" id="execute">保存</li><li class="bg_danger cancel_submit" id="cancel_submit">取消提交</li><li class="bg_danger" id="examine">提交审核</li>
+                </ul>
+            </div>
+            <!--<div class="last_finish_btn" id="execute">保存</div>-->
+            <div class="last_finish_tip">*提交审核通过后方可执行</div>
+        </div>
+        <div style="text-align: center">
+            <label>
+                <div class="checkbox"><input type="checkbox"  class="check" id="create_task"><label for="create_task"></label></div>
+                <p style="float:right;height: 23px;margin: 10px 20px;cursor: pointer;font-size: 13px;">创建对应会员任务</p>
+            </label>
+            <p style="font-size: 12px;color: #9ea7b4">勾选后会员可以通过会员中心查看活动详情</p>
         </div>
     </div>
 </div>
 <script>
+    var examineState = "1";//活动审核执行状态 0不能提交，1提交，2确认，3执行
     function getActivityData(){
         var param={
             activity_code:sessionStorage.getItem("activity_code")
         };
+        whir.loading.add("",0.5);
         oc.postRequire("post","/vipActivity/select","0",param,function(data){
             if(data.code!="0")return;
             var msg=JSON.parse(data.message);
             var activityVip=JSON.parse(msg.activityVip);
+            var have_task=msg.have_task;
             $("#them").html(activityVip.activity_theme);
             $("#startTime").html(activityVip.start_time);
             $("#endTime").html(activityVip.end_time);
             $("#mode").html(activityVip.run_mode);
-        })
+            if(have_task=="Y"){
+                $("#create_task").prop("checked",true);
+            }
+            if(activityVip.bill_status != "0" && activityVip.bill_status != "" ){
+                $("#create_task").removeAttr("id");
+                examineSelect();
+            }
+            whir.loading.remove();
+        });
+    }
+    function examineSelect() {
+        var activity_code = sessionStorage.getItem("activity_code"),
+            funcode = JSON.parse(sessionStorage.getItem("key_val")).func_code,
+            param = {
+                "activity_code":activity_code,
+                "function_code":funcode
+            };
+        whir.loading.add("",0.5);
+        oc.postRequire("post","/vipTask/user/status","",param,function (data) {
+            if(data.code == 0){
+                var msg = JSON.parse(data.message);
+                if(msg.status == "1"){
+                    $("#examine").attr("class","bg_enter");
+                    $("#examine").text("通过审核");
+                    $("#execute").hide();
+                    $("#cancel_submit").css("display","inline-block");
+                    examineState = "2";
+                }else if(msg.status == "2"){
+                    examineState = "0";
+                    $("#examine").text("审核中("+msg.rate+")");
+                    $(".last_finish_tip").text("*当前活动审核中,如需修改活动请先取消提交");
+                    $("#examine").attr("class","bg_default");
+                    $("#execute").hide();
+                    $("#cancel_submit").css("display","inline-block");
+                }else if(msg.status == "3"){
+                    examineState = "3";
+                    $("#examine").attr("class","bg_normal");
+                    $("#execute").hide();
+                    $("#cancel_submit").css("display","inline-block");
+                    $(".last_finish_tip").text("*审核已通过,点击执行后活动将按您设置的时间执行");
+                    $("#examine").text("开始执行");
+                }
+            }else if(data.code == "1"){
+                var msg = JSON.parse(data.message);
+                examineState = "0";
+                $("#examine").text("审核中("+msg.rate+")");
+                $(".last_finish_tip").text("*当前活动审核中,如需修改活动请先取消提交");
+                $("#examine").attr("class","bg_default");
+                $("#execute").hide();
+            }else if(data.code == "2"){
+                var msg = JSON.parse(data.message);
+                examineState = "0";
+                $("#examine").text("审核中("+msg.rate+")");
+                $(".last_finish_tip").text("*当前活动审核中,如需修改活动请先取消提交");
+                $("#examine").attr("class","bg_default");
+                $("#execute").hide();
+                $("#cancel_submit").css("display","inline-block");
+            }else if(data.code == "3"){
+                examineState = "3";
+                $("#examine").attr("class","bg_normal");
+                $("#execute").hide();
+                $("#cancel_submit").css("display","inline-block");
+                $(".last_finish_tip").text("*点击执行后活动将按您设置的时间执行");
+                $("#examine").text("开始执行");
+            }else if(data.code == 4){
+                examineState = "0";
+                $("#execute").hide();
+                $("#examine").hide();
+                $(".last_finish_tip").text("");
+            }else {
+                examineState = "0";
+                $("#execute").hide();
+                $("#examine").hide();
+                $(".last_finish_tip").text("");
+            }
+            whir.loading.remove();
+        });
+    }
+    function examineActivity(type) {
+        var activity_code = sessionStorage.getItem("activity_code"),
+            funcode = JSON.parse(sessionStorage.getItem("key_val")).func_code,
+            param = {
+                "activity_code":activity_code,
+                "type":type,
+                "function_code":funcode
+            };
+        whir.loading.add("",0.5);
+        oc.postRequire("post","/vipTask/examine/user","",param,function (data) {
+            if(type == "check"){
+                if(data.code == 0){
+                    examineSelect();
+                }else {
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:data.message
+                    });
+                }
+            }else {
+                examineState = "1";
+                $("#execute").css("display","inline-block");
+                $("#cancel_submit").hide();
+                $(".last_finish_tip").text("*提交审核通过后方可执行");
+                $("#examine").text("提交审核");
+                $("#examine").attr("class","bg_danger");
+            }
+            whir.loading.remove();
+        });
     }
     getActivityData();
     var oc= oc || new ObjectControl();
     $("#execute").bind("click",function(){
+        whir.loading.add("","0.5");
+        var create_task=$("#create_task").prop("checked")==true?"Y":"N";
         var param={
-            activity_code:sessionStorage.getItem("activity_code")
+            activity_code:sessionStorage.getItem("activity_code"),
+            create_task:create_task
         };
-        oc.postRequire("post","/vipActivity/execute","0",param,function(data){
+        oc.postRequire("post","/vipActivity/save","0",param,function(data){
+            whir.loading.remove();
             if(data.code!="0"){
                 art.dialog({
                     time: 2,
@@ -41,9 +198,64 @@
                     content: data.message
                 });
                 return;
+            }else {
+                art.dialog({
+                    time: 2,
+                    lock: true,
+                    cancel: false,
+                    content: "保存成功"
+                });
             }
-
-            $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
+//            $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
         })
-    })
+    });
+    $("#examine").click(function () {
+        if(examineState == "0"){
+            return
+        }else if(examineState == "1"){
+            var funcode = JSON.parse(sessionStorage.getItem("key_val")).func_code;
+            var param = {"activity_code":sessionStorage.getItem("activity_code"),"function_code":funcode};
+            oc.postRequire("post","/vipTask/examine/creater","",param,function (data) {
+                if(data.code == 0){
+                    examineSelect();
+                }else {
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content: data.message
+                    });
+                }
+            });
+        }else if(examineState == "2"){
+            examineActivity("check");
+        }else if(examineState == "3"){
+            var param = {
+                "activity_code":sessionStorage.getItem("activity_code")
+            };
+            whir.loading.add("",0.5);
+            oc.postRequire("post","/vipActivity/execute","",param,function (data) {
+                if(data.code == 0){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"提交成功"
+                    });
+                    $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
+                }else {
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:data.message
+                    });
+                }
+                whir.loading.remove();
+            });
+        }
+    });
+    $("#cancel_submit").click(function () {
+        examineActivity("uncheck");
+    });
 </script>

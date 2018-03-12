@@ -1,0 +1,44 @@
+@charset "UTF-8";
+@import "mixin-fun";
+$mainColor:#5d5d5d;
+$titleColor:#000;
+html{
+  background-color: #ffffff;
+}
+body{
+  position: relative;
+}
+.online_details{
+  padding: rem(20) rem(40) 50px rem(40);
+  .item_line{
+    overflow: hidden;
+    margin: rem(10);
+  }
+  .item_line span{
+    word-break: break-all;
+    float: left;
+    width: 75%;
+  }
+  .item_line span:first-child{
+    width: 25%;
+  }
+}
+.spline_no_text:before{
+  content: "";
+  height: 20px;
+  width: 100%;
+  border-top: 1px solid #ededed;
+  display: block;
+  margin: 10px 0;
+}
+.enroll_data{
+  margin: rem(20) rem(10);
+  padding: rem(30);
+  background-color: #ddd;
+  border-radius: rem(10);
+  min-height: rem(400);
+  .data-line{
+    margin: rem(10) 0;
+    word-break: break-all;
+  }
+}

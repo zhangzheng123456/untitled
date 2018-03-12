@@ -6,10 +6,10 @@
     <title>新增店铺业绩目标</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link href="../css/style.css??20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link href="../css/style.css??2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <style>
         body{
             margin-top:81px;
@@ -41,34 +41,198 @@
                             </li>
                         </ul>
                     </div>
+                    <!--<div>-->
+                        <!--<span><label style="color:#c26655">业绩目标*</label><input type="text" id="PER_GOAL" verify="Number" maxlength="8"/><div style="padding-left:122px" class="hint"><div  hintinfo="请输入数字！"></div></div></span>-->
+                    <!--</div>-->
+                    <!--<div class="drop_down item_2 upgrade_amount" id="drop_down">-->
+                        <!--<span class="t_parent"><label style="color:#c26655">业绩目标*</label><input class="input_select w" style="width: 195px;" type="text" id="TIME_TYPE" value="日" readonly/><input type="text" style="background-image: none;margin-left: 30px;width: 195px;" id="PER_GOAL" class="w" verify="Number" maxlength="8"/>-->
+                        <!--<ul style="width: 195px;">-->
+                           <!--<li>日</li>-->
+                           <!--&lt;!&ndash; <li>周</li> &ndash;&gt;-->
+                           <!--<li>月</li>-->
+                           <!--&lt;!&ndash; <li>年</li> &ndash;&gt;-->
+                        <!--</ul>-->
+                        <!--<div style="padding-left:122px" class="hint"><div  hintinfo="请输入数字！"></div></div>-->
+                        <!--<div id="month_day" style="margin-left: 120px;display:none;width: 430px;">该月目标将平均分配到每日<span style="color: #c26555;margin-left: 10px;">0.00</span>元/每天 , 此目标将覆盖当月已设置目标</div>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div id="day">-->
+                        <!--<span><label style="color:#c26555;">时间段*</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: false,istoday: false, format: 'YYYY-MM-DD',min: laydate.now(+1)})"/>-->
+                        <!--<div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div id="week_p" style="display:none;">-->
+                        <!--<span><label style="color:#c26555;">时间段*</label><input type="text" id="year" class="week" value="" readonly="true"><span class="year_down"></span><input type="text" id="month" style="margin-left: 30px;" class="week" value="" readonly="true"><span class="month_down"></span>-->
+                            <!--<ul class="year">-->
+                            <!--</ul>-->
+                            <!--<ul class="month">-->
+                            <!--</ul>-->
+                        <!--</span>-->
+                    <!--</div>-->
                     <div>
-                        <span><label style="color:#c26655">业绩目标*</label><input type="text" id="PER_GOAL" verify="Number" maxlength="8"/><div style="padding-left:122px" class="hint"><div  hintinfo="请输入数字！"></div></div></span>
-                    </div>
-                    <div class="drop_down item_1" id="drop_down">
-                        <span><label>业绩类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>
-                            <ul>
-                                <li>日</li>
-                                <!-- <li>周</li> -->
-                                <!-- <li>月</li> -->
-                                <!-- <li>年</li> -->
-                            </ul>
-                        </span>
-                    </div>
-                    <div id="day">
-                        <span><label style="color:#c26555;">时间段*</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: false, format: 'YYYY-MM-DD',min: laydate.now(+1)})"/>
-                        <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
-                        </span>
-                    </div>
-                    <div id="week_p" style="display:none;">
-                        <span>
-                            <label>日期</label>
-                            <input type="text" id="year" class="week" value="" readonly="true"><span class="year_down"></span>
-                            <input type="text" id="month" class="week" value="" readonly="true"><span class="month_down"></span>
-                            <ul class="year">
-                            </ul>
-                            <ul class="month">
-                            </ul>
-                        </span>
+                        <div class="achv">
+                            <div class="left" style="color:#c26655">业绩目标*</div>
+                            <div class="right">
+                                <div class="achv_header">
+                                    <div class="achv_text">分配方式</div>
+                                    <div class="data_list" id="drop_down">
+                                        <input type="text" readonly="" value="按日" id="time_type">
+                                        <ul>
+                                            <li style="color:#32b5c9">按日</li>
+                                            <li>按月</li>
+                                        </ul>
+                                    </div>
+                                    <div class="allot_type" id="allot_type">
+                                        <div class="rido">
+                                            <input type="radio" name="radio" checked="" class="rido_input" id="mean_radio">
+                                            <label></label>
+                                            <span>平均分配</span>
+                                        </div>
+                                        <div class="rido">
+                                            <input type="radio"name="radio" class="rido_input" id="scale_radio">
+                                            <label></label>
+                                             <span>按比例分配</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="achv_content">
+                                    <div class="t_parent">
+                                        <div class="time_type">
+                                            <span>时间段</span><input type="text" class="laydate-icon" readonly="" id="day_input" onClick="laydate({istime: false,isclear:false,istoday: false, format: 'YYYY-MM-DD',min: laydate.now(+1)})"><input type="text" id="month_input" class="laydate-icon" readonly="" style="display:none;">
+                                            <div class="ym_parent">
+                                                <div class="ym_header" id="ym_header">
+                                                    <ul>
+                                                        <li>年</li>
+                                                        <li class="active">月</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="ym_content" id="ym_content">
+                                                    <div class="year" id="yearnew" style="display: none;">
+                                                        <ul>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="month" id="monthnew">
+                                                        <div class="month_header">
+                                                            <span class="year_add icon-ishop_8-03" style="opacity: 0.5;"></span>
+                                                            <span id="m_year">2017年</span>
+                                                            <span  class="year_del icon-ishop_8-03" style="color: #41c7db"></span>
+                                                        </div>
+                                                        <ul>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="ym_footer">
+                                                    <div class="footer_q" id="footer_q">确定</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="money">
+                                            <span>业绩总额</span><input type="text" verify="Number" id="PER_GOAL" maxlength="8"><span style="margin-left: 10px">元</span>
+                                            <div style="padding-left:0!important;margin-bottom:5px;margin-top: 5px;" class="hint"><div  hintinfo="业绩总额不能为空！"></div></div>
+                                        </div>
+                                    </div>
+                                    <div id="mean_content" style="display: none;">
+                                        <div class="week_parent" id="week_parent">
+                                            <ul>
+                                                <li>
+                                                    <p>日</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>一</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>二</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>三</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>四</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>五</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>六</p>
+                                                    <div class="week_scale">
+                                                        <span class="icon-ishop_6-01 scale_add"></span>
+                                                        <span class="icon-ishop_6-02 scale_del"></span>
+                                                        <span class="week_text">1</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="week_achv" id="week_achv">
+                                            <ul>
+                                                <li style="color: #32b5c9;" title="" data-money="">￥0</li>
+                                                <li style="color: #7dd3e5" title="" data-money="">￥0</li>
+                                                <li style="color: #99c754" title="" data-money="">￥0</li>
+                                                <li style="color: #5b94db" title="" data-money="">￥0</li>
+                                                <li style="color: #aa8dd8" title="" data-money="">￥0</li>
+                                                <li style="color: #ffbf6d" title="" data-money="">￥0</li>
+                                                <li style="color: #ffd54f;" title="" data-money="">￥0</li>
+                                            </ul>
+                                        </div>
+                                        <div class="achv_bg" id="achv_bg">
+                                            <ul>
+                                                <li style="background-color: #32b5c9;"></li>
+                                                <li style="background-color: #7dd3e5"></li>
+                                                <li style="background-color: #99c754"></li>
+                                                <li style="background-color: #5b94db"></li>
+                                                <li style="background-color: #aa8dd8"></li>
+                                                <li style="background-color: #ffbf6d"></li>
+                                                <li style="background-color: #ffd54f;"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="month_day" style="margin-left: 123px;display:none;width:500px;margin-top:5px;float: left;">该月目标将平均分配到每日<span style="color: #c26555;margin-left: 10px;">0.00</span>元/每天 , 此目标将覆盖当月已设置目标</div>
+                            <div id="month_scale" style="margin-left: 123px;display:none;width:500px;margin-top:5px;float: left;">
+                                该月目标将按照所设目标比例分配到每日,此目标将覆盖当月已设置目标。<br />
+                                设置好月目标M以及周一至周日七天的业绩目标比例，则当月的所有周一至周日的所占比例之和X为分母，每日对应的比例T为分子。则每日对应目标Y=M*(T/X)<br />
+                                Eg：<br />
+                                A. 2017年 5月  业绩 50000 共31日<br />
+                                B. 周一占比2；周二占比3；周三占比2；周四占比1；周五占比2；周六占比3；周日占比3；<br />
+                                C. 五月有5个周一、周二、周三；4个周四、周五、周六、周日；<br />
+                                D. 算每周一的业绩目标<br />
+                                E. 则M=50000,X=5*(2+3+2)+4*(1+2+3+3)=71,T=2<br/>
+                                F. 根据公式Y=M*(T/X),即每周一的业绩为2*50000/[5*(2+3+2)+4*(1+2+3+3)]=1408<br/>
+                                依次类推
+
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -90,20 +254,56 @@
         </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="/js/loading.js?20170105"></script>
+    <script src="/js/loading.js?2017040170331"></script>
      <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js?20170105"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- 带搜索的下拉菜单 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
-    <!-- input的验证情况 -->
-    <script type="text/javascript" src="../js/achv/shopgoal.js?20170105"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <script>
+        function getNowFormatDate(AddDayCount) {
+            var dd = new Date();
+            dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth()+1;//获取当前月份的日期
+            var d = dd.getDate();
+            if (m >= 1 && m <= 9) {
+                m = "0" + m;
+            }
+            if (d >= 0 && d <= 9) {
+                d = "0" + d;
+            }
+            var currentdate ={data:y+"-"+m+"-"+d,month:+y+"年"+m+"月",param:{year:y,month:m}};
+            return currentdate;
+        }
+//        function getNowFormatDate() {//获取当前日期
+//            var date = new Date();
+//            var seperator1 = "-";
+//            var year = date.getFullYear();
+//            var month = date.getMonth() + 1;
+//            var strDate = date.getDate()+1;
+//            if (month >= 1 && month <= 9) {
+//                month = "0" + month;
+//            }
+//            if (strDate >= 0 && strDate <= 9) {
+//                strDate = "0" + strDate;
+//            }
+//            var currentdate ={data:year + seperator1 + month + seperator1 + strDate,month:+year+"月"+month+"月",param:{year:year,month:month}};
+//            return currentdate
+//        }
+        $("#day_input").val(getNowFormatDate(1).data);
+        $("#month_input").val(getNowFormatDate(1).month);
+        $("#month_input").attr("data-year",getNowFormatDate(1).param.year);
+        $("#month_input").attr("data-month",getNowFormatDate(1).param.month);
+    </script>
+    <!-- input的验证情况 -->
+    <script type="text/javascript" src="../js/achv/shopgoal.js?2017040170331"></script>
 </body>
 
 </html>

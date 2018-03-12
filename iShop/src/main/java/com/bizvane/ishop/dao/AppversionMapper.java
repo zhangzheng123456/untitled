@@ -14,6 +14,7 @@ import java.util.Map;
 public interface AppversionMapper {
 
     List<Appversion> selectAllAppversion(@Param("search_value") String search_value) throws SQLException;
+    List<Appversion> selectAllAppversionByPlatform(@Param("search_value") String search_value) throws SQLException;
 
     List<Appversion> selectAllScreen(Map<String, Object> params) throws SQLException;
 

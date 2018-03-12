@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.MsgChannelCfgMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.MsgChannelCfg" id="MsgChannelCfg">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="random_code" property="random_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="type" property="type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="channel_name" property="channel_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="channel_account" property="channel_account"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="channel_price" property="channel_price"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="channel_sign" property="channel_sign" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="password" property="password" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="channel_child" property="channel_child"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="channel_code" property="channel_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="is_forced" property="is_forced" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code_production" property="brand_code_production" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectAllMsgChannelCfg" resultMap="MsgChannelCfg">
+        SELECT rel_msg_channel_cfg.*,
+        def_corp.corp_name
+        FROM rel_msg_channel_cfg,def_corp
+        WHERE rel_msg_channel_cfg.corp_code = def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND rel_msg_channel_cfg.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                rel_msg_channel_cfg.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            OR rel_msg_channel_cfg.type LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY rel_msg_channel_cfg.id DESC
+    </select>
+
+    <insert id="insertMsgChannelCfg" parameterType="com.bizvane.ishop.entity.MsgChannelCfg">
+        INSERT INTO rel_msg_channel_cfg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="random_code!=null">
+                random_code,
+            </if>
+            <if test="type!=null">
+                type,
+            </if>
+            <if test="password!=null">
+                password,
+            </if>
+
+            <if test="channel_name!=null">
+                channel_name,
+            </if>
+            <if test="channel_account!=null">
+                channel_account,
+            </if>
+            <if test="channel_price!=null">
+                channel_price,
+            </if>
+            <if test="channel_sign!=null">
+                channel_sign,
+            </if>
+            <if test="channel_child!=null">
+                channel_child,
+            </if>
+            <if test="channel_code!=null">
+                channel_code,
+            </if>
+            <if test="is_forced!=null">
+                is_forced,
+            </if>
+            <if test="brand_code!=null">
+                brand_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="brand_code_production!=null">
+                brand_code_production,
+            </if>
+
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="random_code!=null">
+                #{random_code},
+            </if>
+            <if test="type!=null">
+                #{type},
+            </if>
+            <if test="password!=null">
+                #{password},
+            </if>
+            <if test="channel_name!=null">
+                #{channel_name},
+            </if>
+            <if test="channel_account!=null">
+                #{channel_account},
+            </if>
+            <if test="channel_price!=null">
+                #{channel_price},
+            </if>
+            <if test="channel_sign!=null">
+                #{channel_sign},
+            </if>
+            <if test="channel_child!=null">
+                #{channel_child},
+            </if>
+            <if test="channel_code!=null">
+                #{channel_code},
+            </if>
+            <if test="is_forced!=null">
+                #{is_forced},
+            </if>
+            <if test="brand_code!=null">
+                #{brand_code},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="brand_code_production!=null">
+                #{brand_code_production},
+            </if>
+
+
+
+        </trim>
+    </insert>
+
+    <update id="updateMsgChannelCfg" parameterType="com.bizvane.ishop.entity.MsgChannelCfg">
+        UPDATE rel_msg_channel_cfg
+        <trim prefix="SET" suffixOverrides=",">
+
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="random_code!=null">
+                random_code=#{random_code},
+            </if>
+            <if test="type!=null">
+                type=#{type},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="channel_name!=null">
+                channel_name=#{channel_name},
+            </if>
+            <if test="channel_account!=null">
+                channel_account=#{channel_account},
+            </if>
+            <if test="channel_price!=null">
+                channel_price=#{channel_price},
+            </if>
+
+            <if test="channel_sign!=null">
+                channel_sign=#{channel_sign},
+            </if>
+            <if test="channel_child!=null">
+                channel_child=#{channel_child},
+            </if>
+            <if test="channel_code!=null">
+                channel_code=#{channel_code},
+            </if>
+            <if test="is_forced!=null">
+                is_forced=#{is_forced},
+            </if>
+            <if test="brand_code!=null">
+                brand_code=#{brand_code},
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="brand_code_production!=null">
+                brand_code_production=#{brand_code_production},
+            </if>
+
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="delMsgChannelCfgById">
+        DELETE FROM rel_msg_channel_cfg
+        WHERE id=#{id};
+    </delete>
+
+
+
+    <select id="selMsgChannelCfgById" resultMap="MsgChannelCfg">
+        SELECT rel_msg_channel_cfg.*,
+        def_corp.corp_name,
+        def_sms_channels.channel_name name
+        FROM rel_msg_channel_cfg,def_corp,def_sms_channels
+        WHERE rel_msg_channel_cfg.corp_code=def_corp.corp_code
+        AND def_sms_channels.channel=rel_msg_channel_cfg.channel_name
+        AND rel_msg_channel_cfg.id =#{id}
+    </select>
+
+
+    <select id="selMsgChannelCfgByType" resultMap="MsgChannelCfg">
+        SELECT rel_msg_channel_cfg.*,
+        def_corp.corp_name
+        FROM rel_msg_channel_cfg,def_corp
+        WHERE rel_msg_channel_cfg.corp_code=def_corp.corp_code
+         AND rel_msg_channel_cfg.corp_code =#{corp_code}
+          AND rel_msg_channel_cfg.type =#{type}
+          AND rel_msg_channel_cfg.isactive =#{isactive}
+
+    </select>
+
+    <select id="selMsgChannelCfgByCorp" resultMap="MsgChannelCfg">
+        SELECT rel_msg_channel_cfg.*,
+        def_corp.corp_name
+        FROM rel_msg_channel_cfg,def_corp
+        WHERE rel_msg_channel_cfg.corp_code=def_corp.corp_code
+        AND rel_msg_channel_cfg.corp_code =#{corp_code}
+          AND rel_msg_channel_cfg.isactive =#{isactive}
+
+    </select>
+
+
+    <select id="selMsgChannelCfgBySign" resultMap="MsgChannelCfg">
+        SELECT rel_msg_channel_cfg.*,
+        def_corp.corp_name
+        FROM rel_msg_channel_cfg,def_corp
+        WHERE rel_msg_channel_cfg.corp_code=def_corp.corp_code
+        AND rel_msg_channel_cfg.corp_code =#{corp_code}
+        AND rel_msg_channel_cfg.channel_sign =#{channel_sign}
+
+        AND rel_msg_channel_cfg.isactive =#{isactive}
+
+    </select>
+
+    <select id="selMsgChannelCfgByAccount" resultMap="MsgChannelCfg">
+        SELECT rel_msg_channel_cfg.*,
+        def_corp.corp_name
+        FROM rel_msg_channel_cfg,def_corp
+        WHERE rel_msg_channel_cfg.corp_code=def_corp.corp_code
+        AND rel_msg_channel_cfg.corp_code =#{corp_code}
+        AND rel_msg_channel_cfg.type =#{type}
+        AND rel_msg_channel_cfg.channel_name =#{channel_name}
+        AND rel_msg_channel_cfg.channel_account =#{channel_account}
+          AND rel_msg_channel_cfg.channel_child =#{channel_child}
+                  AND rel_msg_channel_cfg.channel_sign =#{channel_sign}
+        AND rel_msg_channel_cfg.isactive =#{isactive}
+
+    </select>
+
+    <select id="selectByBrand" resultMap="MsgChannelCfg">
+        SELECT *
+        FROM rel_msg_channel_cfg
+        WHERE corp_code = #{corp_code}
+        AND
+        <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
+            brand_code REGEXP #{item}
+        </foreach>
+        AND isactive = 'Y'
+        GROUP BY id
+    </select>
+
+    <select id="selectByBrandForProduction" resultMap="MsgChannelCfg">
+        SELECT *
+        FROM rel_msg_channel_cfg
+        WHERE corp_code = #{corp_code}
+        AND
+        <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
+            brand_code_production REGEXP #{item}
+        </foreach>
+        AND isactive = 'Y'
+        GROUP BY id
+    </select>
+
+</mapper>

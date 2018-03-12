@@ -23,7 +23,7 @@ public interface VipGroupMapper {
 
     int deleteVipGroupById(int id) throws SQLException;
 
-    VipGroup selectByVipGroupName(@Param("corp_code") String corp_code, @Param("vip_group_name") String vip_group_name, @Param("isactive") String isactive) throws SQLException;
+    List<VipGroup> selectByVipGroupName(@Param("corp_code") String corp_code, @Param("vip_group_name") String vip_group_name, @Param("isactive") String isactive) throws SQLException;
 
     VipGroup selectByVipGroupCode(@Param("corp_code") String corp_code, @Param("vip_group_code") String vip_group_code, @Param("isactive") String isactive) throws SQLException;
 

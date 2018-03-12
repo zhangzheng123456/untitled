@@ -7,6 +7,8 @@ public class CorpWechat {
     private int id;
     //企业编号
     private String corp_code;
+    //企业编号
+    private String crm_corp_code;
     //微信公众号app_id
     private String app_id;
     //微信公众号app_name
@@ -17,6 +19,8 @@ public class CorpWechat {
     private String is_authorize;
     //品牌编号
     private String brand_code;
+    //key(微商城)
+    private String access_key;
     //修改时间
     private String modified_date;
     //修改人
@@ -27,6 +31,8 @@ public class CorpWechat {
     private String creater;
     //是否可用
     private String isactive;
+    //公众号logo
+    private String app_logo;
 
     public CorpWechat() {
     }
@@ -49,6 +55,14 @@ public class CorpWechat {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getCrm_corp_code() {
+        return crm_corp_code;
+    }
+
+    public void setCrm_corp_code(String crm_corp_code) {
+        this.crm_corp_code = crm_corp_code;
     }
 
     public String getApp_id() {
@@ -81,6 +95,14 @@ public class CorpWechat {
 
     public void setBrand_code(String brand_code) {
         this.brand_code = brand_code;
+    }
+
+    public String getAccess_key() {
+        return access_key;
+    }
+
+    public void setAccess_key(String access_key) {
+        this.access_key = access_key;
     }
 
     public String getModified_date() {
@@ -129,5 +151,13 @@ public class CorpWechat {
 
     public void setIs_authorize(String is_authorize) {
         this.is_authorize = is_authorize;
+    }
+
+    public String getApp_logo() {
+        return app_logo;
+    }
+
+    public void setApp_logo(String app_logo) {
+        this.app_logo = app_logo;
     }
 }

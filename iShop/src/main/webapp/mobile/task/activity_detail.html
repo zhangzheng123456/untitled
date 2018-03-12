@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>活动详情</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/details.css?t=20180118">
+    <script src="js/flexible.js"></script>
+    <style>
+        .activity{
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 0.07813rem;
+            -webkit-box-shadow: 0 0 0.07813rem 0.07813rem #ddd;
+            -moz-box-shadow: 0 0 0.07813rem 0.07813rem #ddd;
+            box-shadow: 0 0 0.15625rem 0.04688rem #ddd;
+        }
+        #activity_title{
+            font-size: 14px;
+            color: #1b1b1f;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="activity">
+        <div class="detail_title text-center" id="activity_title"><p><em></em></p></div>
+        <div id="activity_detail">
+        </div>
+        <div class="to_do text-center" id="to_do" data-id="" data-corp_code="" style="display: none"></div>
+    </div>
+    <div id="loading">
+        <div class="tip">
+            <div class="tip_box">
+                <div class="icon_err rotate"><img src="img/icon_apply.png" width="100%" height="100%" alt="icon_error.png"></div>
+                <div class="loading_txt">加载中...</div>
+            </div>
+        </div>
+    </div>
+    <div id="tip">
+        <div class="tip">
+            <div class="tip_box">
+                <div class="loading_txt"></div>
+            </div>
+        </div>
+    </div>
+    <div id="mask" class="mask"><img src="img/share.png"></div>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/config.js?20170412"></script>
+    <script src="js/sha1.js"></script>
+    <script src="../../js/insidePostRequire.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        var oc = new ObjectControl();
+        var time= $.now();
+        var ticket="";
+        var url=window.location.href;
+        var shareTitle="";//分享的标题
+        var share_desc="";//分享的描述
+        var shareUrl="";//要分享的地址
+        var shareIcon="";//要分享的地址
+        var isShowMask=false;
+        var theRequest={};
+        function geUrl(){
+            var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                var strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+        }
+        geUrl();
+        var param={};
+        param.activity_code = theRequest.id;
+        $("#loading").show();
+        oc.postRequire("post", "/vipActivity/select","", param, function(data){
+            $("#loading").hide();
+            if(data.code==0){
+                var msg=JSON.parse(data.message);
+                var activityVip=JSON.parse(msg.activityVip);
+                var activity_desc=activityVip.activity_desc;
+                var reg = new RegExp("\n", "g");
+                $("#activity_title em").html(activityVip.activity_theme);
+                activity_desc=activity_desc.replace(reg,"<br>");
+                $("#activity_detail").html(activity_desc);
+            if(activityVip.run_mode=="邀请注册"){
+                var share=msg.share;
+                shareTitle=share.title;
+                share_desc=share.desc;
+                shareIcon=share.pic!=""?share.pic:'http://2.dev.bizvane.com/mobile/task/img/currentActivity.png';
+                shareUrl=share.url+"?id="+activityVip.activity_code+"&app_id="+theRequest.app_id+"&card_no="+theRequest.card_no+"&open_id="+theRequest.open_id+"&type=activity"+"&datetime="+new Date().getTime();
+                $("#to_do").show().html("去完成任务");
+                $("#to_do").unbind("click").bind("click",function(){
+                    isShowMask && $("#mask").show();
+                    if(!isShowMask){
+                        $("#tip .loading_txt").html("稍后重试");
+                        $("#tip").show();
+                        setTimeout(function(){
+                            $("#tip").hide();
+                        },2000)
+                    }
+                });
+                oc.postRequire("get",ajaxUrl.jsTicket+"?app_id="+theRequest.app_id,"","", function(data){
+                    ticket=data.message;
+                    var string="jsapi_ticket="+ticket+"&noncestr=5dJCd1ztKKRPMclhiPKeTRbMbr7vjSsrPPdBlLv6O4r&timestamp="+time+"&url="+url;
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId:theRequest.app_id, // 必填，公众号的唯一标识
+                        timestamp: time, // 必填，生成签名的时间戳
+                        nonceStr: '5dJCd1ztKKRPMclhiPKeTRbMbr7vjSsrPPdBlLv6O4r', // 必填，生成签名的随机串
+                        signature:sha1(string),// 必填，签名，见附录1
+                        jsApiList: ["onMenuShareTimeline","onMenuShareAppMessage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+                    wx.ready(function(){
+                        wx.checkJsApi({
+                            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                            success: function(res) {
+                                // 以键值对的形式返回，可用的api值true，不可用为false
+                                // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                                isShowMask=true;
+                            }
+                        });
+                        wx.onMenuShareTimeline({
+                            title: shareTitle, // 分享标题
+                            link: shareUrl, // 分享链接
+                            imgUrl: shareIcon, // 分享图标
+                            success: function () {
+                                var param=theRequest;
+                                oc.postRequire("post",ajaxUrl.shareUrl,"",param, function(data){
+                                })
+                            },
+                            cancel: function () {
+                                // 用户取消分享后执行的回调函数
+                            }
+                        });
+                        wx.onMenuShareAppMessage({
+                            title: shareTitle, // 分享标题
+                            desc: share_desc, // 分享描述
+                            link: shareUrl, // 分享链接
+                            imgUrl: shareIcon, // 分享图标
+                            type: '', // 分享类型,music、video或link，不填默认为link
+                            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                            success: function () {
+                                // 用户确认分享后执行的回调函数
+                                var param=theRequest;
+                                oc.postRequire("post",ajaxUrl.shareUrl,"",param, function(data){
+                                })
+                            },
+                            cancel: function () {
+                                // 用户取消分享后执行的回调函数
+                            }
+                        });
+                    });
+                    wx.error(function(res){
+                        isShowMask=false;
+                    });
+                });
+            }
+
+            }else{
+                $("#tip .loading_txt").html("请求失败");
+                $("#tip").show();
+                setTimeout(function(){
+                    $("#tip").hide();
+                },2000)
+            }
+        });
+        $("#mask").click(function(){
+            $(this).hide();
+        })
+    </script>
+</body>
+</html>

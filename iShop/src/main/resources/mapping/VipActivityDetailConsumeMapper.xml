@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipActivityDetailMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipActivityDetailConsume" id="VipActivityDetailConsume">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="consume_goods" property="consume_goods" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_condition" property="goods_condition" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_join_count" property="vip_join_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="trade_start" property="trade_start" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="trade_end" property="trade_end" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="discount_start" property="discount_start" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="discount_end" property="discount_end" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="num_start" property="num_start" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="num_end" property="num_end" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="priority" property="priority" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="batch_no" property="batch_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+    </resultMap>
+
+    <resultMap type="com.bizvane.ishop.entity.VipActivityDetailAnniversary" id="VipActivityDetailAnniversary">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_name" property="param_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_desc" property="param_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="run_time_type" property="run_time_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="priority" property="priority" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="batch_no" property="batch_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <insert id="insertDetailConsume" parameterType="com.bizvane.ishop.entity.VipActivityDetailConsume">
+        INSERT INTO def_vip_activity_detail_consume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="activity_code!=null">
+                activity_code,
+            </if>
+            <if test="consume_goods!=null">
+                consume_goods,
+            </if>
+            <if test="goods_condition!=null">
+                goods_condition,
+            </if>
+            <if test="vip_join_count!=null">
+                vip_join_count,
+            </if>
+            <if test="coupon_type!=null">
+                coupon_type,
+            </if>
+            <if test="trade_start!=null">
+                trade_start,
+            </if>
+            <if test="trade_end!=null">
+                trade_end,
+            </if>
+            <if test="discount_start!=null">
+                discount_start,
+            </if>
+            <if test="discount_end!=null">
+                discount_end,
+            </if>
+            <if test="num_start!=null">
+                num_start,
+            </if>
+            <if test="num_end!=null">
+                num_end,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="priority!=null">
+                priority,
+            </if>
+            <if test="send_points!=null">
+                send_points,
+            </if>
+            <if test="batch_no!=null">
+                batch_no,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="activity_code!=null">
+                #{activity_code},
+            </if>
+            <if test="consume_goods!=null">
+                #{consume_goods},
+            </if>
+            <if test="goods_condition!=null">
+                #{goods_condition},
+            </if>
+            <if test="vip_join_count!=null">
+                #{vip_join_count},
+            </if>
+            <if test="coupon_type!=null">
+                #{coupon_type},
+            </if>
+            <if test="trade_start!=null">
+                #{trade_start},
+            </if>
+            <if test="trade_end!=null">
+                #{trade_end},
+            </if>
+            <if test="discount_start!=null">
+                #{discount_start},
+            </if>
+            <if test="discount_end!=null">
+                #{discount_end},
+            </if>
+            <if test="num_start!=null">
+                #{num_start},
+            </if>
+            <if test="num_end!=null">
+                #{num_end},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="priority!=null">
+                #{priority},
+            </if>
+            <if test="send_points!=null">
+                #{send_points},
+            </if>
+            <if test="batch_no!=null">
+                #{batch_no},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDetailConsume" parameterType="com.bizvane.ishop.entity.VipActivityDetailConsume">
+        UPDATE def_vip_activity_detail_consume
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE activity_code=#{activity_code};
+    </update>
+
+    <delete id="delDetailConsume">
+        DELETE FROM def_vip_activity_detail_consume
+        WHERE activity_code=#{activity_code};
+    </delete>
+
+    <select id="selActivityDetailConsume" resultMap="VipActivityDetailConsume">
+        SELECT *
+        FROM def_vip_activity_detail_consume
+        WHERE activity_code =#{activity_code}
+    </select>
+
+
+    <insert id="insertDetailAnniversary" parameterType="com.bizvane.ishop.entity.VipActivityDetailAnniversary">
+        INSERT INTO def_vip_activity_detail_anniversary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="activity_code!=null">
+                activity_code,
+            </if>
+            <if test="param_name!=null">
+                param_name,
+            </if>
+            <if test="param_desc!=null">
+                param_desc,
+            </if>
+            <if test="run_time_type!=null">
+                run_time_type,
+            </if>
+            <if test="coupon_type!=null">
+                coupon_type,
+            </if>
+            <if test="send_points!=null">
+                send_points,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+            <if test="batch_no!=null">
+                batch_no,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="activity_code!=null">
+                #{activity_code},
+            </if>
+            <if test="param_name!=null">
+                #{param_name},
+            </if>
+            <if test="param_desc!=null">
+                #{param_desc},
+            </if>
+            <if test="run_time_type!=null">
+                #{run_time_type},
+            </if>
+            <if test="coupon_type!=null">
+                #{coupon_type},
+            </if>
+            <if test="send_points!=null">
+                #{send_points},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="batch_no!=null">
+                #{batch_no},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDetailAnniversary" parameterType="com.bizvane.ishop.entity.VipActivityDetailAnniversary">
+        UPDATE def_vip_activity_detail_anniversary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE activity_code=#{activity_code};
+    </update>
+
+    <delete id="delDetailAnniversary">
+        DELETE FROM def_vip_activity_detail_anniversary
+        WHERE activity_code=#{activity_code};
+    </delete>
+
+    <select id="selActivityDetailAnniversary" resultMap="VipActivityDetailAnniversary">
+        SELECT *
+        FROM def_vip_activity_detail_anniversary
+        WHERE activity_code =#{activity_code}
+    </select>
+
+    <select id="selCorpAnniversary" resultMap="VipActivityDetailAnniversary">
+        SELECT *
+        FROM def_vip_activity_detail_anniversary
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND corp_code =#{corp_code}
+        </if>
+        AND isactive = 'Y'
+    </select>
+
+</mapper>

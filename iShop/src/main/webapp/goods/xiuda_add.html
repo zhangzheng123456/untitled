@@ -5,16 +5,17 @@
     <title>新增秀搭</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <!--匹配css-->
-    <link rel="stylesheet" href="../css/xiuda_add.css"/>
-    <script src="../js/loading.js?20170105"></script>
+    <link rel="stylesheet" href="../css/xiuda_add.css?20170914"/>
+    <script src="../js/loading.js?2017040170331"></script>
     <style type="text/css">
+
         div{
             width:100%;
         }
@@ -34,9 +35,6 @@
         }
         .searchable-select-holder,.searchable-select{
             width: 480px;
-        }
-        .searchable-has-privious{
-            margin-top: 34px;
         }
         #OWN_CORP{
             width: 480px;
@@ -68,9 +66,9 @@
         .match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
         .match_goods .icon-ishop_6-12{float:right;margin:10px;font-size: 20px;color: #c26555;}
         .goodsImg{width:40px;height:40px;margin:0 10px;border-radius:5px;border: 1px solid #dbdbdb; }
-        #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 5px;cursor:pointer;}
-        #search_match_goods{width:450px;min-height:460px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;display:none}
-        #search{width:400px;height:30px;border-radius:9px;outline: none;padding-left: 10px;padding-right: 30px;border: 1px solid #d7d7d7;;margin: 20px 20px;color:#888;}
+        #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 10px;cursor:pointer;}
+        #search_match_goods{width:450px;height: 520px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;display:none}
+        #search{width:410px;height:30px;border-radius:9px;outline: none;padding-left: 10px;padding-right: 30px;border: 1px solid #d7d7d7;;margin: 0px 20px 0px 20px;color:#888;}
         #search::-webkit-input-placeholder { /* WebKit browsers */
             color: #888;
         }
@@ -83,8 +81,8 @@
         #search:-ms-input-placeholder { /* Internet Explorer 10+ */
             color: #888;
         }
-        #d_search{float: right;position: absolute;  top:49px;  right: 32px;  font-size: 32px;color: #DCDCDC;}
-        #goods_box{width:100%;height:1200px;position:absolute;top:45%;left: 20%;z-index: 100;display: none;}
+        #d_search{float: right;position: absolute;  top:109px;  right: 20px;  font-size: 32px;color: #DCDCDC;}
+        #goods_box{width:100%;height:1200px;position:absolute;z-index: 100;display: none;}
         .goods_add{width: 40px;height:50px;float:right;font-size: 30px;  margin-top: -5px; text-align: center;  line-height: 50px;color:#c3c3c3; }
         .goods_add:hover{color:#6dc1c8;cursor: pointer;}
         .bttn-wrapper .fr-bttn:last-child{display: none;}
@@ -97,17 +95,26 @@
         .conpany_msg span:nth-of-type(2){display: none;}
         /*删除*/
         .conpany_msg i{display:none;background-color: #e58080;color: white;border-radius: 300px;width: 17px;height: 17px;position: absolute;top: -7px;right: -7px;text-align: center;line-height: 17px;}
-        #d_search:hover{
+        #d_search:hoverdxswf4{
             cursor:hand;
             cursor:pointer
         }
         .error_tips{
             clear: both;
         }
+        .goods_code{
+            width:100px;
+            display:inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .searchable-scroll{
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
-<>
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="toXiuda()">秀搭管理</span><i class="icon-ishop_8-03"></i><label>新增秀搭</label></div>
     <div class="editor_em col-lg-7 editor_line  animated fadeInRight marTop">
@@ -127,13 +134,26 @@
         <div class="the_listTitle">
            <span>
                <label class="red">秀搭标题*</label><input type="text" verify="Empty" maxlength="200"/>
-                <div class="hint"><div hintinfo="秀搭标题不能为空！"class="error_tips">秀搭标题不能为空！</div></div>
+                <div class="hint"><div hintinfo="秀搭标题不能为空"class="error_tips">秀搭标题不能为空</div></div>
+            </span>
+        </div>
+        <!--秀搭类型-->
+        <div class="the_listTitle" style="clear: both">
+           <span>
+               <label>秀搭类型</label>
+               <ul class='show_type' >
+                    </li>
+                     <li class='li_add'>
+                       <div class="addAdd" style="top: -8px;left: 23px;font-size: 29px;">+</div>
+                    </li>
+                </ul>
+                <div class="hint"><div hintinfo="秀搭标题不能为空"class="error_tips">秀搭标题不能为空</div></div>
             </span>
         </div>
         <!--搭配效果图-->
-        <div class="the_listTitle" style="clear: both">
+        <div class="the_listTitle" style="clear: both;">
            <span>
-               <label>搭配效果图</label>
+               <label class="red">搭配效果图*</label>
                 <form class="list_content">
                     <!--商品模板-->
                     <!--<div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>-->
@@ -142,6 +162,7 @@
                         <input accept="image/jpg,image/jpeg,image/png,img/bmp"  type="file" name="upload" id="upFile" style="width: 100%;height: 100%;opacity: 0;position:absolute;z-index: 999;top:0;outline: none;"/>
                         <div class="addAdd">+</div>
                         <div class="addText">添加图片</div>
+                        <div class="jianyi">建议尺寸：1000*1000</div>
                     </div>
                 </form>
             </span>
@@ -149,8 +170,8 @@
         <!--商品搭配-->
         <div class="the_listTitle" style="clear: both">
            <span>
-               <label>商品搭配</label>
-                <form class="list_content">
+               <label class="red">商品搭配*</label>
+                <form class="list_content" id="list_content">
                     <!--商品模板-->
                     <!--<div class="item_box">-->
                         <!--<div class="item_area"></div>-->
@@ -165,19 +186,51 @@
             </span>
         </div>
         <!--搭配描述-->
-        <div class="the_listTitle">
+        <div class="the_listTitle" style="clear: both;">
            <span>
-               <label>搭配描述</label><textarea name="" cols="30" rows="10" maxlength="500"></textarea>
+               <label class="red">搭配描述*</label><textarea id="d_match_desc" name="" cols="30" rows="10" maxlength="500"></textarea>
             </span>
         </div>
         <!--列表弹窗-->
-        <div id="search_match_goods" onmousedown="mouseDown(this,event)" onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">
-            <i class="icon-ishop_6-12" id="close_match_goods"></i>
-            <div class="li">
-                <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
-                <i class="icon-ishop_3-05" id="d_search"></i>
+        <div id="search_match_goods">
+            <!--秀搭表头-->
+            <i class="icon-ishop_6-12" id="close_match_goods"></i><div class="good_list_title"><span></span></spa>选择商品</div>
+            <div class="good_list_type" id="good_list_all"><span>FAB商品</span><span>微商城商品</span></div>
+            <div class="good_list_type" id="good_list_type" style="display:none;"></div>
+            <!--秀搭表头-->
+            <div class="li" style="margin-bottom: -50px;">
+                <div class="fab_search" id="fab_search">
+                    <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
+                    <i class="icon-ishop_3-05" id="d_search"></i>
+                </div>
+                <div class="wx_search" id="wx_search" style="margin-bottom: 0">
+                    <div class="brand" id="brand">
+                        <em style="font-style:normal;">请选择品牌</em>
+                        <div class="select_list" style="margin-bottom: 0" id="brand_list">
+                        </div>
+                        <span class="icon-ishop_8-02"></span>
+                    </div>
+                    <div class="wx_parent">
+                        <div class="select" style="margin-bottom: 0">
+                            <em style="font-style:normal;">名称</em>
+                            <div class="select_list" style="margin-bottom: 0" id="select_list">
+                                <p class="active" data-type="NAME">名称</p>
+                                <p data-type="CODE">货号</p>
+                            </div>
+                            <span class="icon-ishop_8-02"></span>
+                        </div>
+                        <div class="xian" style="margin-bottom: 0"></div>
+                        <div class="wx_right" style="margin-bottom: 0">
+                            <input type="text" class="input" id="search_w" placeholder="搜索">
+                            <i class="icon-ishop_3-05" id="w_search"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <ul id="stop" onmousedown=" stopBubble(this.id)" onmousemove=" stopBubble(this.id)" onmouseup=" stopBubble(this.id)">
+            <ul id="fabList">
+
+            </ul>
+            <ul id="wxList">
 
             </ul>
             <div id="more" class="more">加载更多<i class="icon-ishop_6-18"></i></div>
@@ -210,26 +263,46 @@
     </div>
 </div>
 <div id="goods_box"></div>
+<div class=show_type_box>
+    <div class=show_type_box_1>
+        <div class=show_type_box_2>
+            <div class=hint_1>
+                
+            </div>
+            <span style='position: relative;top: -1px;' >选择秀搭类型</span> 
+        </div>
+       <div class=show_type_box_3>
+            <input type="search" name="search_type"placeholder='搜索秀搭类型'/>
+            <i class="icon-ishop_3-05"></i>
+        </div>
+        <ul class=show_type_box_4>
+          
+        </ul>
+        <div class=show_type_box_5>
+            <span>
+                返回
+            </span>
+        </div>
+    </div>
+</div>
 <!-- ajax -->
-<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <!-- oss -->
-<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
-<script src="../js/loading.js?20170105"></script>
+<script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script src="../js/loading.js?2017040170331"></script>
 <!--匹配js-->
-<script src="../js/goods/xiuda_add.js"></script>
-<!--oss-->
-<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
-<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="../js/goods/xiuda_add.js?20170914"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
     var mouseX, mouseY;
     var objX, objY;
     var isDowm = false;  //是否按下鼠标
     function mouseDown(obj, e) {
-        obj.style.cursor = "move";
         objX = obj.style.left;
         objY = obj.style.top;
         mouseX = e.clientX;
@@ -266,6 +339,18 @@
             window.event.cancelBubble = true;
         }
     }
+    $("#wxList").niceScroll({
+        cursorborder: "0 none",
+        cursoropacitymin: "0",
+        boxzoom: false,
+        cursorcolor: " #dfdfdf",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorminheight: 200,
+        autohidemode: true,
+        cursorwidth: "9px",
+        cursorborderradius: "10px"
+    });
 </script>
 </body>
 </html>

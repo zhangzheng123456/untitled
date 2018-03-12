@@ -20,7 +20,23 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     private DefGoodsMatchMapper defGoodsMatchMapper;
     @Override
     public List<DefGoodsMatch> selectMatchGoods(String corp_code) throws Exception {
-        List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchGoods(corp_code);
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchGoods(corp_code,null);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            String goods_image = list.get(i).getGoods_image();
+            String new_image = transterGoods(goods_image);
+            list.get(i).setGoods_image(new_image);
+        }
+        return list;
+    }
+
+    @Override
+    public List<DefGoodsMatch> selectMatchGoods(String corp_code,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchGoods(corp_code,manager_corp_arr);
         for (int i = 0; list != null && i < list.size(); i++) {
             String goods_image = list.get(i).getGoods_image();
             String new_image = transterGoods(goods_image);
@@ -53,7 +69,22 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     }
     @Override
     public List<DefGoodsMatch> selMatchBySeach(String corp_code, String search_value) throws Exception {
-        List<DefGoodsMatch> list = defGoodsMatchMapper.selMatchBySeach(corp_code, search_value);
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selMatchBySeach(corp_code, search_value,null);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            String goods_image = list.get(i).getGoods_image();
+            String new_image = transterGoods(goods_image);
+            list.get(i).setGoods_image(new_image);
+        }
+        return list;
+    }
+
+    @Override
+    public List<DefGoodsMatch> selMatchBySeach(String corp_code, String search_value,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selMatchBySeach(corp_code, search_value,manager_corp_arr);
         for (int i = 0; list != null && i < list.size(); i++) {
             String goods_image = list.get(i).getGoods_image();
             String new_image = transterGoods(goods_image);

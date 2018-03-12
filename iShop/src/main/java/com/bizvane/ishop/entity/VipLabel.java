@@ -25,10 +25,47 @@ public class VipLabel {
     private ViplableGroup viplablegroup;
     private String label_group_code;
     private String label_group_name;
+    //使用量
     private String countlable;
     private String label_id;
-private String rid;
-private String label_sign;
+    private String rid;
+    private String label_sign;
+    private String brand_code;
+    private String brand_name;
+    private String count;
+    private String cnt;
+
+    public String getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(String cnt) {
+        this.cnt = cnt;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
+    }
+
+    public String getBrand_code() {
+        return brand_code;
+    }
+
+    public void setBrand_code(String brand_code) {
+        this.brand_code = brand_code;
+    }
 
     public String getLabel_sign() {
         return label_sign;

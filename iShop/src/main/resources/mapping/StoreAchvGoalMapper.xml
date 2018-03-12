@@ -14,6 +14,10 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isaverage" property="isaverage" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="proportion" property="proportion" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="targets_arr" property="targets_arr" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -23,8 +27,8 @@
         SELECT sa.id,sa.store_code,sa.store_name,sa.corp_code,
         sa.target_amount,sa.time_type,
         sa.target_time,sa.modified_date,sa.modifier,sa.created_date,
-        sa.creater,sa.isactive,c.corp_name
-        FROM 
+        sa.creater,sa.isactive,c.corp_name,sa.isaverage,sa.proportion,sa.targets_arr
+        FROM
         def_store_achv_goal sa,
         def_corp c
         WHERE
@@ -46,6 +50,9 @@
         sa.created_date,
         sa.creater,
         sa.isactive,
+        sa.isaverage,
+        sa.proportion,
+        sa.targets_arr,
         c.corp_name
         FROM
         def_store_achv_goal sa,
@@ -55,7 +62,13 @@
         AND sa.corp_code = st.corp_code
         AND st.store_code =sa.store_code
         <if test="corp_code!=null and corp_code!=''">
-            AND c.corp_code=#{corp_code}
+            AND sa.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                sa.corp_code =#{item}
+            </foreach>
         </if>
         <if test="area_codes !=null and area_codes!=''">
             AND (
@@ -123,7 +136,16 @@
                 creater ,
             </if>
             <if test="isactive!=null ">
-                isactive
+                isactive,
+            </if>
+            <if test="isaverage!=null ">
+                isaverage,
+            </if>
+            <if test="proportion!=null ">
+                proportion,
+            </if>
+            <if test="targets_arr!=null ">
+                targets_arr,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -159,6 +181,15 @@
             </if>
             <if test="isactive!=null ">
                 #{isactive},
+            </if>
+            <if test="isaverage!=null ">
+                #{isaverage},
+            </if>
+            <if test="proportion!=null ">
+                #{proportion},
+            </if>
+            <if test="targets_arr!=null ">
+                #{targets_arr},
             </if>
         </trim>
     </insert>
@@ -199,6 +230,15 @@
             <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
+            <if test="isaverage!=null ">
+                isaverage=#{isaverage},
+            </if>
+            <if test="proportion!=null ">
+                proportion=#{proportion},
+            </if>
+            <if test="targets_arr!=null ">
+                targets_arr=#{targets_arr},
+            </if>
         </trim>
         WHERE id=#{id}
     </update>
@@ -236,8 +276,11 @@
         sa.modifier,
         sa.created_date,
         sa.creater,
-        sa.isactive
-        FROM 
+        sa.isactive,
+        sa.isaverage,
+        sa.proportion,
+        sa.targets_arr
+        FROM
         def_store_achv_goal sa,
         def_store ds,
         def_corp dc
@@ -245,21 +288,27 @@
         AND sa.corp_code=ds.corp_code
         AND ds.store_code=sa.store_code
         <if test="corp_code!=null and corp_code!=''">
-            AND dc.corp_code=#{corp_code}
+            AND sa.corp_code=#{corp_code}
         </if>
-        <if test="area_codes !=null and area_codes!=''">
-            AND (
-            <foreach item="item" index="index" collection="area_codes" open="(" separator="or" close=")">
-                ds.area_code REGEXP #{item}
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                sa.corp_code =#{item}
             </foreach>
-            <if test="area_store_codes != null and area_store_codes !=''">
-                OR sa.store_code IN
-                <foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
-            )
         </if>
+        <!--<if test="area_codes !=null and area_codes!=''">-->
+            <!--AND (-->
+            <!--<foreach item="item" index="index" collection="area_codes" open="(" separator="or" close=")">-->
+                <!--ds.area_code REGEXP #{item}-->
+            <!--</foreach>-->
+            <!--<if test="area_store_codes != null and area_store_codes !=''">-->
+                <!--OR sa.store_code IN-->
+                <!--<foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">-->
+                    <!--#{item}-->
+                <!--</foreach>-->
+            <!--</if>-->
+            <!--)-->
+        <!--</if>-->
         <if test="store_codes !=null and store_codes !=''">
             AND sa.STORE_CODE IN
             <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">

@@ -30,4 +30,7 @@ public interface VipParamService {
     PageInfo<VipParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception ;
 
     List<VipParam> selectParamByCorp(String corp_code) throws Exception;
+
+    List<VipParam> selectParamByType(String corp_code,String param_type) throws Exception;
+
 }

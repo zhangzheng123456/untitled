@@ -9,7 +9,8 @@ public class MessageQuickReply {
     private String content;
     //企业编号
     private String corp_code;
-
+    //品牌编号
+    private String brand_code;
     //修改时间
     private String modified_date;
     //修改人
@@ -22,6 +23,7 @@ public class MessageQuickReply {
     private String isactive;
 
     private String corp_name;
+    private String brand_name;
     private Corp corp;
 
     public int getId() {
@@ -102,5 +104,21 @@ public class MessageQuickReply {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public String getBrand_code() {
+        return brand_code;
+    }
+
+    public void setBrand_code(String brand_code) {
+        this.brand_code = brand_code;
+    }
+
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
     }
 }

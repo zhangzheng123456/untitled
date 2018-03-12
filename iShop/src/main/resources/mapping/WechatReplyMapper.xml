@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.WechatReplyMapper">
+
+    <select id="selectByType" resultType="com.bizvane.ishop.entity.WechatReply">
+        SELECT
+        def_wechat_reply.ID,
+        def_wechat_reply.CODE,
+        def_wechat_reply.NAME,
+        def_wechat_reply.CONTENT,
+        def_wechat_reply.BRAND_CODE,
+        def_wechat_reply.BRAND_NAME,
+        def_wechat_reply.TYPE,
+        def_corp.corp_name,
+        def_wechat_reply.CORP_CODE,
+        def_wechat_reply.MODIFIED_DATE,
+        def_wechat_reply.CREATED_DATE,
+        def_wechat_reply.CREATER,
+        def_wechat_reply.MODIFIER,
+        def_wechat_reply.ISACTIVE
+        FROM def_wechat_reply,def_corp
+        WHERE def_wechat_reply.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_wechat_reply.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            def_wechat_reply.NAME LIKE concat('%', #{search_value},'%')
+            or def_wechat_reply.BRAND_NAME LIKE concat ('%', #{search_value},'%')
+            or def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        GROUP BY def_wechat_reply.id
+        ORDER BY def_wechat_reply.id DESC
+    </select>
+
+
+
+    <insert id="insertRole" parameterType="com.bizvane.ishop.entity.Role">
+        INSERT INTO def_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="role_name != null">
+                role_name,
+            </if>
+            <if test="role_code != null">
+                role_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="role_name != null">
+                #{role_name},
+            </if>
+            <if test="role_code != null">
+                #{role_code},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByRoleId" parameterType="com.bizvane.ishop.entity.Role">
+        UPDATE def_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="role_code != null">
+                role_code = #{role_code},
+            </if>
+            <if test="role_name != null">
+                role_name = #{role_name},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
+            </if>
+        </trim>
+        WHERE id = #{id};
+    </update>
+
+    <delete id="deleteByRoleId">
+        DELETE FROM
+        def_role
+        WHERE id = #{id}
+    </delete>
+    <select id="countRoleCode" resultType="java.lang.Integer">
+        SELECT count(*) FROM def_role WHERE role_code=#{role_code}
+    </select>
+    <select id="getRoleForID" resultType="com.bizvane.ishop.entity.Role">
+        SELECT * FROM def_role WHERE role_code=#{role_code}
+    </select>
+    <select id="countRoleName" resultType="java.lang.Integer">
+        SELECT count(*) FROM def_role WHERE role_name=#{role_name}
+    </select>
+</mapper>

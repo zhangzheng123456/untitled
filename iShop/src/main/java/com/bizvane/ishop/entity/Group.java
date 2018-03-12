@@ -26,6 +26,8 @@ public class Group {
     //是否可用
     private String isactive;
 
+    private String isshow;
+
     private Role role;
 
     private Corp corp;
@@ -134,6 +136,14 @@ public class Group {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getIsshow() {
+        return isshow;
+    }
+
+    public void setIsshow(String isshow) {
+        this.isshow = isshow;
     }
 
     public Role getRole() {

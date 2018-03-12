@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
@@ -16,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +89,7 @@ public class TaskTypeController {
             String jsString = request.getParameter("param");
             logger.info("json--taskType add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = taskTypeService.insertTaskType(message, user_code);
@@ -153,7 +152,7 @@ public class TaskTypeController {
             String jsString = request.getParameter("param");
             logger.info("json--taskType add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
@@ -209,10 +208,10 @@ public class TaskTypeController {
             String jsString = request.getParameter("param");
             logger.info("json--taskType select-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String type_id = jsonObject.get("id").toString();
             data = JSON.toJSONString(taskTypeService.selectById(type_id));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -235,10 +234,10 @@ public class TaskTypeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -249,6 +248,14 @@ public class TaskTypeController {
             PageInfo<TaskType> tasktype;
             if (role_code.equals(Common.ROLE_SYS)) {
                 tasktype = taskTypeService.selectAllTaskType(page_number, page_size, "", search_value);
+            }else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                tasktype = taskTypeService.selectAllTaskType(page_number, page_size, corp_code, search_value);
+
+                //  tasktype = taskTypeService.selectAllTaskType(page_number, page_size, "", search_value,manager_corp);
             } else {
                 tasktype = taskTypeService.selectAllTaskType(page_number, page_size, corp_code, search_value);
             }
@@ -272,10 +279,10 @@ public class TaskTypeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--taskType delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
             String msg = null;
@@ -343,9 +350,9 @@ public class TaskTypeController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String task_type_code = jsonObject.get("task_type_code").toString();
 
@@ -374,9 +381,9 @@ public class TaskTypeController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String task_type_name = jsonObject.get("task_type_name").toString();
 
@@ -406,10 +413,10 @@ public class TaskTypeController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            JSONObject jsonObject1 = JSONObject.parseObject(jsString);
             id = jsonObject1.getString("id");
             String message = jsonObject1.get("message").toString();
-            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            JSONObject jsonObject2 = JSONObject.parseObject(message);
             int page_number = Integer.parseInt(jsonObject2.get("pageNumber").toString());
             int page_size = Integer.parseInt(jsonObject2.get("pageSize").toString());
 //            String screen = jsonObject2.get("screen").toString();
@@ -421,6 +428,14 @@ public class TaskTypeController {
             PageInfo<TaskType> taskType;
             if (role_code.equals(Common.ROLE_SYS)) {
                 taskType = taskTypeService.selectAllTaskTypeScreen(page_number, page_size, "", map);
+            }else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                taskType = taskTypeService.selectAllTaskTypeScreen(page_number, page_size, corp_code, map);
+
+                //  taskType = taskTypeService.selectAllTaskTypeScreen(page_number, page_size, "", map,manager_corp);
             } else {
                 taskType = taskTypeService.selectAllTaskTypeScreen(page_number, page_size, corp_code, map);
             }
@@ -451,9 +466,9 @@ public class TaskTypeController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+           JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
@@ -483,7 +498,7 @@ public class TaskTypeController {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(list);
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request,"任务类型");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

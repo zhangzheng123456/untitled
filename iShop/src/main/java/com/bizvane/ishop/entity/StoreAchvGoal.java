@@ -1,7 +1,7 @@
 package com.bizvane.ishop.entity;
 
 /**
- * Created by lixiang on 2016/6/1.
+ * Created by xiaohua on 2016/6/1.
  * 店铺业绩目标
  * @@version
  */
@@ -30,10 +30,40 @@ public class StoreAchvGoal {
     private String creater;
     //是否可用
     private String isactive;
+    //是否平均分配
+    private String isaverage;
+    //比例
+    private String proportion;
+    //周比例对应的业绩目标
+    private String targets_arr;
 
     private Corp corp;
     private  String corp_name;
     private String area_name;
+
+    public String getIsaverage() {
+        return isaverage;
+    }
+
+    public void setIsaverage(String isaverage) {
+        this.isaverage = isaverage;
+    }
+
+    public String getProportion() {
+        return proportion;
+    }
+
+    public void setProportion(String proportion) {
+        this.proportion = proportion;
+    }
+
+    public String getTargets_arr() {
+        return targets_arr;
+    }
+
+    public void setTargets_arr(String targets_arr) {
+        this.targets_arr = targets_arr;
+    }
 
     public String getCorp_name() {
         return corp_name;

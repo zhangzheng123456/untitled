@@ -17,13 +17,13 @@
         body{
             margin-top:81px;
         }
-        #task_dec{
+        .task_dec{
             width: 420px;
             /* width: 70%; */
             /* border-style: none; */
             border: none;
             border-radius: 4px;
-            height:150px;
+            height:400px;
             text-indent: 10px;
             outline: none;
             appearance: none;
@@ -31,13 +31,19 @@
             -moz-appearance: none;
             -ms-appearance: none;
             color: #888888;
+            background-color: #fff;
+            overflow: auto;
             /* float: right; */
+        }
+        .task_dec ul{
+            height:400px;
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>回访记录</div>
+        <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>回访记录<i class="icon-ishop_8-03"></i>回访详情</div>
             <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
                 <!-- <div class="operation_conpany">
                     <ul>
@@ -45,33 +51,23 @@
                     </ul>
                 </div> -->
                 <form class="conpany_msg">
-                    <div>
-                        <span><label>所属企业</label><input type="text" readonly id="OWN_CORP" verify="Empty"/></span>
-                    </div>
-                    <div>
-                        <span><label>会员编号</label><input type="text"readonly id="VIP_CODE" verify="Empty"/></span>
-                    </div>
-                    <div>
-                        <span><label>会员名称</label><input type="text"readonly id="VIP" verify="Empty"/></span>
-                    </div>
-                    <div>
-                        <span><label>回访员工</label><input type="text"readonly id="CALLBACK_STUFF" verify="Empty"/></span>
-                    </div>
-                    <div>
-                        <span><label>员工编号</label><input type="text"readonly id="STUFF_CODE" verify="Empty"/></span>
-                    </div>
-                    <div id="day">
-                        <span><label>回访时间</label><input type="text"readonly id="CALLBACK_DATE" /></span>
-
-                    </div>
-                    <div>
-                        <span><label>回访类型</label><input type="text"readonly id="CALLBACK_TYPE" /></span>
-
-                    </div>
+                    <div><span><label>所属企业</label><input type="text" readonly id="OWN_CORP" verify="Empty"/></span></div>
+                    <div><span><label>会员卡号</label><input type="text"readonly id="VIP_CODE" verify="Empty"/></span></div>
+                    <div><span><label>会员名称</label><input type="text"readonly id="VIP" verify="Empty"/></span></div>
+                    <div><span><label>回访员工</label><input type="text"readonly id="CALLBACK_STUFF" verify="Empty"/></span></div>
+                    <div><span><label>员工编号</label><input type="text"readonly id="STUFF_CODE" verify="Empty"/></span></div>
+                    <div id="day"><span><label>回访时间</label><input type="text"readonly id="CALLBACK_DATE" /></span></div>
+                    <div><span><label>回访类型</label><input type="text"readonly id="CALLBACK_TYPE" /></span></div>
                     <div id="task_dec_content">
                        <span style="display: inline-flex;width:100%"><label >消息内容</label><span class="abstract">
-                           <textarea id="task_dec"readonly maxlength="500"></textarea>
+                           <textarea class="task_dec" id="task_dec"readonly maxlength="500"></textarea>
                        </span></span>
+                    </div>
+                    <div id="wx_content" style="display: none;">
+                       <span style="display: inline-flex;width:100%"><label >消息内容</label><span class="abstract">
+                          <textarea class="task_dec" readonly  maxlength="500" style="height: 60px;"></textarea>
+                       </span></span>
+                        <div class="look_more" id="look_more">查看更多<span class="icon-ishop_8-03"></span></div>
                     </div>
                 </form>
             </div>
@@ -102,14 +98,136 @@
                     <!--</div>-->
                 <!--</form>-->
             </div>
+            <div class="wx_content" id="wx_dialog" style="display: none;">
+                <div class="title"><span></span>聊天记录
+                    <div class="close icon-ishop_6-12" id="close"></div>
+                </div>
+                <div class="wx_data">
+                    <div class="wx_data_l">
+                        <input type="text" class="laydate-icon" readonly="" id="data" onclick="laydate({elem: '#data',min:'1900-01-01 00:00:00',max: laydate.now(),istime: false,isclear:false,istoday: false, format: 'YYYY-MM-DD',choose:checkStart})">
+                    </div>
+                    <div class="wx_search_r">
+                        <input type="text" placeholder="搜索当日内容" id="corp_search">
+                        <span class="icon-ishop_3-05" id="corp_search_f"></span>
+                    </div>
+                </div>
+                <div class="chat_record" id="chat_record">
+                    <ul>
+                        <!--<li style="text-align: center;height: 300px;line-height: 300px;">暂无内容</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data black">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--什么时候回家看看-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--什么时候回家看看-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--<div class="img_text"><img src="http://products-image.oss-cn-hangzhou.aliyuncs.com/FAB/C10141/01499936775121.jpg@300h_300w_1e_1c" alt=""></div>-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--<div class="img_text"><img src="http://products-image.oss-cn-hangzhou.aliyuncs.com/FAB/C10141/01499936775121.jpg@300h_300w_1e_1c" alt=""></div>-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+                <div class="chat_record" id="chat_record2" style="display: none;">
+                    <ul>
+                        <!--<li style="text-align: center;height: 300px;line-height: 300px;">暂无内容</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data black">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--什么时候回家看看-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--什么时候回家看看-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--<div class="img_text"><img src="http://products-image.oss-cn-hangzhou.aliyuncs.com/FAB/C10141/01499936775121.jpg@300h_300w_1e_1c" alt=""></div>-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="left">-->
+                            <!--<div class="img">-->
+                                <!--<img src="../img/head.png" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="data">哈哈哈 2017-12-12 16:37:56</div>-->
+                                <!--<div class="text">-->
+                                    <!--<div class="img_text"><img src="http://products-image.oss-cn-hangzhou.aliyuncs.com/FAB/C10141/01499936775121.jpg@300h_300w_1e_1c" alt=""></div>-->
+                                    <!--<div class="angle_r"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/loading.js?20171017"></script>
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-    <script type="text/javascript" src="../js/vip/callback_operate.js"></script>
+    <script type="text/javascript" src="../js/vip/callback_operate.js?20171108"></script>
+    <script src="../js/laydate/laydate.js?2017040170331"></script>
 </body>
 
 </html>

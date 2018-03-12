@@ -19,6 +19,20 @@
         ORDER BY ID DESC
     </select>
 
+    <select id="selectAllAppversionByPlatform" resultType="com.bizvane.ishop.entity.Appversion">
+        SELECT *
+        FROM def_app_version
+        WHERE 1 = 1
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            platform LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        GROUP BY ID
+        ORDER BY ID DESC
+    </select>
+
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Appversion">
     SELECT *
     FROM def_app_version

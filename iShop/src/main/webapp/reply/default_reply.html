@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>客服管理</title>
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+	<script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js"></script>
+</head>
+<body>
+    <div class="content">
+    	<div class="con_table" id="con_table">
+    		<div class="title">
+    			<span>客服管理</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>默认回复列表</span>
+    		</div>
+    		<div class="action">
+                <div class="action_l">
+                    <ul id="jurisdiction">
+                    </ul>
+                    <ul>
+                        <li class="li">
+                            <input type="text" class="input" id="search" placeholder="编号/名称/品牌/企业名称">
+                            <i class="icon-ishop_3-05" id="d_search"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="action_r">
+                    <ul>
+                        <li id="filtrate">
+                            <span class="icon-ishop_6-05"></span>
+                            筛选
+                        </li>
+                        <!--<li class="bg">-->
+                            <!--<span class="icon-ishop_6-06"></span>-->
+                            <!--配置-->
+                        <!--</li>-->
+                        <li class="bg">
+                            <span class="icon-ishop_6-07"></span>
+                            刷新
+                        </li>
+                        <li id="more">
+                            <span class="icon-ishop_6-08"></span>
+                            更多
+                            <div class="more_down" id="more_down">
+                                <!--<div id="leading_out">导出</div>-->
+                                <!--<div id="guide_into">导入</div>-->
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="file">
+                <div class="file_content">
+                    <div id="download"></div>
+                    <div  class="icon-ishop_6-12" id="file_close"></div>
+                </div>
+                <div id="file_list">
+                    <div id="file_list_l">
+                        <ul>
+                        </ul>
+                    </div>
+                    <div id="file_list_z">
+                        <div class="c_shift">
+                            <div id="left_shift" class="shift" title="右移">></div>
+                            <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                            <div id="right_shift" class="shift" title="左移"><</div>
+                            <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+                        </div>
+                    </div>
+                    <div id="file_list_r">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+                <div class="file_btn">
+                    <div class="file_submit" id="file_submit">提交</div>
+                </div>
+            </div>
+            <div class="into_frame">
+                <span class="icon-ishop_6-12" id="x1"></span>
+                <div class="into_text">请先下载模板，然后按模板提示规则填入数据并导入文件</div>
+                <div class="into_frame_c">
+                    <div class="down_load"><a href="/ExeclFormwork/Area.xls">下载模板</a></div>
+                    <div class="down_load_file">
+                        <label>导入文件</label>
+                        <input type="file" id="file" onchange="UpladFile()">
+                    </div>
+                </div>
+            </div>
+            <div class="sxk" id="sxk">
+                <div class="sbtn">
+                    <div class="empty" id="empty">
+                        <i class="icon-ishop_6-16"></i>清空筛选
+                    </div>
+                    <span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
+                    <div class="r_btn">
+                        <div class="pack_up" id="pack_up">
+                            <i class="icon-ishop_6-18"></i>
+                            收起
+                        </div>
+                        <div class="find" id="find">
+                            <i class="icon-ishop_6-19"></i>
+                            查找
+                        </div>
+                    </div>
+                </div>
+                <div class="inputs">
+                    <ul>
+                    </ul>
+                    <!-- <li>
+                       <label>公司名称</label>
+                       <input type="text" id="p1">
+                    </li>
+                    <li>
+                        <label>联系人</label>
+                        <input type="text" id="p2">
+                    </li>
+                    <li>
+                        <label>修改人</label>
+                        <input type="text" id="p3">
+                    </li>
+                    <li>
+                        <label>联系电话</label>
+                        <input type="text" id="p4">
+                    </li> -->
+                </div>
+            </div>
+    		<div class="table">
+    			<table id="table" cellpadding="0" cellspacing="0" width="100%">
+                 	<thead>
+                 		<tr class="th">
+                 			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                 			<th style="text-align: left;" id="tableOrder">序号</th>
+                 			<!--<th>区域编号</th>-->
+                 			<!--<th>区域名称</th>-->
+							<!--<th>所属企业</th>-->
+							<!--<th>修改人</th>-->
+							<!--<th>修改时间</th>-->
+							<!--<th width="50px;">可用</th>-->
+                 		</tr>
+                 	</thead>
+                    <tbody>
+                        <!--<tr>-->
+                            <!--<td width="50px" style="text-align: left;">-->
+                                <!--<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>-->
+                            <!--</td>-->
+                            <!--<td style="text-align: left;">10</td>-->
+                            <!--<td>COOO1</td>-->
+                            <!--<td>上海</td>-->
+                            <!--<td>安正</td>-->
+                            <!--<td>张某某</td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td width="50px">可用</td>-->
+                        <!--</tr>                                                                                             					-->
+                    </tbody>
+    			</table>
+    		</div>
+    		<div class="foot">
+    			<ul>
+    				<li class="foot-jum">
+    					<span>跳转至</span>
+    					<input class="input-txt" value="1" id="input-txt">
+    					<em>页</em>
+    				</li>
+    				<li class="foot-num" >
+    					<ul id="foot-num">
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li>
+                                <span class="p-bg">1</span>
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
+    					</ul>
+    				</li>
+    				<li class="foot-sum">
+    					<div class="page_p">
+    						<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                            <ul class="liebiao" style="display:none;" id="liebiao">
+                                <li id="10">10行/页</li>
+                                <li id="30">30行/页</li>
+                                <li id="50">50行/页</li>
+                                <li id="100">100行/页</li>
+                            </ul>
+						    <span class="icon-ishop_8-02 icon"></span>
+    					</div>
+						<span class="zy">共 0 页</span>
+    				</li>
+    			</ul>
+    		</div>
+    	</div>
+    </div>
+    <div class="p" id="p"></div>
+    <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" id="delete">删除</em>
+        </div>
+    </div>
+    <div class="tk" id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
+</body>
+    <script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+    <script src="/js/reply/default_reply.js?2017040170331"></script>
+    <script src="/js/silide.js?2017040170331"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(".icon-ishop_6-07").parent().click(function () {
+                window.location.reload();
+            })
+        });
+    </script>
+</html>

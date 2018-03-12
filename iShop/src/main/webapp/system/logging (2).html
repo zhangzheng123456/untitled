@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录日志</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170105">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170105">
+    <link rel="stylesheet" href="../css/staff_function.css">
+    <script src="../table/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>员工管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>登录日志</span>
+        </div>
+        <!--导航-->
+        <div id="nav">
+            <div class="nav_down nav_3"@click="navDomShow($event)" style="position: relative;">
+                请选择范围
+                <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_3"></span></div>
+                <nav-component v-if="nav_3"></nav-component>
+            </div>
+            <div class="nav_date">
+                <span>201704017-01-01</span>
+                <span>至</span>
+                <span>201704017-02-02</span>
+                <div style="float: right;margin-left: 10px" class="nav_down nav_4"@click="navDomShow($event)">
+                201704017-01-01
+                <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_4"></span></div>
+                <!--<nav-component v-if="nav_4"></nav-component>-->
+                <div id="date"v-if="nav_4">
+                    <div class="date_nav">
+                        <div class="week"@click="">周</div>
+                        <div  class="month">月</div>
+                        <div  class="year">年</div>
+                    </div>
+                    <div class="week_box"style="display: none">
+                        <div class="week_nav">
+                            <div class="week_num">
+                                <span class="icon-ishop_8-03 week_arrow_left"></span>
+                                <b>201704017年</b>
+                                <span class="icon-ishop_8-03 week_arrow_right"></span>
+                            </div>
+                        </div>
+                        <ul class="week_detail">
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                            <li>
+                                <div class="week_detail_w">201704017年第3周</div>
+                                <div class="week_detail_d">201704017-01-15至201704017-01-21</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="month_box" style="display: none">
+                        <div class="month_nav">
+                            <div class="month_num">
+                                <span class="icon-ishop_8-03 month_arrow_left"></span>
+                                <b>201704017年</b>
+                                <span class="icon-ishop_8-03 month_arrow_right"></span>
+                            </div>
+                            <ul class="month_detail">
+                                <li>
+                                    <div class="month_detail_w">201704017年第3周</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="year_box">
+                        <ul class="year_detail">
+                            <li>
+                                <div class="year_detail_w">201704017年第3周</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!--chart-->
+        <div id="chart_box">
+           <div class="chart_title">
+               <label></label>
+               <span>功能使用分析</span>
+           </div>
+           <div id="chart"></div>
+        </div>
+        <!--table-->
+        <div id="table">
+            <div class="chart_title">
+                <label></label>
+                <span>功能使用分析表</span>
+                <div class="export_table">导出表格</div>
+            </div>
+            <div class="table_box">
+                <table class="table_top">
+                    <thead>
+                      <tr>
+                          <th>序号</th>
+                          <th>功能</th>
+                          <th>事件</th>
+                          <th>人员</th>
+                          <th>时间段</th>
+                          <th>事件次数</th>
+                      </tr>
+                    </thead>
+                </table>
+                <div class="table_below">
+                     <table>
+                         <tbody>
+                           <tr>
+                               <td>2</td>
+                               <td>查看会员</td>
+                               <td>查看生日会员</td>
+                               <td>倩女</td>
+                               <td>201704017年第3周</td>
+                               <td>123</td>
+                           </tr>
+                         </tbody>
+                     </table>
+                </div>
+            </div>
+        </div>
+        <!--发送范围-->
+        <div class="vip_screen" style="display: none;">
+            <div class="vip_screen_title">
+                <div class="left">
+                    <span class="biaozhi"></span><span>筛选会员-选择所属关系</span>
+                </div>
+                <div class="right">
+                    <span>查看已选</span>
+                    <span class="icon-ishop_8-03 chank"></span>
+                </div>
+            </div>
+            <div class="vip_screen_name">
+                <ul>
+                    <li style="width: 25%" class="active">按品牌</li>
+                    <li style="width: 25%">按区域</li>
+                    <li style="width: 25%">按店铺</li>
+                    <li style="width: 25%">按导购</li>
+                </ul>
+            </div>
+            <div class="vip_screen_content">
+                <div class="vip_screen_brand" id="vip_screen_brand" style="display: block">
+                    <div>
+                        <div class="search">
+                            <input type="text" placeholder="搜索品牌">
+                        </div>
+                        <div class="brand_content">
+                            <ul>
+                                <li>
+                                    <span>品牌01</span>
+                                    <div class="c_right">
+                                        <div class="enter">进入</div>
+                                        <div class="checkAll">全选导购</div>
+                                    </div>
+                                </li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌76</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="vip_screen_brand" id="vip_screen_area">
+                    <div>
+                        <div class="search">
+                            <input type="text" placeholder="搜索区域">
+                        </div>
+                        <div class="brand_content">
+                            <ul>
+                                <li>品牌01</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌76</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="vip_screen_brand" id="vip_screen_store">
+                    <div>
+                        <div class="search">
+                            <input type="text" placeholder="搜索店铺">
+                        </div>
+                        <div class="brand_content">
+                            <ul>
+                                <li>品牌01</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌76</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="vip_screen_brand" id="vip_screen_staff">
+                    <div>
+                        <div class="search">
+                            <input type="text" placeholder="搜索导购">
+                        </div>
+                        <div class="brand_content">
+                            <ul>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌02</li>
+                                <li>品牌76</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="vip_screen_footer">
+                <div class="left">
+                    <div class="checkbox">
+                        <input type="checkbox" id="checkboxTwoInput0" class="check">
+                        <label for="checkboxTwoInput0" class="label"></label>
+                    </div>
+                    <span>全选品牌下所属导购</span>
+                </div>
+                <div class="right">
+                    <div class="gongneng q">确认</div>
+                    <div class="gongneng x">取消</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/staff/echarts.common.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="../js/staff/vue-resource.js"></script>
+<script src="../js/system/logging2.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('chart'));
+         // 指定图表的配置项和数据
+         var option = {
+             grid: {
+                 left: '3%',
+                 right: '4%',
+                 bottom: '3%',
+                 containLabel: true
+             },
+            textStyle:{
+                color:"#888"
+            },
+             xAxis : [
+                 {
+                     type : 'category',
+                     axisTick: {
+                         show: false
+                     },
+                     axisLine:{
+                         lineStyle: {
+                         color: '#a3adbc'
+                        }
+                     },
+                     data : ['1-1','1-2','1-3','1-4','1-5','1-6','1-7','1-8','1-9','1-10','1-11','1-12','1-13','1-14','1-15','1-16']
+                 }
+             ],
+             yAxis : [
+                 {
+                     show:false,
+                     type : 'value',
+                     axisLine: {
+                         show: false,
+                     },
+                     axisTick: {
+                         show: false
+                     },
+                 }
+             ],
+//             tooltip:{
+//                 show:true,
+//                 position:'top',
+//                 formatter:'{c}',
+//                 backgroundColor:'#9999cc',
+//                 padding:[10,40]
+//             },
+             tooltip: {
+                 trigger: 'item',
+                 formatter: "{a} <br/>{b}: {c}"
+             },
+             series : [
+                 {
+                     name:'登录',
+                     type:'line',
+                     stack: 'consumption1',
+                     itemStyle: {
+                         normal: {
+                             color: '#6cc1c8'
+                         },
+//                         emphasis: {
+//                             color:'#9999cc'
+//                         }
+                     },
+                     barWidth:4,
+                     data:[220, 182, 191, 234, 290, 330, 310,220, 182, 191, 234, 290, 330, 310,210,210]
+                 },
+             ]
+         };
+
+         // 使用刚指定的配置项和数据显示图表。
+         myChart.setOption(option);
+</script>
+</body>
+</html>

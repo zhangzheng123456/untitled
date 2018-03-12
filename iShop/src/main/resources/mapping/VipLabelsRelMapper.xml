@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bizvane.ishop.dao.VipLabelsRelMapper">
+
+    <resultMap id="VipLabelsRel" type="com.bizvane.ishop.entity.VipLabelsRel">
+        <result column="label_id" property="label_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_code" property="vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_name" property="vip_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_no" property="vip_card_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_name" property="store_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="label_name" property="label_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+
+    <select id="selectAllLabel" resultMap="VipLabelsRel">
+--         SELECT
+--         rl.*,
+--         dl.label_name,
+--         ds.store_name,
+--         du.user_name
+--         FROM rel_vip_label rl,def_vip_label dl,def_store ds,def_user du
+--         WHERE rl.label_id=dl.id AND  rl.corp_code=dl.corp_code AND rl.store_code=ds.store_code
+--         AND rl.corp_code=ds.corp_code
+--         AND rl.creater=du.user_code
+--         AND du.corp_code=rl.corp_code
+        SELECT
+        rl.*,
+        dl.label_name,
+        ds.store_name,
+        du.user_name
+        FROM rel_vip_label rl
+        LEFT JOIN def_vip_label dl on rl.label_id =dl.id
+        LEFT JOIN def_store ds on rl.store_code=ds.store_code  AND rl.corp_code=ds.corp_code
+        LEFT JOIN  def_user du on  rl.creater=du.user_code AND du.corp_code=rl.corp_code
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND  rl.corp_code = #{corp_code}
+        </if>
+
+        <if test="search_value != null and search_value !=''">
+            AND (
+            rl.vip_name LIKE concat('%', #{search_value},'%')
+            OR rl.vip_card_no LIKE concat('%', #{search_value},'%')
+            OR dl.label_name LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY rl.id DESC
+    </select>
+
+    <delete id="delActivityVipLabelById">
+        DELETE FROM rel_vip_label
+        WHERE id=#{id};
+    </delete>
+
+    <select id="selectAllScreen" resultMap="VipLabelsRel">
+--         SELECT
+--         rl.*,
+--         dl.label_name,
+--         ds.store_name,
+--         du.user_name
+--         FROM rel_vip_label rl,def_vip_label dl,def_store ds,def_user du
+--         WHERE rl.label_id=dl.id AND  rl.corp_code=dl.corp_code AND rl.store_code=ds.store_code
+--         AND ds.corp_code=rl.corp_code AND rl.creater=du.user_code
+--         AND du.corp_code=rl.corp_code
+        SELECT
+        rl.*,
+        dl.label_name,
+        ds.store_name,
+        du.user_name
+        FROM rel_vip_label rl
+        LEFT JOIN def_vip_label dl on rl.label_id =dl.id
+        LEFT JOIN def_store ds on rl.store_code=ds.store_code  AND rl.corp_code=ds.corp_code
+        LEFT JOIN  def_user du on  rl.creater=du.user_code AND du.corp_code=rl.corp_code
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND  rl.corp_code = #{corp_code}
+        </if>
+
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  rl.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  rl.created_date &lt;= #{created_date_end}
+        </if>
+
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+                <choose>
+
+                    <when test="entryValue!='' and entryKey=='label_name'">
+                        dl.${entryKey} REGEXP ${entryValue}
+                    </when>
+
+                    <when test="entryValue!='' and entryKey=='user_name'">
+                        du.${entryKey} REGEXP ${entryValue}
+                    </when>
+
+                    <when test="entryValue!='' and entryKey=='store_name'">
+                        ds.${entryKey} REGEXP ${entryValue}
+                    </when>
+
+                    <when test="entryValue!=''">
+                        rl.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        ORDER BY rl.id DESC
+    </select>
+
+    <select id="selectVipLabelsRelById" resultMap="VipLabelsRel">
+--         SELECT
+--         rl.*,
+--         dl.label_name,
+--         ds.store_name,
+--         du.user_name
+--         FROM rel_vip_label rl,def_vip_label dl,def_store ds,def_user du
+--         WHERE rl.label_id=dl.id AND  rl.corp_code=dl.corp_code AND rl.store_code=ds.store_code
+--         AND rl.corp_code=ds.corp_code
+--         AND rl.creater=du.user_code
+--         AND du.corp_code=rl.corp_code
+        SELECT
+        rl.*,
+        dl.label_name,
+        ds.store_name,
+        du.user_name
+        FROM rel_vip_label rl
+        LEFT JOIN def_vip_label dl on rl.label_id =dl.id
+        LEFT JOIN def_store ds on rl.store_code=ds.store_code  AND rl.corp_code=ds.corp_code
+        LEFT JOIN  def_user du on  rl.creater=du.user_code AND du.corp_code=rl.corp_code
+        WHERE 1=1
+        AND rl.id=#{id}
+    </select>
+
+
+    <!-- 分权限筛选  &lt;-->
+    <select id="selectRoleAllScreen" resultMap="VipLabelsRel">
+--         SELECT
+--         rl.*,
+--         dl.label_name,
+--         ds.store_name,
+--         du.user_name
+--         FROM rel_vip_label rl,def_vip_label dl,def_store ds,def_user du
+--         WHERE rl.label_id=dl.id AND  rl.corp_code=dl.corp_code AND rl.store_code=ds.store_code
+--         AND ds.corp_code=rl.corp_code AND rl.creater=du.user_code
+--         AND du.corp_code=rl.corp_code
+        SELECT
+        rl.*,
+        dl.label_name,
+        ds.store_name,
+        du.user_name
+        FROM rel_vip_label rl
+        LEFT JOIN def_vip_label dl on rl.label_id =dl.id
+        LEFT JOIN def_store ds on rl.store_code=ds.store_code  AND rl.corp_code=ds.corp_code
+        LEFT JOIN  def_user du on  rl.creater=du.user_code AND du.corp_code=rl.corp_code
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND  rl.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND rl.creater=#{user_code}
+        </if>
+
+        AND rl.creater IN
+        (
+        SELECT def_user.user_code
+        from def_user,def_group,def_corp
+        where def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_user.corp_code = #{corp_code}
+        </if>
+        <if test="role_code!=null and corp_code!=''">
+            AND def_group.role_code &lt; #{role_code}
+        </if>
+        <if test="array != null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code regexp #{item}
+            </foreach>
+        </if>
+        )
+
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  rl.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  rl.created_date &lt;= #{created_date_end}
+        </if>
+
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+                <choose>
+
+                    <when test="entryValue!='' and entryKey=='label_name'">
+                        dl.${entryKey} REGEXP ${entryValue}
+                    </when>
+
+                    <when test="entryValue!='' and entryKey=='user_name'">
+                        du.${entryKey} REGEXP ${entryValue}
+                    </when>
+
+                    <when test="entryValue!='' and entryKey=='store_name'">
+                        ds.${entryKey} REGEXP ${entryValue}
+                    </when>
+
+                    <when test="entryValue!=''">
+                        rl.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        ORDER BY rl.id DESC
+    </select>
+
+
+    <!-- 分权限查询 -->
+
+    <select id="selectRoleAllLabel" resultMap="VipLabelsRel">
+
+--         SELECT
+--         rl.*,
+--         dl.label_name,
+--         ds.store_name,
+--         du.user_name
+--         FROM rel_vip_label rl,def_vip_label dl,def_store ds,def_user du
+--         WHERE rl.label_id=dl.id AND  rl.corp_code=dl.corp_code AND rl.store_code=ds.store_code
+--         AND rl.corp_code=ds.corp_code
+--         AND rl.creater=du.user_code
+--         AND du.corp_code=rl.corp_code
+        SELECT
+        rl.*,
+        dl.label_name,
+        ds.store_name,
+        du.user_name
+        FROM rel_vip_label rl
+        LEFT JOIN def_vip_label dl on rl.label_id =dl.id
+        LEFT JOIN def_store ds on rl.store_code=ds.store_code  AND rl.corp_code=ds.corp_code
+        LEFT JOIN  def_user du on  rl.creater=du.user_code AND du.corp_code=rl.corp_code
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND  rl.corp_code = #{corp_code}
+        </if>
+
+        <if test="user_code!=null and user_code!=''">
+            AND rl.creater=#{user_code}
+        </if>
+
+        AND rl.creater IN
+        (
+        SELECT def_user.user_code
+        from def_user,def_group,def_corp
+        where def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_user.corp_code = #{corp_code}
+        </if>
+        <if test="role_code!=null and corp_code!=''">
+            AND def_group.role_code &lt; #{role_code}
+        </if>
+        <if test="array != null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                def_user.store_code regexp #{item}
+            </foreach>
+
+            <!--拉取区域管理员，拉取品牌管理员的user_code-->
+        </if>
+        )
+
+        <if test="search_value != null and search_value !=''">
+            AND (
+            rl.vip_name LIKE concat('%', #{search_value},'%')
+            OR rl.vip_card_no LIKE concat('%', #{search_value},'%')
+            OR dl.label_name LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY rl.id DESC
+
+    </select>
+
+
+
+</mapper>

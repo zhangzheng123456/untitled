@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二维码分析</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170105">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170105">
+    <link rel="stylesheet" href="../css/staff_function.css">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="../js/laydate/need/laydate.css">
+    <link rel="stylesheet" href="../js/laydate/skins/molv/laydate.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <style>
+        .date_nav .border{
+            border-bottom: 5px solid #41c7db;
+        }
+        #screen_filtrate{
+            width: 640px;
+            font-size: 14px;
+            color: #888888;
+            border-radius: 10px;
+            background: #fff;
+            padding: 0 10px 20px 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            z-index: 10001;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        #screen_staff{
+            width: 740px;
+            min-height: 530px;
+            padding: 0 20px 0 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            border-radius: 5px;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            z-index: 10001;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        [v-cloak] {
+            display: none;
+        }
+        .click_bg{
+            background: #e9e9e9;
+        }
+        .click_font{
+            color:#41c7db;
+        }
+        td{
+            height: 30px;
+        }
+        .chart_title label{
+            float: left;
+        }
+        .chart_title span{
+            display: block;
+            float: left;
+            width: 120px;
+            height: 27px;
+            line-height: 27px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /*点击切换状态*/
+        .active{
+            background-color: #41c7db;
+            color: white!important;
+        }
+         /*.table_below_shop td span{*/
+             /*vertical-align: middle;*/
+             /*display: inline-block;*/
+             /*white-space: nowrap;*/
+             /*overflow: hidden;*/
+             /*text-overflow: ellipsis;*/
+       /*}*/
+        #chart_temp{
+            font-size: 12px;
+            color: #cccccc;
+            position: absolute;
+            top: 10px;
+            left: 45%;
+        }
+
+        #tb_0_title th{
+            /*display: inline-block;*/
+            text-align: center;
+            width: 107px!important;
+            height: 30px;
+            line-height: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        #tb_0_body span{
+            display: inline-block;
+            text-align: center;
+            width: 108px!important;
+            height: 30px;
+            line-height: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        #tb_1_title th{
+            /*display: inline-block;*/
+            text-align: center;
+            width: 107px!important;
+            height: 30px;
+            line-height: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        #tb_1_body span{
+            display: inline-block;
+            text-align: center;
+            width: 108px!important;
+            height: 30px;
+            line-height: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        #tb_1_body td{
+            width: 108px!important;
+        }
+
+        .people{
+            height: 30px;
+            margin: 10px;
+            padding-left: 10px;
+            line-height: 30px;
+            color: #4a5f7c;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .chart_title{
+            overflow: hidden;
+            height: auto;
+            font-size: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #d6d9e2;
+        }
+        .nav_date input{
+            width: 130px;
+            height: 30px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            padding-left: 5px;
+            color: #888;
+        }
+        .nav_date .button{
+            width: 130px;
+            height: 30px;
+            display: inline-block;
+            text-align: center;
+            color: #fff;
+            background-color: #6dc1c8;
+            border-radius: 5px;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table" @click = "hide">
+        <div class="title">
+            <span>会员管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>二维码分析</span>
+        </div>
+        <!--导航-->
+        <div id="nav" v-cloak>
+            <div class="nav_down nav_1"@click.stop="productFun_type_first">  <!--二维码分析类型-->
+                <span class="nav_1">{{show_type_first}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_shop_type_first" @increment="functionFun($event)">
+                    <li @click="increment_first($event,obj.typename)" v-for="obj in nav_type_dom_first":title="obj.typename" :id="obj.type" >{{obj.typename}}</li>
+                </ul>
+            </div>
+            <div class="nav_down nav_1"@click.stop="productFun_public">  <!--appName展示-->
+                <span class="nav_1">{{show_public}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_shop_public"@increment="functionFun($event)">
+                    <li @click="increment($event,obj.app_name,obj.app_id)" v-for="obj in nav_dom":title="obj.app_name" :id="obj.app_id">{{obj.app_name}}</li>
+                </ul>
+            </div>
+            <div class="nav_down nav_1"@click.stop="productFun_type" v-if="shop_type"> <!--材料类等-->
+                <span class="nav_1">{{show_type}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_shop_type"@increment="functionFun($event)">
+                    <li @click="increment_1($event,obj.typename)" v-for="obj in nav_type_dom":title="obj.typename" :id="obj.type" >{{obj.typename}}</li>
+                </ul>
+            </div>
+            <div class="nav_down nav_1"@click.stop="productFun" v-if="show_shop">  <!--二维码-->
+                <span class="nav_1">{{show_name}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_shop" @increment="functionFun($event)">
+                    <li @click="increment_2($event,obj.qrcode_name,obj.aging)" v-for="obj in nav_name_dom":title="obj.qrcode_name" :id="obj.qrcode_id" :date-value="obj.aging">{{obj.qrcode_name}}</li>
+                </ul>
+            </div>
+            <div class="nav_down nav_1"@click.stop="productFun_store_group" v-if="show_store_group">  <!--店铺群组-->
+                <span class="nav_1">{{store_group_name}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_store_group" @scroll="scrollStoreGroup($event)">
+                    <li @click="increment_store_shop($event,obj.area_name,obj.area_code)" v-for="obj in store_group_data":title="obj.area_name" :id="obj.id" :date-value="obj.area_code">{{obj.area_name}}</li>
+                </ul>
+            </div>
+            <div class="nav_down nav_1"@click.stop="productFun_store" v-if="show_store"> <!--店铺-->
+                <span class="nav_1">{{store_name}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_store" @scroll="scrollStore($event)">
+                    <li @click="increment_store($event,obj.store_name,obj.store_code)" v-for="obj in store_data":title="obj.store_name" :id="obj.id" :date-value="obj.store_code">{{obj.store_name}}</li>
+                </ul>
+            </div>
+            <div class="nav_down nav_1"@click.stop="productFun_staff" v-if="show_staff">  <!--导购-->
+                <span class="nav_1">{{staff_name}}</span><div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+                <ul class="down_ul" v-if="nav_staff" @scroll="scrollStaff($event)">
+                    <li @click="increment_staff($event,obj.user_name,obj.user_code)" v-for="obj in nav_type_staff":title="obj.user_name" :id="obj.id" :date-value="obj.user_code">{{obj.user_name}}</li>
+                </ul>
+            </div>
+            <div class="nav_date">
+                <input type="text" class="laydate-icon" readonly id="select_date_start"> 至 <input id="select_date_end" type="text" class=" laydate-icon" readonly>
+                <span class="button" id="ceshi">确定</span>
+            </div>
+            <!--<div class="nav_date" v-show="aging">-->
+                <!--<div style="display: inline-block"v-if="time_show">-->
+                    <!--<span v-cloak>{{time_start}}</span>-->
+                    <!--<span>至</span>-->
+                    <!--<span v-cloak>{{time_end}}</span>-->
+                <!--</div>-->
+                <!--<div style="float: right;margin-left: 10px" class="nav_down nav_4"@click.stop="productFun_date" v-cloak>-->
+                    <!--{{time}}-->
+                    <!--<div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_4"></span></div>-->
+                    <!--<div id="date" v-if="nav_date">-->
+                        <!--<div class="date_nav">-->
+                            <!--<div class="week"@click.stop="timeFun($event)":class="{ border: isActive_w }">周</div>-->
+                            <!--<div  class="month"@click.stop="timeFun($event)":class="{ border: isActive_m }">月</div>-->
+                            <!--<div  class="year"@click.stop="timeFun($event)":class="{ border: isActive_y}">年</div>-->
+                        <!--</div>-->
+                        <!--<div class="week_box"v-if="week">-->
+                            <!--<div class="week_nav">-->
+                                <!--<div class="week_num">-->
+                                    <!--<span class="icon-ishop_8-03 week_arrow_left"@click.stop="timeFun($event)"></span>-->
+                                    <!--<b>{{year_down}}</b>-->
+                                    <!--<span class="icon-ishop_8-03 week_arrow_right"@click.stop="timeFun($event)"></span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<ul class="week_detail">-->
+                                <!--<li id="week_id" v-for="obj in week_obj"@click.stop="timeChange($event)":class="{ click_bg:obj.title_class}">-->
+                                    <!--<div class="week_detail_w":class="{ click_font:obj.title_class}">{{obj.title}}</div>-->
+                                    <!--<div class="week_detail_d">{{obj.title_date}}</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div class=month_box" v-if="month">-->
+                            <!--<div class="month_nav">-->
+                                <!--<div class="month_num">-->
+                                    <!--<span class="icon-ishop_8-03 month_arrow_left"@click.stop="timeFun($event)"></span>-->
+                                    <!--<b>{{year_down}}</b>-->
+                                    <!--<span class="icon-ishop_8-03 month_arrow_right"@click.stop="timeFun($event)"></span>-->
+                                <!--</div>-->
+                                <!--<ul class="month_detail">-->
+                                    <!--<li id="month_id"v-for="val in month_arr"@click.stop="timeChange($event)":class="{ click_font:val.key,click_bg:val.key }">{{val.val}}</li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="year_box"v-if="year">-->
+                            <!--<ul class="year_detail">-->
+                                <!--<li id="year_id"v-for="val in year_arr"@click.stop="timeChange($event)":class="{ click_font:val.key,click_bg:val.key }">{{val.val}}</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <!--chart-->
+        <div id="chart_box">
+            <div class="chart_title">
+                <label></label>
+                <span>渠道分析图</span>
+            </div>
+            <div id="chart"></div>
+            <div id="chart_loading"v-if="chart_loading">
+                <div id="chart_text">加载中，请稍候...</div>
+            </div>
+            <p id=chart_temp v-if="chart_temp">暂无数据</p>
+        </div>
+        <!--table-->
+        <div id="table" style="position: relative;height: 420px;margin: 10px 0">
+            <div class="chart_title" style="overflow: hidden;font-size: 14px">
+                <label></label>
+                <span @click="allTable()" :class="{active:isActive_0}" >关注度分析表</span>
+                <span @click="vipTable()" :class="{active:isActive_1}">新增会员分析表</span>
+                <!--<div class="export_table"@click="exportLoading">导出表格</div>-->
+            </div>
+            <div class="people" v-show="tabToggle== 0" style="display: none">共 <span v-cloak>{{people_all}}</span> 个粉丝</div>
+            <div class="people" v-show="tabToggle== 1" style="display: none">共 <span v-cloak>{{people_all}}</span> 个新增会员</div>
+            <!--关注度分析表-->
+            <div class="table_box" v-if="tabToggle== 0" style="margin-top:0;color:#4a5f7c;" >
+                <table class="table_top_shop">
+                    <thead id="tb_0_title">
+                    <tr>
+                        <th>序号</th>
+                        <th>昵称</th>
+                        <th>头像</th>
+                        <th>微信号</th>
+                        <th>会员名称</th>
+                        <th>性别</th>
+                        <th>会员卡号</th>
+                        <th>会员类型</th>
+                        <th>手机号</th>
+                        <th>关注时间</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="table_below_shop"@scroll="scrollFun($event)">
+                    <table>
+                        <tbody id="tb_0_body">
+                        <tr v-for="(obj,index) in tableData" v-cloak>
+                            <td  :title="index+1"><span>{{ index+1}}</span></td>
+                            <td ><span :title="obj.nick_name">{{obj.nick_name}}</span></td>
+                            <td ><span><img :title="obj.head_img" :src="obj.head_img" alt="" style="height: 30px;height: 30px;vertical-align:middle;"/></span></td>
+                            <td ><span :title="obj.open_id">{{obj.open_id}}</span></td>
+                            <td ><span :title="obj.vip == undefined?'暂无':obj.vip['vip_name']">{{obj.vip == undefined?'暂无':obj.vip['vip_name']}}</span></td>
+                            <td ><span :title="obj.vip == undefined?'未知':(obj.vip['sex'] == 'F'?'女':(obj.vip['sex']== 'M'?'男':''))">{{obj.vip == undefined?'未知':(obj.vip['sex'] == 'F'?'女':(obj.vip['sex']== 'M'?'男':''))}}</span></td>
+                            <td ><span :title="obj.vip == undefined?'暂无':obj.vip['cardno']">{{obj.vip == undefined?'暂无':obj.vip['cardno']}}</span></td>
+                            <td ><span :title="obj.vip == undefined?'暂无':obj.vip['vip_card_type']">{{obj.vip == undefined?'暂无':obj.vip['vip_card_type']}}</span></td>
+                            <td ><span :title="obj.vip == undefined?'暂无':obj.vip['vip_phone']">{{obj.vip == undefined?'暂无':obj.vip['vip_phone']}}</span></td>
+                            <td ><span :title="obj.attention_time==undefined?'暂无':obj.attention_time">{{obj.attention_time==undefined?'暂无':obj.attention_time}}</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="data_no"v-if="data_no">
+                        暂无数据
+                    </div>
+                </div>
+            </div>
+            <!--新增会员分析表-->
+            <div class="table_box" v-if="tabToggle== 1" style="margin: 0;color:#4a5f7c;" id="tb_1">
+                <table class="table_top_shop">
+                    <thead id="tb_1_title">
+                    <tr>
+                        <th>序号</th>
+                        <th>会员名称</th>
+                        <th>性别</th>
+                        <th>手机号</th>
+                        <th>会员类型</th>
+                        <th>会员卡号</th>
+                        <th>所属门店</th>
+                        <th>所属导购</th>
+                        <th>出生日期</th>
+                        <th>开卡日期</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="table_below_shop"@scroll="scrollFun($event)">
+                    <table>
+                        <tbody id="tb_1_body">
+                        <tr v-for="(x,index) in tableData" v-cloak>
+                            <td :title="index+1">{{ index+1}}</td>
+                            <td><span :title="x.vip['vip_name']">{{x.vip['vip_name']}}</span></td>
+                            <td><span :title="(x.vip['sex'] == 'F'?'女':(x.vip['sex']== 'M'?'男':''))">{{(x.vip['sex'] == 'F'?'女':(x.vip['sex']== 'M'?'男':''))}}</span></td>
+                            <td><span :title="x.vip['vip_phone']">{{x.vip['vip_phone']}}</span></td>
+                            <td><span :title="x.vip['vip_card_type']">{{x.vip['vip_card_type']}}</span></td>
+                            <td><span :title="x.vip['cardno']">{{x.vip['cardno']}}</span></td>
+                            <td><span :title="x.vip['store_name']">{{x.vip['store_name']}}</span></td>
+                            <td><span :title="x.vip['user_name']">{{x.vip['user_name']}}</span></td>
+                            <td><span :title="x.vip['vip_birthday']">{{x.vip['vip_birthday']}}</span></td>
+                            <td><span :title="x.vip['join_date']">{{x.vip['join_date']}}</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="data_no" v-if="data_no">
+                        暂无数据
+                    </div>
+                </div>
+                <!--&lt;!&ndash;遮罩&ndash;&gt;-->
+                <!--<div id="loading"v-if="loading_show">-->
+                    <!--<div id="text_loading">加载中，请稍候...</div>-->
+                <!--</div>-->
+            </div>
+            <!--遮罩-->
+            <div id="loading" style="top: 0" v-if="loading_show">
+                <div id="text_loading">加载中，请稍候...</div>
+            </div>
+        </div>
+        <!--弹窗-->
+        <!--<div  id="screen_filtrate"v-if="nav_range"v-cloak>-->
+            <!--<div class="screen_head">筛选导购<i class="icon-ishop_6-12" @click="rangeFun"></i></div>-->
+            <!--<div class="contion">-->
+                <!--<div class="contion_input">-->
+                    <!--<label>所属品牌</label><input :value="brand_input" class="input" type="text"readonly="true">-->
+                    <!--<span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>-->
+                <!--</div>-->
+                <!--<div class="contion_input">-->
+                    <!--<label>所属区域</label><input :value="area_input"class="input" type="text"readonly="true">-->
+                    <!--<span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>-->
+                <!--</div>-->
+                <!--<div class="contion_input">-->
+                    <!--<label>所属店铺</label><input :value="store_input"class="input" type="text"readonly="true">-->
+                    <!--<span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>-->
+                <!--</div>-->
+                <!--<div class="contion_input">-->
+                    <!--<label>所属导购</label><input :value="guide_input"class="input" type="text"readonly="true">-->
+                    <!--<span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="ensure"><span @click="confirm($event)">确定</span></div>-->
+        <!--</div>-->
+        <filtrate-component :message-title="message_title":post-url="component_url":start-param="post_start_param" :message-obj="message_obj" @increment3="filtrateReturnFun"@increment="filtrateFunMore"v-if="filtrate"></filtrate-component>
+        <!--提示框-->
+        <div class="tk_vue" id="export_consumeExport" v-if="export_show"v-cloak>
+            <span class="icon-ishop_6-12" @click="exportLoading"></span>
+            <p style="height: 120px;line-height: 120px;">是否导出表格?</p>
+            <div class="btn">
+                <em class="cancel" @click="exportLoading">取消</em>
+                <em class="album_enter"@click="exportFun($event)" >确认</em>
+            </div>
+        </div>
+        <div class="iframe_kuang" id="iframe_kuang" v-if="willShow"v-cloak>
+            <div class="iframe_kuang_title">
+                <span></span>分享内容预览
+            </div>
+            <iframe :src="src" height="400px" id="iframe_src"></iframe>
+            <div class="iframe_kuang_footer">
+                <div class="iframe_kuang_return" @click="iframeReturn($event)">返回</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/staff/echarts.js"></script>
+<script src="../js/vue.js"></script>
+<script src="/js/loading.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script src="../js/laydate/laydate.js"></script>
+<script src="../js/staff/vue-resource.js"></script>
+<script src="../js/staff/common_component.js"></script>
+<script src="../js/vip/vip_analysis.js?20170623"></script>
+<script>
+    $(".table_below_vip").niceScroll({
+        cursorborder:"0 none",
+        cursoropacitymin:"0",
+        boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"5px",
+        cursorborderradius:"10px"
+    });
+    setInterval(function () {
+        $(".down_ul").niceScroll({
+            cursorborder: "0 none",
+            boxzoom: false,
+            cursorcolor: " #dfdfdf",
+            cursoropacitymax: 1,
+            cursoropacitymin: 1,
+            touchbehavior: false,
+            cursorminheight: 200,
+            autohidemode: true,
+            cursorwidth:"3px",
+            cursorborderradius: "10px"
+        })
+    },1);
+    $(".table_below_shop").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"10px",
+        cursorborderradius:"10px"
+    });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").siblings().find("span").removeClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").siblings().find("a").css({color:"#FFF"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0056']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0056']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+    $("#ceshi").click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_analysis_1.html");
+    })
+</script>
+</body>
+</html>

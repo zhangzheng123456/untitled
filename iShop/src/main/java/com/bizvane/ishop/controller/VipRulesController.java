@@ -1,14 +1,19 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
-
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.VipRules;
+import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.IceInterfaceService;
+import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +35,13 @@ public class VipRulesController {
 
     @Autowired
     VipRulesService vipRulesService;
+    @Autowired
+    IceInterfaceService iceInterfaceService;
+    @Autowired
+    VipActivityService vipActivityService;
+    @Autowired
+    CorpService corpService;
+
     private static final Logger logger = Logger.getLogger(VipRulesController.class);
     String id;
 
@@ -101,9 +113,10 @@ public class VipRulesController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("编辑失败");
+                dataBean.setMessage(result);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -209,7 +222,7 @@ public class VipRulesController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
@@ -256,7 +269,10 @@ public class VipRulesController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String vipRules_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(vipRulesService.getVipRulesById(Integer.parseInt(vipRules_id)));
+           VipRules vipRules= vipRulesService.getVipRulesById(Integer.parseInt(vipRules_id));
+     //      CorpWechat corpWechat=corpService.getCorpByAppId(vipRules.getApp_id());
+      //      vipRules.setApp_name(corpWechat.getApp_name());
+            data = JSON.toJSONString(vipRules);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(data);
@@ -271,7 +287,7 @@ public class VipRulesController {
     }
 
     /**
-     * 获取优惠券类型
+     * 获取优惠券类型(发券)
      * @param request
      * @return
      */
@@ -287,24 +303,153 @@ public class VipRulesController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
+            String role_code=request.getSession(false).getAttribute("role_code").toString();
+            String corp_code=request.getSession(false).getAttribute("corp_code").toString();
+            String corpCode=jsonObject.getString("corp_code");
+            if(role_code.equals(Common.ROLE_SYS)){
+                if(StringUtils.isNotBlank(corpCode)){
+                   corp_code=corpCode;
+                }else{
+                    corp_code="C10000";
+                }
+            }
 
-            String corp_code = jsonObject.get("corp_code").toString();
-            String result = vipRulesService.getCouponInfo1(corp_code);
-            if (result.equals(Common.DATABEAN_CODE_ERROR)){
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("获取优惠券失败");
+            JSONArray array = new JSONArray();
+            if (jsonObject.containsKey("app_id") && !jsonObject.getString("app_id").equals("")){
+                String app_id = jsonObject.getString("app_id");
+                String coupon_info = iceInterfaceService.getCouponInfo(corp_code,app_id);
+                if (coupon_info.equals(Common.DATABEAN_CODE_ERROR)) {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("获取优惠券失败");
+                    return dataBean.getJsonStr();
+                }
+                array = JSONArray.parseArray(coupon_info);
             }else {
+                List<CorpWechat> corpWechat = corpService.getWAuthByCorp(corp_code);
+                logger.info("========corpWechat.size"+corpWechat.size());
+                for (int i = 0; i < corpWechat.size(); i++) {
+                    String app_id1 = corpWechat.get(i).getApp_id();
+                    String coupon_info = iceInterfaceService.getCouponInfo(corp_code,app_id1);
+                    if (coupon_info.equals(Common.DATABEAN_CODE_ERROR)) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("获取优惠券失败");
+                        return dataBean.getJsonStr();
+                    }
+                    array.addAll(JSONArray.parseArray(coupon_info));
+                }
+            }
+
+//            if (!coupon_info.equals(Common.DATABEAN_CODE_ERROR)){
+//                JSONArray array = JSONArray.parseArray(coupon_info);
+
+                JSONArray new_array = new JSONArray();
+                //根据活动选择门店，过滤显示优惠券
+                if (jsonObject.containsKey("store_code")){
+                    String store_code = jsonObject.getString("store_code");
+                    String[] store_codes = store_code.split(",");
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject coupon = array.getJSONObject(i);
+                        if (coupon.containsKey("store_filter") && !coupon.getString("store_filter").equals("")){
+                            String store = coupon.getString("store_filter");
+                            for (int j = 0; j < store_codes.length; j++) {
+                                if (store.contains(store_codes[j])){
+                                    new_array.add(array.getJSONObject(i));
+                                    break;
+                                }
+                            }
+                        }else {
+                            new_array.add(array.getJSONObject(i));
+                        }
+                    }
+                }else {
+                    new_array = array;
+                }
+
+                //过滤线下发放的券
+                JSONArray new_array1 = new JSONArray();
+                for (int i = 0; i < new_array.size(); i++) {
+                    JSONObject coupon = new_array.getJSONObject(i);
+                    if ( corp_code.equals("C10183") && coupon.containsKey("shortname") && coupon.get("shortname") != null && !coupon.get("shortname").equals(""))
+                        coupon.put("name",coupon.get("shortname"));
+//                    if (coupon.containsKey("send_type")){
+//                        if (coupon.getString("send_type").equals("1"))
+//                            new_array1.add(new_array.getJSONObject(i));
+//                    }else {
+//                        new_array1.add(new_array.getJSONObject(i));
+//                    }
+                    new_array1.add(new_array.getJSONObject(i));
+                }
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(result.toString());
-            }
+                dataBean.setMessage(JSON.toJSONString(new_array1));
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 获取优惠券类型
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getAllCoupon", method = RequestMethod.POST)
+    @ResponseBody
+    public String getAllCoupon(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-select-------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String role_code=request.getSession(false).getAttribute("role_code").toString();
+            String corp_code=request.getSession(false).getAttribute("corp_code").toString();
+            String corpCode=jsonObject.getString("corp_code");
+            if(role_code.equals(Common.ROLE_SYS)){
+                if(StringUtils.isNotBlank(corpCode)){
+                    corp_code=corpCode;
+                }else{
+                    corp_code="C10000";
+                }
+            }
+
+            JSONArray array = new JSONArray();
+            if (jsonObject.containsKey("app_id") && !jsonObject.getString("app_id").equals("")){
+                String app_id = jsonObject.getString("app_id");
+                CorpWechat corpWechat = corpService.getCorpByAppId(corp_code,app_id);
+                if (corpWechat != null){
+                    String access_key = corpWechat.getAccess_key();
+                    array = vipRulesService.getAllCoupon(app_id, access_key);
+                }
+            }else {
+                List<CorpWechat> corpWechat = corpService.getWAuthByCorp(corp_code);
+                logger.info("========corpWechat.size"+corpWechat.size());
+                for (int i = 0; i < corpWechat.size(); i++) {
+                    String app_id = corpWechat.get(i).getApp_id();
+                    String access_key = corpWechat.get(i).getAccess_key();
+                    array.addAll(vipRulesService.getAllCoupon(app_id, access_key));
+                }
+            }
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(JSON.toJSONString(array));
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
 }

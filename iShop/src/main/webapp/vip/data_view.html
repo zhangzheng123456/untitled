@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数字看板</title>
+    <link href="../css/reset.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?v=1.0.2">
+</head>
+<style>
+    @media screen and (min-width: 1500px) {
+        .mapWrap{
+            height: 48.166em!important;
+            font-size: 1.4em;
+        }
+        #mapInitWrap{
+            height: 50.333em!important;
+        }
+        .data_details_wrap>span{
+            height: 1.333em!important;
+        }
+        .data_suspend{
+            top:0!important;
+        }
+        .ranking_content li{
+            height: 2.2em!important;
+            line-height: 2.2em!important;
+        }
+        .city_rank_wrap{
+            height: 16.75em!important;
+        }
+        .ditch_rank_wrap{
+            bottom: 17.583em!important;
+        }
+    }
+    *{
+        margin: 0;
+        box-sizing: border-box;
+    }
+    html{
+        background: none;
+    }
+    body{
+        /*overflow-x: hidden;*/
+        background: url('../img/vipDataViewBg.png') fixed;
+        background-size: cover;
+        margin-top: 80px;
+        margin-left: 200px;
+        /*min-height: 700px;*/
+        padding-bottom: 10px;
+        font-size: 12px;
+    }
+    h1{
+        font-size: 4.16em;
+        font-weight: 400;
+        display: inline-block;
+    }
+    h2{
+        font-size: 3em;
+        display: inline-block;
+    }
+    .mapWrap{
+        position: relative;
+        width: 100%;
+        height: 59.166em;
+    }
+    .data_suspend{
+        position: absolute;
+        left: 0;
+        top:1.66em;
+        color: #fff;
+        z-index: 100;
+    }
+    .date{
+        height:0;
+        width:16.666em;
+        border-bottom:2.5em solid rgba(0,0,0,0.5);
+        border-right:2.5em solid transparent;
+        text-align: center;
+        line-height: 2.5em;
+        font-size: 1.16em;
+    }
+    .data_details_wrap{
+        width: 38.33em;
+        overflow: hidden;
+        /*height: 16.25em;*/
+        padding: 0.666em 1.666em;
+        background: rgba(0,0,0,0.5);
+    }
+    .amtTotal{
+        width: 100%;
+        height: 5.833em;
+        line-height: 5.833em;
+        margin-top: 0.833em;
+        background: url('../img/data_blue_bg.png')no-repeat;
+        background-size: cover;
+        color: #41c7db;
+    }
+    .amtTotal h1{
+        margin: 0 10px;
+    }
+    .data_details_wrap>span{
+        display: inline-block;
+        width: 50%;
+        height: 3.33em;
+        line-height: 3.33em;
+        font-size: 1em;
+    }
+    .data_details_wrap .fontBlue{
+        color: #41c7db;
+    }
+    .lineWrap{
+        margin: 0 0.833em;
+        height: 24.166em;
+        background: rgba(0,0,0,0.8);
+    }
+    .barWrap{
+        margin: 0.833em;
+        height: 24.166em;
+        background: rgba(0,0,0,0.8);
+    }
+    .icon-ishop_9-06{
+        color: #93c64e;
+    }
+    .icon-ishop_9-07{
+        color: #f58d8f;
+    }
+    .brand_search_wrap{
+        position: absolute;
+        top:0;
+        right: 0;
+        width: 25.833em;
+        height: 3.75em;
+        line-height: 3.75em;
+        background: rgba(0,0,0,0.8);
+        border-radius: 0.416em;
+        z-index: 1001;
+    }
+    .search:hover{
+        border: 1px solid #1ab394;
+    }
+    .search{
+        cursor: pointer;
+        width: 24.166em;
+        height: 2.5em;
+        margin-left: 0.833em;
+        padding-left: 0.416em;
+        background: none;
+        border: 1px solid #555c5e;
+        display: inline-block;
+        border-radius: 0.416em;
+        vertical-align: middle;
+        outline: none;
+        color: #ffffff;
+        line-height: 2.5em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding-right: 1.677em;
+    }
+    .selected{
+        color: #41c7db!important;
+        background-color: rgba(233,233,233,0.2);
+    }
+    .brand_search_wrap .icon-ishop_8-02{
+        position: absolute;right:1.416em;top:1.416em;color: #6cc1c8
+    }
+    .select_parent{
+        position: absolute;right: 0.833em;left: 0.833em;top:3.33em;z-index: 2;background-color: #000;box-shadow: 0 2px 2px 2px #232323;display: none;
+    }
+    .select_list{
+        margin: 0;max-height: 12.5em;overflow: hidden;overflow-y: auto;
+    }
+    .select_list li:hover{
+        background-color: rgba(233,233,233,0.2);
+    }
+    .select_list li{
+        color: #fff;
+        line-height: 2.5em;
+        height: 2.5em;
+        padding-left: 0.416em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+    .brand_rank_wrap{
+        position: absolute;
+        right: 0.833em;
+        top:5.416em;
+        padding:0.833em;
+        z-index: 1000;
+        width: 25em;
+        background: rgba(0,0,0,0.8);
+        color: #fff;
+    }
+    .ranking_title{
+        color: #41c7db;
+        padding-bottom: 0.833em;
+        border-bottom: 1px solid #1d2e4d;
+        display: block;
+    }
+    .split_line{
+        border-bottom: 1px solid #1d2e4d;margin-bottom: 10px
+    }
+    .ranking_tabs {
+        overflow: hidden;
+        height: 2.5em;
+        line-height: 2.5em;
+    }
+    .ranking_tabs >span,.ranking_content li>span{
+        display: block;
+        float: left;
+        text-align: center;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding-right:0.833em;
+    }
+    .ranking_content {
+       max-height: 25em;
+        overflow: hidden;
+        position: relative;
+    }
+    .ranking_content li {
+        overflow: hidden;
+        height: 2.5em;
+        line-height: 2.5em;
+    }
+    .ranking_content.ranking_content_3 li>span{
+        height: inherit;
+    }
+    .ranking_content li>span:nth-child(3),.ranking_tabs>span:nth-child(3){
+        width: 31%;
+    }
+    .ranking_content li>span:nth-child(2),.ranking_tabs>span:nth-child(2){
+        width: 30%;
+    }
+    .ranking_content li>span:nth-child(4),.ranking_tabs>span:nth-child(4){
+        width: 20%;
+        text-align: right;
+    }
+    .ranking_data{
+        color: #41c7db !important;
+    }
+    .list_num_head{
+        visibility: hidden;
+    }
+    .list_num_head.list_num_head_2{
+        width: 19%!important;
+    }
+    .list_num_head.list_num_head_3{
+        width: 10%!important;
+    }
+    .ranking_content li>span{
+        color: #ffffff;
+    }
+    .list_num{
+        text-align: center;
+    }
+    .list_num.list_num_2,.list_num_head_2{
+        width: 19% !important;
+    }
+    .list_num.list_num_3{
+        width: 10% !important;
+    }
+
+    .list_num i{
+        font-style: normal;
+        width: 1.666em;
+        height: 1.666em;
+        line-height: 1.666em;
+        text-align: center;
+        border-radius: 50%;
+        background-color:#2b7a8b ;
+        display: inline-block;
+    }
+    .vip_dev_wrap{
+        position: absolute;
+        right: 0.833em;
+        bottom:0.833em;
+        padding:0.833em;
+        z-index: 1000;
+        width: 25em;
+        height: 17.5em;
+        background: rgba(0,0,0,0.8);
+        color: #fff;
+    }
+    .color_default{
+        color: #41c7db;
+    }
+    .title_second{
+        font-size: 1.666em;
+        color: #41c7db;
+        text-align: center;
+        word-break: break-all;
+        margin-top: 0.833em;
+    }
+    .type_title{
+        text-align: center;
+        margin-top: 0.833em;
+    }
+    .vip_dev_wrap ul{
+        margin-top: 1.666em;
+        overflow: hidden;
+    }
+    .vip_dev_wrap ul li{
+        width: 33%;
+        float: left;
+        text-align: center;
+        margin-bottom: 1.666em;
+    }
+    .vip_dev_wrap ul li span{
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .ditch_rank_wrap{
+        position: absolute;
+        overflow: hidden;
+        left: 0.833em;
+        bottom:19.583em;
+        padding:0.833em;
+        z-index: 1000;
+        width: 25em;
+        height: 13em;
+        background: rgba(0,0,0,0.8);
+        color: #fff;
+    }
+    .city_rank_wrap{
+        position: absolute;
+        overflow: hidden;
+        left: 0.833em;
+        bottom:0.833em;
+        padding:10px;
+        z-index: 1000;
+        width: 25em;
+        height: 18.75em;
+        background: rgba(0,0,0,0.8);
+        color: #fff;
+    }
+    /*加载动画*/
+    .spinner_warp{
+        position: absolute;top:0;right: 0;bottom: 0;left: 0;background-color: rgba(255,255,255,0.2)!important;
+    }
+    .spinner {
+        width: 12.5em;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-75px,-15px);
+    }
+
+    .spinner > div {
+        width: 2.5em;
+        height: 2.5em;
+        background-color: #41c7db;
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+        animation: bouncedelay 1.4s infinite ease-in-out;
+        /* Prevent first frame from flickering when animation starts */
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes bouncedelay {
+        0%, 80%, 100% { -webkit-transform: scale(0.0) }
+        40% { -webkit-transform: scale(1.0) }
+    }
+
+    @keyframes bouncedelay {
+        0%, 80%, 100% {
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        } 40% {
+              transform: scale(1.0);
+              -webkit-transform: scale(1.0);
+          }
+    }
+    .ranking_content .notData{
+        text-align: center;
+        height: 8.33em;
+        line-height: 8.33em;
+    }
+    .date_wrap{
+        position: absolute;
+        top: 0;
+        right: 28.75em;
+        width: 16.666em;
+        height: 3.75em;
+        text-align: center;
+        line-height: 3.75em;
+        background: rgba(0,0,0,0.8);
+        border-radius: 5px;
+        z-index: 1001;
+    }
+    .date_wrap .laydate-icon{
+        height: 2.5em;
+        line-height: 2.5em;
+        border-radius: 5px;
+        padding-left: 5px;
+        border: 1px solid #555c5e;
+        color: #fff;
+        background-color: rgba(0,0,0,0.8);
+    }
+</style>
+<body>
+    <div id="chartWrap">
+        <div class="mapWrap">
+            <div class="data_suspend" id="data_suspend">
+                <div class="date" id="date"></div>
+                <div class="data_details_wrap">
+                    <div><h2>当日全渠道成交额</h2></div>
+                    <div class="amtTotal" id="amtTotal"><h1>0</h1>元</div>
+                    <span>昨日业绩&nbsp&nbsp&nbsp<span class="fontBlue" id="amtTotalYesterday">0</span> <span class="fontBlue">元</span></span><span>当月业绩&nbsp&nbsp&nbsp<span class="fontBlue" id="month_amt">0</span> <span class="fontBlue">元</span></span>
+                </div>
+                <div class="spinner_warp" id="data_loading">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="date_wrap">
+                <input type="text" id="date_test" class="laydate-icon">
+            </div>
+            <div class="brand_search_wrap">
+                <span class="search" id="select_brand" data-code="">全部品牌</span>
+                <span class="icon-ishop_8-02"></span>
+                <div class="select_parent">
+                    <ul class="select_list" id="brand_list">
+                        <div style="color: #ccc;font-size: 12px;text-align: center">加载中...</div>
+                    </ul>
+                </div>
+            </div>
+            <div class="brand_rank_wrap">
+                <div>
+                    <span class="ranking_title">品牌业绩排行</span>
+                    <div class="ranking_tabs ranking_tabs_2">
+                        <span class="list_num_head list_num_head_2">序号</span>
+                        <span>品牌</span>
+                        <span>销售金额</span>
+                        <span>占比</span>
+                    </div>
+                    <div class="ranking_content ranking_content_2 brand_content">
+                        <ul id="brand_content">
+                        </ul>
+                    </div>
+                    <div class="split_line" style="display: none"></div>
+                </div>
+                <div class="spinner_warp" id="brand_loading">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ditch_rank_wrap">
+                <div>
+                    <span class="ranking_title">渠道业绩排行</span>
+                    <div class="ranking_tabs ranking_tabs_2">
+                        <span class="list_num_head list_num_head_2">序号</span>
+                        <span>渠道</span>
+                        <span>销售金额</span>
+                        <span>占比</span>
+                    </div>
+                    <div class="ranking_content ranking_content_2 brand_content" id="channel">
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="split_line" style="display: none"></div>
+                </div>
+                <div class="spinner_warp" id="channel_loading">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="city_rank_wrap">
+                <div>
+                    <span class="ranking_title">省份业绩排行</span>
+                    <div class="ranking_tabs ranking_tabs_2">
+                        <span class="list_num_head list_num_head_2">序号</span>
+                        <span>省份</span>
+                        <span>销售金额</span>
+                        <span>占比</span>
+                    </div>
+                    <div class="ranking_content ranking_content_2 brand_content" id="city">
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="split_line" style="display: none"></div>
+                </div>
+                <div class="spinner_warp" id="city_loading">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="vip_dev_wrap">
+                <span class="ranking_title">会员发展 (根据手机号去重)</span>
+                <div>
+                    <p class="title_second" id="vip_dev_total">0</p>
+                    <p class="type_title">会员总数</p>
+                    <p class="type_title">今日新增&nbsp&nbsp&nbsp<span class="color_default" id="vip_new_amount">0</span></p>
+                    <ul>
+                        <li><span class="color_default" id="act_rate">0</span><span>90天活跃<br/>会员占比</span></li>
+                        <li><span class="color_default" id="wx_rate">0</span><span>微信<br/>会员占比</span></li>
+                        <li><span class="color_default" id="vip_rate">0</span><span>微信活跃<br/>会员占比</span></li>
+                    </ul>
+                </div>
+                <div class="spinner_warp" id="vip_loading">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mapInitWrap" style="height: 58.333em;">
+
+            </div>
+        </div>
+        <div class="lineWrap" id="lineChart">
+
+        </div>
+        <div class="barWrap" id="barChart">
+
+        </div>
+    </div>
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="../echart/echarts.min.js"></script>
+    <script src="../js/dist/chart/china.js?2017040170331"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js?20171105"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <script src="../js/prefixfree.min.js"></script>
+    <script src="../js/plugins/countUp.js"></script>
+    <script>
+        var oc = new ObjectControl();
+        var _this = {
+            lg:false,
+            time:300,
+            map:echarts.init(document.getElementById('mapInitWrap')),
+            bar:echarts.init(document.getElementById('barChart')),
+            line:echarts.init(document.getElementById('lineChart')),
+            init:function () {
+                _this.allEvent();
+                _this.getData('trade');
+                _this.getData('all');
+                _this.getData('vip');
+                _this.getData('area');
+                _this.getData('brand');
+                _this.getData('channel');
+                _this.getData('actVip');
+                _this.resizeChart();
+                _this.dataReload();
+            },
+            allEvent:function () {
+                $(".mapWrap").dblclick(function () {//双击放大
+                    if(_this.lg){
+                        _this.lg = false;
+                        $("body").css({"margin-top":"80px","margin-left":"200px"});
+                        $(window.parent.document).find("#sidebar").show();
+                        $(window.parent.document).find(".navbar").show();
+                        _this.map.resize();
+                        _this.line.resize();
+                        _this.bar.resize();
+                    }else {
+                        _this.lg = true;
+                        $("body").css("margin","0");
+                        $(window.parent.document).find("#sidebar").hide();
+                        $(window.parent.document).find(".navbar").hide();
+                        _this.map.resize();
+                        _this.line.resize();
+                        _this.bar.resize();
+                    }
+                });
+                //品牌下拉框交互
+                $("#select_brand").parent().click(function(e){
+                    e.stopPropagation();
+                    $(this).siblings().find(".select_parent").hide();
+                    if($(this).find(".select_parent").is(":hidden")){
+                        $(this).find(".select_parent").show();
+                        if($("#brand_list li").length==0){
+                           _this.getBrand();
+                        }
+                        $(".select_list").getNiceScroll().resize();
+                    }else{
+                        $(this).find(".select_parent").hide();
+                    }
+                });
+                $(".select_parent").on("click",'#brand_list li',function(e){
+                    e.stopPropagation();
+                    $("#select_brand").html($(this).html());
+                    $("#select_brand").attr("data-code",$(this).attr("data-code"));
+                    $(this).parents(".select_parent").hide();
+                    $(this).addClass("selected").siblings().removeClass("selected");
+                    $("#vip_loading").show();
+                    $("#brand_loading").show();
+                    $("#channel_loading").show();
+                    $("#data_loading").show();
+                    _this.getData('trade');
+                    _this.getData('all');
+                    _this.getData('vip');
+                    _this.getData('area');
+                    _this.getData('brand');
+                    _this.getData('channel');
+                    _this.getData('actVip');
+                });
+                $(document).click(function (e) {//收起下拉框
+                    var selector=$(".select_parent");
+                    if(!selector.is(e.target) && selector.has(e.target).length === 0){
+                        selector.hide();
+                    }
+                });
+            },
+            getBrand:function(){
+                var _param = {};
+                _param["searchValue"] ="";
+                _param["corp_code"] ="C10000";
+                oc.postRequire("post", "/shop/brand", "", _param, function (data) {
+                    if (data.code == "0") {
+                        var message = JSON.parse(data.message);
+                        var list = message.brands;
+                        var li="<li data-code='' class='selected'>全部品牌</li>";
+                        for(var i=0;i<list.length;i++){
+                            li+="<li data-code='"+list[i].brand_code+"'>"+list[i].brand_name+"</li>"
+                        }
+                        $("#brand_list").html(li);
+                    } else if (data.code == "-1") {
+                        $("#brand_list div").html("加载失败")
+                    }
+                })
+            },
+            getData:function (type) {
+                var param = {};
+                param.type = type;
+                param.brand_code = $("#select_brand").attr("data-code");
+                param.query_time = $('#date_test').val();
+                if(type == "trade"){
+                    _this.line.showLoading({maskColor: 'rgba(255, 255, 255, 0.1)',textColor: '#fff',});
+                }else if(type == 'vip'){
+                    _this.bar.showLoading({maskColor: 'rgba(255, 255, 255, 0.1)',textColor: '#fff',});
+                }else if(type == 'area'){
+                    _this.map.showLoading({maskColor: 'rgba(255, 255, 255, 0.1)',textColor: '#fff',});
+                }
+                oc.postRequire("post",'/board/allData','',param,function (data) {
+                    if(data.code == 0){
+                        var msg = JSON.parse(data.message),
+                            list,
+                            date = [],//日期数组
+                            amt = [],//业绩数组
+                            person = [],//增长人数数组
+                            arr = [],//柱状图虚拟数组（每个柱形条的帽子效果）
+                            map_mat = [],//地图业绩数组
+                            map_rate = [];//地图占比数组
+                        if(type == 'all'){
+                            var startVal = $("#amtTotal h1").text().replace(/,/g,'');
+                            var endVal = msg.current.replace(/,/g,'');
+                            $("#date").text(msg.date);
+                            $("#amtTotal").html('<h1>'+msg.current+'</h1>元');
+                            var demo = new CountUp($("#amtTotal h1")[0], startVal,endVal , 0, 2);
+                            demo.start();
+                            $("#amtTotalYesterday").text(msg.before);
+                            $("#month_amt").text(msg.month);
+                            $("#data_loading").hide();
+                        }else if(type == 'trade'){
+                            list = msg.list;
+                            for(var i=0;i<list.length;i++){
+                                date.push(list[i].data);
+                                amt.push(list[i].amt);
+                            }
+                            _this.lineChartInit(date,amt);
+                        }else if(type == 'vip'){
+                            list = msg.list;
+                            for(var i=0;i<list.length;i++){
+                                date.push(list[i].date);
+                                person.push(list[i].size);
+                                arr.push(0);
+                            }
+                            _this.barChartInit(date,person,arr)
+                        }else if(type == 'area'){
+                            list = msg.list;
+                            var max = [],temp = '';
+                            for(var i=0;i<list.length;i++){
+                                if(i < 5){
+                                    var n = i+1;
+                                    temp += '<li><span class="list_num list_num_2"><i>'+n+'</i></span><span title="'+list[i].area+'">'+list[i].area+'</span><span class="ranking_data" title="'+list[i].amt+'" style="text-align: right;padding-right: 20px">'+list[i].amt+'</span><span class="ranking_data" title="'+list[i].rate+'">'+list[i].rate+'%</span></li>';
+                                }
+                                var obj = {},objs = {},name;
+                                name = list[i].area.replace(/省|市|回族自治区|自治区|维吾尔自治区|壮族自治区/,"");
+                                obj.name = name;
+                                objs.name = name;
+                                obj.value = Number(list[i].amt.replace(/,/g,''));
+                                objs.value = Number(list[i].rate);
+                                map_mat.push(obj);
+                                map_rate.push(objs);
+                                max.push(Number(list[i].amt.replace(/,/g,'')));
+                            }
+                            map_mat.push({
+                                name:"南海诸岛",value:0,
+                                itemStyle:{normal:{opacity:0,label:{show:false}}},
+                                tooltip:{formatter:function () {return ''}}
+                            });
+                            $("#city ul").html(temp);
+                            $("#city_loading").hide();
+                            max = Math.max.apply(null, max);
+                            _this.mapChartinit(map_mat,map_rate,max);
+                        }else if(type == 'actVip'){
+                            $("#vip_dev_total").text(msg.all_size);
+                            $("#vip_new_amount").text(msg.today_vip.size);
+                            $("#act_rate").text(msg.act_vip.rate);
+                            $("#wx_rate").text(msg.wx_vip.rate);
+                            $("#vip_rate").text(msg.wx_act_vip.rate);
+                            $("#vip_loading").hide();
+                        }else if(type == 'channel'){
+                            list = msg.list;
+                            var temp = '';
+                            if(list.length == 0){
+                                temp = '<div class="notData" >暂无数据</div>';
+                            }
+                            for(var i=0;i<list.length;i++){
+                                var n = i+1;
+                                temp += '<li><span class="list_num list_num_2"><i>'+n+'</i></span><span title="'+list[i].name+'">'+list[i].name+'</span><span class="ranking_data" title="'+list[i].amt+'" style="text-align: right;padding-right: 20px">'+list[i].amt+'</span><span class="ranking_data" title="'+list[i].rate+'">'+list[i].rate+'</span></li>';
+                            }
+                            $("#channel ul").html(temp);
+                            $("#channel_loading").hide();
+                        }else if(type == 'brand'){
+                            list = msg.list;
+                            var temp = '';
+                            if(list.length == 0){
+                                temp = '<div class="notData" >暂无数据</div>';
+                            }
+                            for(var i=0;i<list.length;i++){
+                                var n = i+1;
+                                temp += '<li><span class="list_num list_num_2"><i>'+n+'</i></span><span title="'+list[i].brand_name+'">'+list[i].brand_name+'</span><span class="ranking_data" title="'+list[i].amt+'" style="text-align: right;padding-right: 20px">'+list[i].amt+'</span><span class="ranking_data" title="'+list[i].rate+'">'+list[i].rate+'</span></li>';
+                            }
+                            $("#brand_content").html(temp);
+                            $("#brand_loading").hide();
+                        }
+                        _this.map.resize();
+                        _this.line.resize();
+                        _this.bar.resize();
+                    }else {
+                        if(type == "brand"){
+                            $("#brand_content").html('<li class="notData">获取数据失败</li>');
+                            $("#brand_loading").hide();
+                        }else if(type == "channel"){
+                            $("#channel ul").html('<li class="notData">获取数据失败</li>');
+                            $("#channel_loading").hide();
+                        }else if(type == 'all'){
+                            $("#amtTotal").html("<span style='margin-left: 10px'>数据加载失败</span>");
+                            $("#data_loading").hide();
+                        }else if(type == 'vip'){
+                            $("#vip_loading").hide();
+                        }else if(type == 'area'){
+                            $("#city ul").html('<li class="notData">获取数据失败</li>');
+                            $("#city_loading").hide();
+                        }
+                    }
+                });
+            },
+            lineChartInit:function (date,amt) {//业绩图表实列化
+                var option = {
+                        color:['#3ebed1'],
+                        backgroundColor:'rgba(0,0,0,0.8)',
+                        title: {
+                            textStyle:{
+                                color:"#41c7db",
+                                fontWeight:'normal',
+                                fontSize:'16px'
+                            },
+                            text: '当月业绩(万元)',
+                            left:'10px',
+                            top:'10px'
+                        },
+                        grid: {
+                            left: '15',
+                            right: '15',
+                            top:'50',
+                            bottom:'20',
+                            containLabel: true
+                        },
+                        tooltip : {
+                            trigger: 'axis',
+                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap:true,
+                            axisLine:{
+                                show:false,
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            axisLabel:{
+                                color:'#FFFFFF',
+                                margin:20
+                            },
+                            data: date,
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine:{
+                                show:false
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            axisLabel:{
+                                color:'#FFFFFF',
+                                margin:20
+                            },
+                            splitLine:{
+                                lineStyle:{
+                                    type:'dotted',
+                                    color:'#4d4e4e'
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name:'当月累计业绩',
+                                type:'line',
+                                data:amt,
+                                symbolSize:15,
+                                symbol:'image://../img/ico_spot.png',
+                            }
+                        ]
+                    };
+                _this.line.setOption(option);
+                _this.line.hideLoading();
+            },
+            barChartInit:function (date,person,arr) {
+                var option = {
+                    color: ['#3398DB'],
+                    backgroundColor:'rgba(0,0,0,0.8)',
+                    title: {
+                        textStyle:{
+                            color:"#41c7db",
+                            fontWeight:'normal',
+                            fontSize:'16px'
+                        },
+                        text: '每日会员增长人数(人)',
+                        left:'10px',
+                        top:'10px'
+                    },
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        },
+                        formatter:'{c0}'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data: date,
+                            axisLine:{
+                                show:false
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            axisLabel:{
+                                color:'#FFF',
+                            }
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLine:{
+                                show:false
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            axisLabel:{
+                                color:'#FFF',
+                            },
+                            splitLine:{
+                                lineStyle:{
+                                    type:'dotted',
+                                    color:'#4d4e4e'
+                                }
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'直接访问',
+                            type:'bar',
+                            stack:'月份',
+                            barWidth:25,
+                            data:person,
+                            itemStyle:{
+                                normal:{
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 1, color: 'rgba(65,199,219,0)'},
+                                            {offset: 0, color: 'rgba(65,199,219,0.4)'}
+                                        ]
+                                    )
+                                }
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            stack: '月份',
+                            silent: true,
+                            barMinHeight:2,
+                            data: arr,
+                            itemStyle: {
+                                normal: {
+                                    color: '#41c7db'
+                                }
+                            }
+                        }
+                    ]
+                };
+                    _this.bar.setOption(option);
+                    _this.bar.hideLoading();
+            },
+            mapChartinit:function (a,b,c) {
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        padding:[10,15],
+                        formatter:function (params) {
+                            var val = params.data == undefined ? 0 : params.data.value != undefined ? (params.value - params.data.value).toFixed(2) : 0,
+                                amt = params.data == undefined ? 0 : params.data.value != undefined ? params.data.value : 0,
+                                html = '<span style=";display:inline-block;color: #41c7db;margin-bottom: 5px;font-size: 12px">'+params.name+'</span><br/>业绩占比<span style="display:inline-block;color: #41c7db;margin-left: 10px;margin-bottom: 5px">'+val+'%</span><br/>业绩总额<span style="color: #41c7db;margin-left: 10px">'+amt+'</span>';
+                            return html;
+                        }
+                    },
+                    visualMap: {
+                        min: -100,
+                        max: c,
+                        inRange: {
+                            color: ['#bef2ff', 'rgba(35,139,201,0.8)']
+                        },
+                        calculable: true,
+                        show:false
+                    },
+                    series: [
+                        {
+                            name: '业绩总额',
+                            type: 'map',
+                            mapType: 'china',
+                            roam: true,
+                            zoom:0.9,
+                            top:'20%',
+                            itemStyle:{
+                                emphasis:{
+                                    areaColor:'#f58d8f'
+                                }
+                            },
+                            data:a
+                        },
+                        {
+                            name: '业绩占比',
+                            type: 'map',
+                            mapType: 'china',
+                            zoom:0.9,
+                            top:'20%',
+                            label: {
+                                normal: {
+                                    show: true
+                                },
+                                emphasis: {
+                                    show: true
+                                }
+                            },
+                            data:b
+                        },
+                    ]
+                };
+                _this.map.setOption(option);
+                _this.map.hideLoading();
+            },
+            resizeChart:function () {
+                window.addEventListener("resize", function () {
+                    _this.map.resize();
+                    _this.line.resize();
+                    _this.bar.resize();
+                });
+            },
+            dataReload:function () {
+                var timer=setInterval(function () {
+                    _this.time--;
+                    if(_this.time == 0){
+                        $("#vip_loading").show();
+                        $("#brand_loading").show();
+                        $("#channel_loading").show();
+                        $("#data_loading").show();
+                        $("#city_loading").show();
+                        _this.getData('trade');
+                        _this.getData('all');
+                        _this.getData('vip');
+                        _this.getData('area');
+                        _this.getData('brand');
+                        _this.getData('channel');
+                        _this.getData('actVip');
+                        _this.time = 300;
+                    }
+                },1000);
+            }
+        };
+        $(function () {
+            console.log($('body').height());
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            $("#date_test").val(year+'-'+month+'-'+strDate);
+            _this.init();
+            $(".ranking_content,.select_list,body").niceScroll({
+                cursorborder: "0 none",
+                boxzoom: false,
+                cursorcolor: " rgba(255,255,255,0.5)",
+                background: " rgba(0,0,0,0.2)",
+                cursoropacitymax: 1,
+                touchbehavior: false,
+                cursorminheight: 30,
+                autohidemode:"leave"
+            });
+            $(".ranking_content").getNiceScroll().resize();
+        });
+        var date = {
+            elem: '#date_test',
+            format: 'YYYY-MM-DD',
+            istime: false,
+            max: '2099-06-16 23:59:59', //最大日期
+            istoday: false,
+            fixed: false,
+            choose:function () {
+                $("#vip_loading").show();
+                $("#brand_loading").show();
+                $("#channel_loading").show();
+                $("#data_loading").show();
+                $("#city_loading").show();
+                _this.getData('trade');
+                _this.getData('all');
+                _this.getData('vip');
+                _this.getData('area');
+                _this.getData('brand');
+                _this.getData('channel');
+                _this.getData('actVip');
+            }
+        };
+        laydate(date);
+        //防止ajax重复请求
+        var pendingRequests = {};
+        $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+            var key = options.url;
+            var name = JSON.parse(originalOptions.data.param).message.type;
+            if(key == "/board/allData" && !pendingRequests[name]){
+                pendingRequests[name] = jqXHR;
+            }else if(!pendingRequests[key]){
+                pendingRequests[key] = jqXHR;
+            }else {
+                // jqXHR.abort();    //放弃后触发的提交
+                pendingRequests[name]?pendingRequests[name].abort(): pendingRequests[key].abort();// 放弃先触发的提交
+                pendingRequests[name]=jqXHR
+            }
+            var complete = options.complete;
+            options.complete = function(jqXHR, textStatus) {
+                //pendingRequests[key] = null;
+                //pendingRequests[name] = null;
+                if ($.isFunction(complete)) {
+                    complete.apply(this, arguments);
+                }
+            };
+        });
+    </script>
+</body>
+</html>

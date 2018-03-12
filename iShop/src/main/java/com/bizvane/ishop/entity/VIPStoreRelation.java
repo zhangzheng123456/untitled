@@ -12,6 +12,12 @@ public class VIPStoreRelation {
 
 	private String create_date;
 
+	private String corp_code;
+
+	private String app_id;
+
+	private String app_name;
+
 	public int getId() {
 		return id;
 	}
@@ -52,5 +58,27 @@ public class VIPStoreRelation {
 		this.create_date = create_date;
 	}
 
-	
+	public String getCorp_code() {
+		return corp_code;
+	}
+
+	public void setCorp_code(String corp_code) {
+		this.corp_code = corp_code;
+	}
+
+	public String getApp_id() {
+		return app_id;
+	}
+
+	public void setApp_id(String app_id) {
+		this.app_id = app_id;
+	}
+
+	public String getApp_name() {
+		return app_name;
+	}
+
+	public void setApp_name(String app_name) {
+		this.app_name = app_name;
+	}
 }

@@ -1,0 +1,43 @@
+@charset "UTF-8";
+body {
+  width: 100%;
+  background-color: #f4f4f4;
+  font-family: 微软雅黑;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.title {
+  margin-top: 1.20773rem;
+  color: #555555;
+  font-size: 0.36232rem;
+  text-align: center;
+  margin-bottom: 1.69082rem;
+  font-size: 0.36232rem; }
+
+.main {
+  width: 95%;
+  margin-left: 5%; }
+
+.none {
+  width: 50%;
+  vertical-align: middle;
+  margin: 20% 22.5%; }
+
+.shopper {
+  float: left;
+  width: 29%;
+  margin-bottom: 0.48309rem;
+  margin-right: 4%; }
+
+.img {
+  width: 100%; }
+
+.img img {
+  width: 100%;
+  height: 100%; }
+
+.name {
+  margin-top: 0.24155rem;
+  text-align: center;
+  color: #888888;
+  font-size: 0.33816rem; }

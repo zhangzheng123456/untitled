@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增秀搭</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/add_nwe.css?20171011">
+    <link rel="stylesheet" href="css/goods.css?20170914">
+    <script src="js/iscroll.js"></script>
+    <style>
+        .bg{
+            position: absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            right: 0;
+            background: #ddd;
+        }
+        .container{background: #fff}
+        .rotate{
+            -webkit-animation:play 3s linear infinite;
+            -moz-animation:play 3s linear infinite;
+            animation:play 3s linear infinite;
+        }
+        @-webkit-keyframes play{
+            0%  {
+                -webkit-transform:rotate(0deg);
+            }
+            100% {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+        @-moz-keyframes play{
+            0%  {
+                -webkit-transform:rotate(0deg);
+            }
+            100% {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+        @keyframes play{
+            0%  {
+                -webkit-transform:rotate(0deg);
+            }
+            100% {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+        .screen_list .screen_footer #reset_wx {
+            background-color: #e7e7e7;
+            color: #888;
+        }
+        .screen_list .screen_footer #complete_wx {
+            background-color: #6dc1c8;
+            color: #fff;
+        }
+        #screen_content_wx div.parent:last-child{
+            margin-bottom: 56px;
+        }
+        *{-webkit-tap-highlight-color:rgba(255,255,255,0)}
+    </style>
+</head>
+<body>
+ <div class="bg">
+     <div class="container">
+         <div class="header_bg"></div>
+         <div class="header_title">
+             <span class="header_title_l">搭配名称</span>
+             <input class="header_title_r" placeholder="请输入标题" maxlength="10"  id="d_match_title">
+         </div>
+         <div class="header_title">
+             <span class="header_title_l">秀搭类型</span>
+             <img class="icon_arrow_r"with="100%"height="100%" src="image/icon_arrow_r.png" alt=""/>
+             <span class="chooseType">选择类型 </span>
+         </div>
+         <div class="type_box">
+             <ul>
+             </ul>
+         </div>
+         <div class="line"></div>
+         <div class="action">
+             <span class="action_l">搭配照片</span>
+             <!--<div class="action_product">-->
+             <!--<div>-->
+             <!--<img src="image/icon_xiuda_add_product@2x.png" width="100%"height="100%" alt="照片">-->
+             <!--</div>-->
+             <!--商品-->
+             <!--</div>-->
+             <!--<div class="action_picture">-->
+             <!--<div>-->
+             <!--<img src="image/icon_xiuda_add_img@2x.png" width="100%"height="100%" alt="照片">-->
+             <!--</div>-->
+             <!--照片-->
+             <!--<input class="file" type="file"multiple="multiple">-->
+             <!--</div>-->
+         </div>
+         <ul class="container_picture"id="photo_box">
+             <!--商品模板-->
+             <!--<li class="picture">-->
+             <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
+             <!--</li>-->
+             <li class="picture_add"id="photo">
+                 <div class="picture_add_new"><img src="image/icon_img_add@3x.png" width="100%"height="100%"alt="add"></div>
+                 <!--<input class="file"id="file" type="file"multiple="multiple">-->
+             </li>
+         </ul>
+         <div class="line"></div>
+         <div class="action">
+             <span class="action_l">搭配商品</span>
+             <!--<div class="action_product">-->
+             <!--<div>-->
+             <!--<img src="image/icon_xiuda_add_product@2x.png" width="100%"height="100%" alt="照片">-->
+             <!--</div>-->
+             <!--商品-->
+             <!--</div>-->
+             <!--<div class="action_picture">-->
+             <!--<div>-->
+             <!--<img src="image/icon_xiuda_add_img@2x.png" width="100%"height="100%" alt="照片">-->
+             <!--</div>-->
+             <!--照片-->
+             <!--<input class="file" type="file"multiple="multiple">-->
+             <!--</div>-->
+         </div>
+         <ul class="container_picture"id="picture_box">
+             <!--商品模板-->
+             <!--<li class="picture">-->
+             <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
+             <!--</li>-->
+             <li class="picture_add"id="picture">
+                 <div class="picture_add_new">
+                     <img src="image/icon_img_add@3x.png" width="100%"height="100%"alt="add">
+                 </div>
+             </li>
+         </ul>
+         <div class="line"></div>
+         <div class="introduction">
+             <span>搭配说明</span>
+         </div>
+         <div class="describe_box">
+             <textarea name="" id="describe" placeholder="请填写搭配说明"></textarea>
+         </div>
+     </div>
+     <!--<div id="">测试文本域</div>-->
+     <!--<div id="submit">提交</div>-->
+ </div>
+ <div class="product_list">
+     <div class="product_header">
+         <div class="div_l">FAB商品</div>
+         <div class="div_r">微商城商品</div>
+     </div>
+     <div id="fab" class="product_hide">
+         <div class="search_box" >
+             <div style="width: 100%;float: left">
+                 <form onkeydown="if(event.keyCode==13)return false;" action="">
+                     <input type="search" placeholder="" autocomplete="off">
+                 </form>
+             </div>
+             <div class="search" style="left: 42%;">
+                 <div class="icon">
+                     <img src="image/icon_search.png"width="100%"height="100%" alt="search">
+                 </div>
+                 搜索商品
+             </div>
+             <div class="filtrate_box">
+                 <div class="filtrate"id="screen">筛选</div>
+             </div>
+         </div>
+         <ul class="list_box2">
+         </ul>
+         <div class="search_null"></div>
+     </div>
+     <div id="wx"  class="product_hide">
+         <div style="background-color: #fff;position: fixed;top:1.3285rem;z-index: 3;height: 1.1rem;width: 100%;">
+             <div class="brand_list">
+                 <div class="brselect" id="brselect">
+                     <em style="list-style: none;" id="brand_name">请选择品牌</em>
+                     <span></span>
+                 </div>
+             </div>
+             <div class="search_box" style="padding-left: 1.93237rem;top:2.3800rem;">
+             <div class="select" id="select">
+                <em style="list-style: none;">名称</em>
+                 <ul>
+                     <li>名称</li>
+                     <li>货号</li>
+                 </ul>
+                 <span></span>
+             </div>
+             <div style="width: 100%;float: left">
+                 <form onkeydown="if(event.keyCode==13)return false;" action="">
+                     <input type="search" placeholder="" autocomplete="off">
+                 </form>
+             </div>
+             <div class="search">
+                 <div class="icon">
+                     <img src="image/icon_search.png"width="100%"height="100%" alt="search">
+                 </div>
+                 搜索商品
+             </div>
+             <div class="filtrate_box">
+                 <div class="filtrate"id="screen_wx">筛选</div>
+             </div>
+         </div>
+         </div>
+         <ul class="list_box" style="margin-top:2.3800rem;">
+             <!--<li class="list">-->
+                 <!--<div class="list_picture"></div>-->
+                 <!--<div class="list_describe">-->
+                     <!--<p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>-->
+                     <!--<p>货号：<span class="list_number">89898989CX</span></p>-->
+                     <!--<p>价格：<span class="list_price">￥10000</span></p>-->
+                 <!--</div>-->
+             <!--</li>-->
+         </ul>
+         <div class="search_null"></div>
+     </div>
+     <!--<ul class="list_box">-->
+         <!--&lt;!&ndash;数据加载&ndash;&gt;-->
+         <!--&lt;!&ndash;<li class="list">&ndash;&gt;-->
+         <!--&lt;!&ndash;<div class="list_picture"></div>&ndash;&gt;-->
+         <!--&lt;!&ndash;<div class="list_describe">&ndash;&gt;-->
+         <!--&lt;!&ndash;<p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>&ndash;&gt;-->
+         <!--&lt;!&ndash;<p>货号：<span class="list_number">89898989CX</span></p>&ndash;&gt;-->
+         <!--&lt;!&ndash;<p>价格：<span class="list_price">￥10000</span></p>&ndash;&gt;-->
+         <!--&lt;!&ndash;</div>&ndash;&gt;-->
+         <!--&lt;!&ndash;</li>&ndash;&gt;-->
+     <!--</ul>-->
+     <div class="complete_box">
+         <div class="btn_box">
+             <span class="count">已选择0个</span>
+             <div class="complete_btn">完成</div>
+         </div>
+     </div>
+ </div>
+ <div class="tips">
+     <div class="tip_box">
+         <div class="icon_err"><img src="image/icon_error.png" width="100%"height="100%" alt="icon_error.png"></div>
+         <div class="err_txt">只能选择10件搭配</div>
+     </div>
+ </div>
+ <div id="loading">
+     <div class="tip">
+         <div class="tip_box" >
+             <div class="icon_err rotate"><img src="image/icon_apply.png" width="100%"height="100%" alt="icon_error.png"></div>
+             <div class="loading_txt">加载中...</div>
+         </div>
+     </div>
+ </div>
+ <div class="brand_pop_parent">
+    <div class="brand_pop" id="brand_pop">
+     <div class="search">
+         <form onkeydown="if(event.keyCode==13)return false;" action="">
+             <input type="text" placeholder="搜索品牌" id="brand_search" autocomplete="off">
+         </form>
+     </div>
+     <div class="brand_pop_list">
+         <ul>
+
+         </ul>
+     </div>
+     <div class="brand_footer" id="brand_footer">
+         返回
+     </div>
+ </div>
+ </div>
+ <div id="cover"style="z-index:88888"></div>
+ <div id="guide" class="screen_list"style="z-index:88889">
+     <div class="screen_content" id="screen_content">
+         <div id="match_type" class="parent">
+             <h4>筛选品牌</h4>
+             <div class="list">
+                 <ul>
+                 </ul>
+             </div>
+             <div class="xian"></div>
+         </div>
+         <div id="waves" class="parent">
+             <h4>筛选波段</h4>
+             <div class="list">
+                 <ul>
+                 </ul>
+             </div>
+             <div class="xian"></div>
+         </div>
+         <div id="goods_quarter" class="parent row-last">
+             <h4>筛选季度</h4>
+             <div class="list">
+                 <ul>
+                 </ul>
+             </div>
+         </div>
+     </div>
+     <div class="screen_footer">
+         <div id="reset" class="bg_h">重置</div>
+         <div id="complete" class="bg_h">完成</div>
+     </div>
+ </div>
+ <div id="guide_wx" class="screen_list"style="z-index:88889">
+     <div class="screen_content" id="screen_content_wx">
+     </div>
+     <div class="screen_footer">
+         <div id="reset_wx" class="bg_h">重置</div>
+         <div id="complete_wx" class="bg_h">完成</div>
+     </div>
+ </div>
+<script src="js/jquery-1.11.1.min.js"></script>
+ <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+ <script src="js/gqrequest.js?20170830"></script>
+  <script src="js/add_new.js?20170925"></script>
+ <script>
+     var myScroll;
+     function loaded() {
+         myScroll = new iScroll('guide', { checkDOMChanges: true });
+         myScroll = new iScroll('guide_wx', { checkDOMChanges: true });
+         // setInterval(function () {
+         // 	if (myScroll.isReady())
+         // 		document.getElementById('thelist').innerHTML += '<li>new row</li>';
+         // }, 2000);
+     }
+     window.onload=function(){loaded();}
+     // document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+     // document.addEventListener('DOMContentLoaded', loaded, false);
+//     $("#screen").click(function(){
+//         $("#guide").animate({right:'0'},300);
+//         $("#cover").show();
+//         $("html").addClass("sift-move");
+//         $("body").addClass("sift-move");
+//     })
+ </script>
+</body>
+</html>

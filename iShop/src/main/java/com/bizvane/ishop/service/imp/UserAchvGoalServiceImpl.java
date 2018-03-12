@@ -40,7 +40,36 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         List<UserAchvGoal> userAchvGoals = null;
 
         PageHelper.startPage(page_number, page_size);
-        userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value);
+        userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value,null);
+        for (UserAchvGoal userAchvGoal : userAchvGoals) {
+            userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
+            if (userAchvGoal.getTarget_type() == null || userAchvGoal.getTarget_type().equals("")) {
+                userAchvGoal.setTarget_type("未设定");
+            } else if (userAchvGoal.getTarget_type().equals("D")) {
+                userAchvGoal.setTarget_type("日");
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("W")) {
+                userAchvGoal.setTarget_type("周");
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("M")) {
+                userAchvGoal.setTarget_type("月");
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("Y")) {
+                userAchvGoal.setTarget_type("年");
+            }
+        }
+        PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
+        return page;
+
+    }
+
+
+    public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception {
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        List<UserAchvGoal> userAchvGoals = null;
+
+        PageHelper.startPage(page_number, page_size);
+        userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value,manager_corp_arr);
         for (UserAchvGoal userAchvGoal : userAchvGoals) {
             userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
             if (userAchvGoal.getTarget_type() == null || userAchvGoal.getTarget_type().equals("")) {
@@ -132,16 +161,18 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
                 && oldUserAchvGoal.getTarget_time().equalsIgnoreCase(userAchvGoal.getTarget_time())
                 && oldUserAchvGoal.getIsactive().equalsIgnoreCase(userAchvGoal.getIsactive())
                 && oldUserAchvGoal.getStore_code().equalsIgnoreCase(userAchvGoal.getStore_code())
-
+                && oldUserAchvGoal.getIsactive().equalsIgnoreCase(userAchvGoal.getIsactive())
                 ) {
             userAchvGoalMapper.update(userAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
         } else {
-            count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(), userAchvGoal.getIsactive(), userAchvGoal.getStore_code());
-            if (count > 0) {
-                return Common.DATABEAN_CODE_ERROR;
-            }
-            userAchvGoalMapper.update(userAchvGoal);
+            UserAchvGoal userAchvGoal1=getUserAchvForId(userAchvGoal.getCorp_code(),userAchvGoal.getUser_code(),userAchvGoal.getStore_code(),userAchvGoal.getTarget_time(),Common.IS_ACTIVE_Y);
+          if(userAchvGoal1==null||userAchvGoal1.getId()==userAchvGoal.getId()){
+              userAchvGoalMapper.update(userAchvGoal);
+          }else{
+             userAchvGoalMapper.delete(userAchvGoal1.getId());
+              userAchvGoalMapper.update(userAchvGoal);
+          }
             return Common.DATABEAN_CODE_SUCCESS;
         }
     }
@@ -157,20 +188,20 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public UserAchvGoal getUserAchvForId(String corp_code, String user_code, String user_target, String target_type, String target_time) throws Exception {
-        return userAchvGoalMapper.getUserAchvForId(corp_code, user_code, user_target,target_type, target_time);
+    public UserAchvGoal getUserAchvForId(String corp_code, String user_code, String store_code, String target_time,String isactive) throws Exception {
+        return userAchvGoalMapper.getUserAchvForId(corp_code, user_code,store_code, target_time,isactive);
     }
 
 
     @Override
     public String insert(UserAchvGoal userAchvGoal) throws Exception {
-        int count = -1;
-        count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(), userAchvGoal.getIsactive(), userAchvGoal.getStore_code());
-        if (count > 0) {
-            return "用户业绩重复";
-        } else {
-            userAchvGoalMapper.insert(userAchvGoal);
+
+        int m =userAchvGoalMapper.insert(userAchvGoal);
+        if (m > 0) {
             return Common.DATABEAN_CODE_SUCCESS;
+
+        } else {
+            return Common.DATABEAN_CODE_ERROR;
         }
     }
 
@@ -226,4 +257,64 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
         return page;
     }
+
+    @Override
+    public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String
+            area_code, String store_code, String role_code, Map<String, String> map,String area_store_code,String manager_corp) throws Exception {
+        String[] stores = null;
+        if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+            stores = store_code.split(",");
+        }
+        if (!area_code.equals("")) {
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            String[] areas = area_code.split(",");
+            String[] storeCodes = null;
+            if (!area_store_code.equals("")){
+                storeCodes = area_store_code.replace(Common.SPECIAL_HEAD,"").split(",");
+            }
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes,null, "");
+            String a = "";
+            for (int i = 0; i < store.size(); i++) {
+                a = a + store.get(i).getStore_code() + ",";
+            }
+            stores = a.split(",");
+        }
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("manager_corp_arr", manager_corp_arr);
+        params.put("map", map);
+        params.put("corp_code", corp_code);
+        params.put("array", stores);
+        params.put("role_code", role_code);
+        List<UserAchvGoal> userAchvGoals;
+        PageHelper.startPage(page_number, page_size);
+        userAchvGoals = userAchvGoalMapper.selectAllUserAchvScreen(params);
+        for (UserAchvGoal userAchvGoal : userAchvGoals) {
+            userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
+            if (userAchvGoal.getTarget_type() == null || userAchvGoal.getTarget_type().equals("")) {
+                userAchvGoal.setTarget_type("未设定");
+            } else if (userAchvGoal.getTarget_type().equals("D")) {
+                userAchvGoal.setTarget_type("日");
+            } else if (userAchvGoal.getTarget_type().equals("W")) {
+                userAchvGoal.setTarget_type("周");
+            } else if (userAchvGoal.getTarget_type().equals("M")) {
+                userAchvGoal.setTarget_type("月");
+            } else if (userAchvGoal.getTarget_type().equals("Y")) {
+                userAchvGoal.setTarget_type("年");
+            }
+        }
+        PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
+        return page;
+    }
+
+    @Override
+    public int userAchvGoalIfExist(String corp_code, String user_code, String target_type, String target_time, String isactive, String store_code) throws Exception {
+        return userAchvGoalMapper.selectUserAchvCountType(corp_code,user_code,target_type,target_time,isactive,store_code);
+    }
+
+
 }

@@ -1,6 +1,8 @@
 package com.bizvane.ishop.utils;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by maoweidong on 16/9/23.
@@ -81,4 +83,51 @@ public class NumberUtil {
         BigDecimal bg = new BigDecimal(number);
         return bg.setScale(precision, BigDecimal.ROUND_HALF_UP).floatValue();
     }
+
+    /**
+     * 对float类型的数值进行过滤
+     * 先进行向上舍入
+     * 再进行判断，若小数点后第三位有数字，则转换为百分数显示；若小数点后底位有数字，则转换成千分位显示；else则算0%；
+     *
+     * @param number
+     * @return String
+     */
+    public static String fmtMicrometer(String number){
+
+        //向上舍入
+        Double number1 = Double.parseDouble(keepPrecision(number,4));
+
+        DecimalFormat df;
+        if (number1*1000 >= 1){
+            df = new DecimalFormat("##.#%");
+        }else if (number1*10000 >= 1){
+            df = new DecimalFormat("##.#\u2030");
+        }else {
+            df = new DecimalFormat("##.#%");
+        }
+        return df.format(number1);
+    }
+
+    /**
+     * 对float类型的数值进行过滤
+     * 先进行向上舍入
+     * 再进行判断，若小数点后第三位有数字，则转换为百分数显示；若小数点后底位有数字，则转换成千分位显示；else则算0%；
+     *
+     * @param number
+     * @return String
+     */
+    public static String percent(double number){
+        DecimalFormat df = new DecimalFormat("##.#%");
+        return df.format(number);
+    }
+
+    public static void main(String[] args){
+        System.out.println(fmtMicrometer("0.00007"));
+//        BigDecimal bg = new BigDecimal(0.0003);
+//        Double b = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+//        String number = "0.0003";
+//        float a = Float.parseFloat(number);
+//        System.out.println(b);
+    }
+
 }

@@ -7,11 +7,12 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <style>
         body{
             margin-top:81px;
@@ -48,7 +49,20 @@
             <div>
                 <span><label style="color:#c26555;">分组名称*</label><input type="text" id="template_group_name"  verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组名称不能为空！"></div></div></span>
             </div>
+            <div>
+                <div class="task_allot" style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">所属品牌*</div>
+                <div class="good_imgs" style="display: inline-block;width:420px">
+                    <div class="xingming" id="OWN_BRAND_All" style="max-height: 200px;overflow-y: auto">
 
+                    </div>
+                    <div>
+                        <div class="add_app_id" id="ADD_BRAND" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                            新增 <span>+</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </form>
     </div>
     <div class="editor_detail col-lg-4 col-md-7 col-sm-10 animated fadeInRight" style="margin: 0;">
@@ -77,6 +91,43 @@
         </form>
     </div>
 </div>
+<!--选取品牌操作-->
+<div id="screen_brand" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选品牌</h4>
+        <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索品牌" id="brand_search">
+            <span class="icon-ishop_3-05" id="brand_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_brand">确定</div>
+</div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
@@ -84,17 +135,18 @@
 <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <!-- Custom and plugin javascript -->
 <script src="../js/hplus.js?v=2.2.0"></script>
-<script src="../js/loading.js?20170105"></script>
+<script src="../js/loading.js?2017040170331"></script>
 <!-- Dialog -->
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
 <!-- ajax -->
-<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
 <!-- 带搜索的下拉框 -->
-<script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
 <!-- error tips -->
 <!--<script type="text/javascript" src="../js/vip/vip_group_edit.js"></script>-->
-<script type="text/javascript" src="../js/message/template_group_operate.js?20170105"></script>
+<script type="text/javascript" src="../js/message/template_group_operate.js?2017040170331"></script>
 </body>
 
 </html>

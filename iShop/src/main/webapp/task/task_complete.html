@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务完成情况</title>
+    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js"></script>
+    <style>
+        .export_list{
+            display: none;
+            width: 310px;
+            height: 320px;
+            color:#4a5f7c;
+            border-radius:5px;
+            padding:20px;
+            box-sizing:border-box;
+            background-color: #FFFFFF;
+            position: fixed;
+            left: 50%;
+            top:50%;
+            -webkit-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            z-index: 788;
+            -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            -moz-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            box-shadow: 0 0 10px rgba(0,0,0,0.335);
+        }
+        .export_list_tip{
+            font-size: 12px;margin: 10px 0 20px 0;line-height: 20px
+        }
+        .export_list_all{
+            height: 230px;max-height: 150px;overflow: hidden;overflow-y:auto;font-size: 12px;
+        }
+        .export_list_all li{
+            height: 20px;line-height: 20px;margin-bottom: 10px;
+        }
+        .export_list_all li span{
+            float: right;
+            display: inline-block;
+        }
+        .export_list_btn{
+            display: inline-block;
+            background-color: #41c7db;
+            border-radius: 3px;
+            width:50px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            color: #FFFFFF;
+            cursor: pointer
+        }
+        .hide_export{
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hide_export span{
+            display: inline-block;
+            color:#FFFFFF;
+            cursor:pointer;
+            background-color:#c4c8d4;
+            width: 90px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 5px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div id="content">
+    <div class="content">
+        <div class="con_table" id="con_table">
+            <div class="title">
+                <span>任务管理</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>任务完成度</span>
+            </div>
+            <div class="action">
+                <div class="action_l">
+                    <ul id="jurisdiction">
+
+                    </ul>
+                    <ul>
+                        <li class="li">
+                            <input type="text" class="input" id="search" placeholder="店铺编号/店铺名称">
+                            <i class="icon-ishop_3-05" id="d_search"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="action_r">
+                    <ul>
+                        <li id="filtrate">
+                            <span class="icon-ishop_6-05"></span>
+                            筛选
+                        </li>
+                        <!--<li class="bg">-->
+                        <!--<span class="icon-ishop_6-06"></span>-->
+                        <!--配置-->
+                        <!--</li>-->
+                        <li class="bg">
+                            <span class="icon-ishop_6-07"></span>
+                            刷新
+                        </li>
+                        <li id="more">
+                            <span class="icon-ishop_6-08"></span>
+                            更多
+                            <div class="more_down">
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="file">
+                <div class="file_content">
+                    <div id="download"></div>
+                    <div  class="icon-ishop_6-12" id="file_close"></div>
+                </div>
+                <div id="file_list">
+                    <div id="file_list_l">
+                        <ul>
+
+                        </ul>
+                    </div>
+                    <div id="file_list_z">
+                        <div class="c_shift">
+                            <div id="left_shift" class="shift" title="右移">></div>
+                            <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                            <div id="right_shift" class="shift" title="左移"><</div>
+                            <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+                        </div>
+                    </div>
+                    <div id="file_list_r">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="file_btn">
+                    <div class="file_submit" id="file_submit">提交</div>
+                </div>
+            </div>
+            <div class="sxk" id="sxk">
+                <div class="sbtn">
+                    <div class="empty" id="empty">
+                        <i class="icon-ishop_6-16"></i>清空筛选
+                    </div>
+                    <span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
+                    <div class="r_btn">
+                        <div class="pack_up" id="pack_up">
+                            <i class="icon-ishop_6-18"></i>
+                            收起
+                        </div>
+                        <div class="find" id="find">
+                            <i class="icon-ishop_6-19"></i>
+                            查找
+                        </div>
+                    </div>
+                </div>
+                <div class="inputs">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="table">
+                <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                    <tr class="th" id="tableOrder">
+                        <!--<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>-->
+                        <!--<th style="text-align: left;" id="tableOrder">序号</th>-->
+                        <!--<th>接收人</th>-->
+                        <!--<th>消息编号</th>-->
+                        <!--<th>发送类型</th>-->
+                        <!--<th >消息内容</th>-->
+                        <!--<th>接收会员</th>-->
+                        <!--<th >所属企业</th>-->
+                        <!--<th>创建人</th>-->
+                        <!--<th>创建时间</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--<tr>-->
+                    <!--<td width="50px" style="text-align: left;">-->
+                    <!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>-->
+                    <!--</td>-->
+                    <!--<td style="text-align: left;">1</td>-->
+                    <!--<td>9813</td>-->
+                    <!--<td>消息类型1</td>-->
+                    <!--<td>9813</td>-->
+                    <!--<td><span title="感谢对爱秀的大力支持">感谢对爱秀的大力支持</span></td>-->
+                    <!--<td>陈磊</td>-->
+                    <!--<td>2016/02/23 15:04:02</td>-->
+                    <!--<td width="50px">是</td>-->
+                    <!--</tr>                                 					-->
+                    </tbody>
+                </table>
+            </div>
+            <div class="foot">
+                <ul>
+                    <li class="foot-jum">
+                        <span>跳转至</span>
+                        <input class="input-txt" value="" id="input-txt">
+                        <em>页</em>
+                    </li>
+                    <li class="foot-num" >
+                        <ul id="foot-num">
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="foot-sum">
+                        <div class="page_p">
+                            <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                            <ul class="liebiao" style="display:none;" id="liebiao">
+                                <li id="10">10行/页</li>
+                                <li id="30">30行/页</li>
+                                <li id="50">50行/页</li>
+                                <li id="100">100行/页</li>
+                            </ul>
+                            <span class="icon-ishop_8-02 icon"></span>
+                        </div>
+                        <span class="zy">共 0 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="p" id="p"></div>
+    <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" id="delete">删除</em>
+        </div>
+    </div>
+</div>
+<div class="tk" id="download_all">
+    <span class="icon-ishop_6-12" id="X_download"></span>
+    <p>请点击"确认",下载压缩文件</p>
+    <div class="btn">
+        <em class="cancel" id="cancel_download">取消</em>
+        <em class="album_enter" id="enter_download"><a>确认</a></em>
+    </div>
+</div>
+<div class="export_list" id="export_list" >
+    <!--<div><span class="icon-ishop_6-12"></span></div>-->
+    <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+    <div style="height: 220px;">
+        <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+        <div class="export_list_all" id="export_list_all">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="hide_export">
+        <span id="hide_export" style="float: left">关闭</span>
+        <span id="to_zip" title="下载全部已导出文件" style="float: right;background-color: #637ea4">压缩ZIP</span>
+    </div>
+</div>
+<div id="details" style="display: none;">
+    <div class="content">
+        <div class="con_table">
+            <div class="title">
+                <span>任务管理</span>
+                <span class="icon-ishop_8-03"></span>
+                <span id="back_task_list">任务完成度</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>查看详情</span>
+            </div>
+            <div class="list">
+                <div class="list_l">
+                    <ul>
+                        <li>
+                            <label>店铺编号</label>
+                            <input type="text" id="detail_store_code">
+                        </li>
+                        <li class="r">
+                            <label>店铺名称</label>
+                            <input title="" type="text" id="detail_store_name" style="text-overflow:ellipsis">
+                        </li>
+                    </ul>
+                </div>
+                <div class="list_ren">
+                    <div class="turnoff" id="turnoff"style="letter-spacing: 10px;"><i class="icon-ishop_6-12"style="vertical-align: middle"></i>关闭</div>
+                </div>
+            </div>
+            <div class="table">
+                <table id="table_r" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                    <tr class='th'>
+                        <th style='text-align:center;width: 50px;'>序号</th>
+                        <th>员工编号</th>
+                        <th>员工名称</th>
+                        <th>手机号</th>
+                        <th>任务完成数</th>
+                        <th>任务总数</th>
+                        <th style='width: 200px'>完成度</th>
+                        </tr>
+                    </thead> <!--<tr class="th">-->
+                    <!--<th style="text-align:center;width: 50px;">序号</th>-->
+                    <!--<th>会员名称</th>-->
+                    <!--<th>会员卡号</th>-->
+                    <!--<th>会员手机号</th>-->
+                    <!--</tr>-->
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script src="/js/silide.js?2017040170331"></script>
+<script src="/js/task/task_complete.js?2017040170331"></script>
+</body>
+</html>

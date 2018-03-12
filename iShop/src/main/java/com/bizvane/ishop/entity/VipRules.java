@@ -49,11 +49,81 @@ public class VipRules {
     private String high_vip_card_type_code;
     //高级会员等级
     private String high_degree;
+    //公众号
+    private String app_id;
 
+    private String app_name;
+
+    private String activity_code;
     private Corp corp;
     private String corp_name;
 
     private JSONArray stores;
+
+    private String valid_date; //有效期限
+    private String keep_grade_condition;//保留等级条件
+    private  String keep_present_coupon;//保留等级条件下的赠送券
+    private  String keep_present_point;//保留等级条件下的赠送积分
+    private String degrade_vip_code; //降级会员等级编号
+    private String degrade_degree;//降级会员等级
+    private  String degrade_vip_name; //降级会员等级名字
+
+    public String getValid_date() {
+        return valid_date;
+    }
+
+    public void setValid_date(String valid_date) {
+        this.valid_date = valid_date;
+    }
+
+    public String getKeep_grade_condition() {
+        return keep_grade_condition;
+    }
+
+    public void setKeep_grade_condition(String keep_grade_condition) {
+        this.keep_grade_condition = keep_grade_condition;
+    }
+
+    public String getKeep_present_coupon() {
+        return keep_present_coupon;
+    }
+
+    public void setKeep_present_coupon(String keep_present_coupon) {
+        this.keep_present_coupon = keep_present_coupon;
+    }
+
+    public String getKeep_present_point() {
+        return keep_present_point;
+    }
+
+    public void setKeep_present_point(String keep_present_point) {
+        this.keep_present_point = keep_present_point;
+    }
+
+    public String getDegrade_vip_code() {
+        return degrade_vip_code;
+    }
+
+    public void setDegrade_vip_code(String degrade_vip_code) {
+        this.degrade_vip_code = degrade_vip_code;
+    }
+
+    public String getDegrade_degree() {
+        return degrade_degree;
+    }
+
+    public void setDegrade_degree(String degrade_degree) {
+        this.degrade_degree = degrade_degree;
+    }
+
+    public String getDegrade_vip_name() {
+        return degrade_vip_name;
+    }
+
+    public void setDegrade_vip_name(String degrade_vip_name) {
+        this.degrade_vip_name = degrade_vip_name;
+    }
+
 
     public int getId() {
         return id;
@@ -245,5 +315,29 @@ public class VipRules {
 
     public void setHigh_degree(String high_degree) {
         this.high_degree = high_degree;
+    }
+
+    public String getActivity_code() {
+        return activity_code;
+    }
+
+    public void setActivity_code(String activity_code) {
+        this.activity_code = activity_code;
+    }
+
+    public String getApp_id() {
+        return app_id;
+    }
+
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
+    }
+
+    public String getApp_name() {
+        return app_name;
+    }
+
+    public void setApp_name(String app_name) {
+        this.app_name = app_name;
     }
 }

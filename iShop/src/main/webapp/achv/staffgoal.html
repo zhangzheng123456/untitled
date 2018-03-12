@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>员工业绩目标</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20170105">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20170105"></script>
+    <script src="/js/loading.js?2017040170331"></script>
 </head>
 <body>
     <div class="content">
@@ -24,7 +24,7 @@
                                 <span class="icon-ishop_6-01"></span>
                                 新增
                             </a>
-                            
+
                         </li>
                         <li class="bg" id="remove">
                             <span class="icon-ishop_6-02"></span>
@@ -69,7 +69,7 @@
                                 <!--<div id="leading_out">导出</div>-->
                                 <!--<div id="guide_into">导入</div>-->
                             </div>
-                        </li>   
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="inputs">
-                    <ul>     
+                    <ul>
                     </ul>
                     <!-- <li>
                        <label>公司名称</label>
@@ -227,6 +227,14 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
+    <div class="tk" id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
    <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -239,7 +247,7 @@
         $(function(){
             $(window).scroll(function(){
                 if($(window).scrollTop()>100){
-                    $("#side_bar .gotop").fadeIn(); 
+                    $("#side_bar .gotop").fadeIn();
                 }
                 else{
                     $("#side-bar .gotop").hide();
@@ -255,10 +263,10 @@
         });
     </script>
 </body>
-<script type="text/javascript" src="/js/insidePostRequire.js?20170105"></script>
-<script src="/js/achv/staffgoallist.js?20170105"></script>
-<script src="/js/silide.js?20170105"></script>
-<script src="../js/laydate/laydate.js?20170105"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+<script src="/js/achv/staffgoallist.js?2017040170331"></script>
+<script src="/js/silide.js?2017040170331"></script>
+<script src="../js/laydate/laydate.js?2017040170331"></script>
 <script>
     $(".icon-ishop_6-07").parent().click(function () {
         window.location.reload();

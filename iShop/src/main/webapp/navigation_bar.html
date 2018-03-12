@@ -1,25 +1,89 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>爱秀</title>
-	<link rel="stylesheet" href="table/css/navbar.css?20161219">
-	<link rel="stylesheet" href="css/font_style.css">
+	<!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+	<!--<link rel="stylesheet" href="css/style.css">-->
+	<link rel="stylesheet" href="table/css/navbar.css?2017040170331">
+	<link rel="stylesheet" href="css/message_list.css">
+	<link rel="stylesheet" href="css/font_style.css?20171025">
+	<link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
 	<script src="table/js/jquery.min.js"></script>
+	<style>
+		.unreadNum{
+			font-size: 12px;
+			background-color: #f3f3f3;
+			line-height: 11px;
+			padding: 2px 4px;
+			position: absolute;
+			right: 0px;
+			color: #4a5f7c;
+			top: -5px;
+			border-radius: 1.25em;
+		}
+		.unreadNum:empty{
+			display: none;
+		}
+		.badge-danger{
+			border-radius:10px;
+			width: 12px;
+			height: 12px;
+		}
+		.searchable-select {
+			min-width: 100%;
+			min-height:40px;
+			line-height: 40px;
+		}
+		.searchable-select-holder{
+			min-height:40px;
+			line-height: 40px;
+			background: #434960 url(../img/icon_list_down.png) no-repeat 96% 50%;
+		}
+		.searchable-select-dropdown{
+			width: 270px;
+			top:40px;
+		}
+		.navbar .floot-r li.search .searchable-select-dropdown .searchable-select-input{
+			width: 262px;
+			height: 28px;
+			line-height: 30px;
+			background-color: #fff;
+			border: 1px solid #ccc;
+		}
+		.navbar .floot-r li.search .searchable-select-dropdown .searchable-select-input:focus{
+			border-color: #ccc !important;
+		}
+		.navbar .floot-r li.search .searchable-select-dropdown  .searchable-select-item{
+			min-height: 30px!important;
+			line-height: 30px;
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+	</style>
 </head>
 <body style="overflow-y:hidden;height:100%">
 	<div id="navbar">
 		<div class="navbar">
 			<div class="logo" id="logo"></div>
+			<div class="home_logo_box">
+				<img id="home_logo" src="" alt="">
+			</div>
 			<ul class="floot-r">
 				<li id="renturn_h">
 					<a href="#">
 						<span class="icon-ishop_3-01"></span>
 					</a>
 				</li>
-				<li>
+				<li id="download">
 					<a href="#">
-						<span class="icon-ishop_3-02"></span>
+						<span class="icon-ishop_3-09"></span>
+					</a>
+				</li>
+				<li class="count-info">
+					<a href="#">
+						<span class="icon-ishop_3-02" id="message_btn"></span>
+						<span class="label label-primary unreadNum" id="unreadNum" ></span>
 					</a>
 					<!-- <p>2</p> -->
 				</li>
@@ -34,12 +98,17 @@
 				</li>
 				<li>
 					<a href="#">
-						<span class="icon-ishop_3-04"></span>
+						<span class="icon-ishop_3-04" id="setting"></span>
 					</a>
 				</li>
-				<li class="search">
+				<li class="search" id="qita_corp">
 					<input type="text" placeholder="输入搜索的内容">
 					<i class="icon-ishop_3-05"></i>
+				</li>
+				<li class="search" id="cm_corp" style="display: none;">
+					<select id="corp_list">
+
+					</select>
 				</li>
 				<li id="img" onmouseover="show('.person_menu',true)" onmouseout="show('.person_menu',false)">
 					<img src="" alt="" width="40px" height="40px"></li>
@@ -67,7 +136,7 @@
 		</div>
 		<div class="sidebar" id='sidebar'>
 			<ul>
-				
+
 			</ul>
 		</div>
 	</div>
@@ -80,17 +149,21 @@
 	</table>
 </body>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="js/jquery.searchableSelect.js?2017040170331"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
-<script src="table/js/navigation_bar.js?20161214"></script>
+<script src="table/js/navigation_bar.js?20171025"></script>
 <script>
 	$(function(){
         $(".sidebar").niceScroll({cursorborder:"0 none",cursorcolor:"#1a1a19",cursoropacitymin:"0",boxzoom:false});
+        $("#return").click(function () {
+			sessionStorage.removeItem("submit_power");//清楚积分调整提交falg权限
+        });
     });
     //hover事件个人菜单出现
 	function show(node,isShow){
 	    var obj=$(node);
 	    var show=isShow?"block":"none";
 	    obj[0].style.display=show;
-	};
+	}
 </script>
 </html>

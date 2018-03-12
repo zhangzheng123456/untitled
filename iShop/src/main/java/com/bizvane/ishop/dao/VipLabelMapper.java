@@ -29,7 +29,7 @@ public interface VipLabelMapper {
 
     List<VipLabel> selectAllViplabelScreen(Map<String, Object> params) throws SQLException;
 
-    List<VipLabel> selectVipLabelName(@Param("corp_code") String corp_code, @Param("label_name") String tag_name) throws SQLException;
+    List<VipLabel> selectVipLabelName(Map<String, Object> params) throws SQLException;
 
     // VipLabel selectTypeCodeByName(@Param("corp_code") String corp_code, @Param("type_name") String type_name);
 
@@ -41,9 +41,9 @@ public interface VipLabelMapper {
 
     List<VipLabel> selectLabelByVip(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code);
 
-    List<VipLabel> findHotViplabel(@Param("corp_code")String corp_code);
+    List<VipLabel> findHotViplabel(@Param("corp_code")String corp_code,@Param("brandList")String[] brandList);
 
-    List<VipLabel> findViplabelByType(@Param("corp_code")String corp_code,@Param("label_type")String label_type,@Param("search_value")String search_value);
+    List<VipLabel> findViplabelByType(@Param("corp_code")String corp_code,@Param("label_type")String label_type,@Param("search_value")String search_value,@Param("brandList")String[] brandList);
 
     List<RelViplabel>  checkRelViplablel(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code,@Param("label_id")String label_id);
 
@@ -51,5 +51,10 @@ public interface VipLabelMapper {
 
     int delRelViplabel(@Param("rid")String rid);
 
+    int delAllRelViplabel(@Param("label_id")String label_id);
+
     List<VipLabel> findViplabelID(@Param("corp_code")String corp_code,@Param("label_name")String label_name,@Param("isactive")String isactive);
+
+    List<VipLabel> selectVipsLabel(Map<String, Object> params);
+
 }

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
     <title>新增员工业绩目标</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
-    <link href="../css/style.css?20170105" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170105">
+    <link href="../css/style.css?2017040170105" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css?v">
-    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?2017040170105">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170105">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170105">
     <script src="/js/loading.js"></script>
     <style>
         body{
@@ -58,29 +58,25 @@
                         <span><label style="color:#c26655">业绩目标*</label><input type="text" id="PER_GOAL" verify="Number" maxlength="8"/><div style="padding-left:135px" class="hint"><div  hintinfo="请输入数字！"></div></div></span>
                     </div>
                     <div class="drop_down item_1" id="drop_down">
-                        <span><label>业绩类型</label><input class="input_select" type="text" id="TIME_TYPE" value="月" readonly/>
+                        <span><label>业绩类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>
                             <ul>
-                                <li>月</li>
+                                <li>日</li>
                                 <!-- <li>周</li> -->
-                                <!-- <li>月</li> -->
+                                 <li>月</li>
                                 <!-- <li>年</li> -->
                             </ul>
                         </span>
                     </div>
                     <div id="day">
-                        <span><label style="color:#c26655">日期*</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: false,format: 'YYYY-MM-DD',min: laydate.now(+1)})"/>
+                        <span><label style="color:#c26655">日期*</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: false,istoday: false,format: 'YYYY-MM-DD',min: laydate.now(+1)})"/>
                         <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
                         </span>
                     </div>
                     <div id="week_p" style="display:none;">
-                        <span>
-                            <label >日期</label>
-                            <input type="text" id="year" class="week" value="" readonly="true">
-                            <input type="text" id="month" class="week" value="" readonly="true">
+                        <span><label>日期</label><input type="text" id="year" class="week" value="" readonly="true"><span class="year_down"></span><input type="text" id="month" style="margin-left: 30px;" class="week" value="" readonly="true"><span class="month_down"></span>
                             <ul class="year">
                             </ul>
                             <ul class="month">
-                                
                             </ul>
                         </span>
                     </div>
@@ -105,16 +101,16 @@
    <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
      <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js?20170105"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170105"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170105"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170105"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170105"></script>
     <!-- 带搜索的下拉菜单 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170105"></script>
     <!-- input的验证情况 -->
-    <script type="text/javascript" src="../js/achv/staffgoal.js?20170105"></script>
+    <script type="text/javascript" src="../js/achv/staffgoal.js?2017040170105"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>

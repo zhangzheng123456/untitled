@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jnby报表</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="../css/shoppingSaleTable.css?20170731">
+    <script src="../js/laydate5.0.7/laydate.js"></script>
+    <style>
+        /***************自定义laydate样式**************/
+        .layui-laydate-main{
+            width: 244px;
+        }
+        .layui-laydate-range{
+            width:490px;
+            font-size: 12px;
+        }
+        .layui-laydate-header{
+            font-size: 14px;
+        }
+        .layui-laydate-content td, .layui-laydate-content th{
+            width: 32px;
+            height: 32px;
+        }
+        .layui-laydate-content td.laydate-selected{
+            background-color: rgba(91,192,222,0.5);
+        }
+        .laydate-selected:hover{
+            background-color: rgb(91,192,222) !important;
+        }
+        .layui-laydate .layui-this{
+            background-color: rgb(91,192,222) !important;
+        }
+
+        .content .time_input{
+            width: 170px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .select_list_name_wrap{
+            position: absolute;
+            left: 66px;
+            right: 0;
+            z-index: 2;
+            display: none
+        }
+        .select_list_name{
+            overflow: hidden;
+            overflow-y: auto;
+            background-color: #ffffff;
+            max-height: 150px;
+        }
+        .select_list_name li{
+            float: left;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            margin: 0!important;
+            padding-left: 5px ;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        .select_list_name li:hover{
+            background-color: #DDDDDD;
+        }
+        .table_thead th,.table_thead tr{
+            padding: 0;
+            height: 30px;
+        }
+        .table_tbody tr td:nth-child(1), .table_thead th:nth-child(1) {
+            text-align: left;
+        }
+        .table_tbody tr td:last-child, .table_thead th:last-child {
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table" style="padding-bottom: 20px">
+        <div class="title">
+            <span>报表中心</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>会员贡献分析</span>
+        </div>
+        <div class="header">
+            <div class="header_inputWrap" id="filter_inputWrap">
+                <ul class="filterConditionWrap">
+                    <li>
+                        <label>品牌名称</label>
+                        <input id="brandInput" data-value="" readonly class="function_input" type="text" value="请选择品牌">
+                        <div class="select_list_name_wrap">
+                            <ul class="select_list_name" id="brand_list">
+                                <div style="color: #666;font-size: 12px;text-align: center;height: 30px;line-height: 30px">加载中...</div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><label>渠道名称</label>
+                        <input id="skuInput"  readonly class="function_input" type="text" value="请选择渠道">
+                        <div class="select_list_name_wrap">
+                            <ul class="select_list_name">
+                                <li data-type="" class="selected">请选择渠道</li>
+                                <li data-type="电商">电商</li>
+                                <li data-type="直营">直营</li>
+                                <li data-type="经销">经销</li>
+                                <li data-type="微信">微信</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><label>时间范围</label><input readonly placeholder="请选择时间" class="time_input laydate-icon" id="search_time" type="text"></li>
+                    </li>
+                </ul>
+            </div>
+            <div class="header_btnWrap">
+                <span class="emptyFilterBtn" id="emptyFilterBtn">清空筛选</span><span id="filterBtn" class="filterBtn">筛选</span>
+            </div>
+        </div>
+        <div class="footerWrap">
+            <div class="tabs_head">
+                <span class="title_icon"></span><span>会员贡献分析</span>
+            </div>
+            <div class="table_contentWrap" style="min-height: 240px;overflow: hidden;margin-top: 10px;position: relative">
+                <div class="nav_left scroll_area">
+                    <ul id="table_nav">
+                        <li data-nav="brand" class="nav-active">品牌</li>
+                        <li data-nav="source">渠道</li>
+                        <li data-nav="cardType">会员等级</li>
+                        <!--<li data-nav="birth_vip">生日月份</li>-->
+                        <!--<li data-nav="age_vip">年龄段</li>-->
+                        <!--<li data-nav="sex_vip">性别</li>-->
+                        <li data-nav="newVip">新老会员</li>
+                        <li data-nav="actVip">活跃会员</li>
+                    </ul>
+                </div>
+                <div style="float: right;width:90%">
+                    <!--<div class="table_titleWrap">-->
+                        <!--<div class="table_title" id="table_title"><span>品牌</span><i style="display: none"  class="icon-ishop_8-03"></i><span></span></div>-->
+                        <!--<ul id="table_nav"><li data-nav="vip" class="nav-active">会员消费</li><li data-nav="store">店铺业绩</li><li data-nav="wechat">微会员</li></ul>-->
+                        <!--<div class="table_searchWrap"><input id="table_search_input" placeholder="店铺编号/店铺名称" type="text" class="width280"><i id="search_icon" class="icon-ishop_3-05 search_icon"></i></div>-->
+                    <!--</div>-->
+                    <div style="width: 100%;overflow-y: auto">
+                        <table style="table-layout: fixed;text-align: right" class="table_thead tabel_x_scroll" id="table_thead" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <tr><td colspan="10"></td></tr>
+                            </thead>
+                        </table>
+                        <div class="table_tbodyWrap tabel_x_scroll">
+                            <table  style="table-layout: fixed;text-align: right" id="table_tbody" class="table_tbody" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr><tr><td colspan="10"></td></tr>
+                                <tr><td colspan="10"></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="listLoading_box" id="table_loading" style="display: block">
+                <div>加载中，请稍候...</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../table/js/jquery.min.js"></script>
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170801"></script>
+<script src="../js/activity/echarts.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/vip/vip_summary_table.js?t=20171121"></script>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/reset.css">
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="mui/mui.min.css">
+    <link rel="stylesheet" href="mui/mui.picker.min.css">
+    <link rel="stylesheet" href="css/online_activity.css?t=20810202">
+    <link rel="stylesheet" href="css/perfect_information.css?t=20810202">
+    <title>填写资料</title>
+    <style>
+        .mui-popover.mui-popover-action .mui-table-view {
+            color: #000000;
+            font-size: 14px;
+        }
+        
+        body {
+            padding: 0;
+        }
+        
+        .checkbox {
+            width: 10%;
+        }
+        
+        .information_name.require_nam {
+            color: #da5a5a;
+        }
+        
+        .agreement {
+            text-align: center;
+            padding-bottom: 20px;
+            padding-top: 10px;
+            background-color: #ffffff;
+            position: fixed;
+            bottom: 43px;
+            left: 0;
+            right: 0;
+            z-index: 2;
+        }
+        
+        .agreement input {
+            top: -1px!important;
+            width: 20px!important;
+            height: 20px!important;
+            padding: 0!important;
+            margin: 0!important;
+            right: 0!important;
+            position: relative!important;
+            vertical-align: middle;
+        }
+        
+        .mui-checkbox input[type=checkbox]:before,
+        .mui-radio input[type=radio]:before {
+            font-size: 20px;
+        }
+        
+        .mui-checkbox input[type=checkbox]:checked:before,
+        .mui-radio input[type=radio]:checked:before {
+            color: #da5a5a;
+        }
+        
+        #select_pay_type:active {
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="online_details" id="online_details" style="padding: 0 0 50px 0;">
+        <div class="header" id="header">
+            <h4></h4>
+            <div class="activity_detail_dec"></div>
+        </div>
+        <div class="container" id="container" style="margin:0">
+            <div class="spline"></div>
+            <div class="information_list">
+                <!--<div class="information_line">-->
+                <!--<span class="information_line_left">姓名</span>-->
+                <!--<span class="information_line_right mui-input-row"> <input type="text" class="mui-input-clear"><span class="mui-icon mui-icon-clear mui-hidden"></span></span>-->
+                <!--</div> <div class="information_line">-->
+                <!--<span class="information_line_left">姓名</span>-->
+                <!--<span class="information_line_right mui-input-row"> <input type="text" class="mui-input-clear"><span class="mui-icon mui-icon-clear mui-hidden"></span></span>-->
+                <!--</div> <div class="information_line">-->
+                <!--<span class="information_line_left">姓名</span>-->
+                <!--<span class="information_line_right mui-input-row"> <input type="text" class="mui-input-clear"><span class="mui-icon mui-icon-clear mui-hidden"></span></span>-->
+                <!--</div> <div class="information_line">-->
+                <!--<span class="information_line_left">姓名</span>-->
+                <!--<span class="information_line_right mui-input-row"> <input type="text" class="mui-input-clear"><span class="mui-icon mui-icon-clear mui-hidden"></span></span>-->
+                <!--</div> <div class="information_line">-->
+                <!--<span class="information_line_left">姓名</span>-->
+                <!--<span class="information_line_right mui-input-row"> <input type="text" class="mui-input-clear"><span class="mui-icon mui-icon-clear mui-hidden"></span></span>-->
+                <!--</div>-->
+                <!--<div class="information_line">-->
+                <!--<span class="information_line_left">性别</span>-->
+                <!--<span class="information_line_right is_select"><span class="select_btn" data-options='[{"text":"请选择","value":""},{"text":"男","value":"man"},{"text":"女","value":"woman"}]' data-type="">请选择</span></span>-->
+                <!--</div>-->
+                <!--<div class="information_line">-->
+                <!--<span class="information_line_left">手机号</span>-->
+                <!--<span class="information_line_right mui-input-row"> <input type="number" oninput="if(value.length>11)value=value.slice(0,11)" class="mui-input-clear"><span class="mui-icon mui-icon-clear mui-hidden"></span></span>-->
+                <!--</div>-->
+                <!--<div class="information_line">-->
+                <!--<span class="information_line_left">证件类别</span>-->
+                <!--<span class="information_line_right is_select"><span class="select_btn" data-options='[{"text":"请选择","value":""},{"text":"身份证","value":"sfz"},{"text":"居住证","value":"jzz"}]' data-type="">请选择</span></span>-->
+                <!--</div>-->
+            </div>
+        </div>
+        <div class="agreement mui-checkbox" style="display: none"><input name="checkbox1" value="Item 1" type="checkbox" id="sure_dec"><span style="vertical-align: middle;display: inline-block">我已阅读并同意</span> <a id="mianze" style="vertical-align: middle;display: inline-block;color: red;text-decoration: underline">免责协议</a></div>
+    </div>
+    <div class="footer" style="position: fixed;bottom: -10px;left:0;right: 0;display: none;z-index: 2">
+        <a type="button" style="padding: 10px 0;background-color: #555;border-color: #555" class="mui-btn mui-btn-danger mui-btn-block un_pay" id="select_pay_type">支付</a>
+    </div>
+    <div id="picture" class="mui-popover mui-popover-action mui-popover-bottom">
+        <ul class="mui-table-view">
+            <!--<li class="mui-table-view-cell">-->
+            <!--<a href="#" data-type="money" data-value="100">￥100</a>-->
+            <!--</li>-->
+            <!--<li class="mui-table-view-cell">-->
+            <!--<a href="#" data-type="points" data-value="500">500积分</a>-->
+            <!--</li>-->
+        </ul>
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a href="#"><b>取消</b></a>
+            </li>
+        </ul>
+    </div>
+    <!--<div class="preview" id="preview">-->
+    <!--<div class="online_details" style="padding: 0 0 50px 0">-->
+    <!--<div class="header">-->
+    <!--<h4></h4>-->
+    <!--<div class="activity_dec">报名费用<a style="color:#da5a5a;">0</a></div>-->
+    <!--</div>-->
+    <!--<div class="container" style="margin:0">-->
+    <!--<div class="spline"></div>-->
+    <!--<div class="information_list">-->
+    <!--&lt;!&ndash;<div class="info_information_line">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="info_information_line_left">姓名</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="info_information_line_right">赵伟</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="footer" style="position: fixed;bottom: -10px;left:0;right: 0;display: none;z-index: 10" id="sure_footer">-->
+    <!--<a type="button" style="padding: 10px 0" class="mui-btn mui-btn-danger mui-btn-block" id="sure_submit">确定报名</a>-->
+    <!--</div>-->
+    <span class="mui-icon mui-icon-close close_preview" id="close_preview"></span>
+    <div class="mask_loading" id="mask_loading" style="display: block">
+        <div>请稍后...</div>
+    </div>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="../../js/insidePostRequire.js"></script>
+    <script src="mui/mui.min.js"></script>
+    <script src="mui/mui.picker.min.js"></script>
+    <script src="mui/province.js"></script>
+    <script>
+        var theRequest = {};
+        var oc = new ObjectControl();
+
+        function geUrl() {
+            var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                var strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+        }
+        var pay_info = {
+            type: "",
+            value: ""
+        };
+        var user_points = 0;
+        geUrl();
+        $("#mianze").click(function() {
+
+            window.location.href = "imgre.html?address=" + $(this).attr("href");
+        });
+        //    var overscroll = function(el){
+        //        el.addEventListener('touchstart', function(){
+        //            var top = el.scrollTop;
+        //            var totalScroll = el.scrollHeight;
+        //            var currentScroll = top + el.offsetHeight;
+        //            if(top === 0) {
+        //                el.scrollTop = 1;
+        //            }else if(currentScroll === totalScroll){
+        //                el.scrollTop = top - 1;
+        //            }
+        //        });
+        //        el.addEventListener('touchmove', function(evt){
+        //            if(el.offsetHeight < el.scrollHeight){
+        //                evt._isScroller = true;
+        //            }
+        //        });
+        //    };
+        //        overscroll(document.querySelector('.preview'));
+        //        overscroll(document.querySelector('#online_details'));
+        //    document.body.addEventListener('touchmove', function(evt) {
+        //        if(!evt._isScroller){
+        //            evt.preventDefault();
+        //        }
+        //    });
+        function getNum(max) {
+            var numberArray = [];
+            for (var n = 1; n < max + 1; n++) {
+                if (n < 10) {
+                    numberArray.push({
+                        "text": "0" + n,
+                        "value": "0" + n
+                    });
+                } else {
+                    numberArray.push({
+                        "text": n.toString(),
+                        "value": n.toString()
+                    });
+                }
+            }
+            return numberArray
+        }
+
+        function bindSelect() {
+            var selectData = [];
+            var selectBtn = $("#container .information_line .is_select");
+            var dateType = $("#container .information_line .dateClassOther");
+            var dateTypeBirthday = $("#container .information_line .dateClass");
+            var toggleCheck = $("#container .information_line .checkbox_line");
+            var dateNow = new Date();
+            var Month = dateNow.getMonth() + 1 < 10 ? "0" + (dateNow.getMonth() + 1) : dateNow.getMonth() + 1;
+            var date = dateNow.getDate() < 10 ? "0" + dateNow.getDate() : dateNow.getDate();
+            selectBtn.each(function(i, btn) {
+                if ($(btn).find("#province_select").length > 0) {
+                    selectData[i] = new mui.PopPicker({
+                        layer: 3
+                    });
+                    btn.addEventListener("tap", function() {
+                        selectData[i].setData(cityData3);
+                        //                    selectData[i].pickers[0].setSelectedIndex(2);
+                        //                    selectData[i].pickers[1].setSelectedIndex(2);
+                        selectData[i].show(function(items) {
+                            var itemsValue = "";
+                            for (var i = 0; i < items.length; i++) {
+                                if (items[i].text == undefined) {
+                                    itemsValue += ""
+                                } else {
+                                    itemsValue += items[i].text;
+                                }
+                            }
+                            var _input = $(btn).find("input");
+                            _input.val(itemsValue);
+                            _input.attr("data-province", items[0].text == undefined ? "" : items[0].text);
+                            _input.attr("data-city", items[1].text == undefined ? "" : items[1].text);
+                            _input.attr("data-area", items[2].text == undefined ? "" : items[2].text);
+                        });
+                    }, false)
+                } else {
+                    selectData[i] = new mui.PopPicker();
+                    btn.addEventListener("tap", function() {
+                        var option = this.getAttribute('data-options') || '[]';
+                        var currentValue = this.getElementsByTagName("input")[0].value;
+                        selectData[i].setData(JSON.parse(option));
+                        selectData[i].pickers[0].setSelectedValue(currentValue, 200);
+                        selectData[i].show(function(items) {
+                            $(btn).find("input").val(items[0].text);
+                            $(btn).find("input").attr("data-value", items[0].value);
+                        });
+                    }, false)
+                }
+            });
+
+            dateType.each(function(i, btn) {
+                btn.addEventListener("tap", function() {
+                    var option = {
+                        "value": "2015-10-10 " + Month + ":" + date,
+                        "type": "time",
+                        "customData": {
+                            "h": getNum(12),
+                            "i": getNum(31)
+                        },
+                        "labels": ["年", "月", "日", "月", "日"]
+                    };
+                    var picker = new mui.DtPicker(option);
+                    picker.show(function(rs) {
+                        var val = rs.text;
+                        $(btn).val(val.replace(":", "-"));
+                    })
+                }, false)
+            });
+            dateTypeBirthday.each(function(i, btn) {
+                btn.addEventListener("tap", function() {
+                    var option = {
+                        "type": "date",
+                        "value": $(btn).val(),
+                        beginDate: new Date(1900, 1, 1),
+                        endDate: new Date()
+                    };
+                    var picker = new mui.DtPicker(option);
+                    picker.show(function(rs) {
+                        var val = rs.text;
+                        $(btn).val(val.replace(":", "-"))
+                    })
+                }, false)
+            });
+            toggleCheck.each(function(i, box) {
+                box.addEventListener("tap", function(event) {
+                    var e = event || window.event;
+                    e.stopPropagation();
+                    $(box).find("input").prop("checked") ? $(box).find("input").prop("checked", false) : $(box).find("input").prop("checked", true)
+                }, true)
+            });
+
+        }
+
+        function getExtend() {
+            var extend = {};
+            var information_line = $(".information_line");
+            for (var f = 0; f < information_line.length; f++) {
+                switch ($(information_line[f]).attr("data-type")) {
+                    case "text":
+                        if ($(information_line[f]).attr("id") == "province") {
+                            extend[$(information_line[f]).attr("id")] = {
+                                province: $(information_line[f]).find("input").attr("data-province"),
+                                city: $(information_line[f]).find("input").attr("data-city"),
+                                area: $(information_line[f]).find("input").attr("data-area")
+                            }
+                        } else {
+                            extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").val().trim();
+                        }
+                        break;
+                    case "date":
+                        extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").val().trim();
+                        break;
+                    case "longtext":
+                        extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("textarea").val().trim();
+                        break;
+                    case "select":
+                        extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").attr("data-value");
+                        break;
+                    case "check":
+                        var input = $(information_line[f]).find("input:checked").parent().next();
+                        var val = input.map(function() {
+                            return $(this).html();
+                        }).get().join(",");
+                        extend[$(information_line[f]).attr("id")] = val;
+                        break;
+                }
+            }
+            return extend
+        }
+
+        function testRegex() {
+            var input = $(".information_line[data-type='text'] input");
+            var reg = "";
+            for (var i = 0; i < input.length; i++) {
+                var type = $(input[i]).attr("data-attribute");
+                var name = $(input[i]).parent().prev().html();
+                var value = $(input[i]).val().trim();
+                var require = $(input[i]).attr("data-required");
+                if (require == "Y" && name) {
+                    name = name.slice(name.indexOf("*") + 1)
+                }
+                if (value && value != "") {
+                    if (type && type == "phone") {
+                        reg = /^1\d{10}$/;
+                        if (!reg.test(value)) {
+                            mui.alert(name + "格式不正确", "提示");
+                            return false
+                        }
+                    }
+                    if (type && type == "email") {
+                        reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+                        if (!reg.test(value)) {
+                            mui.alert(name + "格式不正确", "提示");
+                            return false
+                        }
+                    }
+                    if (type && type == "ID_number") {
+                        reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                        if (!reg.test(value)) {
+                            mui.alert(name + "格式不正确", "提示");
+                            return false
+                        }
+                    }
+                    if (type && type == "zip_code") {
+                        reg = /^[1-9][0-9]{5}$/;
+                        if (!reg.test(value)) {
+                            mui.alert(name + "格式不正确", "提示");
+                            return false
+                        }
+                    }
+                }
+            }
+            return true
+        }
+
+        function testValRequired() {
+            var extend = {};
+            var information_line = $(".information_line");
+            for (var f = 0; f < information_line.length; f++) {
+                var require = "";
+                var val = "";
+                if ($(information_line[f]).attr("data-type") == "text") {
+                    require = $(information_line[f]).find("input").attr("data-required");
+                    var attribute = $(information_line[f]).find("input").attr("data-attribute");
+                    if ($(information_line[f]).attr("id") == "province") {
+                        extend[$(information_line[f]).attr("id")] = {
+                            province: $(information_line[f]).find("input").attr("data-province"),
+                            city: $(information_line[f]).find("input").attr("data-city"),
+                            area: $(information_line[f]).find("input").attr("data-area")
+                        };
+                        val = extend[$(information_line[f]).attr("id")].province + extend[$(information_line[f]).attr("id")].city + extend[$(information_line[f]).attr("id")].area;
+
+                    } else {
+                        val = $(information_line[f]).find("input").val().trim();
+                        extend[$(information_line[f]).attr("id")] = val;
+                    }
+                } else if ($(information_line[f]).attr("data-type") == "date") {
+                    require = $(information_line[f]).find("input").attr("data-required");
+                    val = $(information_line[f]).find("input").val().trim();
+                    extend[$(information_line[f]).attr("id")] = val;
+                } else if ($(information_line[f]).attr("data-type") == "longtext") {
+                    require = $(information_line[f]).find("textarea").attr("data-required");
+                    val = $(information_line[f]).find("textarea").val().trim();
+                    extend[$(information_line[f]).attr("id")] = val;
+                } else if ($(information_line[f]).attr("data-type") == "select") {
+                    require = $(information_line[f]).find("input").attr("data-required");
+                    val = $(information_line[f]).find("input").attr("data-value");
+                    extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").attr("data-value");
+                } else if ($(information_line[f]).attr("data-type") == "check") {
+                    var input = $(information_line[f]).find("input:checked").parent().next();
+                    val = input.map(function() {
+                        return $(this).html();
+                    }).get().join(",");
+                    extend[$(information_line[f]).attr("id")] = val;
+                    require = $(information_line[f]).attr("data-required");
+                }
+                if (require == "Y" && val == "") {
+                    var name = $(information_line[f]).find(".information_name").html();
+                    name = name.slice(name.indexOf("*") + 1);
+                    mui.alert(name + "不能为空", "提示");
+                    return false
+                }
+            }
+            return true
+        }
+
+        function getActivityList() {
+            var def = jQuery.Deferred();
+            var _params = {
+                card_no: theRequest.card_no,
+                app_id: theRequest.app_id,
+                open_id: theRequest.open_id,
+                activity_code: theRequest.activity_code
+            };
+            oc.postRequire("post", "/vipActivity/detail/mobile/applyDetail", "", _params, function(data) {
+                if (data.code == 0) {
+                    $("#online_details").show();
+                    jQuery("#online_details").next(".footer").show();
+                    var msg = JSON.parse(data.message);
+                    var vipInfo = msg.vipInfo;
+                    user_points = vipInfo.points;
+                    $(".header h4").html(msg.activity_theme);
+                    $(".header .activity_detail_dec").html((msg.activity_desc).replace(/\n/g, "<br>"));
+                    var condition = msg.apply_condition;
+                    for (var i = 0; i < condition.length; i++) {
+                        var require = condition[i].required == "Y" ? " require_nam" : "";
+                        var desc = condition[i].required == "Y" ? "*" + condition[i].param_desc : condition[i].param_desc;
+                        switch (condition[i].param_type) {
+                            case "text":
+                                var val = condition[i].param_name;
+                                val = vipInfo[val];
+                                if (condition[i].param_name == "province") {
+                                    var value = val.province + val.city + val.area;
+                                    var currentVal = value == "" ? "请选择" : value;
+                                    var html_text = '<div class="information_line" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                        '<div class="information_name' + require + '">' + desc + '</div>' +
+                                        '<div class="input-container is_select"><div id="province_select"><input data-required="' + condition[i].required + '" data-province="' + val.province + '" data-city="' + val.city + '" data-area="' + val.area + '" type="text" style="-webkit-user-select:none;"  readonly placeholder="' + currentVal + '" value="' + value + '"></div></div>' +
+                                        '</div>';
+                                } else {
+                                    var type = "text";
+                                    if (condition[i].param_attribute == "phone" || condition[i].param_attribute == "zip_code") {
+                                        type = "number"
+                                    }
+                                    var html_text = '<div class="information_line" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                        '<div class="information_name' + require + '">' + desc + '</div>' +
+                                        '<div class="input-container mui-input-row"><input onblur="hideClear(this)" class="mui-input-clear" type="' + type + '" data-attribute="' + condition[i].param_attribute + '" data-required="' + condition[i].required + '" placeholder="' + val + '" value="' + val + '">' +
+                                        '<span class="mui-icon mui-icon-clear mui-hidden"></span>' +
+                                        '</div>' +
+                                        '</div>';
+                                }
+
+                                $("#container .information_list").append(html_text);
+                                break;
+                            case "date":
+                                var val = condition[i].param_name;
+                                val = vipInfo[val];
+                                var html_text = '<div class="information_line" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                    '<div class="information_name' + require + '">' + desc + '</div>' +
+                                    '<div class="input-container"><input type="text"  data-required="' + condition[i].required + '" style="-webkit-user-select:none;" readonly class="dateClass" placeholder="日期" value="' + val + '"></div>' +
+                                    '</div>';
+                                if (condition[i].param_name != "birthday") {
+                                    var html_text = '<div class="information_line" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                        '<div class="information_name' + require + '">' + desc + '</div>' +
+                                        '<div class="input-container"><input type="text"  data-required="' + condition[i].required + '" style="-webkit-user-select:none;" readonly class="dateClassOther" placeholder="日期" value="' + val + '"></div>' +
+                                        '</div>';
+                                }
+                                $("#container .information_list").append(html_text);
+                                break;
+                            case "check":
+                                var checkHtml = "";
+                                var val = condition[i].param_values;
+                                var checkedVal = condition[i].param_name;
+                                checkedVal = vipInfo[checkedVal].split(",");
+                                val = val.split(",");
+                                for (var a = 0; a < val.length; a++) {
+                                    var check = "";
+                                    for (var s = 0; s < checkedVal.length; s++) {
+                                        if (checkedVal[s] == val[a]) {
+                                            check = "checked=checked";
+                                        }
+                                    }
+                                    checkHtml += '<div class="checkbox_line" >' +
+                                        '<div class="checkbox">' +
+                                        '<input type="checkbox" value="" name="test" class="check" ' + check + ' id="checkbox' + condition[i].param_name + a + '">' +
+                                        '<label for="checkbox' + condition[i].param_name + a + '"></label>' +
+                                        '</div>' +
+                                        '<span class="checkbox_text text-overflow">' + val[a] + '</span>' +
+                                        '</div>'
+                                }
+                                var html_check = '<div class="information_line" data-required="' + condition[i].required + '" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                    '<div class="information_name' + require + '">' + desc + '</div>' +
+                                    checkHtml +
+                                    '</div>';
+                                $("#container .information_list").append(html_check);
+                                break;
+                            case "longtext":
+                                var val = condition[i].param_name;
+                                val = vipInfo[val];
+                                var html_text = '<div class="information_line" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                    '<div class="information_name' + require + '">' + desc + '</div>' +
+                                    '<div class="input-container"><textarea data-required="' + condition[i].required + '">' + val + '</textarea></div>' +
+                                    '</div>';
+                                $("#container .information_list").append(html_text);
+                                break;
+                            case "select":
+                                var option = condition[i].param_values;
+                                option = option.split(",");
+                                var val = condition[i].param_name;
+                                val = vipInfo[val];
+                                var currentVal = val == "" ? "请选择" : val;
+                                var options = [{
+                                    text: "请选择",
+                                    value: ""
+                                }];
+                                for (var s = 0; s < option.length; s++) {
+                                    options.push({
+                                        text: option[s],
+                                        value: option[s]
+                                    })
+
+                                }
+                                //                            var html_select='<div class="information_line" id="'+condition[i].param_name+'" data-type="'+condition[i].param_type+'">'
+                                //                                    +'<div class="information_name">'+condition[i].param_desc+'</div>'
+                                //                                    +'<div class="input-container is_select">'
+                                //                                    +'<select class="text" id="orderTimeDataSel'+i+'">'
+                                //                                    +optionHtml
+                                //                                    +'</select>'
+                                //                                    +'<i class="icon-ishop_8-02"></i>'
+                                //                                    +'</div>'
+                                //                                    +'</div>';
+
+                                var html_text = '<div class="information_line" id="' + condition[i].param_name + '" data-type="' + condition[i].param_type + '">' +
+                                    '<div class="information_name' + require + '">' + desc + '</div>' +
+                                    '<div class="input-container is_select" data-options=' + JSON.stringify(options) + '><input data-required="' + condition[i].required + '" type="text" style="-webkit-user-select:none;"  readonly placeholder="' + currentVal + '" data-value="' + val + '" value="' + val + '"></div>' +
+                                    '</div>';
+
+                                $("#container .information_list").append(html_text);
+                                if (val != "") {
+                                    $("#orderTimeDataSel" + i).find("option[value='" + val + "']").attr("selected", "true");
+                                }
+                                break;
+                        }
+                    }
+                    bindSelect();
+                    def.resolve();
+                } else {
+                    jQuery("body").append('<div class="noDataTip">获取数据失败</div>');
+                    def.reject();
+                }
+            });
+            return def;
+        }
+
+        function getActivityDetail() {
+            var _params = {
+                item_id: theRequest.id
+            };
+            oc.postRequire("post", "/vipActivity/detail/mobile/applyItem", "", _params, function(data) {
+                $("#mask_loading").hide();
+                if (data.code == 0) {
+                    var msg = JSON.parse(data.message);
+                    var apply_info = msg.apply_info;
+                    var ac_detail_info = msg.ac_detail_info;
+                    var sheetHtml = '';
+                    if (apply_info.fee_money != "") {
+                        sheetHtml += '<li class="mui-table-view-cell">' +
+                            '<a href="#" data-type="money" data-value="' + apply_info.fee_money + '">' + apply_info.fee_money + '元</a>' +
+                            '</li>'
+                    }
+                    if (apply_info.fee_points != "") {
+                        sheetHtml += '<li class="mui-table-view-cell">' +
+                            '<a href="#" data-type="points" data-value="' + apply_info.fee_points + '">' + apply_info.fee_points + '积分</a>' +
+                            '</li>';
+                    }
+                    jQuery("#picture ul:first-child").html(sheetHtml);
+                    if (ac_detail_info.apply_agreement != "") {
+                        jQuery("#mianze").attr("href", ac_detail_info.apply_agreement).parent(".agreement").show();
+                        jQuery("#online_details").css("padding-bottom", "90px")
+                    } else {
+                        jQuery("#select_pay_type").removeClass("un_pay");
+                    }
+                } else {
+                    jQuery("body").append('<div class="noDataTip">获取数据失败</div>')
+                }
+            });
+        }
+
+        function saveApplyInfo(info) {
+            var _params = {
+                //            "vip_id":"",
+                "app_id": theRequest.app_id,
+                "open_id": theRequest.open_id,
+                "activity_code": theRequest.activity_code,
+                "apply_info": info,
+                "item_id": theRequest.id,
+                "pay_type": pay_info.type == "points" ? 1 : pay_info.type == "money" ? 2 : 0
+            };
+            $("#mask_loading").show();
+            oc.postRequire("post", "/vipActivity/detail/mobile/saveApplyInfo", "", _params, function(data) {
+                $("#mask_loading").hide();
+                if (data.code == 0) {
+                    function getCan() {
+                        var theRequest = {};
+                        var url = data.message.slice(data.message.indexOf("?")); //获取url中"?"符后的字串
+                        if (url.indexOf("?") != -1) {
+                            var str = url.substr(1);
+                            var strs = str.split("&");
+                            for (var i = 0; i < strs.length; i++) {
+                                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                            }
+                        }
+                        return theRequest;
+                    }
+                    var obj = getCan();
+                    window.location.href = data.message;
+                } else {
+                    mui.alert(data.message);
+                }
+            }, function(data) {
+                mui.alert(data.message);
+            })
+        }
+
+        function getExtend() {
+            var extend = {};
+            var $ = jQuery;
+            var information_line = $(".information_line");
+            for (var f = 0; f < information_line.length; f++) {
+                switch ($(information_line[f]).attr("data-type")) {
+                    case "text":
+                        if ($(information_line[f]).attr("id") == "province") {
+                            extend[$(information_line[f]).attr("id")] = {
+                                province: $(information_line[f]).find("input").attr("data-province"),
+                                city: $(information_line[f]).find("input").attr("data-city"),
+                                area: $(information_line[f]).find("input").attr("data-area")
+                            }
+                        } else {
+                            extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").val().trim();
+                        }
+                        break;
+                    case "date":
+                        extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").val().trim();
+                        break;
+                    case "longtext":
+                        extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("textarea").val().trim();
+                        break;
+                    case "select":
+                        extend[$(information_line[f]).attr("id")] = $(information_line[f]).find("input").attr("data-value");
+                        break;
+                    case "check":
+                        var input = $(information_line[f]).find("input:checked").parent().next();
+                        var val = input.map(function() {
+                            return $(this).html();
+                        }).get().join(",");
+                        extend[$(information_line[f]).attr("id")] = val;
+                        break;
+                }
+            }
+            return extend;
+        }
+
+        function noScroll() {
+            var event = event || window.event;
+            event.preventDefault();
+        }
+
+        function hideClear(dom) {
+            var s = dom.nextSibling;
+            s.setAttribute("class", "mui-icon mui-icon-clear mui-hidden")
+        }
+        getActivityList().then(function() {
+            getActivityDetail();
+        });
+        (function($, jQuery) {
+
+            $.init();
+            mui('body').on('tap', '.mui-popover-action li>a', function() {
+                var a = this,
+                    parent;
+                //根据点击按钮，反推当前是哪个actionsheet
+                for (parent = a.parentNode; parent != document.body; parent = parent.parentNode) {
+                    if (parent.classList.contains('mui-popover-action')) {
+                        break;
+                    }
+                }
+                if (a.text != "取消") {
+                    pay_info.type = a.getAttribute("data-type");
+                    pay_info.value = a.getAttribute("data-value");
+                    if (pay_info.type == "points" && Number(user_points) < Number(pay_info.value)) {
+                        mui.alert('积分不足,剩余积分：' + user_points, '提示');
+                    } else {
+                        saveApplyInfo(getExtend());
+                    }
+                }
+                mui('#' + parent.id).popover('toggle');
+            });
+            var select_pay_type = $("#select_pay_type")[0];
+            select_pay_type.addEventListener("tap", function() {
+                if (!jQuery("#select_pay_type").hasClass("un_pay") && testValRequired() && testRegex()) {
+                    mui("#picture").popover('toggle');
+                }
+            }, false);
+            var sure_dec = $("#sure_dec")[0];
+            jQuery("#sure_dec").prop("checked", false);
+            sure_dec.addEventListener("change", function() {
+                if (jQuery("#sure_dec").prop("checked")) {
+                    jQuery("#select_pay_type").removeClass("un_pay");
+                } else {
+                    jQuery("#select_pay_type").addClass("un_pay");
+                }
+            }, false);
+            mui("#container").on("keyup", ".information_list .information_line input", function() {
+                var s = this.nextSibling;
+                s.setAttribute("class", "mui-icon mui-icon-clear");
+                if (this.value == "") {
+                    this.setAttribute("placeholder", "");
+                    s.setAttribute("class", "mui-icon mui-icon-clear mui-hidden");
+                }
+            });
+            mui("#container").on("tap", ".information_list .mui-icon-clear", function() {
+                var s = this.previousSibling;
+                s.setAttribute("placeholder", "");
+            });
+            jQuery("#container").on("focus", ".information_list .information_line input", function() {
+                var s = this.nextSibling;
+                if (this.value != "") {
+                    s.setAttribute("class", "mui-icon mui-icon-clear");
+                }
+            });
+            mui("#container").on("tap", ".information_list .information_line .mui-icon-clear", function() {
+                var s = this.previousSibling;
+                s.value = "";
+                this.setAttribute("class", "mui-icon mui-icon-clear mui-hidden");
+            });
+        })(mui, jQuery)
+    </script>
+</body>
+
+</html>

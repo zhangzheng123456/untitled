@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>积分清零</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <style>
+        .isActive_select_down{
+            max-height: 250px;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="content">
+    <div class="content">
+        <div class="con_table" id="con_table">
+            <div class="title">
+                <span>会员运营</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>积分清零</span>
+            </div>
+            <div class="action">
+                <div class="action_l">
+                    <ul id="jurisdiction">
+
+                    </ul>
+                    <ul>
+                        <li class="li">
+                            <input type="text" class="input" id="search" placeholder="名称/单据编号/企业名称/备注">
+                            <i class="icon-ishop_3-05" id="d_search"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="action_r">
+                    <ul>
+                        <li id="filtrate">
+                            <span class="icon-ishop_6-05"></span>
+                            筛选
+                        </li>
+                        <!--<li class="bg">-->
+                        <!--<span class="icon-ishop_6-06"></span>-->
+                        <!--配置-->
+                        <!--</li>-->
+                        <li class="bg">
+                            <span class="icon-ishop_6-07"></span>
+                            刷新
+                        </li>
+                        <li id="more">
+                            <span class="icon-ishop_6-08"></span>
+                            更多
+                            <!--<div class="more_down">-->
+                            <!--<div id="leading_out">导出</div>-->
+                            <!--</div>-->
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="file">
+                <div class="file_content">
+                    <div id="download"></div>
+                    <div  class="icon-ishop_6-12" id="file_close"></div>
+                </div>
+                <div id="file_list">
+                    <div id="file_list_l">
+                        <ul>
+
+                        </ul>
+                    </div>
+                    <div id="file_list_z">
+                        <div class="c_shift">
+                            <div id="left_shift" class="shift" title="右移">></div>
+                            <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                            <div id="right_shift" class="shift" title="左移"><</div>
+                            <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+                        </div>
+                    </div>
+                    <div id="file_list_r">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="file_btn">
+                    <div class="file_submit" id="file_submit">提交</div>
+                </div>
+            </div>
+            <div class="into_frame">
+                <span class="icon-ishop_6-12" id="x1"></span>
+                <div class="into_frame_c">
+                    <div class="down_load"><a href="/ExeclFormwork/Corp.xls">下载模板</a></div>
+                    <div class="down_load_file">
+                        <label>导入文件</label>
+                        <input type="file" id="file" onchange="UpladFile()">
+                    </div>
+                </div>
+            </div>
+            <div class="sxk" id="sxk">
+                <div class="sbtn">
+                    <div class="empty" id="empty">
+                        <i class="icon-ishop_6-16"></i>清空筛选
+                    </div>
+                    <span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
+                    <div class="r_btn">
+                        <div class="pack_up" id="pack_up">
+                            <i class="icon-ishop_6-18"></i>
+                            收起
+                        </div>
+                        <div class="find" id="find">
+                            <i class="icon-ishop_6-19"></i>
+                            查找
+                        </div>
+                    </div>
+                </div>
+                <div class="inputs">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="table">
+                <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                    <tr class="th">
+                        <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                        <th style="text-align: left;" id="tableOrder">序号</th>
+                        <!--<th>接收人</th>-->
+                        <!--<th>消息编号</th>-->
+                        <!--<th>发送类型</th>-->
+                        <!--<th >消息内容</th>-->
+                        <!--<th>接收会员</th>-->
+                        <!--<th >所属企业</th>-->
+                        <!--<th>创建人</th>-->
+                        <!--<th>创建时间</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--<tr>-->
+                    <!--<td width="50px" style="text-align: left;">-->
+                    <!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>-->
+                    <!--</td>-->
+                    <!--<td style="text-align: left;">1</td>-->
+                    <!--<td>9813</td>-->
+                    <!--<td>消息类型1</td>-->
+                    <!--<td>9813</td>-->
+                    <!--<td><span title="感谢对爱秀的大力支持">感谢对爱秀的大力支持</span></td>-->
+                    <!--<td>陈磊</td>-->
+                    <!--<td>2016/02/23 15:04:02</td>-->
+                    <!--<td width="50px">是</td>-->
+                    <!--</tr>                                 					-->
+                    </tbody>
+                </table>
+            </div>
+            <div class="foot">
+                <ul>
+                    <li class="foot-jum">
+                        <span>跳转至</span>
+                        <input class="input-txt" value="" id="input-txt">
+                        <em>页</em>
+                    </li>
+                    <li class="foot-num" >
+                        <ul id="foot-num">
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="foot-sum">
+                        <div class="page_p">
+                            <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                            <ul class="liebiao" style="display:none;" id="liebiao">
+                                <li id="10">10行/页</li>
+                                <li id="30">30行/页</li>
+                                <li id="50">50行/页</li>
+                                <li id="100">100行/页</li>
+                            </ul>
+                            <span class="icon-ishop_8-02 icon"></span>
+                        </div>
+                        <span class="zy">共 0 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="p" id="p"></div>
+    <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" id="delete">删除</em>
+        </div>
+    </div>
+</div>
+<div id="details" style="display: none;">
+    <div class="content">
+        <div class="con_table">
+            <div class="title">
+                <span>会员高级管理</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>群发消息</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>接收会员</span>
+            </div>
+            <div class="list">
+                <div class="list_ren">
+                    <div class="turnoff" id="turnoff"style="letter-spacing: 10px;"><i class="icon-ishop_6-12"style="vertical-align: middle"></i>关闭</div>
+                </div>
+            </div>
+            <div class="table">
+                <table id="table_r" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                    <!--<tr class="th">-->
+                    <!--<th style="text-align:center;width: 50px;">序号</th>-->
+                    <!--<th>会员名称</th>-->
+                    <!--<th>会员卡号</th>-->
+                    <!--<th>会员手机号</th>-->
+                    <!--</tr>-->
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+<script src="/js/vip/vip_integralZero.js?20171229"></script>
+<script src="../js/laydate/laydate.js"></script>
+<script src="/js/silide.js?2017040170331"></script>
+<script type="text/javascript">
+    $(function(){
+        $(window).scroll(function(){
+            if($(window).scrollTop()>100){
+                $("#side_bar .gotop").fadeIn();
+            }
+            else{
+                $("#side-bar .gotop").hide();
+            }
+        });
+        $("#side_bar .gotop").click(function(){
+            $('html,body').animate({'scrollTop':0},500);
+        });
+        $("#side_bar .gobottom").click(function(){
+            var btm=$('html,body').height();
+            $('html,body').animate({'scrollTop':btm},500);
+        })
+    });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").siblings().find("span").removeClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").siblings().find("a").css({color:"#FFF"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0057']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0057']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
+</html>

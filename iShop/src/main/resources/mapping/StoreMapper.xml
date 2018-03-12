@@ -21,8 +21,18 @@
         <result column="lng" property="lng" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="lat" property="lat" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="distance" property="distance" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="offline_area" property="offline_area" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="dealer" property="dealer" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_type" property="store_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isopen" property="isopen" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="open_date" property="open_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="close_date" property="close_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="open_person" property="open_person" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="open_date_count" property="open_date_count"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
@@ -50,6 +60,14 @@
         def_store.created_date,
         def_store.creater,
         def_store.isactive,
+         def_store.offline_area,
+         def_store.dealer,
+         def_store.store_type,
+         def_store.isopen,
+         def_store.open_date,
+         def_store.close_date,
+         def_store.open_date_count,
+         def_store.open_person,
         def_corp.corp_name,
         def_store.logo
         FROM def_store,def_corp
@@ -94,12 +112,31 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
+        def_store.offline_area,
+        def_store.dealer,
+        def_store.store_type,
+        def_store.isopen,
+        def_store.open_date,
+        def_store.close_date,
+        def_store.open_date_count,
+        def_store.open_person,
         def_corp.corp_name,
         def_store.logo
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_store.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_store.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="find_type=='user'.toString()">
+            AND def_store.isactive='Y'
+            AND (def_store.isopen='Y' OR def_store.close_date is NOT NULL )
+
         </if>
         <if test="search_value != null and search_value !=''">
             AND
@@ -108,6 +145,15 @@
             OR store_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
+        </if>
+        <if test="offline_area != null and offline_area !=''">
+            AND def_store.offline_area = #{offline_area}
+        </if>
+        <if test="store_type != null and store_type !=''">
+            AND def_store.store_type = #{store_type}
+        </if>
+        <if test="dealer != null and dealer !=''">
+            AND def_store.dealer = #{dealer}
         </if>
         <if test="search_area_code != null and search_area_code !=''">
             AND def_store.area_code LIKE concat('%',#{search_area_code},'%')
@@ -120,11 +166,8 @@
         ORDER BY def_store.id DESC
     </select>
 
-    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
-        select
-        def_store.store_code,
-        def_store.store_name,
-        def_store.logo
+    <select id="selectByCorp" resultMap="Store">
+        select def_store.*,def_corp.corp_name
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
@@ -151,15 +194,30 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
+        def_store.offline_area,
+        def_store.dealer,
+        def_store.store_type,
+        def_store.isopen,
+        def_store.open_date,
+        def_store.close_date,
+        def_store.open_date_count,
+        def_store.open_person,
         def_store.logo,
         def_corp.corp_name
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
+        <!--<if test="corp_code =='C10125'.toString()">-->
+            <!--AND store_name NOT LIKE '%停用%'-->
+        <!--</if>-->
+        <if test="find_type=='user'.toString()">
+            AND (def_store.isopen='Y' OR def_store.close_date is NOT NULL )
+            AND def_store.isactive='Y'
+        </if>
         <if test="area_code != null">
             AND (
             <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
-                def_store.area_code REGEXP #{item}
+                def_store.area_code LIKE concat('%',#{item},'%')
             </foreach>
             <if test="store_codes != null and store_codes !=''">
                 OR def_store.store_code IN
@@ -172,7 +230,7 @@
         <if test="brand_code != null">
             AND
             <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
-                def_store.brand_code REGEXP #{item}
+                def_store.brand_code LIKE concat('%',#{item},'%')
             </foreach>
         </if>
         <if test="search_area_code != null and search_area_code !=''">
@@ -186,6 +244,15 @@
             OR def_corp.corp_name like concat('%',#{search_value},'%')
             )
         </if>
+        <if test="offline_area != null and offline_area !=''">
+            AND def_store.offline_area LIKE concat('%',#{offline_area},'%')
+        </if>
+        <if test="dealer != null and dealer !=''">
+            AND def_store.dealer LIKE concat('%',#{dealer},'%')
+        </if>
+        <if test="store_type != null and store_type !=''">
+            AND def_store.store_type LIKE concat('%',#{store_type},'%')
+        </if>
         <if test="isactive != null and isactive !=''">
             AND def_store.isactive = #{isactive}
         </if>
@@ -194,10 +261,11 @@
         ORDER BY def_store.id DESC
     </select>
 
-<!--下拉框，根据区域拉店铺(区经，企业管理员)-->
+    <!--下拉框，根据区域拉店铺(区经，企业管理员)-->
     <select id="selStoreByAreaBrand" resultMap="Store">
         select
         def_store.id,
+        store_id,
         store_code,
         store_name,
         def_store.area_code,
@@ -206,11 +274,23 @@
         def_corp.corp_name
         from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = #{corp_code}
+        <if test="corp_code != null and corp_code !=''">
+            AND def_store.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_store.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="find_type=='user'.toString()">
+            AND (def_store.isopen='Y' OR def_store.close_date is NOT NULL )
+            AND def_store.isactive='Y'
+        </if>
         <if test="area_code != null and area_code !=''">
             AND (
             <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
-                def_store.area_code regexp #{item}
+                def_store.area_code LIKE concat('%',#{item},'%')
             </foreach>
             <if test="store_codes != null and store_codes !=''">
                 OR def_store.store_code IN
@@ -223,14 +303,14 @@
         <if test="brand_code != null and brand_code !=''">
             AND
             <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
-                def_store.brand_code regexp #{item}
+                def_store.brand_code LIKE concat('%',#{item},'%')
             </foreach>
         </if>
         <if test="city != null and city !=''">
-        AND def_store.city IN
-          <foreach collection="city" index="index" item="item" separator="," open="(" close=")">
-              #{item}
-          </foreach>
+            AND def_store.city IN
+            <foreach collection="city" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="search_value != null and search_value !=''">
             and def_store.store_name like concat('%',#{search_value},'%')
@@ -244,8 +324,9 @@
     </select>
 
     <select id="selectStore" resultType="com.bizvane.ishop.entity.Store">
-        SELECT  store_code,
+        SELECT store_code,
         store_name,
+        brand_code,
         logo
         FROM def_store
         WHERE 1=1
@@ -284,6 +365,32 @@
         ORDER BY def_store.id DESC
     </select>
 
+    <select id="selStoreByVipRecord" resultMap="Store">
+        select
+        def_store.id,
+        store_code,
+        store_name,
+        def_store.area_code,
+        def_store.corp_code,
+        def_store.logo,
+        def_corp.corp_name
+        from def_store,def_corp
+        WHERE def_store.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_store.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND def_store.store_name LIKE concat('%',#{search_value},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND def_store.isactive = #{isactive}
+        </if>
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_store.id
+        ORDER BY def_store.id DESC
+    </select>
+
+
     <!--列表，根据店铺编号拉店铺（店长，导购）-->
     <select id="selectByStoreCodes" resultMap="Store">
         select
@@ -302,6 +409,14 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
+        def_store.offline_area,
+        def_store.dealer,
+        def_store.store_type,
+        def_store.isopen,
+        def_store.open_date,
+        def_store.close_date,
+        def_store.open_date_count,
+        def_store.open_person,
         def_store.logo,
         def_corp.corp_name
         from def_store,def_corp
@@ -374,6 +489,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="offline_area!=null">
+                offline_area,
+            </if>
             <if test="store_id!=null">
                 store_id,
             </if>
@@ -385,6 +503,27 @@
             </if>
             <if test="logo!=null">
                 logo,
+            </if>
+            <if test="dealer!=null">
+                dealer,
+            </if>
+            <if test="store_type!=null">
+                store_type,
+            </if>
+            <if test="isopen!=null">
+                isopen,
+            </if>
+            <if test="open_date!=null">
+                open_date,
+            </if>
+            <if test="close_date!=null">
+                close_date,
+            </if>
+            <if test="open_date_count!=null">
+                open_date_count,
+            </if>
+            <if test="open_person!=null">
+                open_person,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -433,6 +572,9 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="offline_area!=null">
+                #{offline_area},
+            </if>
             <if test="store_id!=null">
                 #{store_id},
             </if>
@@ -444,6 +586,27 @@
             </if>
             <if test="logo!=null">
                 #{logo},
+            </if>
+            <if test="dealer!=null">
+                #{dealer},
+            </if>
+            <if test="store_type!=null">
+                #{store_type},
+            </if>
+            <if test="isopen!=null">
+                #{isopen},
+            </if>
+            <if test="open_date!=null">
+                #{open_date},
+            </if>
+            <if test="close_date!=null">
+                #{close_date},
+            </if>
+            <if test="open_date_count!=null">
+                #{open_date_count},
+            </if>
+            <if test="open_person!=null">
+                #{open_person},
             </if>
         </trim>
     </insert>
@@ -505,12 +668,128 @@
             <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
+
+            <if test="offline_area!=null ">
+                offline_area=#{offline_area},
+            </if>
             <if test="logo!=null ">
                 logo=#{logo},
+            </if>
+            <if test="dealer!=null">
+                dealer= #{dealer},
+            </if>
+            <if test="store_type!=null">
+                store_type= #{store_type},
+            </if>
+            <if test="isopen!=null">
+                isopen= #{isopen},
+            </if>
+            <!--<if test="open_date!=null">-->
+            <!--open_date= #{open_date},-->
+            <!--</if>-->
+            <if test="close_date!=null">
+                close_date= #{close_date},
+            </if>
+            <if test="open_date_count!=null">
+                open_date_count= #{open_date_count},
+            </if>
+            <if test="open_person!=null">
+                open_person= #{open_person},
             </if>
         </trim>
         WHERE id=#{id};
     </update>
+
+
+    <update id="updateStoreByCode" parameterType="com.bizvane.ishop.entity.Store">
+        UPDATE def_store
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="store_code!=null ">
+                store_code=#{store_code},
+            </if>
+            <if test="store_id!=null ">
+                store_id=#{store_id},
+            </if>
+            <if test="store_name!=null ">
+                store_name=#{store_name},
+            </if>
+            <if test="brand_code!=null ">
+                brand_code=#{brand_code},
+            </if>
+            <if test="area_code!=null ">
+                area_code=#{area_code},
+            </if>
+            <if test="corp_code!=null ">
+                corp_code=#{corp_code},
+            </if>
+            <if test="flg_tob!=null ">
+                flg_tob = #{flg_tob},
+            </if>
+            <if test="province!=null ">
+                province = #{province},
+            </if>
+            <if test="city!=null ">
+                city = #{city},
+            </if>
+            <if test="area!=null ">
+                area = #{area},
+            </if>
+            <if test="street!=null ">
+                street = #{street},
+            </if>
+            <if test="lng!=null ">
+                lng = #{lng},
+            </if>
+            <if test="lat!=null ">
+                lat = #{lat},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null ">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null ">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null ">
+                isactive=#{isactive},
+            </if>
+
+            <if test="offline_area!=null ">
+                offline_area=#{offline_area},
+            </if>
+            <if test="logo!=null ">
+                logo=#{logo},
+            </if>
+            <if test="dealer!=null">
+                dealer= #{dealer},
+            </if>
+            <if test="store_type!=null">
+                store_type= #{store_type},
+            </if>
+            <if test="isopen!=null">
+                isopen= #{isopen},
+            </if>
+            <!--<if test="open_date!=null">-->
+            <!--open_date= #{open_date},-->
+            <!--</if>-->
+            <if test="close_date!=null">
+                close_date= #{close_date},
+            </if>
+            <if test="open_date_count!=null">
+                open_date_count= #{open_date_count},
+            </if>
+            <if test="open_person!=null">
+                open_person= #{open_person},
+            </if>
+        </trim>
+        WHERE corp_code =#{corp_code} AND store_code =#{store_code} AND isactive ='Y';
+    </update>
+
 
     <delete id="deleteByStoreId">
         DELETE FROM
@@ -567,6 +846,14 @@
         ds.modified_date,
         ds.modifier,
         ds.isactive,
+        ds.offline_area,
+        ds.dealer,
+        ds.store_type,
+        ds.isopen,
+        ds.open_date,
+        ds.close_date,
+        ds.open_date_count,
+        ds.open_person,
         ds.logo,
         dc.corp_name
         FROM def_store ds,def_corp dc,def_area da,def_brand db
@@ -576,13 +863,23 @@
         <if test="corp_code!=null and corp_code!=''">
             AND ds.corp_code=#{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                ds.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="find_type=='user'.toString()">
+            AND (ds.isopen='Y' OR ds.close_date is NOT NULL )
+            AND ds.isactive='Y'
+        </if>
         <if test="area_codes!=null and area_codes!=''">
             AND (
             <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
-                ds.area_code REGEXP #{item}
+                ds.area_code LIKE concat('%',#{item},'%')
             </foreach>
             <if test="area_store_codes != null and area_store_codes !=''">
-                OR def_store.store_code IN
+                OR ds.store_code IN
                 <foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">
                     #{item}
                 </foreach>
@@ -592,7 +889,7 @@
         <if test="brand_codes != null and brand_codes!=''">
             AND
             <foreach collection="brand_codes" item="item" index="index" open="(" separator="or" close=")">
-                ds.brand_code REGEXP #{item}
+                ds.brand_code LIKE concat('%',#{item},'%')
             </foreach>
         </if>
         <if test="store_codes!=null and store_codes!=''">
@@ -652,6 +949,14 @@
         ds.modified_date,
         ds.modifier,
         ds.isactive,
+        ds.offline_area,
+        ds.dealer,
+        ds.store_type,
+        ds.isopen,
+        ds.open_date,
+        ds.close_date,
+        ds.open_date_count,
+        ds.open_person,
         ds.logo,
         dc.corp_name
         FROM def_store ds,def_corp dc
@@ -659,14 +964,24 @@
         <if test="corp_code!=null and corp_code!=''">
             AND ds.corp_code=#{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                ds.corp_code =#{item}
+            </foreach>
+        </if>
+        <if test="find_type=='user'.toString()">
+            AND (ds.isopen='Y' OR ds.close_date is NOT NULL )
+            AND ds.isactive='Y'
+        </if>
         <if test="area_codes!=null and area_codes!=''">
             AND (
             <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
-                ds.area_code REGEXP #{item}
+                ds.area_code LIKE concat('%',#{item},'%')
             </foreach>
-            <if test="store_codes != null and store_codes !=''">
-                OR def_store.store_code IN
-                <foreach collection="store_codes" index="index" item="item" separator="," open="(" close=")">
+            <if test="area_store_codes != null and area_store_codes !=''">
+                OR ds.store_code IN
+                <foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
@@ -675,7 +990,7 @@
         <if test="brand_codes != null and brand_codes!=''">
             AND
             <foreach collection="brand_codes" item="item" index="index" open="(" separator="or" close=")">
-                ds.brand_code REGEXP #{item}
+                ds.brand_code LIKE concat('%',#{item},'%')
             </foreach>
         </if>
         <if test="store_codes!=null and store_codes!=''">
@@ -721,10 +1036,10 @@
         AND ds.corp_code = #{corp_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            ds.area_code REGEXP #{item}
+            ds.area_code LIKE concat('%',#{item},'%')
         </foreach>
         <if test="isactive != null and isactive !=''">
-        AND ds.isactive = #{isactive}
+            AND ds.isactive = #{isactive}
         </if>
         AND dc.isactive = 'Y'
         ORDER BY ds.id DESC
@@ -740,7 +1055,7 @@
         AND ds.corp_code=#{corp_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            ds.brand_code REGEXP #{item}
+            ds.brand_code LIKE concat('%',#{item},'%')
         </foreach>
         <if test="search_value != null and search_value !=''">
             AND ds.store_name LIKE concat('%',#{search_value},'%')
@@ -818,7 +1133,7 @@
         def_store.lng,
         def_store.lat,
         def_store.logo,
-        (st_distance (point (lng, lat),point(#{lng},#{lat}) ) *111195) AS distance
+        ROUND(6378.138*2*ASIN(SQRT(POW(SIN((#{lat}*PI()/180-lat*PI()/180)/2),2)+COS(#{lat}*PI()/180)*COS(lat*PI()/180)*POW(SIN((#{lng}*PI()/180-lng*PI()/180)/2),2)))*1000)  AS distance
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
@@ -830,5 +1145,109 @@
             HAVING distance &lt; #{distance}
         ORDER BY distance
     </select>
+    <select id="getStoreByOdsType" resultType="com.bizvane.ishop.entity.Store">
+        SELECT ${line_code} FROM def_store WHERE 1=1
+        AND corp_code=#{corp_code}
+        AND isactive ='Y'
+        GROUP BY ${line_code}
+        HAVING ${line_code} !='' AND ${line_code} IS NOT NULL
+    </select>
+
+    <select id="getAllStoreByCount" resultMap="Store">
+        SELECT
+        def_store.id,
+        def_store.store_code,
+        def_store.corp_code,
+        def_store.store_name,
+        def_store.isopen,
+        def_store.open_date,
+        def_store.close_date,
+        def_store.open_person,
+        def_store.open_date_count
+        FROM def_store,def_corp
+        WHERE def_store.corp_code=def_corp.corp_code
+        AND def_store.isopen='Y'
+        AND def_store.isactive='Y'
+        AND def_corp.isactive='Y'
+        GROUP BY def_store.id
+        ORDER BY def_store.id DESC
+    </select>
+
+    <update id="updStoreDayCount">
+       UPDATE `def_store` SET open_date_count= IFNULL(open_date_count,0)+1 WHERE isopen='Y' AND isactive='Y'
+    </update>
+    
+    <update id="updStoreTime">
+        update `def_store` set `OPEN_DATE` =DATE_ADD((SELECT `CREATED_DATE` from `def_corp` WHERE `CORP_CODE` =#{corp_code}), INTERVAL 1 MONTH)
+        where `CREATED_DATE` IS NULL or `CREATED_DATE` ='' AND corp_code=#{corp_code}
+    </update>
+
+    <select id="selectByStoreNameTwo" resultType="com.bizvane.ishop.entity.Store">
+        SELECT * FROM def_store
+        WHERE corp_code=#{corp_code}
+        AND store_name LIKE concat('%',#{store_name},'%')
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
+
+    <select id="getStoreAndBrandArea" resultMap="Store">
+        SELECT *
+        FROM def_store ds
+        WHERE ds.corp_code=#{corp_code}
+        AND (
+        <if test="area_codes != null ">
+            <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
+                ds.area_code LIKE concat('%',#{item},'%')
+            </foreach>
+        </if>
+        <if test="brand_codes != null">
+          <if test="area_codes!=null"> AND </if>
+            <foreach collection="brand_codes" item="item" index="index" open="(" separator="or" close=")">
+                ds.brand_code LIKE concat('%',#{item},'%')
+            </foreach>
+        </if>
+        <if test="store_codes!=null">
+            <if test="area_codes != null or brand_codes != null"> OR </if>
+             ds.store_code IN
+            <foreach collection="store_codes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        AND ds.isactive = 'Y'
+        GROUP BY ds.id
+        ORDER BY ds.id DESC
+    </select>
+
+
+    <select id="selectCorpCanSearch" resultType="com.bizvane.ishop.entity.Store">
+        select *
+        FROM def_store
+        WHERE corp_code = #{corp_code}
+        AND isactive = 'Y'
+        <if test="search_value != null and search_value !=''">
+            AND
+            (store_code LIKE concat('%',#{search_value},'%')
+            OR store_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY def_store.id DESC
+    </select>
+
+    <select id="selctStoreQrcode" resultType="com.bizvane.ishop.entity.StoreQrcode">
+        SELECT
+        ruq.*,
+        rcw.app_name
+        FROM rel_store_qrcode ruq ,rel_corp_wechat rcw
+        WHERE  ruq.corp_code = rcw.corp_code
+        and ruq.app_id = rcw.app_id
+        AND ruq.store_code=#{store_code}
+        AND ruq.corp_code=#{corp_code}
+        AND rcw.app_id=#{app_id}
+        AND rcw.isactive = 'Y'
+        AND rcw.is_authorize = 'Y'
+    </select>
+
 
 </mapper>

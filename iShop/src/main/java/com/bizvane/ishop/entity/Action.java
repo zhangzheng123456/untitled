@@ -1,7 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2016/5/24.
  */

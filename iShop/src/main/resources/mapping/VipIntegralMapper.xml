@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipIntegralMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipIntegral" id="vipIntegral">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="integral_name" property="integral_name"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_no" property="bill_no"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips" property="target_vips"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_" property="target_vips_"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vip_type" property="target_vip_type"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="integral_duration" property="integral_duration"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="clear_cycle" property="clear_cycle"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remind" property="remind"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remarks" property="remarks"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="clear_type" property="clear_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_condition" property="target_vips_condition" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="priority" property="priority" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="recent_clean_time" property="recent_clean_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sms_code" property="sms_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_id" property="app_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectIntegralById" resultMap="vipIntegral">
+        SELECT *
+        FROM def_vip_integral
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectIntegralByBillno" resultMap="vipIntegral">
+        SELECT *
+        FROM def_vip_integral
+        WHERE bill_no=#{bill_no}
+    </select>
+
+    <select id="selectIntegralByName" resultMap="vipIntegral">
+        SELECT *
+        FROM def_vip_integral
+        WHERE
+       integral_name=#{integral_name}
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+    </select>
+
+    <select id="selectIntegralAll" resultMap="vipIntegral">
+        SELECT *
+        FROM def_vip_integral
+        WHERE 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (integral_name LIKE concat('%',#{search_value},'%')
+            OR bill_no LIKE concat('%',#{search_value},'%')
+            OR remarks LIKE concat('%',#{search_value},'%')
+            OR corp_code LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        Group By id
+        ORDER BY id DESC
+    </select>
+
+    <delete id="deleteIntegralById">
+        DELETE FROM
+        def_vip_integral
+        WHERE id=#{id}
+    </delete>
+
+    <insert id="insertVipIntegral" parameterType="com.bizvane.ishop.entity.VipIntegral">
+        INSERT INTO def_vip_integral
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code,
+            </if>
+            <if test="integral_name!=null and integral_name!=''">
+                integral_name,
+            </if>
+            <if test="bill_no!=null and bill_no!=''">
+                bill_no,
+            </if>
+            <if test="target_vips!=null and target_vips!=''">
+                target_vips,
+            </if>
+            <if test="target_vips_!=null and target_vips_!=''">
+                target_vips_,
+            </if>
+            <if test="target_vip_type!=null and target_vip_type!=''">
+                target_vip_type,
+            </if>
+            <if test="integral_duration!=null and integral_duration!=''">
+                integral_duration,
+            </if>
+            <if test="clear_cycle!=null and clear_cycle!=''">
+                clear_cycle,
+            </if>
+            <if test="remind!=null and remind!=''">
+                remind,
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                remarks,
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater,
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                created_date,
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier,
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                modified_date,
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive,
+            </if>
+            <if test="clear_type!=null and clear_type!=''">
+                clear_type,
+            </if>
+            <if test="target_vips_condition!=null and target_vips_condition!=''">
+                target_vips_condition,
+            </if>
+            <if test="priority!=null and priority!=''">
+                priority,
+            </if>
+            <if test="sms_code!=null and sms_code!=''">
+                sms_code,
+            </if>
+            <if test="app_id!=null and app_id!=''">
+                app_id,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null and corp_code!=''">
+                #{corp_code},
+            </if>
+            <if test="integral_name!=null and integral_name!=''">
+                #{integral_name},
+            </if>
+            <if test="bill_no!=null and bill_no!=''">
+                #{bill_no},
+            </if>
+            <if test="target_vips!=null and target_vips!=''">
+                #{target_vips},
+            </if>
+            <if test="target_vips_!=null and target_vips_!=''">
+                #{target_vips_},
+            </if>
+            <if test="target_vip_type!=null and target_vip_type!=''">
+                #{target_vip_type},
+            </if>
+            <if test="integral_duration!=null and integral_duration!=''">
+                #{integral_duration},
+            </if>
+            <if test="clear_cycle!=null and clear_cycle!=''">
+                #{clear_cycle},
+            </if>
+            <if test="remind!=null and remind!=''">
+                #{remind},
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                #{remarks},
+            </if>
+            <if test="creater!=null and creater!=''">
+                #{creater},
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                #{created_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                #{modifier},
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                #{modified_date},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                #{isactive},
+            </if>
+            <if test="clear_type!=null and clear_type!=''">
+                #{clear_type},
+            </if>
+            <if test="target_vips_condition!=null and target_vips_condition!=''">
+                #{target_vips_condition},
+            </if>
+            <if test="priority!=null and priority!=''">
+                #{priority},
+            </if>
+            <if test="sms_code!=null and sms_code!=''">
+                #{sms_code},
+            </if>
+            <if test="app_id!=null and app_id!=''">
+                #{app_id},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateVipIntegral" parameterType="com.bizvane.ishop.entity.VipIntegral">
+        UPDATE def_vip_integral
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="integral_name!=null">
+                integral_name=#{integral_name},
+            </if>
+
+            <if test="target_vips!=null">
+                target_vips=#{target_vips},
+            </if>
+            <if test="target_vips_!=null">
+                target_vips_=#{target_vips_},
+            </if>
+            <if test="target_vip_type!=null">
+                target_vip_type=#{target_vip_type},
+            </if>
+            <if test="integral_duration!=null">
+                integral_duration=#{integral_duration},
+            </if>
+            <if test="clear_cycle!=null">
+                clear_cycle=#{clear_cycle},
+            </if>
+            <if test="remind!=null">
+                remind=#{remind},
+            </if>
+            <if test="remarks!=null">
+                remarks=#{remarks},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="clear_type!=null">
+                clear_type=#{clear_type},
+            </if>
+            <if test="target_vips_condition!=null ">
+                target_vips_condition=#{target_vips_condition},
+            </if>
+            <if test="priority!=null ">
+                priority=#{priority},
+            </if>
+            <if test="recent_clean_time!=null ">
+                recent_clean_time=#{recent_clean_time},
+            </if>
+            <if test="sms_code!=null ">
+                sms_code=#{sms_code},
+            </if>
+            <if test="app_id!=null ">
+                app_id=#{app_id},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectIntegralAllScreen" resultMap="vipIntegral">
+        SELECT *
+        FROM def_vip_integral
+        WHERE 1 = 1
+        <if test="corp_code!=null and corp_code!=''">
+            AND corp_code=#{corp_code}
+        </if>
+        <if test="recent_clean_start!=null and recent_clean_start!=''">
+            AND  recent_clean_time &gt;= #{recent_clean_start}
+        </if>
+        <if test="recent_clean_end!=null and recent_clean_end!=''">
+            AND  recent_clean_time &lt;= #{recent_clean_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!='' and entryKey=='integral_duration'">
+                    ${entryKey} = ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    ${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By id
+        ORDER BY id DESC
+    </select>
+</mapper>

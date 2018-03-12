@@ -1,0 +1,319 @@
+    /***************自定义laydate样式**************/
+.layui-laydate-main{
+    width: 244px;
+}
+.layui-laydate-range{
+    width:490px;
+    font-size: 12px;
+}
+.layui-laydate-header{
+    font-size: 14px;
+}
+.layui-laydate-content td, .layui-laydate-content th{
+    width: 32px;
+    height: 32px;
+}
+.layui-laydate-content td.laydate-selected{
+    background-color: rgba(91,192,222,0.5);
+}
+.laydate-selected:hover{
+    background-color: rgb(91,192,222) !important;
+}
+.layui-laydate .layui-this{
+    background-color: rgb(91,192,222) !important;
+}
+.task_block{
+    height: 300px;
+}
+.people_title{
+    height: 40px;
+    line-height: 40px;
+}
+.people_head{
+    overflow: hidden;
+    display: none;
+}
+.peopleContent tr:nth-child(odd){
+    background-color: #fff;
+}
+.peopleContent tr:nth-child(even){
+    background-color: #EFEFEF;
+}
+#search_date,.selectDate input{
+    color: #888;
+    width: 210px;
+    height: 30px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding-left: 10px;
+    background-repeat: no-repeat;
+    background-position: 98%;
+    background-image: url(../js/laydate/skins/molv/icon.png);
+}
+.selectDate input{
+    width: 320px!important;
+}
+.isActive_select input{
+    padding-right: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.isActive_select input,.isActive_select li{
+    cursor: pointer;
+}
+.isActive_select ul{
+    width: 260px!important;
+}
+.sxk .inputs{
+    margin: 0;
+    padding-top: 20px;
+    color: #888888;
+    background-color: #EFEFEF;
+}
+.sxk .inputs ul:after{
+    content: "";
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
+.sxk input{
+    border: none!important;
+}
+.mask{
+    position: fixed;
+    top:0;
+    left: 0;
+    right:0;
+    bottom:0;
+    background-color: rgba(0,0,0,0.1);
+}
+#screen_task_condition{
+    position: fixed;
+}
+.list_box .peopleContent table,.list_box .people_title table{
+    text-align: center;
+}
+.list_box .peopleContent table tr td{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.list_box .peopleContent table tr td:last-child,.list_box .people_head table tr td:last-child{
+    width: 80px;
+}
+.list_box .peopleContent table tr td.detail span{
+    color: #5f8bc8!important;
+    cursor: pointer;
+}
+.customerDetails_tableBox{
+    max-height: none;
+}
+/************************查看任务设置弹框样式************/
+.task_setting,.improve_data,.questionnaire_detail{
+    position:fixed;
+    display: none;
+    z-index: 200;
+    width: 400px;
+    padding: 10px 20px 20px 20px;
+    top: 55%;
+    left:50%;
+    /*transform: translate(-50%,-50%);*/
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.35);
+    border-radius: 5px;
+    font-size: 13px;
+}
+.questionnaire_detail{
+    width: 600px;
+}
+.task_setting_head,.improve_data_head,.questionnaire_detail_head{
+    cursor: move;
+    margin-bottom: 10px;
+}
+.questionnaire_detail_head{
+    margin-bottom: 10px;
+}
+.task_setting_head .line_vertical,.improve_data_head .line_vertical,.questionnaire_detail_head .line_vertical{
+    width: 5px;height: 15px;display:inline-block;margin-right: 5px; background-color: #5f8bc8;vertical-align: middle;
+}
+.task_setting_head .task_setting_head_title,.improve_data_head .improve_data_head_title,.questionnaire_detail_head .questionnaire_detail_head_title{
+    display: inline-block;height: 20px;vertical-align: middle
+}
+.task_setting_title{
+    line-height: 30px;text-align: center
+}
+.task_setting_subtitle{
+    height: 40px;line-height: 40px;
+}
+.task_setting_part{
+    background-color: #EFEFEF;padding-left:10px;
+}
+.task_setting_part_line,.improve_data_part_line{
+    line-height: 30px;
+    overflow: hidden;
+}
+.improve_data_part_line{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.task_setting_part_line_left,.improve_data_part_line_left{
+    width:60px;display: inline-block
+}
+.improve_data_part_line_left{
+    width: auto;
+}
+.task_setting_present_coupon,.target_key{
+    float: left;
+    overflow: auto;
+    max-height: 150px;
+    width: 80%;
+}
+.target_key{
+    max-height:none;
+}
+.task_setting_content{
+    max-height: calc(100vh - 120px *2);
+    overflow: hidden;
+    overflow-y: auto;
+}
+.task_setting_present_coupon div,.target_key div{
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 30px;
+}
+.task_setting_desc{
+    min-height: 70px;max-height:100px;background-color: #EFEFEF;padding: 5px;overflow: hidden;overflow-y: auto;
+}
+.present_loading{
+    height: 50px;line-height: 50px
+}
+.hide_task_settings,.hide_improve_data,.hide_questionnaire_detail{
+    height: 30px;line-height: 30px;background-color: #ddd;border-radius: 3px;display: block;margin:10px auto 0;cursor:pointer;width: 100px;text-align: center
+}
+.improve_data_content,.questionnaire_detail_content{
+    min-height: 200px;
+    max-height: 400px;
+    padding: 0 20px 20px 20px;
+}
+.improve_data_content{
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 120px * 2);
+}
+.questionnaire_detail_content{
+    max-height:calc(100vh - 120px * 2);
+    overflow: hidden;
+    overflow-y: auto
+}
+.progress_bar{
+    width: 100px;background-color: #efefef;height: 10px;display: inline-block;vertical-align: middle;border-radius: 5px;
+}
+.progress_bar .progress_bi{
+    float: left;display: inline-block;width: 20%;height: 100%;background-color: #7bc7cd;border-radius: 5px;
+}
+
+.isActive_select_down{
+    display: block;
+    max-height: 200px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.isActive_select_down li{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*问卷详情*/
+.exercise_box {
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+.must_fill {
+    color: #888;
+    font-weight: normal;
+    margin-right: 5px;
+}
+.exercise_box>ul {
+    margin-top: 20px;
+}
+.exercise_box li {
+    padding-left: 30px;
+    font-weight: normal;
+}
+.exercise_box li + li {
+    margin-top: 10px;
+}
+.questionnaire_detail input[type=checkbox], .questionnaire_detail input[type=radio] {
+    width: 30px;
+    visibility: hidden;
+    position: absolute;
+}
+.questionnaire_detail input[type=radio] + label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.questionnaire_detail input[type=radio]:checked + label {
+    border: none;
+    background: url(../img/radio_checked.png) no-repeat center;
+    background-size: 20px;
+}
+.questionnaire_detail input[type=checkbox]:checked + label {
+    border: none;
+    background: url(../table/images/icon_checkbox_S.png) no-repeat center;
+    background-size: 20px;
+}
+.questionnaire_detail input[type=checkbox] + label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.exercise_input {
+    width: 330px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 5px;
+}
+.survey_title {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.survey_desc {
+    padding: 0 75px;
+    text-align: left;
+    color: #888;
+    margin-bottom: 20px;
+}
+/*问卷详情结束*/
+.exercise_box .grade_star {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../img/star.png)no-repeat;
+    background-size: 20px;
+    padding: 0;
+}
+.questionnaire_detail .choose_star {
+    background: url(../img/star_S.png)no-repeat;
+    background-size: 20px;
+}

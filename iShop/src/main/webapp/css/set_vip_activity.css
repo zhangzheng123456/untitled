@@ -1,3 +1,6 @@
+#laydate_time{
+    bottom:25px;
+}
 .setUp_activity{
     width: 100%;
     font-size: 13px;
@@ -48,6 +51,20 @@
     background: #f5f5f5;
     border: 1px solid #d7d7d7;
 }
+.activity_radio{
+    display: none;
+    position: absolute;
+    z-index: 50;
+    right: 0;
+    top: 30px;
+    width: 240px;
+    padding: 10px 5px;
+    background: #fff;
+    box-shadow: 0 0 13px rgba(0,0,0,0.2);
+}
+.activity_radio li{
+    width:100%;
+}
 .vipCardType{
     max-height: 180px;
     overflow-y: auto;
@@ -63,6 +80,48 @@
     margin: 0;
     line-height: 30px;
     padding-left: 5px;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    overflow: hidden;
+}
+.setUp_activity .activity_select input{
+    margin: 0 5px 0 0;
+}
+.souvenir_switch div{
+    display: inline-block;
+    width: 36px;
+    height: 16px;
+    margin-right: 5px;
+    margin-left: 10px;
+    margin-bottom: 3px;
+    background-color: #CCC;
+    border-radius: 12px;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+}
+.switch_control{
+    line-height: 3;
+}
+.souvenir_switch div em{
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 2px;
+    left: 2px;
+    border-radius: 24px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+.souvenir_switch .on{
+    webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    background-color: #41c7db;
+}
+.souvenir_switch div .off{
+    webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    left: 22px;
 }
 .setUp_activity .activity_select li:hover{
     color: #FFFFFF;
@@ -78,21 +137,31 @@
     margin-left: 10px;
     background: url('../img/icon_list_down.png') 220px center no-repeat;
 }
+.corp_select select{
+    width: 240px;
+    height: 30px;
+    outline: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}
 .setUp_activity .screen_area{
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%);
-    -webkit-transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%);
+    position: fixed;
+    min-height: 450px;
+    /*margin-left: -390px;*/
+    /*margin-top: 0;*/
+    /*top:0;*/
 }
 .activity_details_left{
     float: left;
     width: 684px;
 }
+.activity_details_left>ul{
+    float: left;
+    width: 50%;
+}
 .activity_details_right{
     float: left;
+    width: 240px;
 }
 .setUp_activity .text_input{
     width: 240px;
@@ -105,7 +174,7 @@
 }
 .setUp_activity_details .shop_amount_wrap{
     width: 240px;
-    height: 110px;
+    height: 50px;
     background: #e8e8ed;
     text-align: center;
     padding: 10px 0;
@@ -117,25 +186,26 @@
 .choose_shop{
     display: inline-block;
     width: 120px;
-    height: 25px;
-    line-height: 25px;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 10px;
     background: #5f8bc8;
     color: #FFFFFF;
     border-radius: 5px;
     cursor: pointer;
 }
 .text_introduction{
-    width: 585px;
-    height: 70px;
+    width: 240px;
+    height: 110px;
     margin-left: 15px;
     padding: 5px;
     border: 1px solid #d7d7d7;
     border-radius: 5px;
     outline: none;
 }
-.operate_ul>li>ul>li{
-    margin-left: 30px;
-}
+/*.operate_ul>li>ul>li{*/
+    /*margin-left: 30px;*/
+/*}*/
 .setUp_activity_details .operate_ul>li>ul>li{
     margin-bottom: 0;
 }
@@ -146,14 +216,15 @@
     display: inline-block;
     width: 24px;
     height: 24px;
-    line-height: 20px;
+    line-height: 24px;
     border: 1px solid #d7d7d7;
     text-align: center;
     border-radius: 5px;
-    font-size: 22px;
+    font-size: 16px;
     color: #6dc1c8;
+    background: #fff;
     cursor: pointer;
-    margin-left: 35px;
+    margin-left: 10px;
     margin-top: 3px;
 }
 .operate_ul span:last-child{
@@ -203,7 +274,7 @@
 }
 .offline_left_wrap .file_input{
     position: absolute;
-    left:90px;
+    left:0px;
     top:0;
     width: 60px;
     height: 60px;
@@ -216,6 +287,7 @@
     display: inline-flex;
 }
 .upload_logo span{
+    position: relative;
     display: inline-block;
     width: 60px;
     height: 60px;
@@ -255,7 +327,7 @@
 }
 .coupon_btn{
     width: 100%;
-    height: 31px;
+    height: 40px;
 }
 .coupon_btn span{
     display: block;
@@ -270,7 +342,7 @@
     cursor: pointer;
 }
 .coupon_details_wrap{
-    padding: 10px 0 0px 25px ;
+    padding: 10px 25px 0px 25px ;
     position: relative;
     width: 100%;
     border: 1px solid #d6d9e0;
@@ -297,7 +369,7 @@
 .coupon_details_wrap .operate_ul{
     width: 460px;
 }
-.choose_coupon{
+.choose_coupon .presentCoupon_wrap,#cardCouponWrap .presentCoupon_wrap{
     width: 435px;
 }
 .choose_coupon .operate_ul>li>ul>li{
@@ -315,8 +387,9 @@
 }
 .url_offline{
     width: 100%;
-    height: 30px;
+    height: 40px;
     margin-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
 }
 .url_offline span{
     display: inline-block;
@@ -326,9 +399,682 @@
     text-align: center;
     cursor: pointer;
 }
-.url_offline span:first-child{
-    background: #F1F1F1;
+.url_offline .invite_btn_background{
+    background: #e4e4ea;
 }
-.url_offline span:last-child{
-    background: #ddd;
+.coupondateEnter{
+    text-align: center;
+    width: 70px;
+    height: 26px;
+    cursor: pointer;
+    color: #fff;
+    margin: 15px 0 0 70px;
+    line-height: 26px;
+    background: #6cc1c8;
+    border-radius: 5px;
+}
+.chooseShopperTable img{
+    width: 50px;
+    height: 45px;
+}
+.ellipsis{
+    display: inline-block;
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.setUp_activity .input50px{
+    width: 50px;
+    height: 30px;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+    border: 1px solid #ddd;
+    margin: 0 10px 10px 10px;
+}
+.setUp_activity .input130px{
+    width: 128px;
+    height: 30px;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+    border: 1px solid #ddd;
+    margin: 0 10px 10px 10px;
+}
+.consumeBtn{
+    display: inline-block;
+    width: 120px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    background: #6cc1c8;
+    cursor: pointer;
+    margin:  0 10px;
+}
+.ConsumerHeader{
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+.ConsumerHeader>div,.ConsumerFooter>div{
+    float: left;
+    position: relative;
+}
+.ConsumerHeader>div ~ div{
+    margin-left: 105px;
+}
+.chooseShadow{
+    display: none;
+    position:fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+}
+.chooseShopperWrap{
+    width: 770px;
+    height: 510px;
+    border-radius: 8px;
+    box-shadow: 0 0 13px rgba(0,0,0,0.3);
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -webkit-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    background: #FFFFFF;
+    padding: 20px;
+}
+.chooseShopperHeader{
+    height: 120px;
+    margin-bottom: 10px;
+}
+.chooseShopperHeader>div{
+    float: left;
+    margin-top: 10px;
+}
+.chooseShopperHeader label{
+    width: 53px;
+    text-align: right;
+}
+.chooseShopperHeader .chooseShopperCondition{
+    border-right: 1px solid #ddd;
+}
+.chooseShopperHeader .chooseShopperCondition>div{
+    position: relative;
+    float: left;
+}
+.setUp_activity .input120px{
+    width: 120px;
+    margin-right: 25px;
+    margin-bottom: 10px;
+    background-position: 93% center;
+}
+.chooseShopperCondition .shopperSelect{
+    max-height: 90px;
+    overflow-y: auto;
+    width: 120px;
+    right: 25px;
+}
+.chooseShopperBtn{
+    display: block;
+    width: 90px;
+    height: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #fff;
+    line-height: 25px;
+    border-radius: 5px;
+    background: #6dc1c8;
+    text-align: center;
+}
+.chooseShopperHeader .souvenir_switch{
+    margin-top: 15px;
+}
+.chooseShopperHeader .chooseShopperBtn{
+    margin: 10px 0 0 10px;
+}
+.chooseShopperTable{
+    width: 100%;
+    height: 290px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.chooseShopperTable th{
+    font-weight: normal;
+}
+.chooseShopperTable th{
+    text-align: center;
+}
+.chooseShopperTable tr{
+    text-align: center;
+    height: 50px;
+}
+.chooseShopperTable tbody tr:nth-child(odd){
+    background: #efefef;
+}
+.chooseShopperFooter .check{
+    display: none;
+}
+.chooseShopperFooter{
+    margin-top: 10px;
+}
+.chooseShopperFooter .check:checked + label{
+    background: url(../img/radio_chicked.png) no-repeat center center;
+    background-size: 15px 15px;
+}
+.chooseShopperFooter .radio_b{
+    border: 1px solid #e0e0e0;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    position: relative;
+    top: 3px;
+    cursor: pointer;
+}
+.radio_b{
+    margin: 0 8px;
+}
+.chooseTotal{
+    color: #6cc1c8;
+}
+.closeWrap{
+    font-size: 18px;
+    color: #aaa;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.goodsList{
+    height: 250px;
+    overflow-y: auto;
+}
+.ConsumerHeader .levels{
+    position: relative;
+    box-sizing: content-box;
+    width: 300px;
+    padding-left: 4px;
+    display: block;
+    margin-bottom: 20px;
+}
+.levelSelect{
+    right: 6px;
+    height: 90px;
+    overflow-y: auto;
+}
+.lookCondition{
+    display: inline-block;
+    color: #6cc1c8;
+    cursor: pointer;
+}
+.lookCondition i{
+    vertical-align: middle;
+    line-height: 12px;
+}
+.conditionBox{
+    width: 450px;
+    height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 0 13px rgba(0,0,0,0.3);
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -webkit-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    background: #FFFFFF;
+    padding: 20px;
+}
+.choosedContent{
+    margin-top: 15px;
+    height: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.choosedContent>div{
+    height: 30px;
+}
+.choosedContent span{
+    display: inline-block;
+    max-width: 290px;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.choosedContent .conditionName{
+    color: #6cc1c8;
+    margin: 0 5px 0 20px;
+}
+.presentPoint_wrap{
+    margin-left: 14px;
+}
+.presentGift_wrap{
+    margin-left: 12px;
+    width: 435px;
+}
+.cardTypeWrap{
+    width:100%;
+    height: 40px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+.consumeCheckWrap{
+    width: 100%;
+    height:30px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+.consumeCheckWrap span{
+    position: relative;
+    width: 85px;
+    display: inline-block;
+}
+.consumeCheckWrap .checkbox1{
+    width: 300px;
+}
+.consumeCheckWrap .check{
+    margin-right: 15px;
+    vertical-align: middle;
+}
+.coupon_details_wrap_header{
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+.register .coupon_details_wrap{
+    padding-top: 0;
+    padding-bottom: 10px;
+}
+.coupon_details_wrap_left{
+    text-align: right;
+    float: left;
+    width: 6%;
+    padding-right: 10px;
+}
+.coupon_details_wrap_right{
+    float: right;
+    width: 94%;
+}
+.coupon_details_wrap_right .checkbox1{
+    padding-top: 5px;
+}
+.giftWrap{
+    background: #f5f5f5;
+    padding: 0 10px;
+}
+.presentCoupon_wrap:after,.cardTypeWrap:after{
+    clear: both;
+    height: 0;
+    content: "";
+    display: block;
+}
+.marginLeft100{
+    margin-left: 100px;
+}
+.levelsWrap{
+    width: 300px;
+    margin-bottom: 10px;
+    padding-left: 12px;
+    position: relative;
+    box-sizing: content-box;
+}
+.action_detail_box .check{
+    margin: 0;
+}
+.activitySpreadWrap{
+    width: 360px;
+    border-radius: 8px;
+    box-shadow: 0 0 13px rgba(0,0,0,0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -webkit-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    background: #FFFFFF;
+    padding: 20px 20px 15px 20px;
+}
+.SpreadWay{
+    position: relative;
+    float: left;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+.activitySpreadImg{
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    line-height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    border: 1px dashed #c3c3c3;
+    border-radius: 5px;
+    color: #c3c3c3;
+}
+.activitySpreadImg input{
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    filter: Alpha(opacity=0);
+}
+.SpreadWayDetail{
+    float: left;
+}
+.SpreadWayDetail>div{
+    margin-top: 10px;
+}
+.activitySpreadfooter{
+    width: 100%;
+    margin-top: 30px;
+    float: left;
+}
+.activitySpreadfooter .activitySpreadClose{
+    width: 90px;
+    float: left;
+    background: #dfdfdf;
+    margin: 0;
+}
+.activitySpreadfooter .activitySpreadSave{
+    width: 90px;
+    float: right;
+    margin: 0;
+}
+.activitySpreadContent{
+    padding-left: 17px;
+}
+.batch_num{
+    display: inline-block;
+}
+.batch_num label{
+    width: 70px;
+}
+.batch_num .bath_num_input{
+    text-align: left!important;
+    padding-left: 5px;
+}
+.presentCoupon_wrap{
+    width: 435px;
+}
+.radio_group{
+    display: inline-block;
+    margin-left: 10px;
+}
+.radio_group input[type=radio],.checkBox_group input[type=checkbox],.chooseShadow input[type=radio]{
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    visibility: hidden;
+}
+.radio_group input[type=radio]:checked + label{
+    background: url(../img/icon_radio.png)no-repeat center;
+    background-size: 18px;
+    border: none;
+}
+.radio_group>span{
+    margin-right: 20px;
+}
+.radio_group label{
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    margin-right: 10px;
+    vertical-align: middle;
+    background: #fff;
+}
+.checkBox_group{
+    margin: 0 10px;
+}
+.checkBox_group label{
+    width: 18px;
+    height: 18px;
+    background: #d5d5d5;
+    border-radius: 18px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.checkBox_group input[type=checkbox]:checked + label{
+    background: url('../table/images/icon_radio_S.png') no-repeat center;
+    background-size: 18px;
+}
+#online_activity .coupon_details_wrap{
+    padding: 0 25px 10px 25px;
+}
+#online_activity .consumeCheckWrap{
+    height: auto;
+    border: none;
+    padding: 10px 0;
+    margin-bottom: 0;
+}
+dl{
+    margin-bottom: 0;
+}
+dl dt{
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.setUp_activity #online_activity dl .input130px{
+    margin-bottom: 0;
+}
+.setUp_activity .input80px{
+    width: 80px;
+}
+.icon_search{
+    font-size: 20px;
+    position: relative;
+    top: 3px;
+    right: 3px;
+}
+.checkbox+label{
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+.checkbox:checked +label{
+    background: url(../table/images/icon_checkbox_S.png) no-repeat center center;
+    background-size: 20px 20px;
+    border: none;
+}
+#apply_condition .activity_select{
+    max-height: 200px;
+    overflow-y: auto;
+}
+.itemBtn{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #d7d7d7;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #6dc1c8;
+    background: #fff;
+    cursor: pointer;
+}
+.itemBtn:nth-of-type(2){
+    margin-left:5px;
+}
+.online_item_wrap{
+    background: #f5f5f5;
+    margin-top: 15px;
+}
+.online_item_wrap dl dt{
+    height: 40px;
+    line-height: 40px;
+    border-right: 3px solid #fff;
+    text-align: center;
+}
+.online_item_wrap dl{
+    border-bottom: 3px solid #fff;
+}
+.online_item_wrap dl dt:nth-child(1){
+    width: 4%;
+}
+.online_item_wrap dl dt:nth-child(2){
+    width: 17%;
+}
+.online_item_wrap dl dt:nth-child(3){
+    width: 17%;
+}
+.online_item_wrap dl dt:nth-child(4){
+    width: 40%;
+}
+.online_item_wrap dl dt:nth-child(5){
+    width: 22%;
+}
+.online_item_wrap dl dt:nth-child(n+2):nth-child(-n+3) input{
+    width: 90%;
+    margin-left: 0;
+}
+.online_item_wrap dl dt span{
+    display: inline-block;
+    position: relative;
+}
+.online_item_wrap dl dt:nth-child(4)>span:nth-child(1){
+    width: 35%;
+}
+.online_item_wrap dl dt:nth-child(4)>span:nth-child(2){
+    width: 65%;
+}
+.online_item_wrap dl dt:nth-child(4) input{
+    width: 95%;
+    margin-left: 0;
+}
+.online_item_wrap dl dt:nth-child(4) .unit{
+    position: absolute;
+    right: 5%;
+    top:0;
+}
+.online_item_wrap dl dt:nth-child(4)>span .consumeWrap{
+    width: 44%;
+}
+.online_item_wrap dl dt:nth-child(4) .consumeWrap input{
+    width: 100%
+}
+.online_item_wrap input[type=checkbox]{
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    visibility: hidden;
+}
+.online_item_wrap input[type=file],.reliefWrap input[type=file]{
+    position: absolute;
+    left: 10px;
+    top:0;
+    bottom: 0;
+    width: 120px;
+    cursor: pointer;
+    opacity: 0;
+}
+.online_item_wrap input[type=checkbox] + label{
+    width: 20px;
+    height: 20px;
+    border:  1px solid #ddd;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+.online_item_wrap input[type=checkbox]:checked + label{
+    background: url('../table/images/icon_checkbox_S.png') no-repeat center center;
+    background-size: 20px;
+    border: none;
+}
+.online_item_wrap a:hover,.reliefWrap a:hover{
+    color: #6cc1c8;
+}
+.online_item_wrap a i,.reliefWrap a i{
+    position: relative;
+    top:2px;
+}
+.reliefWrap{
+    display: inline-block;
+    margin-left: 70px;
+}
+.reliefWrap>span{
+    display: inline-block;
+    position: relative;
+}
+.online_item_wrap .item_present_select{
+    top: 32px;
+    text-align: left;
+    left: 4px;
+    width: 95%;
+}
+.shop_amount_wrap>ul{
+    display: none;
+    position: absolute;
+    width: 120px;
+    border: 1px solid #ddd;
+    top: 35px;
+    left: 27px;
+    z-index: 1000;
+    background: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.shop_amount_wrap>ul li{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 0;
+}
+.shop_amount_wrap>ul li:hover{
+    background: #eeeef3;
+}
+.into_frame{
+    display: block;
+    left: 50%;
+    top: 50%;
+    margin-left: -225px;
+    margin-top: -105px;
+}
+#left,#right{
+    display: none;
+}
+.disclaimerBox{
+    width: 450px;
+    box-shadow: 0 0 13px rgba(0,0,0,0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -webkit-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    background: #FFFFFF;
+    padding: 20px;
+}
+a:visited,a:active{
+    color: #6cc1c8;
 }

@@ -83,6 +83,12 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_group.CORP_CODE = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_group.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="role_code != null and role_code !=''">
             AND def_group.role_code &lt; #{role_code}
         </if>
@@ -121,6 +127,12 @@
         AND def_group.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_group.corp_code = #{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_group.corp_code =#{item}
+            </foreach>
         </if>
         <if test="role_code != null and role_code !=''">
             AND def_group.role_code &lt; #{role_code}

@@ -1,33 +1,26 @@
 package com.bizvane.ishop.utils;
 
-import java.util.Date;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.StoreMapper;
-import com.bizvane.ishop.dao.UserMapper;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.parsing.SourceExtractor;
+//import com.alibaba.fastjson.JSONObject;
+
 
 /**
  * Created by lixiang on 2016/6/3.
@@ -177,6 +170,23 @@ public class WebUtils {
         return str;
     }
 
+    public static String El2Str2(String el) {
+        String str = "";
+        str = el.replace("$", "");
+        str = str.replace("*", "\\*");
+        str = str.replace("(", "\\(");
+        str = str.replace(")", "\\)");
+        str = str.replace("[", "\\[");
+        str = str.replace("]", "\\]");
+        str = str.replace("+", "\\+");
+        str = str.replace("?", "\\?");
+        str = str.replace(":","\\:");
+        str = str.replace("{","\\{");
+        str = str.replace("}","\\}");
+        str = str.replace("\"","\\\"");
+        return str;
+    }
+
     public static Map Json2Map(JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
@@ -186,7 +196,7 @@ public class WebUtils {
         Map<String, String> map = new HashMap<String, String>();
         for (int i = 0; i < array.size(); i++) {
             String info = array.get(i).toString();
-            JSONObject json = new JSONObject(info);
+            JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             screen_value = screen_value.replaceAll("'", "");
@@ -226,11 +236,11 @@ public class WebUtils {
             return null;
         }
         String jlist = jsonObject.get("tablemanager").toString();
-        com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
+        JSONArray array = JSONArray.parseArray(jlist);
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         for (int i = 0; i < array.size(); i++) {
             String info = array.get(i).toString();
-            JSONObject json = new JSONObject(info);
+            JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("column_name").toString();
             String screen_value = json.get("show_name").toString();
             map.put(screen_key, screen_value);
@@ -244,7 +254,7 @@ public class WebUtils {
         }
 
         List result = new ArrayList();
-        for (int i = 0; i < json.length(); i++) {
+        for (int i = 0; i < json.size(); i++) {
             if (json.get(i) instanceof JSONObject) {
                 result.add(Json2Map((JSONObject) json.get(i)));
             } else if (json.get(i) instanceof JSONArray) {
@@ -263,7 +273,7 @@ public class WebUtils {
         }
 
         List result = new ArrayList();
-        for (int i = 0; i < json.length(); i++) {
+        for (int i = 0; i < json.size(); i++) {
             if (json.get(i) instanceof JSONArray) {
                 result.add(Json2List((JSONArray) json.get(i)));
             } else {
@@ -368,6 +378,61 @@ public class WebUtils {
     }
 
     /**
+     * 把实体bean对象转换成JSONObject
+     *
+     * @param bean
+     * @return
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+    public static <T> JSONObject bean2JSONObject(T bean) throws IllegalArgumentException,
+            IllegalAccessException {
+        if (bean == null) {
+            return null;
+        }
+        JSONObject dbObject = new JSONObject();
+        // 获取对象对应类中的所有属性域
+        Field[] fields = bean.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            // 获取属性名
+            String varName = field.getName();
+            // 修改访问控制权限
+            boolean accessFlag = field.isAccessible();
+            if (!accessFlag) {
+                field.setAccessible(true);
+            }
+            Object param = field.get(bean);
+            if (param == null) {
+                continue;
+            } else if (param instanceof Integer) {//判断变量的类型
+                int value = ((Integer) param).intValue();
+                dbObject.put(varName, value);
+            } else if (param instanceof String) {
+                String value = (String) param;
+                dbObject.put(varName, value);
+            } else if (param instanceof Double) {
+                double value = ((Double) param).doubleValue();
+                dbObject.put(varName, value);
+            } else if (param instanceof Float) {
+                float value = ((Float) param).floatValue();
+                dbObject.put(varName, value);
+            } else if (param instanceof Long) {
+                long value = ((Long) param).longValue();
+                dbObject.put(varName, value);
+            } else if (param instanceof Boolean) {
+                boolean value = ((Boolean) param).booleanValue();
+                dbObject.put(varName, value);
+            } else if (param instanceof Date) {
+                Date value = (Date) param;
+                dbObject.put(varName, value);
+            }
+            // 恢复访问控制权限
+            field.setAccessible(accessFlag);
+        }
+        return dbObject;
+    }
+
+    /**
      * 把DBObject转换成bean对象
      *
      * @param dbObject
@@ -418,5 +483,120 @@ public class WebUtils {
 
         return strbu.toString();
     }
+
+    public static String[] store2Ts(String store_code){
+        String[] split = null;
+        if (!store_code.equals("")) {
+            split = store_code.split(",");
+        } else {
+            store_code = Common.SPECIAL_HEAD + Common.SPECIAL_HEAD + "zxcvbnmmnbvcxz" + Common.SPECIAL_HEAD + Common.SPECIAL_HEAD;
+            split = store_code.split(",");
+        }
+        for (int i = 0; i < split.length; i++) {
+            split[i] = split[i] + ",";
+        }
+        return split;
+    }
+
+
+    public static List<DBObject> IteratorToList(Iterable<DBObject> iterable){
+        List<DBObject> list = new ArrayList<DBObject>();
+        Iterator<DBObject> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+        }
+        return list;
+    }
+
+
+    public static JSONArray sortDesc(JSONArray jsonArray, final String key) {
+        JSONArray sortedJsonArray = new JSONArray();
+
+        JSONArray jsonArr = JSONArray.parseArray(jsonArray.toJSONString());
+
+        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+        for (int i = 0; i < jsonArr.size(); i++) {
+            jsonValues.add(jsonArr.getJSONObject(i));
+        }
+        Collections.sort(jsonValues, new Comparator<JSONObject>() {
+            private String KEY_NAME = key;
+
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                Double valA = 0d;
+                Double valB = 0d;
+
+                try {
+                    valA = a.getDouble(KEY_NAME);
+                    valB = b.getDouble(KEY_NAME);
+                } catch (JSONException e) {
+                    //do something
+                }
+
+                return valB.compareTo(valA);
+                //if you want to change the sort order, simply use the following:
+                //return -valA.compareTo(valB);
+            }
+        });
+
+        for (int i = 0; i < jsonArr.size(); i++) {
+            sortedJsonArray.add(jsonValues.get(i));
+        }
+        return sortedJsonArray;
+    }
+    /**
+     * 集团管理员获取企业
+     */
+    public static String getCorpCodeByCm(String session_corp,Object json_corp){
+        String corp_cm="~!@#$^&*";
+        if(null==json_corp || "".equals(String.valueOf(json_corp)) || "null".equals(String.valueOf(json_corp))){
+            String[] split = session_corp.split(",");
+            if(split.length>0){
+                corp_cm=split[0];
+            }else{
+                corp_cm="~!@#$^&*";
+            }
+        }else{
+            corp_cm=String.valueOf(json_corp);
+        }
+        return  corp_cm;
+    }
+
+    //获取()里的内容
+    public  static  List<String> getParamByRegex(String param) {
+         Pattern pattern = Pattern.compile("(\\([^\\)]+\\))");
+         List<String> list=new ArrayList<String>();
+         Matcher match = pattern.matcher(param);
+         while (match.find()) {
+             String value = match.group();
+             value=value.replaceAll("\\(","").replaceAll("\\)","");
+             list.add(value);
+         }
+         return list;
+    }
+
+    public static List<List> cutListByArray(List list,int size) throws Exception {
+        int blockSize = size;
+        List<List> lists = new ArrayList<List>();
+        if (null != list && blockSize > 0) {
+            int listSize = list.size();
+            if (listSize <= blockSize) {
+                lists.add(list);
+                return lists;
+            }
+            int batchSize = listSize / blockSize;
+            int remain = listSize % blockSize;
+            for (int i = 0; i < batchSize; i++) {
+                int fromIndex = i * blockSize;
+                int toIndex = fromIndex + blockSize;
+                lists.add(list.subList(fromIndex, toIndex));
+            }
+            if (remain > 0) {
+                lists.add(list.subList(listSize - remain, listSize));
+            }
+        }
+        return lists;
+    }
+    
 }
 

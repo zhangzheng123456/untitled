@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户行为日志</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170105">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170105">
+    <link rel="stylesheet" href="../css/staff_function.css">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <style>
+        .date_nav .border{
+            border-bottom: 5px solid #41c7db;
+        }
+        #screen_filtrate{
+            width: 640px;
+            font-size: 14px;
+            color: #888888;
+            border-radius: 10px;
+            background: #fff;
+            padding: 0 10px 20px 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            z-index: 10001;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        #screen_staff{
+            width: 740px;
+            min-height: 530px;
+            padding: 0 20px 0 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            border-radius: 5px;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            z-index: 10001;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        [v-cloak] {
+            display: none;
+        }
+        .click_bg{
+            background: #e9e9e9;
+        }
+        .click_font{
+            color:#41c7db;
+        }
+        .header_bg{
+            color: #41c7db!important;
+            /*background: #e9e9e9!important;*/
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>员工管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>功能使用分析</span>
+        </div>
+        <!--导航-->
+        <div id="nav">
+           <div class="nav_down nav_1"@click="navDomShow($event)">
+               <span class="nav_1"></span>
+            <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_1"></span></div>
+            <nav-component v-if="nav_1"@increment="functionFun($event)"></nav-component>
+           </div>
+            <div class="nav_down nav_2"@click="navDomShow($event)">
+                <span class="nav_2"></span>
+                <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_2"></span></div>
+                <my-component v-if="nav_2"@increment2="actionFun($event)"></my-component>
+            </div>
+            <div class="nav_down nav_3"@click="navDomShow($event)">
+                <span class="nav_3">请选择范围</span>
+                <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_3"></span></div>
+                <!--<nav-component v-if="nav_3"></nav-component>-->
+            </div>
+            <div class="nav_date">
+                <div style="display: inline-block"v-if="time_show">
+                    <span v-cloak>{{time_start}}</span>
+                    <span>至</span>
+                    <span v-cloak>{{time_end}}</span>
+                </div>
+                <div style="float: right;margin-left: 10px" class="nav_down nav_4"@click="navDomShow($event)"v-cloak>
+                    {{time}}
+                    <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_4"></span></div>
+                    <div id="date" v-if="nav_4">
+                        <div class="date_nav">
+                            <div class="week"@click="timeFun($event)":class="{ border: isActive_w }">周</div>
+                            <div  class="month"@click="timeFun($event)":class="{ border: isActive_m }">月</div>
+                            <div  class="year"@click="timeFun($event)":class="{ border: isActive_y}">年</div>
+                        </div>
+                        <div class="week_box"v-if="week">
+                            <div class="week_nav">
+                                <div class="week_num">
+                                    <span class="icon-ishop_8-03 week_arrow_left"@click="timeFun($event)"></span>
+                                    <b>{{year_down}}</b>
+                                    <span class="icon-ishop_8-03 week_arrow_right"@click="timeFun($event)"></span>
+                                </div>
+                            </div>
+                            <ul class="week_detail">
+                                <li id="week_id" v-for="obj in week_obj"@click="timeChange($event)":class="{ click_bg:obj.title_class}">
+                                    <div class="week_detail_w":class="{ click_font:obj.title_class}">{{obj.title}}</div>
+                                    <div class="week_detail_d">{{obj.title_date}}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class=month_box" v-if="month">
+                            <div class="month_nav">
+                                <div class="month_num">
+                                    <span class="icon-ishop_8-03 month_arrow_left"@click="timeFun($event)"></span>
+                                    <b>{{year_down}}</b>
+                                    <span class="icon-ishop_8-03 month_arrow_right"@click="timeFun($event)"></span>
+                                </div>
+                                <ul class="month_detail">
+                                    <li id="month_id"v-for="val in month_arr"@click="timeChange($event)":class="{ click_font:val.key,click_bg:val.key }">{{val.val}}</li>
+                                    <!--<li>-->
+                                        <!--<div class="month_detail_w">201704017年第3周</div>-->
+                                    <!--</li>-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="year_box"v-if="year">
+                            <ul class="year_detail">
+                                <li id="year_id"v-for="val in year_arr"@click="timeChange($event)":class="{ click_font:val.key,click_bg:val.key }">{{val.val}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--chart-->
+        <div id="chart_box">
+           <div class="chart_title">
+               <label></label>
+               <span>功能使用分析图</span>
+           </div>
+           <div id="chart"></div>
+           <div id="chart_loading"v-if="chart_loading">
+               <div id="chart_text">加载中，请稍候...</div>
+           </div>
+            <div class="text" id="text" style="position: absolute;top: 135px;width: 100%;text-align: center;display: none;">暂无数据</div>
+        </div>
+        <!--table-->
+        <div id="table">
+            <div class="chart_title">
+                <label></label>
+                <span>功能使用分析表</span>
+                <div class="export_table"@click="exportLoading">导出表格</div>
+            </div>
+            <div class="table_box">
+                <table class="table_top">
+                    <thead>
+                      <tr>
+                          <th>序号</th>
+                          <th>功能</th>
+                          <th>事件</th>
+                          <th>人员</th>
+                          <th>时间段</th>
+                          <th>事件次数</th>
+                      </tr>
+                    </thead>
+                </table>
+                <div class="table_below"@scroll="scrollFun($event)">
+                     <table>
+                         <tbody>
+                           <tr v-for="(obj,index) in tableData"v-cloak>
+                               <td>{{ index+1}}</td>
+                               <td>{{obj.app_function}}</td>
+                               <td>{{obj.app_action_name}}</td>
+                               <td>{{obj.user_name}}</td>
+                               <td>{{obj.event_time}}</td>
+                               <td>{{obj.event_count}}</td>
+                           </tr>
+                         </tbody>
+                     </table>
+                    <div class="data_no"v-if="data_no">
+                        暂无数据
+                    </div>
+                </div>
+                 <!--遮罩-->
+                <div id="loading"v-if="loading_show">
+                    <div id="text_loading">加载中，请稍候...</div>
+                </div>
+            </div>
+        </div>
+        <!--弹窗-->
+        <div  id="screen_filtrate"v-if="nav_3"v-cloak>
+            <div class="screen_head">筛选导购<i class="icon-ishop_6-12" id="screen_wrapper_close"@click="rangeFun"></i></div>
+            <div class="contion">
+                    <div class="contion_input">
+                         <label>所属品牌</label><input :value="brand_input" class="input" type="text"readonly="true">
+                         <span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>
+                    </div>
+                    <div class="contion_input">
+                        <label>所属区域</label><input :value="area_input"class="input" type="text"readonly="true">
+                        <span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>
+                    </div>
+                    <div class="contion_input">
+                        <label>所属店铺</label><input :value="store_input"class="input" type="text"readonly="true">
+                        <span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>
+                    </div>
+                    <div class="contion_input">
+                        <label>所属导购</label><input :value="guide_input"class="input" type="text"readonly="true">
+                        <span class="icon_r icon-ishop_8-03" @click="filtrateFun($event)"></span>
+                    </div>
+            </div>
+            <div class="ensure"><span @click="confirm($event)">确定</span></div>
+        </div>
+        <!--筛选-->
+        <filtrate-component :message-title="message_title":post-url="component_url":start-param="post_start_param" :message-obj="message_obj" @increment3="filtrateReturnFun"@increment="filtrateFunMore"v-if="filtrate"></filtrate-component>
+        <!--提示框-->
+        <div class="tk_vue" id="export_consumeExport" v-if="export_show"v-cloak>
+            <span class="icon-ishop_6-12" @click="exportLoading"></span>
+            <p style="height: 120px;line-height: 120px;">是否导出表格?</p>
+            <div class="btn">
+                <em class="cancel" @click="exportLoading">取消</em>
+                <em class="album_enter"@click="exportFun($event)" >确认</em>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script src="../js/staff/echarts.js"></script>-->
+<script src="../js/staff/echarts.common.min.js"></script>
+<script src="../js/staff/vue.js"></script>
+<script src="/js/loading.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+<script src="../js/staff/vue-resource.js"></script>
+<script src="../js/staff/staff_funciton.js?20170807"></script>
+<script>
+    $(".table_below").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"5px",
+        cursorborderradius:"10px"});
+</script>
+</body>
+</html>

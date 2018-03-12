@@ -6,20 +6,21 @@
     <title>新增会员参数</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="../css/style.css?201715" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
+    <link href="../css/style.css?20171225" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <style>
         body{
             margin-top:81px;
         }
+
     </style>
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_vip_param">会员参数</span><i class="icon-ishop_8-03"></i><lable>新增会员参数</lable></div>
+    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_vip_param">拓展参数定义</span><i class="icon-ishop_8-03"></i><lable>新增拓展参数</lable></div>
     <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
         <form class="conpany_msg">
             <div>
@@ -38,29 +39,34 @@
                 <div style="padding-left:125px" class="hint"><div  hintinfo="参数为必填项,不能为空!"></div></div>
             </div>
             <div>
-                <label style="color:#c26555;">参数名称*</label><input type="text" id="PARAM_DESC" verify="Empty" maxlength='7'>
+                <label style="color:#c26555;">参数名称*</label><input type="text" id="PARAM_DESC" verify="Empty" maxlength='20'>
                 <div style="padding-left:125px" class="hint"><div  hintinfo="参数名称为必填项,不能为空!"></div></div>
+            </div>
+            <div>
+                <label>参数属性</label><input type="text" id="param_attr" data-id="" readonly/>
+                <ul class="param_attr">
+                    <li data-id="phone">手机号</li>
+                    <li data-id="sex">性别</li>
+                    <li data-id="email">邮箱</li>
+                    <li data-id="ID_number">身份证号</li>
+                    <li data-id="zip_code">邮编</li>
+                    <li data-id="">空</li>
+                </ul>
             </div>
             <div>
                 <label style="color:#c26555;">参数类型*</label><input type="text"  id="PARAM_TYPE"  readonly/>
                 <ul class="paramType">
                     <li>自定义</li>
-                    <li>选择列表</li>
+                    <li>单选</li>
+                    <li>多选框</li>
                     <li>时间</li>
                     <li>长文本</li>
                     <li>分割线</li>
                 </ul>
             </div>
             <div>
-                <label>参数值</label><input type="text" id="PARAM_VALUE" placeholder="字符串以逗号分隔" maxlength='200'/>
+                <label>参数值</label><input type="text" id="PARAM_VALUE" placeholder="字符串以英文状态的逗号分隔" maxlength='200'/>
             </div>
-            <!--<div>-->
-                <!--<span><label>是否必填</label><input value="是" type="text" id="is_fill" readonly/></span>-->
-                <!--<ul class="is_fill">-->
-                    <!--<li>是</li>-->
-                    <!--<li>否</li>-->
-                <!--</ul>-->
-            <!--</div>-->
             <div>
                 <span><label>参数分类</label><input type="text" id="param_class" maxlength='20'/></span>
             </div>
@@ -80,6 +86,9 @@
             <div>
                 <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" checked="true" class="check" id="is_active"><label for="is_active"></label></em></span>
             </div>
+            <div>
+                <span><label>是否必填</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="require"><label for="require"></label></em></span>
+            </div>
         </form>
     </div>
 </div>
@@ -88,14 +97,13 @@
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
 <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-<script src="../js/insidePostRequire.js?201715"></script>
-<script src="../js/artDialog/jquery.artDialog.js?201715"></script>
-<script src="../js/loading.js?201715"></script>
-<script src="../js/artDialog/plugins/iframeTools.js?201715"></script>
-<script src="../js/vip/vip_param_operate.js?201715"></script>
+<script src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script src="../js/loading.js?2017040170331"></script>
+<script src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script src="../js/vip/vip_param_operate.js?20180119"></script>
 <!-- 带搜索的下拉框 -->
-<script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>
-<script type="text/javascript" src="../js/moni_select.js?201715"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
 </body>
-
 </html>

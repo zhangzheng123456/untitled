@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.ScheduleJobMapper;
 import com.bizvane.ishop.entity.ScheduleJob;
 import com.bizvane.ishop.service.ScheduleJobService;
@@ -12,6 +13,8 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.smartcardio.CommandAPDU;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,7 +63,12 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     }
 
     public int insert(ScheduleJob scheduleJob) throws Exception{
-        ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+        Date a = ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+        if (a == null){
+            scheduleJob.setDescription("创建失败");
+        }else {
+            scheduleJob.setGmt_create(Common.DATETIME_FORMAT.format(a));
+        }
         return scheduleJobMapper.insertScheduleJob(scheduleJob);
     }
 
@@ -69,8 +77,16 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
         scheduleJobMapper.updateScheduleJob(scheduleJob);
     }
 
-    public void updateSchedule(String job_name,String job_group) throws Exception{
-        scheduleJobMapper.updateStatus(job_name, job_group);
+    public void updateSchedule(String job_name,String job_group) {
+        try {
+            ScheduleJob scheduleJob = selectScheduleByJob(job_name,job_group);
+            if (scheduleJob != null){
+                scheduleJobMapper.updateStatus(job_name, job_group);
+                ScheduleUtils.deleteScheduleJob(scheduler, job_name, job_group);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void delUpdate(ScheduleJob scheduleJob) throws Exception{
@@ -85,10 +101,12 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     public void delete(String job_name,String job_group) throws Exception{
         ScheduleJob scheduleJob = scheduleJobMapper.selectScheduleByJob(job_name,job_group);
-        //删除运行的任务
-        ScheduleUtils.deleteScheduleJob(scheduler, scheduleJob.getJob_name(), scheduleJob.getJob_group());
-        //删除数据
-        scheduleJobMapper.deleteScheduleJob(scheduleJob.getSchedule_job_id());
+        if (scheduleJob != null){
+            //删除运行的任务
+            ScheduleUtils.deleteScheduleJob(scheduler, scheduleJob.getJob_name(), scheduleJob.getJob_group());
+            //删除数据
+            scheduleJobMapper.deleteScheduleJob(scheduleJob.getSchedule_job_id());
+        }
     }
 
     public void runOnce(int scheduleJobId) throws Exception{
@@ -118,6 +136,21 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public ScheduleJob selectScheduleByJob(String job_name, String job_group)throws Exception {
         ScheduleJob scheduleJob = scheduleJobMapper.selectScheduleByJob(job_name,job_group);
         return scheduleJob;
+    }
+
+    public int deleteScheduleByName(String job_name)throws Exception {
+        return scheduleJobMapper.deleteScheduleByName(job_name);
+    }
+
+    public int deleteScheduleByGroup(String job_group)throws Exception {
+        List<ScheduleJob> scheduleJobs = scheduleJobMapper.selectJobByGroup(job_group);
+        for (int i = 0; i < scheduleJobs.size(); i++) {
+            //删除运行的任务
+            ScheduleUtils.deleteScheduleJob(scheduler, scheduleJobs.get(i).getJob_name(), scheduleJobs.get(i).getJob_group());
+            //删除数据
+            scheduleJobMapper.deleteScheduleJob(scheduleJobs.get(i).getSchedule_job_id());
+        }
+        return scheduleJobs.size();
     }
 
     /**

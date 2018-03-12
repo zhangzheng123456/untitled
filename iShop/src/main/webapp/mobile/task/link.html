@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/config.js?20170410"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script>
+    window.addEventListener('pageshow', function(e) {
+        // 通过persisted属性判断是否存在 BF Cache
+        if (e.persisted) {
+            location.reload();
+        }
+    });
+    var oc = new ObjectControl();
+    var theRequest={};
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    var param=theRequest;
+    oc.postRequire("post",ajaxUrl.getShareUrl,"", param, function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            var url=msg.share_url;
+            window.location.replace(url);
+        }else if(data.code="-1"){
+            document.write(data.message==""?"操作失败":data.message)
+        }
+    })
+</script>
+</body>
+</html>

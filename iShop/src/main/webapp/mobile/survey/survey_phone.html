@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>问卷</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/survey.css?v=1.0.7">
+    <link rel="stylesheet" type="text/css" href="../../js/artDialog/skins/default.css?2017040170830">
+    <script src="js/flexible.js"></script>
+</head>
+<body>
+    <div class="survey_wrap" id="survey_wrap">
+        <span class="font_weight survey_name" id="survey_name">问卷名称</span>
+        <span class="survey_desc" id="survey_desc">说明说明说明说明说明说明说明说明说明说明说明</span>
+        <div id="survey_template_content">
+            <!--<div data-type="radio" class="survey_content_box">-->
+                <!--<span class="font_weight">1.</span><span class="is_fill">*必填</span><span class="font_weight question_name">请选择你喜欢的颜色</span>-->
+                <!--<ul>-->
+                    <!--<li><input type="radio" id="radio_11" name="radio"><label-->
+                            <!--for="radio_11"></label><span><span>选项</span></span></li>-->
+                    <!--<li><input type="radio" id="radio_21" name="radio"><label-->
+                            <!--for="radio_21"></label><span><span>选项</span></span></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div data-type="checkbox" class="survey_content_box">-->
+                <!--<span class="font_weight">2.</span><span class="is_fill">*必填</span><span class="font_weight question_name">请选择你喜欢的颜色</span>-->
+                <!--<ul>-->
+                    <!--<li><input type="checkbox" id="check_1"><label for="check_1"></label><span><span>选项</span></span></li>-->
+                    <!--<li><input type="checkbox" id="check_2"><label for="check_2"></label><span><span>选项</span></span></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div data-type="input" class="survey_content_box">-->
+                <!--<span class="font_weight">2.</span><span class="is_fill"></span><span class="font_weight question_name">请选择你喜欢的颜色</span>-->
+                <!--<ul>-->
+                    <!--<li><input type="text" class="survey_input"></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div data-type="title" class="survey_content_box">-->
+                <!--<span class="font_weight"></span><span class="is_fill"></span><span class="font_weight question_name">分段标题</span>-->
+            <!--</div>-->
+            <!--<div data-type="grade" class="survey_content_box">-->
+                <!--<span class="font_weight">1.</span><span class="is_fill"></span><span class="font_weight question_name">请选择你喜欢的颜色</span>-->
+                <!--<ul>-->
+                    <!--<li class="grade_star"></li>-->
+                    <!--<li class="grade_star"></li>-->
+                    <!--<li class="grade_star"></li>-->
+                    <!--<li class="grade_star"></li>-->
+                    <!--<li class="grade_star"></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <form>
+        <div class="footer">
+            <span id="submit">完成并提交</span>
+        </div>
+    </form>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="../../js/insidePostRequire.js"></script>
+    <script src="../../js/loading.js?2017040170331"></script>
+    <script>
+        var theRequest={};
+        var oc = new ObjectControl();
+        function geUrl(){
+            var ref = $.Deferred();
+            var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                var strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+                ref.resolve(theRequest.questionId);
+            }
+            return ref
+        }
+        function geSurvey(id) {
+            var param = {"id":id};
+            oc.postRequire("post","/questionnaire/select","",param,function (data) {
+                if(data.code == 0){
+                    var msg = JSON.parse(data.message);
+                    var templateArr = JSON.parse(msg.template);
+                    var template = '';
+                    var n = 1;
+                    var url = msg.bg_url;
+                    url != '' ? $("#survey_wrap").css({"background":"url("+url+") no-repeat","background-size":"cover"}) : $("#survey_wrap").css("background","#fff");
+                    $("#survey_name").text(msg.title);
+                    $("#survey_desc").html(msg.illustrate.replace(/\n/g,'<br />'));
+                    for(var i = 0;i < templateArr.length; i++){
+                        var type = templateArr[i].type;
+                        var check = templateArr[i].check == "true" ? "*必填" : "";
+                        if(type == "radio"){
+                            var option = templateArr[i].options;
+                            var li = '';
+                            for(var j = 0;j < option.length;j++){
+                                li += '<li><input type="radio" id="radio'+i+j+'" name="radio'+i+'"><label for="radio'+i+j+'"></label><span><span>'+option[j]+'</span></span></li>'
+                            }
+                            template += '<div class="survey_content_box" data-type="radio">'
+                                + '<span class="font_weight">'+n+'.</span><span class="is_fill">'+check+'</span><span class="font_weight question_name">'+templateArr[i].name+'</span>'
+                                + '<ul>'+li+ '</ul></div>';
+                        }else if(type == "checkbox"){
+                            var option = templateArr[i].options;
+                            var li = '';
+                            for(var j = 0;j < option.length;j++){
+                                li += '<li><input type="checkbox" id="check'+i+j+'" name="radio"><label for="check'+i+j+'"></label><span><span>'+option[j]+'</span></span></li>'
+                            }
+                            template += '<div class="survey_content_box" data-type="checkbox">'
+                                + '<span class="font_weight">'+n+'.</span><span class="is_fill">'+check+'</span><span class="font_weight question_name">'+templateArr[i].name+'</span>'
+                                + '<ul>'+li+'</ul></div>';
+                        }else if(type == "input"){
+                            template += '<div class="survey_content_box" data-type="input">'
+                                + '<span class="font_weight">'+n+'.</span><span class="is_fill">'+check+'</span><span class="font_weight question_name">'+templateArr[i].name+'</span>'
+                                + '<ul><li><input type="text" class="survey_input"></li></ul></div>'
+                        }else if(type == "grade"){
+                            template += '<div class="survey_content_box" data-type="grade">'
+                                + '<span class="font_weight">'+n+'.</span><span class="is_fill">'+check+'</span><span class="font_weight question_name">'+templateArr[i].name+'</span>'
+                                + '<ul><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li><li class="grade_star"></li></ul></div>'
+                        }else if(type == "title"){
+                            template += '<div class="survey_content_box" data-type="title">'
+                                + '<span class="font_weight"></span><span class="is_fill">'+check+'</span><span class="font_weight question_name">'+templateArr[i].name+'</span></div>'
+                        }
+                        $("#survey_template_content").html(template);
+                        if(type != 'title'){
+                            n++;
+                        }else {
+                            n = 1;
+                        }
+                    }
+                }
+            });
+        }
+        function frame(){
+            $('.frame').remove();
+            $('.survey_wrap').append('<div class="frame"></div>');
+            $(".frame").animate({opacity:"1"},1000);
+            $(".frame").animate({opacity:"0"},1000);
+            setTimeout(function(){
+                $(".frame").hide();
+            },2000);
+        }
+        $(function () {
+            geUrl().then(function (id) {
+                geSurvey(id);
+            });
+            console.log(theRequest);
+            $("#survey_template_content").on("touchstart",".grade_star",function () {
+                var index = $(this).index();
+                var indexs = index+1;
+                $(this).parent().find("li:lt("+indexs+")").addClass("choosed_star");
+                $(this).parent().find("li:gt("+index+")").removeClass("choosed_star");
+            });
+            $("#submit").click(function () {
+                var result = [];
+                var is_empty = false;
+                whir.loading.add("",0.5);
+                $("#survey_template_content .survey_content_box").map(function (i,item) {
+                    var obj  = {};
+                    var type = $(item).attr("data-type");
+                    obj.name = $(item).find(".question_name").text();
+                    obj.type = type;
+                    obj.check = $(item).find(".is_fill").text() == "" ? "false" : "true";
+                    if(type == 'radio'){
+                        obj.value = $(item).find("input:checked").siblings('span').text();
+                    }else if(type == 'checkbox'){
+                        var li = $(item).find("input:checked");
+                        var val = $(li[0]).siblings('span').text();
+                        for(var j=1;j<li.length;j++){
+                            if(j<li.length){
+                                val += ","+$(li[j]).siblings('span').text()
+                            }
+                        }
+                        obj.value = val;
+                    }else if(type == 'input'){
+                        obj.value = $(item).find('.survey_input').val();
+                    }else if(type == 'title'){
+                        obj.value = ''
+                    }else {
+                        obj.value = $(item).find('.choosed_star').length.toString();
+                    }
+                    if(obj.check == 'true' && obj.value == ''){
+                        is_empty = true;
+                    }
+                    result.push(obj);
+                });
+                if(is_empty){
+                    frame();
+                    $('.frame').html("您有必填的选项还未完成");
+                    whir.loading.remove();
+                    return ;
+                }
+                var param = {};
+                param.corp_code = theRequest.corp_code;
+                param.app_id = theRequest.app_id;
+                param.open_id = theRequest.open_id;
+                param.task_id = theRequest.id;
+                param.card_no = theRequest.card_no;
+                param.result = result;
+                oc.postRequire("post","/vipTask/mobile/questionNaire","",param,function (data) {
+                    if(data.code == 0){
+                        window.location.href="../task/task_list.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&corp_code="+theRequest.corp_code;
+                    }else {
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: data.message
+                        });
+                    }
+                    whir.loading.remove();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

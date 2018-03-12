@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left = ($(window).width() - $("#tk").width()) / 2;//弹框定位的left值
-var tp = ($(window).height() - $("#tk").height()) / 2;//弹框定位的top值
 var inx = 1;//默认是第一页
 var pageNumber = 1;//删除的默认的第一页;
 var pageSize = 10;//默认传的每页多少行
@@ -86,12 +84,13 @@ $("#empty").click(function () {
     param["searchValue"]="";
     GET(inx, pageSize);
 });
-function setPage(container, count, pageindex, pageSize, funcCode) {
+function setPage(container, count, pageindex, pageSize, funcCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize = pageSize;
+    var total = total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -144,7 +143,7 @@ function setPage(container, count, pageindex, pageSize, funcCode) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 " + count + "页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function () { //点击上一页
             if (inx == 1) {
                 return false;
@@ -191,6 +190,7 @@ function dian(a, b) {//点击分页的时候调什么接口
     }
 }
 function superaddition(data, num) {//页面加载循环
+    console.log(data);
     if (data.length == 1 && num > 1) {
         pageNumber = num - 1;
     } else {
@@ -216,7 +216,11 @@ function superaddition(data, num) {//页面加载循环
         }
         var goods_image="";
         if(data[i].goods_image.indexOf("http")!==-1){
-            goods_image=data[i].goods_image;
+            if(data[i].goods_image.indexOf("products-image.oss-cn-hangzhou.aliyuncs.com")!==-1){
+                goods_image=data[i].goods_image+"@100h_100w_1e_1c";
+            }else {
+                goods_image=data[i].goods_image;
+            }
         }
         if(data[i].goods_image.indexOf("http")==-1){
              goods_image="../img/goods_default_image.png";
@@ -227,9 +231,29 @@ function superaddition(data, num) {//页面加载循环
                 var code=titleArray[j].column_name;
                 if(titleArray[j].column_name=="goods_image"){
                     TD+="<td><img src='" + goods_image + "' alt=''></td>";
-                }else{
+                }else if(titleArray[j].column_name=="goods_price"){
+                    var standard="";
+                    if(data[i].standard!==""){
+                        standard=JSON.parse(data[i].standard).product_detail[0].PRICE_SUG;
+                        console.log(standard);
+                    }
+                    var price="";
+                    if(data[i][code]==""){
+                        if(standard==""){
+                            price="暂无";
+                        }
+                        if(standard!==""){
+                            price=standard;
+                        }
+                    }
+                    if(data[i][code]!==""){
+                        price=data[i][code];
+                    }
+                    TD+="<td><span title='"+price+"'>"+price+"</span></td>";
+                }else {
                     TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 }
+
             })(c)
         }
         $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -260,9 +284,11 @@ function jurisdiction(actions) {
         } else if (actions[i].act_name == "edit") {
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="output"){
-            $("#more_down").append("<div id='leading_out'>导出</div>");
+            $("#more_down").append("<div id='leading_out' style='font-size: 12px;'>导出</div>");
         }else if(actions[i].act_name=="input"){
-            $("#more_down").append("<div id='guide_into'>导入</div>");
+            $("#more_down").append("<div id='guide_into' style='font-size: 12px;'>导入</div>");
+        }else  if(actions[i].act_name=="addImgs"){
+            $("#more_down").append("<div id='addImgs' style='font-size: 12px;'>批量公开图片</div>");
         }
     }
     if($('#jurisdiction li').length==0){
@@ -348,10 +374,11 @@ function GET(a, b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list = list.list;
             superaddition(list, pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode,total);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -381,7 +408,7 @@ function jumpBianse() {
     })
     //点击新增时页面进行的跳转
     $('#add').click(function () {
-        $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_add.html");
+
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function () {
@@ -418,6 +445,7 @@ function jumpBianse() {
         return_jump["_param"] = JSON.stringify(_param)//筛选定义的值
         return_jump["list"] = list;//筛选的请求的list;
         return_jump["pageSize"] = pageSize;//每页多少行
+        sessionStorage.removeItem("standardList");
         sessionStorage.setItem("return_jump", JSON.stringify(return_jump));
         sessionStorage.setItem("id", id);
         if(id == "" || id == undefined){
@@ -439,7 +467,6 @@ function jumpBianse() {
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width": +l + "px", "height": +h + "px"});
-        $("#tk").css({"left": +left + "px", "top": +tp + "px"});
     })
 }
 //鼠标按下时触发的收索
@@ -474,6 +501,7 @@ function POST(a, b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -493,7 +521,7 @@ function POST(a, b) {
             filtrate = "";
             list = "";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode,total);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -508,6 +536,38 @@ $("#X").click(function () {
 $("#cancel").click(function () {
     $("#p").hide();
     $("#tk").hide();
+})
+$("#more").on("click","#addImgs",function(){
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    var param={};
+    if(tr.length==0){
+        frame();
+        $('.frame').html('请先选择');
+        return;
+    }else if(tr.length>0){
+        for(var i=tr.length-1,ID="";i>=0;i--){
+            var r=$(tr[i]).attr("id");
+            if(i>0){
+                ID+=r+",";
+            }else{
+                ID+=r;
+            }
+        }
+        param["id"]=ID;
+        whir.loading.add("", 0.5);//加载等待框
+        oc.postRequire("post", "/goods/addOperateImages", "0", param, function (data) {
+            if(data.code=="0"){
+                $('#table').find('.tr').each(function(index,val){
+                    $(val).trigger('click');
+                });
+                frame();
+                $('.frame').html('公开图片成功');
+            }else if(data.code=="-1"){
+                alert(data.message);
+            }
+            whir.loading.remove();//移除加载框
+        })
+    }
 })
 //弹框删除关闭
 $("#delete").click(function () {
@@ -599,9 +659,6 @@ function clearAll(name) {
 $("#more_down").on("click","#leading_out",function () {
     var l = $(window).width();
     var h = $(document.body).height();
-    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
-    $(".file").css({"left":+left+"px","top":+tp+"px"});
     $("#p").show();
     $("#p").css({"width": +l + "px", "height": +h + "px"});
     $('.file').show();
@@ -609,7 +666,7 @@ $("#more_down").on("click","#leading_out",function () {
     var param = {};
     param["function_code"] = funcCode;
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("post", "/list/ getCols", "0", param, function (data) {
+    oc.postRequire("post", "/list/getCols", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var message = JSON.parse(message.tableManagers);
@@ -662,9 +719,10 @@ $("#file_submit").click(function(){
             var message = JSON.parse(data.message);
             var path = message.path;
             var path = path.substring(1, path.length - 1);
-            $('#download').html("<a href='/" + path + "'>下载文件</a>");
-            $('#download').addClass("download");
-            $('#file_submit').hide();
+            $("#enter").html("<a href='/"+path+"'>下载文件</a>");
+            $(".file").hide();
+            $("#code_ma").show();
+            // $('#file_submit').hide();
             $('#download').show();
             //导出关闭按钮
             $('#file_close').click(function () {
@@ -681,6 +739,14 @@ $("#file_submit").click(function(){
         }
         whir.loading.remove();//移除加载框
     })
+})
+$("#dao").click(function(){
+    $("#p").hide();
+    $("#code_ma").hide();
+})
+$("#code_q").click(function(){
+    $("#p").hide();
+    $("#code_ma").hide();
 })
 //导出关闭按钮
 $('#file_close').click(function () {
@@ -868,6 +934,7 @@ function filtrates(a, b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -880,7 +947,7 @@ function filtrates(a, b) {
                 superaddition(list, pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode,total);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -918,3 +985,81 @@ $("#input-txt").keydown(function() {
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();
 })
+$("#jurisdiction").on("mouseover","#add",function(){
+    $(".add").show();
+})
+$("#jurisdiction").on("mouseout","#add",function(){
+    $(".add").hide();
+})
+$(".add").mouseover(function(){
+    $(".add").show();
+})
+$(".add").mouseout(function(){
+    $(".add").hide();
+})
+//手动输入商品编号
+$("#input_goods_num").click(function(){
+    whir.loading.add("mask", 0.5);//加载等待框
+    $(".batchbomb").show();
+})
+//手动添加商品
+$("#manually_add").click(function(){
+    sessionStorage.removeItem("standardList");
+    sessionStorage.removeItem("id");
+    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_add.html");
+})
+//关闭
+$("#close_batchbomb").click(function(){
+    $(".batchbomb").hide();
+    whir.loading.remove();//移除加载框
+})
+//取消
+$("#batchbomb_return").click(function(){
+    $(".batchbomb").hide();
+    whir.loading.remove();//移除加载框
+});
+//点确定按钮
+$("#batchbomb_que").click(function(){
+    var param={};
+    var corp_code=$("#OWN_CORP").val();
+    var product_code=$("#product_code").val();
+    param["corp_code"]=corp_code;
+    param["product_code"]=product_code;
+    oc.postRequire("post","/goods/getProductDetail","",param, function(data){
+        var message=data.message;
+        var goodsParam={"corp_code":corp_code,"message":message};
+        sessionStorage.setItem("standardList",JSON.stringify(goodsParam));
+        var product_detail=JSON.parse(message).product_detail;
+        if(product_detail.length==0){
+            $(".batchbomb").hide();
+            frame();
+            $('.frame').html('该编号下没有信息');
+            whir.loading.remove();//移除加载框
+            return;
+        }else if(product_detail.length>0){
+            $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_add.html");
+        }
+    })
+})
+function getcorplist(){
+    var corp_command="/user/getCorpByUser";
+    oc.postRequire("post", corp_command,"", "", function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            var corp_html='';
+            for(var i=0;i<msg.corps.length;i++){
+                corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
+            }
+            $("#OWN_CORP").append(corp_html);
+            $('#OWN_CORP').searchableSelect();
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock:true,
+                cancel: false,
+                content: data.message
+            });
+        }
+    });
+}
+getcorplist();

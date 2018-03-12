@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>秀搭管理</title>
+    <link rel="stylesheet" href="../table/css/inner.css?201704070331">
+    <link rel="stylesheet" href="../css/font_style.css?201704070331">
+    <style>
+        #sxk .isActive_select2 .isActive_select_down li {
+            width: 44px;
+        }
+        .tip{
+            min-width: 370px;
+            min-height: 80px;
+            background: rgba(74,95,124,0.8);
+            position: absolute;
+            z-index: 10003;
+            border-radius: 5px;
+            color: #fff;
+            text-align: center;
+            line-height: 80px;
+            box-shadow: 0px 3px 13px rgba(51, 56, 72,0.53);
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+        }
+        [v-cloak] {
+            display: none;
+        }
+        .tip_delete{
+            width: 280px;
+            height: 180px;
+            background-color: #fff;
+            position: absolute;
+            z-index: 9999;
+            left: 50%;
+            text-align: center;
+            color: #888;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            top:50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+        }
+        .tip_delete span {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .tip_delete p {
+            height: 140px;
+            line-height: 140px;
+            text-align: center;
+            font-size: 14px;
+            margin: 0;
+        }
+        .tip_delete p i {
+            color: #cd706e;
+            font-size: 17px;
+            vertical-align: middle;
+            line-height: 140px;
+            margin-right: 10px;
+        }
+        .tip_delete .btn {
+            padding: 0;
+        }
+        .tip_delete .btn .cancel {
+            background-color: #e8e8e8;
+            color: #888;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .tip_delete .btn .delete {
+            background-color: #cd706e;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+        .tip_delete .btn em {
+            display: inline-block;
+            font-style: normal;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .bg_odd{
+            background-color: rgb(244, 244, 244);
+        }
+        .bg_even{
+            background-color: rgb(232, 232, 232);
+        }
+    </style>
+</head>
+<body>
+<div class="content"id="content">
+    <div class="con_table" id="con_table">
+        <!-- 标题-->
+        <div class="title">
+            <span>商品管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>秀搭类型</span>
+        </div>
+        <!-- 动作-->
+        <action-template :action-arr="jurisdiction"@increment2="interactAction"@increment3="interactDelete"></action-template>
+        <!-- 列表-->
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input @click="checkFun" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: center;width: 50px" id="tableOrder">序号</th>
+                    <th v-for=" val in theadArr">{{val}}</th>
+                </tr>
+                </thead>
+                <tbody v-cloak>
+                    <tr v-for="(val,index) in rows" :class="index%2==0?'bg_eved':'bg_odd'"@dblclick="jumpFun($event,val.id)">
+                        <td width="50px;" style="text-align: left;"><div class="checkbox">
+                            <input type="checkbox" value="" name="test" title="全选/取消" class="check" :id="val.id">
+                            <label :for="val.id"></label></div></td>
+                        <td>{{index+1}}</td>
+                        <td><span :title="val.shopmatch_type">{{val.shopmatch_type}}</span></td>
+                        <td><span :title="val.type">{{val.type}}</span></td>
+                        <td><span :title="val.corp_name">{{val.corp_name}}</span></td>
+                        <td><span :title="val.modified_date">{{val.modified_date}}</span></td>
+                        <td><span :title="val.modifier">{{val.modifier}}</span></td>
+                        <td><span :title="val.isactive">{{val.isactive=='Y'?'是':'否'}}</span></td>
+                    </tr>
+        </tbody>
+        </table>
+    </div>
+    <!-- 页码-->
+    <page-template  :index="pageIndex" :record="pageRecord":size="pageSize" @increment="interact" @increment3="interactChange"></page-template>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+    <div class="tip"v-if="tip"v-cloak>
+        {{tipText}}
+    </div>
+    <div class="tip_delete"v-if="tip_delete"v-cloak>
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+        <div class="btn">
+            <em class="cancel" @click="tip_delete=!tip_delete">取消</em>
+            <em class="delete"@click="deleteFun">删除</em>
+        </div>
+    </div>
+</div>
+<template id="action">
+    <div class="action">
+        <div class="action_l">
+            <ul id="jurisdiction">
+                <li v-for="(val,index) in jurisdiction":data-role="val" :class="{ 'bg': index%2!==0}"@click="actionFun">
+                    <a  href="javascript:void(0);"><span :class="index==0?'icon-ishop_6-01':index==1?'icon-ishop_6-03':'icon-ishop_6-02'"></span>{{val | act}}</a>
+                </li>
+            </ul>
+            <ul>
+                <li class="li">
+                    <input type="text" class="input"v-model="search"  @keyup.enter="submit" placeholder="类型名称">
+                    <i class="icon-ishop_3-05" @click="submit"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="action_r">
+            <ul>
+                <li id="filtrate">
+                    <span class="icon-ishop_6-05"></span>
+                    筛选
+                </li>
+                <li class="bg">
+                    <span class="icon-ishop_6-07"></span>
+                    刷新
+                </li>
+                <li id="more">
+                    <span class="icon-ishop_6-08"></span>
+                    更多
+                    <div class="more_down" id="more_down">
+                        <!--<div id="leading_out">导出</div>-->
+                        <!--<div id="guide_into">导入</div>-->
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+<template id="page">
+    <div class="foot">
+        <ul>
+            <li class="foot-jum">
+                <span>跳转至</span>
+                <input class="input-txt"type="text" value=""v-model="changePage">
+                <em>页</em>
+            </li>
+            <li class="foot-num" >
+                <ul id="foot-num" @click="changeFun" v-html="pageNumber">
+                </ul>
+            </li>
+            <li class="foot-sum">
+                <div class="page_p">
+                    <input type="text" value="10行/页" class="page_row" @click="listShow=!listShow" readonly="readonly">
+                    <ul class="liebiao"v-if="listShow"@click="changeRow">
+                        <li id="10">10行/页</li>
+                        <li id="30">30行/页</li>
+                        <li id="50">50行/页</li>
+                        <li id="100">100行/页</li>
+                    </ul>
+                    <span class="icon-ishop_8-02 icon"></span>
+                </div>
+                <span class="zy">共{{pages}}页</span>
+            </li>
+        </ul>
+    </div>
+</template>
+<script src="../table/js/jquery.min.js"></script>
+<script src="../js/staff/vue.js"></script>
+<script src="../js/staff/vue-resource.js"></script>
+<script src="../js/loading.js?201704070331"></script>.
+<!--<script>-->
+    <!--var pageTemplate=Vue.extend({-->
+        <!--template: '#page'-->
+        <!--,data:function(){-->
+            <!--return {-->
+                <!--pageNumber:''//节点-->
+                <!--,changePage:1//页数输入-->
+                <!--,pageIndex:this.index-->
+                <!--,listShow:false//切换行数-->
+                <!--,pageSize:10//页面大小-->
+                <!--,pages:Math.ceil(this.record/this.size)//总页数-->
+            <!--}-->
+        <!--}-->
+        <!--,props:['record','index','size']-->
+        <!--,methods:{-->
+            <!--setPage:function(count,index){-->
+                <!--var count = count;-->
+                <!--var pageindex =index;-->
+                <!--var a = [];-->
+                <!--//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....-->
+                <!--if (pageindex == 1) {-->
+                    <!--a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";-->
+                <!--} else {-->
+                    <!--a[a.length] = "<li><span  class=\"icon-ishop_4-01\"></span></li>";-->
+                <!--}-->
+                <!--function setPageList() {-->
+                    <!--if (pageindex == i) {-->
+                        <!--a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";-->
+                    <!--} else {-->
+                        <!--a[a.length] = "<li><span>" + i + "</span></li>";-->
+                    <!--}-->
+                <!--}-->
+                <!--//总页数小于10-->
+                <!--if (count <= 10) {-->
+                    <!--for (var i = 1; i <= count; i++) {-->
+                        <!--setPageList();-->
+                    <!--}-->
+                <!--}-->
+                <!--//总页数大于10页-->
+                <!--else {-->
+                    <!--if (pageindex <= 4) {-->
+                        <!--for (var i = 1; i <= 5; i++) {-->
+                            <!--setPageList();-->
+                        <!--}-->
+                        <!--a[a.length] = "...<li><span>" + count + "</span></li>";-->
+                    <!--}else if (pageindex >= count - 3) {-->
+                        <!--a[a.length] = "<li><span>1</span></li>...";-->
+                        <!--for (var i = count - 4; i <= count; i++) {-->
+                            <!--setPageList();-->
+                        <!--}-->
+                    <!--}-->
+                    <!--else { //当前页在中间部分-->
+                        <!--a[a.length] = "<li><span>1</span></li>...";-->
+                        <!--for (var i = pageindex - 2; i <= pageindex + 2; i++) {-->
+                            <!--setPageList();-->
+                        <!--}-->
+                        <!--a[a.length] = "...<li><span>" + count + "</span></li>";-->
+                    <!--}-->
+                <!--}-->
+                <!--if (pageindex == count) {-->
+                    <!--a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";-->
+                <!--}else{-->
+                    <!--a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";-->
+                <!--}-->
+                <!--this.pageNumber= a.join("");-->
+            <!--}-->
+            <!--,changeFun:function(e){-->
+                <!--if(e.target.nodeName=='UL')return;-->
+                <!--if(e.target.className.search('unclick')!=-1)return;-->
+                <!--if(e.target.className.search('icon-ishop_4-01')!=-1){-->
+                    <!--this.$emit('increment','reduce');-->
+                <!--}else if(e.target.className.search('icon-ishop_4-02')!=-1){-->
+                    <!--this.$emit('increment','add');-->
+                <!--}else{-->
+                    <!--this.$emit('increment',Number(e.target.innerHTML));-->
+                <!--}-->
+            <!--}-->
+            <!--,changeRow:function(e){-->
+                <!--this.$emit('increment3',parseInt(e.target.innerHTML));-->
+                <!--this.listShow=!this.listShow;-->
+            <!--}-->
+        <!--}-->
+        <!--,computed:{-->
+
+        <!--}-->
+        <!--,watch:{-->
+            <!--changePage:function(){-->
+                <!--if(this.changePage==='')return;-->
+                <!--if(this.changePage>this.pages)return;-->
+                <!--this.pageIndex=this.changePage;-->
+                <!--this.setPage(this.pages,this.changePage);-->
+                <!--vm.tableParam.message.pageNumber=Number(this.changePage);-->
+                <!--vm.getTableData();-->
+            <!--}-->
+            <!--,record:function(){-->
+                <!--this.pages=Math.ceil(this.record/this.pageSize)//总页数-->
+                <!--this.setPage(this.pages,this.pageIndex);-->
+            <!--}-->
+            <!--,index:function(){-->
+                <!--this.pageIndex=this.index;-->
+                <!--this.setPage(this.pages,this.pageIndex);-->
+            <!--}-->
+            <!--,size:function(){-->
+                <!--this.pages=Math.ceil(this.record/this.size)//总页数-->
+                <!--this.setPage(this.pages,this.pageIndex);-->
+            <!--}-->
+        <!--}-->
+        <!--,created:function(){-->
+            <!--this.setPage(this.pages,this.pageIndex);-->
+        <!--}-->
+    <!--});-->
+    <!--var actionTemplate=Vue.extend({-->
+        <!--template: '#action'-->
+        <!--,data:function(){-->
+            <!--return {-->
+                <!--jurisdiction:''-->
+                <!--,search:''-->
+            <!--}-->
+        <!--}-->
+        <!--,props:['actionArr']-->
+        <!--,methods:{-->
+            <!--actionFun:function(e){-->
+                <!--var role=e.currentTarget.dataset.role;-->
+                <!--if(role=='add'){-->
+                    <!--window.location.assign("show_typeAdd.html")-->
+                <!--}else if(role=='edit'){-->
+                    <!--var el=$("tbody input:checked");-->
+                    <!--if(el.length>1){-->
+                        <!--vm.tip=!vm.tip;-->
+                        <!--vm.tipText='不能选择多个'-->
+                        <!--setTimeout(function(){-->
+                            <!--vm.tip=!vm.tip;-->
+                        <!--},500)-->
+                    <!--}else if(el.length==1){-->
+                        <!--window.location.assign("show_typeEdit.html?id="+el[0].id)-->
+                    <!--}else if(el.length<=0){-->
+                        <!--vm.tip=!vm.tip;-->
+                        <!--setTimeout(function(){-->
+                            <!--vm.tip=!vm.tip;-->
+                            <!--vm.tipText='请选择'-->
+                        <!--},500)-->
+                    <!--}-->
+                <!--}else if(role=='delete'){-->
+                   <!--var el= $("tbody input:checked");-->
+                    <!--if(el.length>=1){-->
+                        <!--var idArr=[];-->
+                        <!--$("tbody input:checked").each(function(index,val){-->
+                            <!--idArr.push(val.id);-->
+                        <!--});-->
+                        <!--console.log(idArr.join(','));-->
+                        <!--this.$emit('increment3',idArr.join(','));-->
+                    <!--}else if(el.length<=0){-->
+                        <!--vm.tip=!vm.tip;-->
+                        <!--setTimeout(function(){-->
+                            <!--vm.tip=!vm.tip;-->
+                            <!--vm.tipText='请选择'-->
+                        <!--},500)-->
+                    <!--}-->
+                <!--}-->
+            <!--}-->
+            <!--,submit:function(){-->
+                    <!--this.$emit('increment2',this.search);-->
+            <!--}-->
+        <!--}-->
+        <!--,filters:  {-->
+            <!--act:function(val){-->
+                <!--var value='新增'-->
+                <!--switch (val){-->
+                    <!--case 'add':value='新增';break;-->
+                    <!--case 'edit':value='编辑';break;-->
+                    <!--case 'delete':value='删除';break;-->
+                <!--}-->
+                <!--return value;-->
+            <!--}-->
+        <!--}-->
+        <!--,computed:{-->
+
+        <!--}-->
+        <!--,watch:{-->
+            <!--jurisdiction:function(){-->
+            <!--},-->
+            <!--actionArr:function(){-->
+                <!--this.jurisdiction=this.actionArr-->
+            <!--}-->
+        <!--}-->
+        <!--,created:function(){-->
+        <!--}-->
+    <!--});-->
+<!--var vm= new Vue({-->
+     <!--el:'#content'-->
+     <!--,data:{-->
+         <!--pageRecord:''-->
+         <!--,pageIndex:1-->
+         <!--,pageSize:10-->
+         <!--,pageShow:true-->
+         <!--,jurisdiction:[]-->
+         <!--,theadArr:['操作者','功能','动作','企业名称','备注']-->
+         <!--,tip:false-->
+         <!--,tipText:'请选择'-->
+         <!--,tip_delete:false-->
+         <!--,actionParam:{}//动作按钮-->
+         <!--,tableParam:{}-->
+         <!--,rows:[]-->
+        <!--,deleteId:''-->
+        <!--,actionArr:[]-->
+        <!--,arrHtml:[]-->
+     <!--}-->
+     <!--,methods:{-->
+        <!--jumpFun:function(e,id){-->
+            <!--window.location.assign("show_typeEdit.html?id="+id)-->
+        <!--}-->
+        <!--,deleteFun:function(){-->
+            <!--var param={"id":"0","message":{'id':this.deleteId}}-->
+            <!--this.$http.post('/api/shopMatch/type/delete',{param:JSON.stringify(param)},{emulateJSON:true}).then(function (data) {-->
+                <!--if(data.data.code==0){-->
+                    <!--this.tip_delete=!this.tip_delete;-->
+                    <!--location.reload()-->
+                <!--}else if(data.data.code){-->
+                    <!--art.dialog({-->
+                        <!--time: 1,-->
+                        <!--lock:true,-->
+                        <!--cancel: false,-->
+                        <!--content: data.data.message-->
+                    <!--});-->
+                <!--}-->
+            <!--})-->
+        <!--}-->
+        <!--,interactDelete:function(id){-->
+            <!--this.tip_delete=!this.tip_delete;-->
+            <!--this.deleteId=id;-->
+        <!--}-->
+        <!--,interactChange:function(page){-->
+            <!--this.pageSize=page;-->
+            <!--this.tableParam.message.pageNumber=1;-->
+            <!--this.tableParam.message.pageSize=page;-->
+            <!--this.pageIndex=this.tableParam.message.pageNumber;-->
+            <!--this.tableParam.message.searchValue='';-->
+            <!--this.getTableData();-->
+        <!--}-->
+        <!--,interactAction:function(value){-->
+            <!--this.tableParam.message.pageNumber=1;-->
+            <!--this.pageIndex=this.tableParam.message.pageNumber;-->
+            <!--this.tableParam.message.searchValue=value;-->
+            <!--this.getTableData();-->
+        <!--}-->
+        <!--,interact:function(role){-->
+            <!--console.log(role);-->
+            <!--if(role=='reduce'){-->
+                <!--this.tableParam.message.pageNumber&#45;&#45;;-->
+                <!--this.pageIndex=this.tableParam.message.pageNumber;-->
+                <!--this.getTableData();-->
+            <!--}else if(role=='add'){-->
+                <!--this.tableParam.message.pageNumber++;-->
+                <!--this.pageIndex=this.tableParam.message.pageNumber;-->
+                <!--this.getTableData();-->
+            <!--}else{-->
+                <!--this.tableParam.message.pageNumber=role;-->
+                <!--this.pageIndex=this.tableParam.message.pageNumber;-->
+                <!--this.getTableData();-->
+            <!--}-->
+        <!--}-->
+        <!--,paramFun:function(){-->
+            <!--//param:{"id":"0","message":{"pageNumber":1,"pageSize":10,"searchValue":""}}-->
+            <!--this.actionParam.id=0;-->
+            <!--this.actionParam.message={"funcCode":"F0067"}-->
+            <!--this.tableParam.id=0;-->
+            <!--this.tableParam.message={"pageNumber":1,"pageSize":10,"searchValue":""}-->
+        <!--}-->
+        <!--,getHeadData:function(){-->
+            <!--//f0067 function_code-->
+            <!--var self=this;-->
+            <!--this.$http.post('../list/action',{param:JSON.stringify(this.actionParam)},{emulateJSON:true}).then(function (data) {-->
+                <!--self.getTableData();-->
+                <!--//数据格式统一-->
+              <!--var act=JSON.parse(data.data.message).actions;-->
+                <!--var thd=JSON.parse(data.data.message).columns;-->
+                <!--act.forEach(function(val,index,arr){-->
+                    <!--val.act_name=='show'&&(arr.splice(index,1))-->
+                <!--});-->
+                <!--this.jurisdiction= act.map(function(val,index){-->
+                    <!--return val.act_name;-->
+                <!--});-->
+                <!--this.actionArr=thd;-->
+                <!--this.theadArr=thd.map(function(val,index){-->
+                    <!--return val.show_name;-->
+                <!--});-->
+            <!--}, function (data) {-->
+
+            <!--});-->
+        <!--}-->
+        <!--,getTableData:function(){-->
+            <!--var self=this;-->
+            <!--whir.loading.add("",0.5);//加载等待框-->
+            <!--this.$http.post('/api/shopMatch/type/searchByWeb',{param:JSON.stringify(this.tableParam)},{emulateJSON:true}).then(function (data) {-->
+                <!--//数据格式统一-->
+                <!--try{-->
+                    <!--var obj=JSON.parse(JSON.parse(data.data.message).list)-->
+                <!--}catch(err){-->
+                    <!--var obj={total:1}-->
+                <!--}-->
+                <!--self.pageRecord=obj.total;-->
+                <!--self.rows=obj.list;-->
+                <!--var arrHead=self.actionArr.map(function(val){-->
+                    <!--return val.column_name-->
+                <!--});-->
+                <!--console.log(arrHead);-->
+                <!--self.arrHtml=[];-->
+                <!--for(var i=0;i<obj.list.length;i++){-->
+                    <!--var hl=[];-->
+                    <!--for(var key in obj.list[i]){-->
+                        <!--if(arrHead.indexOf(key)!=-1){-->
+                            <!--hl.push({'name':obj.list[i][key],'id':arrHead.indexOf(key)});-->
+                        <!--}-->
+                        <!--self.arrHtml.push(hl);-->
+                    <!--}-->
+                <!--}-->
+                <!--console.log(self.arrHtml);-->
+                <!--console.log(obj.list);-->
+                <!--whir.loading.remove();//移除加载框-->
+            <!--}, function (data) {-->
+
+            <!--});-->
+        <!--}-->
+        <!--,checkAll:function(name){-->
+            <!--var el=$("tbody input");-->
+            <!--el.parents("tr").addClass("tr");-->
+            <!--var len = el.length;-->
+
+            <!--for(var i=0; i<len; i++)-->
+            <!--{-->
+                <!--if((el[i].type=="checkbox") && (el[i].name==name))-->
+                <!--{-->
+                    <!--el[i].checked = true;-->
+                <!--}-->
+            <!--}-->
+        <!--}-->
+        <!--, clearAll:function(name){-->
+            <!--var el=$("tbody input");-->
+            <!--el.parents("tr").removeClass("tr");-->
+            <!--var len = el.length;-->
+            <!--for(var i=0; i<len; i++)-->
+            <!--{-->
+                <!--if((el[i].type=="checkbox") && (el[i].name==name))-->
+                <!--{-->
+                    <!--el[i].checked = false;-->
+                <!--}-->
+            <!--}-->
+       <!--}-->
+        <!--,checkFun:function(e){-->
+            <!--e.currentTarget.checked?this.checkAll('test'):this.clearAll('test');-->
+        <!--}-->
+     <!--}-->
+    <!--,watch:{-->
+        <!--pageIndex:function(){-->
+
+        <!--}-->
+    <!--}-->
+     <!--,components:{-->
+         <!--'actionTemplate':actionTemplate-->
+         <!--,'pageTemplate':pageTemplate-->
+     <!--}-->
+     <!--,created:function(){-->
+        <!--this.paramFun();-->
+        <!--this.getHeadData();-->
+     <!--}-->
+ <!--});-->
+<!--</script>-->
+</body>
+</html>

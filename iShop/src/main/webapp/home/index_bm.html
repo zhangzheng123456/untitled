@@ -7,12 +7,16 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
-    <link href="../css/style.css?20161215" rel="stylesheet">
-    <link rel="stylesheet" href="../css/liandong_select.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
-    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <link rel="stylesheet" href="../css/font_style.css?20170926">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/liandong_select.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/message_list.css">
+    <script type="text/javascript" src="../js/laydate/laydate.dev.js"></script>
+    <style>
+        .tbody_scroll table{width: 100%}
+    </style>
 </head>
 <body>
     <div id="wrapper">
@@ -21,6 +25,9 @@
                     <div class="navbar-header">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)">
                         </a>
+                        <div class="home_logo_box">
+                            <img id="home_logo" src="../img/img_BIZVANE_logo.png">
+                        </div>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
@@ -34,13 +41,23 @@
                             </div>
                             </a></span>
                         </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="javascript:void(0)">
+                                <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-09" id="download">
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
                          <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="javascript:void(0)">
                                  <div class="glyph fs1">
                                     <div class="clearfix bshadow0 pbs">
-                                        <span class="icon-ishop_3-02">
+                                        <span class="icon-ishop_3-02" id="message_btn">
                                         </span>
-                                         <!-- <span class="label label-primary">2</span> -->
+                                          <span class="label label-primary" id="unreadNum"></span>
                                     </div>
                                 </div>
                             </a>
@@ -59,16 +76,16 @@
                                 <img src="../img/aixiu_code.png" alt="" />
                             </div>
                         </li>
-                        <li>
-                            <a href="javascript:void(0)">
-                                <div class="glyph fs1">
-                                    <div class="clearfix bshadow0 pbs">
-                                        <span class="icon-ishop_3-04">
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
+                        <!--<li>-->
+                            <!--<a href="javascript:void(0)">-->
+                                <!--<div class="glyph fs1">-->
+                                    <!--<div class="clearfix bshadow0 pbs">-->
+                                        <!--<span class="icon-ishop_3-04">-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</li>-->
                         <li class="search_box">
                              <form role="search" class="navbar-form-custom">
                             <div class="form-group">
@@ -133,14 +150,15 @@
             <div class="wrapper wrapper-content">
                 <div class="row">
                     <div class="col-lg-4 mask">
-                        <div class="ibox float-e-margins">
+                        <div class="ibox float-e-margins mask">
                             <div class="ibox-content_per">
                             <span class="c_a_shoppe">
                                <i id="corp_name"></i>
                                <img src="../img/img_spot_white.png">
                                <i class="area_name"></i>
                                <img style="width:8px;height: 4px;" src="../img/img_arrow_down.png" alt="" id="drop_down_m">
-                               <ul>   
+                               <ul>
+                                   <input type="text" class="bm_search_shop">
                                </ul>
                             </span>
                                 <div class="check_select">
@@ -211,15 +229,15 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                        <div class="zhezhaocen" id="achv_mask">
-                            <div class="zhe_img">
-                                加载中
+                            <div class="zhezhaocen" id="achv_mask">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-7 mask">
-                        <div class="customer_add_cart">
+                    <div class="col-lg-7">
+                        <div class="customer_add_cart mask">
                             <div class="cart_tab">
                                 <!-- <ul>
                                     <li class="select"><label>业绩趋势</label></li>
@@ -256,17 +274,17 @@
                                 <canvas id="canvas2" height="290" width="227"></canvas>
                                 <canvas id="canvas3" height="290" width="227"></canvas>
                             </div>
-                        </div>
-                        <div class="zhezhaocen" id="chart_mask">
+                            <div class="zhezhaocen" id="chart_mask">
                             <div class="zhe_img">
                                 加载中
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                   <div class="col-lg-4 mask">
-                       <div class="ibox float-e-margins">
+                   <div class="col-lg-4">
+                       <div class="ibox float-e-margins mask">
                             <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
                                     <label>导购排行</label>
@@ -295,17 +313,20 @@
                             </div>
                             <div class="list_titles_daogou_paihang" id="staff_list">
                                 <table style="width:100%">
-                                    <thead>  
+                                    <thead>
                                         <tr>
                                             <th>排名</th>
                                             <th>姓名</th>
                                             <th>业绩</th>
                                             <!-- <th>目标</th> -->
                                             <!-- <th>完成度</th> -->
-                                            <th>贡献度</th>
+                                            <th>所属店铺</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                </table>
+                                <div class="tbody_scroll">
+                                    <table>
+                                        <tbody>
                                         <!-- <tr>
                                             <td style="width:11%">1</td>
                                             <td style="width:16%">朱亚晓</td>
@@ -314,18 +335,19 @@
                                             <td style="width:18%"><img src="../img/completion_80.png" style="width:20px;height: 20px"/>81%</td>
                                             <td style="width:13%"><img src="../img/contribution_30.png" style="width:4px;height: 20px" />32%</td>
                                         </tr> -->
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        <div class="zhezhaocen" id="staff_mask">
-                            <div class="zhe_img">
-                                加载中
+                            <div class="zhezhaocen" id="staff_mask">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
                             </div>
                         </div>
                    </div>
                     <div class="col-lg-4">
-                       <div class="ibox float-e-margins">
+                        <div class="ibox float-e-margins mask">
                             <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
                                     <label>商品排行</label>
@@ -333,31 +355,52 @@
                                     <!--<span><img src="../img/icon_search_small.png" alt="搜索"/></span>-->
                                 </div>
                                 <div class="item_total">
-                                    <span>商品种类<label></label></span>
-                                    <span class="average_per">库存总量<label></label></span>
+                                    <span>商品种类<label id="goods_total"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_4 reg_testdate">
+                                    <div class="select_4 reg_testdate" >
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按周查看</div>
-                                            <!-- <ul>
-                                                <li>按周查看</li>
-                                                <li>按月查看</li>
-                                                <li>按年查看</li>
-                                            </ul> -->
+                                            <div class="title" style="width:70px" id="goods_type" date-type="D">按日查看</div>
+                                            <ul class="select_Date" id="goods">
+                                                <li date-type="D">按日查看</li>
+                                                <li date-type="W">按周查看</li>
+                                                <li date-type="M">按月查看</li>
+                                            </ul>
+                                        </span>
+                                        <span>
+                                            <input type="text" id="date4" class="icon-text">
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="list_titles_daogou_paihang">
-                                <div class="list_titles_daogou_paihang">
-                                <table style="width: 100%">
-                                    <td colspan="3" style="padding-top:70px;">暂无功能</td>
+                            <div class="list_titles_daogou_paihang" id="goods_list">
+                                <table style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>款号</th>
+                                        <th>单价</th>
+                                        <th>销售数量</th>
+                                    </tr>
+                                    </thead>
                                 </table>
+                                <div class="tbody_scroll">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+                            <div class="zhezhaocen" id="goods_mask">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
                             </div>
                         </div>
-                   </div>
+                    </div>
                    <div class="col-lg-3">
                         <div class="ibox float-e-margins">
                             <div class="wearther-list">
@@ -387,27 +430,28 @@
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="../js/loading.js?20170105"></script>
+    <script src="../js/loading.js?2017040170331"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20170105"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20170105"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
-    <script type="text/javascript" src="../js/home/home.js?20170105"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/home/home.js?20180102"></script>
     <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
      <!-- 雷达图 -->
-    <script type="text/javascript" src="../js/ability-Chart.js?20170105"></script>
+    <script type="text/javascript" src="../js/ability-Chart.js?2017040170331"></script>
      <!-- 模拟联动 -->
-    <script type="text/javascript" src="../js/liandong_select.js?20170105"></script>
+    <script type="text/javascript" src="../js/liandong_select.js?2017040170331"></script>
 
     <!-- Custom and plugin javascript -->
     <!-- <script src="../js/hplus.js?v=2.2.0"></script> -->
     <!-- 汉字转拼音 -->
-    <script type="text/javascript" src="../js/onvertToPinyin.js?20170105"></script>
+    <script type="text/javascript" src="../js/onvertToPinyin.js?2017040170331"></script>
     <!-- piechart -->
-    <script type="text/javascript" src="../js/easypiechart.js?20170105"></script>
-    <script type="text/javascript" src="/js/home/home_bm.js?20170105"></script>
+    <script type="text/javascript" src="../js/easypiechart.js?2017040170331"></script>
+    <script type="text/javascript" src="/js/home/home_bm.js?20171207"></script>
      <!-- 业绩看板 -->
     <script>
         $(document).ready(function () {
@@ -416,13 +460,13 @@
                 if (remote_ip_info.ret == '1') {
                     $.ajax({
                         type: "GET",
-                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+remote_ip_info.city,
+                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+encodeURI(remote_ip_info.city),
                         data: "",
                         success: function(msg){
                             var w_type=JSON.parse(msg)["data"]["forecast"];
                             var w_date=["今天","明天","后天"];
                             for(var i=0;i<w_type.length-2;i++){
-                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="weather_img/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^-(0-9)]/ig, "")+"～"+w_type[i].high.replace(/[^-(0-9)]/ig, "")+'℃</div> </li><li class="w_img"><img src="/home/weather_img/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
 //                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="http://php.weather.sina.com.cn/images/yb3/78_78/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
                             }
                         }

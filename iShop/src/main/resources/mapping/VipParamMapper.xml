@@ -12,8 +12,10 @@
         <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="param_class" property="param_class" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="required" property="required" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_attribute" property="param_attribute" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="show_order" property="show_order" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -36,6 +38,7 @@
         dvp.param_desc,
         dvp.param_class,
         dvp.required,
+        dvp.param_attribute,
         dc.corp_name,
         dvp.remark,
         dvp.show_order,
@@ -66,9 +69,9 @@
         SELECT *
         FROM def_vip_param
         WHERE corp_code = #{corp_code}
-        AND  param_desc=#{param_desc}
+        AND param_desc=#{param_desc}
         <if test="isactive != null and isactive !=''">
-          AND isactive = #{isactive}
+            AND isactive = #{isactive}
         </if>
     </select>
 
@@ -76,7 +79,7 @@
         SELECT *
         FROM def_vip_param
         WHERE corp_code = #{corp_code}
-        AND  param_name=#{param_name}
+        AND param_name=#{param_name}
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}
         </if>
@@ -114,6 +117,9 @@
             </if>
             <if test="required!=null">
                 required,
+            </if>
+            <if test="param_attribute!=null">
+                param_attribute,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -159,6 +165,9 @@
             </if>
             <if test="required!=null">
                 #{required},
+            </if>
+            <if test="param_attribute!=null">
+                #{param_attribute},
             </if>
             <if test="modified_date">
                 #{modified_date},
@@ -208,6 +217,9 @@
             <if test="required!=null">
                 required= #{required},
             </if>
+            <if test="param_attribute!=null">
+                param_attribute=#{param_attribute},
+            </if>
             <if test="modified_date">
                 modified_date= #{modified_date},
             </if>
@@ -239,6 +251,7 @@
         dvp.param_desc,
         dvp.param_class,
         dvp.required,
+        dvp.param_attribute,
         dvp.show_order,
         dc.corp_name,
         dvp.remark,
@@ -279,11 +292,31 @@
         dvp.param_desc,
         dvp.param_class,
         dvp.required,
+        dvp.param_attribute,
         dvp.remark,
         dvp.show_order
         FROM def_vip_param dvp,def_corp dc
         WHERE dvp.corp_code = dc.corp_code
         AND dvp.corp_code = #{corp_code}
+        AND dvp.isactive = 'Y'
+        ORDER BY dvp.show_order ASC
+    </select>
+    <select id="selectParamByType" resultMap="VipParam">
+        SELECT
+        dvp.id,
+        dvp.param_name,
+        dvp.param_type,
+        dvp.param_values,
+        dvp.param_desc,
+        dvp.param_class,
+        dvp.required,
+        dvp.param_attribute,
+        dvp.remark,
+        dvp.show_order
+        FROM def_vip_param dvp,def_corp dc
+        WHERE dvp.corp_code = dc.corp_code
+        AND dvp.param_type = #{param_type}
+       AND dvp.corp_code = #{corp_code}
         AND dvp.isactive = 'Y'
         ORDER BY dvp.show_order ASC
     </select>

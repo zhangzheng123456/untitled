@@ -20,6 +20,22 @@ var oc = new ObjectControl();
 		}
 	};
 	shopgoaljs.checkNumber=function(obj,hint){
+		var isCode=/^[0-9]{1,13}$/;
+		if(!this.isEmpty(obj)){
+			if(isCode.test(obj)){
+				this.hiddenHint(hint);
+				return true;
+			}else{
+				console.log(obj.length);
+				this.displayHint(hint,"请输入数字！");
+				return false;
+			}
+		}else{
+			this.displayHint(hint);
+			return false;
+		}
+	};
+	shopgoaljs.checkNumber1=function(obj,hint){
 		var isCode=/^[0-9]+([.]{1}[0-9]+){0,1}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
@@ -33,7 +49,7 @@ var oc = new ObjectControl();
 			this.displayHint(hint);
 			return false;
 		}
-	}
+	};
 	shopgoaljs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -55,12 +71,13 @@ var oc = new ObjectControl();
 			if(shopgoaljs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
-				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
-				var PER_GOAL=parseInt($("#PER_GOAL").val());//业绩目标
+				var TIME_TYPE1=$("#time_type").val();//时间类型
+				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
 				// var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
 				var TIME_TYPE="";//日期类型
+				var _params = {};
 				if(SHOP_ID==null){
 					art.dialog({
 						time: 1,
@@ -70,12 +87,9 @@ var oc = new ObjectControl();
 					});
 					return;
 				}
-				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
-					DATE=$("#GOODS_RELEASETIME").val();
+				if(TIME_TYPE1=="按日"){
+					DATE=$("#day_input").val();
 					if(DATE==""){
-                        // var div=$("#GOODS_RELEASETIME").next('.hint').children();
-                        // div.html("不能为空！");
-		            	// div.addClass("error_tips");
 						art.dialog({
 							time: 1,
 							lock:true,
@@ -84,21 +98,35 @@ var oc = new ObjectControl();
 						});
 		            	return;
 					}
-				}else if(TIME_TYPE1=="年"){
-					DATE=$("#year").val();
-				}else if(TIME_TYPE1=="月"){
-					var year=$("#year").val();//年份
-					var month=$("#month").val();//月份
+				}else if(TIME_TYPE1=="按月"){
+					var year=$("#month_input").attr("data-year");//年份
+					var month=$("#month_input").attr("data-month");//月份
 					DATE=year+"-"+month;
 				}
-				if(TIME_TYPE1=="年"){
-                    TIME_TYPE="Y";
-				}else if(TIME_TYPE1=="月"){
-					TIME_TYPE="M";
-				}else if(TIME_TYPE1=="周"){
-					TIME_TYPE="W";
-				}else if(TIME_TYPE1=="日"){
+				if(TIME_TYPE1=="按月"){
+                    TIME_TYPE="M";
+					if($("#mean_radio")[0].checked==true){
+						_params["per_amount"]=$("#month_day span").html();
+						_params["isaverage"]="Y";
+					}else if($("#mean_radio")[0].checked==false){
+						var proportion="";
+						var targets_arr="";
+						var week_achv=$("#week_achv li");
+						var week_parent=$("#week_parent .week_text");
+						for(var i=0;i<week_parent.length;i++){
+							proportion+=$(week_parent[i]).text()+",";
+							targets_arr+=$(week_achv[i]).attr("data-money")+",";
+						}
+						_params["isaverage"]="N";
+						_params["proportion"]=proportion;
+						_params["targets_arr"]=targets_arr;
+					}
+				}else if(TIME_TYPE1=="按日"){
 					TIME_TYPE="D";
+					delete _params.per_amount;
+					delete _params.isaverage;
+					delete _params.proportion;
+					delete _params.targets_arr;
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -112,15 +140,13 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params = {
-					"corp_code": OWN_CORP,
-					"store_code": SHOP_ID,
-					"achv_type": TIME_TYPE,
-					"store_name":SHOP_NAME,
-					"achv_goal": PER_GOAL,
-					"end_time": DATE,
-					"isactive": ISACTIVE
-				};
+					_params["corp_code"]= OWN_CORP,
+					_params["store_code"]= SHOP_ID,
+					_params["achv_type"]=TIME_TYPE,
+					_params["store_name"]=SHOP_NAME,
+					_params["achv_goal"]=PER_GOAL,
+					_params["end_time"]=DATE,
+					_params["isactive"]=ISACTIVE
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -132,7 +158,7 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
 				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
-				var PER_GOAL=parseInt($("#PER_GOAL").val());//业绩目标
+				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
 				var TIME_TYPE="";//日期类型
@@ -199,13 +225,173 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
+		$("#drop_down li").click(function(){
+			var text=$(this).html();
+			$(this).parents(".data_list").find("input").val(text);
+			$(this).parent().hide();
+			$(this).css({"color":"#32b5c9"});
+			$(this).siblings("li").css({"color":"#888"});
+			if(text=="按日"){
+				$("#allot_type").hide();
+				$("#day_input").show();
+				$("#month_input").hide();
+				$("#mean_content").hide();
+				$("#month_day").hide();
+			}
+			if(text=="按月"){
+				$("#day_input").hide();
+				$("#allot_type").show();
+				$("#month_input").show();
+				if($("#mean_radio")[0].checked==true){
+					$("#mean_content").hide();
+					$("#month_day").show();
+				}else if($("#mean_radio")[0].checked==false){
+					$("#mean_content").show();
+				}
+				month_day();
+			}
+		})
+		$("#drop_down input").click(function(){
+			if($(this).siblings("ul").css("display")=="none"){
+				$(this).siblings("ul").show();
+			}else if($(this).siblings("ul").css("display")=="block"){
+				$(this).siblings("ul").hide();
+			}
+		})
+		$("#allot_type .rido").click(function(){
+			$(this).find("input")[0].checked=true;
+			if($(this).find("input").attr("id")=="mean_radio"){
+				$("#month_day").show();
+				$("#mean_content").hide();
+				$("#month_scale").hide();
+			}
+			if($(this).find("input").attr("id")=="scale_radio"){
+				$("#month_day").hide();
+				$("#mean_content").show();
+				$("#month_scale").show();
+			}
+		})
+		$("#drop_down input").blur(function(){
+			var self=this;
+			setTimeout(function () {
+				$(self).siblings("ul").hide();
+			},200);
+		})
+		$("#month_input").click(function(e){//月的时候点击弹出框
+			e.stopPropagation();
+			if($(this).siblings(".ym_parent").css("display")=="none"){
+				$(this).siblings(".ym_parent").show();
+			}else if($(this).siblings(".ym_parent").css("display")=="block"){
+				$(this).siblings(".ym_parent").hide();
+			}
+		})
+		$("#ym_header li").click(function(){
+			$(this).addClass("active");
+			$(this).siblings("li").attr("class","");
+			$("#ym_content>div").eq($(this).index()).show();
+			$("#ym_content>div").eq($(this).index()).siblings().hide();
+		})
+		$(document).click(function(e){//点击旁边隐藏选择日期的div
+			if($(e.target).is('.ym_header')||$(e.target).is('.ym_header li')||$(e.target).is(".ym_parent")||$(e.target).is(".ym_parent li")||$(e.target).is(".ym_parent .ym_footer")||$(e.target).is(".ym_parent .ym_footer .footer_q")||$(e.target).is(".month_header")||$(e.target).is(".month_header span")){
+				return;
+			}else {
+				$(".ym_parent").hide();
+			}
+		});
+		$("#yearnew").on("click","li",function(){//点击年的列表给年赋值
+			$("#m_year").html($(this).text());
+			$("#m_year").attr("data-type",$(this).attr("data-type"));
+			$(this).addClass("active");
+			$(this).siblings("li").attr("class","");
+			if($("#m_year").attr("data-type")==$("#yearnew li").eq(0).attr("data-type")){
+				$("#monthnew .year_add").css({"opacity":"0.5","color":"#888"});
+				$("#monthnew .year_del").css({"color":"#41c7db","opacity":"1"});
+			}else if($("#m_year").attr("data-type")==$("#yearnew li:last").attr("data-type")){
+				$("#monthnew .year_del").css({"opacity":"0.5","color":"#888"});
+				$("#monthnew .year_add").css({"color":"#41c7db","opacity":"1"});
+			}else {
+				$("#monthnew .year_del").css({"color":"#41c7db","opacity":"1"});
+				$("#monthnew .year_add").css({"color":"#41c7db","opacity":"1"});
+			}
+			month();
+		})
+		$("#monthnew").on("click","li",function(){//点击月的时候赋值
+			if($(this).attr("style")!==""){
+				return;
+			}
+			$("#month_input").val($(this).text());
+			$(this).addClass("active");
+			$(this).siblings("li").attr("class","");
+			$("#month_input").attr("data-year",$("#m_year").attr("data-type"));
+			$("#month_input").attr("data-month",$(this).attr("data-type"));
+			month_day();
+		})
+		$("#monthnew .year_add").click(function(){//减年份
+			if($("#m_year").attr("data-type")==$("#yearnew li").eq(0).attr("data-type")){
+				$(this).css({"opacity":"0.5","color":"#888"});
+				return;
+			}
+			$("#monthnew .year_del").css({"color":"#41c7db","opacity":"1"});
+			$("#m_year").attr("data-type",parseInt($("#m_year").attr("data-type"))-1);
+			if($("#m_year").attr("data-type")==$("#yearnew li").eq(0).attr("data-type")){
+				$(this).css({"opacity":"0.5","color":"#888"});
+			}
+			$("#m_year").html(parseInt($('#m_year').attr('data-type'))+"年");
+			$("#yearnew li:contains('"+$('#m_year').text()+"')").addClass("active");
+			$("#yearnew li:contains('"+$('#m_year').text()+"')").siblings("li").attr("class","");
+			month();
+		})
+		$("#monthnew .year_del").click(function(){//加年份
+			if($("#m_year").attr("data-type")==$("#yearnew li:last").attr("data-type")){
+				$(this).css({"opacity":"0.5","color":"#888"});
+				return;
+			}
+			$("#monthnew .year_add").css({"color":"#41c7db","opacity":"1"});
+			$("#m_year").attr("data-type",parseInt($("#m_year").attr("data-type"))+1);
+			if($("#m_year").attr("data-type")==$("#yearnew li:last").attr("data-type")){
+				$(this).css({"opacity":"0.5","color":"#888"});
+			}
+			$("#m_year").html(parseInt($('#m_year').attr('data-type'))+"年");
+			$("#yearnew li:contains('"+$('#m_year').text()+"')").addClass("active");
+			$("#yearnew li:contains('"+$('#m_year').text()+"')").siblings("li").attr("class","");
+			month();
+		})
+		//点击加号比例
+		$("#week_parent .scale_add").click(function(){
+			if($(this).parent(".week_scale").find(".week_text").text()=="10"){
+				return;
+			}
+			 $(this).parent(".week_scale").find(".week_text").text(parseFloat($(this).parent(".week_scale").find(".week_text").text())+1);
+			$(this).parent(".week_scale").find(".scale_del").css({"color":"#6dc1c8","opacity":"1"});
+			month_day();
+			if($(this).parent(".week_scale").find(".week_text").text()=="10"){
+				$(this).css({"opacity":"0.5","color":"#888"});
+				return;
+			}
+		})
+		//点击减号比例减少
+		$("#week_parent .scale_del").click(function(){
+			if($(this).parent(".week_scale").find(".week_text").text()=="1"){
+				return;
+			}
+			$(this).parent(".week_scale").find(".week_text").text(parseFloat($(this).parent(".week_scale").find(".week_text").text())-1);
+			$(this).parent(".week_scale").find(".scale_add").css({"color":"#6dc1c8","opacity":"1"});
+			month_day();
+			if($(this).parent(".week_scale").find(".week_text").text()=="1"){
+				$(this).css({"color":"#888","opacity":"0.5"});
+				return;
+			}
+		})
+		$("#footer_q").click(function(){
+			$(this).parents(".ym_parent").hide();
+		})
 	};
 	shopgoaljs.ajaxSubmit=function(_command,_params,opt){
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				if(_command=="/storeAchvGoal/add"){
                     sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src", "/achv/shopgoal_edit.html");
+                    $(window.parent.document).find('#iframepage').attr("src", "/achv/shopgoal.html");
                 }
                 if(_command=="/storeAchvGoal/edit"){
                     art.dialog({
@@ -269,11 +455,9 @@ jQuery(document).ready(function(){
 		key_val=JSON.parse(key_val);
 		var funcCode=key_val.func_code;
 		$.get("/detail?funcCode="+funcCode+"", function(data){
-			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
-				console.log(action.length);
 				if(action.length==0){
 					$("#edit_save").remove();
 					$("#edit_close").css("margin-left","120px");
@@ -348,6 +532,7 @@ jQuery(document).ready(function(){
     $("#drop_down li").click(function(){
     	var text=$(this).html();
     	if(text=="日"){
+			$("#month_day").hide();
     		$('#day').show();
     		$('#week_p').hide();
     		$("#GOODS_RELEASETIME").val("");
@@ -360,6 +545,8 @@ jQuery(document).ready(function(){
     		$('#week_p').show();
     		$('#month').hide();
     	}else if(text=="月"){
+			 month_day();
+			$("#month_day").show();
     		$('#day').hide();
     		$('#week_p').show();
     		$('#month').show();
@@ -469,44 +656,116 @@ function store_data(c,b){
 function year(){
 	var myDate = new Date();
 	var year=myDate.getFullYear();
-	$('#year').val(year)//给年赋值
+	var yearActive=$("#month_input").attr("data-year");
+	$('#m_year').html(year+"年");//给年赋值
+	$('#m_year').attr("data-type",year);//给年赋值
 	var year=year-1;
 	$('#week_p .year').empty();
-	for(var i=0;i<10;i++){
+	for(var i=0;i<4;i++){
 		year++;
-		var li="<li>";
-		li+=""+year+"</li>"
-		$('#week_p .year').append(li);
+		var active="";
+		if(yearActive==year){
+			active="active";
+		}
+		var li="<li data-type='"+year+"' class='"+active+"'>";
+		li+=""+year+"年</li>";
+		$('#yearnew ul').append(li);
 	}
-	$("#week_p .year>li").click(function(){
-    	console.log(this);
-    	var value=$(this).html();
-    	$('#year').val(value);
-    	$('#week_p .year').hide();
-    })
 }
 function month(){
 	var myDate=new Date();
 	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+	var year=new Date().getFullYear();
+	var year1=$("#year").val();
 	month=month+1;
 	if(month<10){
 		month="0"+month;
 	}
-	$('#month').val(month)
+	$('#month').val(month);
+	var li='';
 	for(var i=1;i<=12;i++){
-		if(i<10){
-			i="0"+i;
+		var style="";
+		var active="";
+		var a=i;
+		if($("#m_year").attr("data-type")==year&&i<month){
+			style="opacity:0.5";
 		}
-		var li="<li>";
-		li+=""+i+"</li>"
-		$('#week_p .month').append(li);
+		if(i<10){
+			a="0"+i;
+		}
+		if($("#m_year").attr("data-type")==$("#month_input").attr("data-year")&&$("#month_input").attr("data-month")==a){
+			active="active";
+		}
+		li+="<li style='"+style+"' data-type='"+a+"' class='"+active+"'>"+$("#m_year").text()+a+"月</li>";
 	}
-	$("#week_p .month>li").click(function(){
-    	console.log(this);
-    	var value=$(this).html();
-    	$('#month').val(value);
-    	$('#week_p .month').hide();
-    })
+	$('#monthnew ul').html(li);
 }
-month();
+$("#PER_GOAL").keyup(function () {
+	month_day();
+})
+function month_day(){
+	var isCode=/^[0-9]+([.]{1}[0-9]+){0,1}$/;
+	var type=$("#time_type").val();
+	var text=$("#PER_GOAL").val();
+	var week=[0,0,0,0,0,0,0];
+	var week_achv=$("#week_achv li");
+	var achv_bg=$("#achv_bg li");
+	var week_parent=$("#week_parent .week_text");
+	var year=$("#month_input").attr("data-year");
+	var month=$("#month_input").attr("data-month");
+	var day=DayNumOfMonth(year,month);
+	var d_month=$("#PER_GOAL").val()/day;
+	for(var i=1;i<=day;i++){
+		if(new Date(year,month-1,i).getDay()=="0"){
+			week[0]++;
+		}
+		if(new Date(year,month-1,i).getDay()=="1"){
+			week[1]++;
+		}
+		if(new Date(year,month-1,i).getDay()=="2"){
+			week[2]++;
+		}
+		if(new Date(year,month-1,i).getDay()=="3"){
+			week[3]++;
+		}
+		if(new Date(year,month-1,i).getDay()=="4"){
+			week[4]++;
+		}
+		if(new Date(year,month-1,i).getDay()=="5"){
+			week[5]++;
+		}
+		if(new Date(year,month-1,i).getDay()=="6"){
+			week[6]++;
+		}
+	}
+	var num_total=null;
+	for(var i=0;i<week_parent.length;i++){
+		num_total+=parseFloat($(week_parent[i]).text())*week[i];
+	}
+	if(isCode.test(text)&&type=="按月"){
+		$("#month_day span").html(d_month.toFixed(2));
+		for(var i=0;i<week_achv.length;i++){
+			$(week_achv[i]).text("￥"+(($("#PER_GOAL").val()/num_total)*week[i]*parseFloat($(week_parent[i]).text())).toFixed(2));
+			$(week_achv[i]).attr("title","￥"+(($("#PER_GOAL").val()/num_total)*week[i]*parseFloat($(week_parent[i]).text())).toFixed(2));
+			$(week_achv[i]).attr("data-money",((($("#PER_GOAL").val()/num_total)*week[i]*parseFloat($(week_parent[i]).text())).toFixed(2)/week[i]).toFixed(2));
+			$(achv_bg[i]).css({"width":(week[i]*parseFloat($(week_parent[i]).text())/num_total)*100+"%"});
+		}
+	}else{
+		$("#month_day span").html(0.00);
+		for(var i=0;i<week_achv.length;i++) {
+			$(week_achv[i]).text("￥" + 0);
+			$(week_achv[i]).attr("title", "￥" + 0);
+			$(week_achv[i]).attr("data-money", "￥" + 0);
+			$(achv_bg[i]).css({"width": (week[i] * parseFloat($(week_parent[i]).text()) / num_total) * 100 + "%"});
+		}
+	}
+}
+function DayNumOfMonth(Year,Month) {
+	Month--;
+	var d = new Date(Year,Month,1);
+	d.setDate(d.getDate()+32-d.getDate());
+	return (32-d.getDate());
+}
+//DayNumOfMonth(2017,02);
 year();
+month();

@@ -24,12 +24,13 @@ public interface UserAchvGoalMapper {
 
     int delete(@Param("id") int id) throws SQLException;
 
-    List<UserAchvGoal> selectUserAchvGoalBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<UserAchvGoal> selectUserAchvGoalBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr")String[] manager_corp_arr) throws SQLException;
 
     List<UserAchvGoal> selectPartUserAchvGoalBySearch(Map<String, Object> params) throws SQLException;
 
     List<UserAchvGoal> selectUserAchvCount(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
-    UserAchvGoal getUserAchvForId(@Param("corp_code") String corp_code, @Param("user_code") String user_code,@Param("user_target") String user_target,@Param("target_type") String target_type,@Param("target_time") String target_time)throws Exception;
+    UserAchvGoal getUserAchvForId(@Param("corp_code") String corp_code, @Param("user_code") String user_code,@Param("store_code") String store_code,@Param("target_time") String target_time,@Param("isactive") String isactive)throws Exception;
+
     int deleteStoreUserAchv(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("user_code") String user_code) throws SQLException;
 
     List<UserAchvGoal> selectAllUserAchvScreen(Map<String, Object> params) throws SQLException;

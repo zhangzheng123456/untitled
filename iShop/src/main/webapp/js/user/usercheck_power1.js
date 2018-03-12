@@ -32,7 +32,7 @@ var groupPower = {
                     list[i].actions[j].show_name + "</li>"
             }
             tr += "</ul></div></td><td style='width: 44.54%;'><div class='modify_options'><ul>";
-            for (var k = 0; k < list[i].columns.length-1; k++) {
+            for (var k = 0; k < list[i].columns.length; k++) {
                 var color = "";
                 if (list[i].columns[k].is_die == "Y") {
                     color = "die";

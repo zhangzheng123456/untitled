@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../activity/css/reset.css">
+    <script src="../activity/js/flexible.js"></script>
+    <link rel="stylesheet" href="../activity/mui/mui.min.css">
+    <link rel="stylesheet" href="../activity/mui/mui.picker.min.css">
+    <link rel="stylesheet" href="../activity/css/online_activity.css?t=20810202">
+    <link rel="stylesheet" href="../activity/css/perfect_information.css?t=20810202">
+    <title>支付</title>
+    <style>
+        .mui-popover.mui-popover-action .mui-table-view{
+            color: #000000;
+            font-size: 14px;
+        }
+        body{
+            padding: 0;
+        }
+        .online_details .activity_list:after{
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="online_details" id="online_details" style="padding: 0 0 50px 0;display: none;position: absolute;top: 0;left: 0;right: 0;bottom: 0;overflow: hidden;overflow-y: auto;-webkit-overflow-scrolling:touch">
+    <div class="header" id="header">
+        <h4></h4>
+        <div class="activity_detail_dec"></div>
+    </div>
+    <div class="container" id="container" style="margin:0">
+        <div class="spline spline_item"></div>
+        <div class="activity_list" id="item_info">
+            <span style="width: 20%;display: inline-block;height: 100%;vertical-align: middle;text-align: center">
+                <img src="" alt="" id="item_picture" style="display: inline-block; vertical-align: middle;max-width: 100%">
+            </span>
+            <div style="display: inline-block;width: 80%;vertical-align: middle;padding-left: 10px">
+                <h4 class="activity_title"></h4>
+                <div class="list_detail">
+                    <div class="activity_dec" style="width: 100%">
+                        <div class="item_cost"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spline spline_cost"></div>
+        <div style="text-align: center" class="cost_info">
+            <div>报名将消费</div>
+            <b id="pay_num">加载中...</b>
+        </div>
+    </div>
+</div>
+<div class="footer" style="position: fixed;bottom: -10px;left:0;right: 0;display: none;z-index: 2">
+    <a type="button" style="background-color: #555;border-color: #555;padding: 10px 0;" class="mui-btn mui-btn-danger mui-btn-block" id="sure_submit">支付</a>
+</div>
+<div class="mask_loading" id="mask_loading" style="display: block">
+    <div>请稍后...</div>
+</div>
+<script src="../activity/js/jquery-2.1.1.min.js"></script>
+<!--<script src="../../js/insidePostRequire.js"></script>-->
+<script src="../activity/mui/mui.min.js"></script>
+<script src="../activity/mui/mui.picker.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var theRequest={};
+    var enroll_type="";
+    var modify_id="";
+    var item_info={};
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    var user_points=0;
+    geUrl();
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) location.reload();    //如果检测到页面是从“往返缓存”中读取的，刷新页面
+    });
+    function getActivityDetail(){
+        var _params={
+            "method": "com.bizvane.sun.wx.method.crm.CrmGetApplyInfo",
+            "activity_code" : theRequest.activity_code,
+            "item_id":theRequest.item_id
+        };
+        jQuery.ajax({
+            url: "/common/extendfuncton",
+            type: "POST",
+            dataType: 'json',
+//            data:{param:JSON.stringify(_params)},
+            data:JSON.stringify(_params),
+            timeout:120000,
+            success:function(data){
+                $("#mask_loading").hide();
+                if(data.code==0){
+                    $("#online_details").show();
+                    jQuery("#online_details").next(".footer").show();
+                    var info=data.data;
+                    var sheetHtml='';
+                    if(info.fee_money!=""){
+                        if(info.fee_point!=""){
+                            sheetHtml+='金额：'+info.fee_money+'元&nbsp;&nbsp;或&nbsp;&nbsp;'
+                        }else{
+                            sheetHtml+='金额：'+info.fee_money+'元&nbsp;&nbsp;&nbsp;&nbsp;'
+                        }
+                    }
+                    if(info.fee_point!=""){
+                        sheetHtml+='积分：'+info.fee_point
+                    }
+                    jQuery("#item_info .activity_title").html(info.item_name);
+                    $(".header h4").html(info.activity_theme);
+                    $(".header .activity_detail_dec").html((info.activity_desc).replace(/\n/g,"<br>"));
+                    jQuery("#item_info .item_cost").html(sheetHtml);
+                    jQuery("#item_info #item_picture").attr("src",info.item_pic==""?"../activity/img/goods_default_image.png":info.item_pic);
+                    if(theRequest.pay_type=="1"){
+                        jQuery("#pay_num").html(info.fee_point+"积分");
+                    }else if(theRequest.pay_type=="2"){
+                        jQuery("#pay_num").html(info.fee_money+"元");
+                    }
+                    enroll_type=info.enroll_type;  //备注：enroll_type 活动类型 add新增，modify 修改。当enroll_type为modify时，会返回id
+                    if(enroll_type=="modify"){
+                        modify_id=info.id
+                    }
+                    item_info={
+                        "enroll_status":info.enroll_status,  //报名状态，判断是否报过名
+                        "pay_return_url":info.pay_return_url,//报名成功后跳转的地址
+                        "PAY_POINTS":info.fee_point,	//支付积分 free_point
+                        "PAY_MONEY":info.fee_money,	//支付金额 free_money
+                        "PAY_TYPE":theRequest.pay_type,		//支付类型（1积分，2现金）
+                        "ENROLL_CODE":theRequest.activity_code,		//报名活动编号 activity_code
+                        "ENROLL_NAME":info.activity_theme,		//报名活动名称 activity_theme
+                        "ENROLL_PROJECT":info.item_name,		//报名项目 item_name
+                        "ENROLL_IMG":info.item_pic,		//报名项目item_pic
+                        "ENROLL_ID":theRequest.item_id,		//CRM报名ID item_id
+                        "DESCRIPTION":info.activity_desc		//CRM报名描述 activity_desc
+                    };
+                    if(info.enroll_status && info.enroll_status=="1"){
+                        jQuery(".footer").hide();
+                        mui.alert("您已经报名该活动!",function(){
+                            history.go(1);
+                        });
+                    }
+                }else{
+                    mui.alert(data.message, function() {});
+                }
+            },
+            error:function(){
+                $("#mask_loading").hide();
+            }
+        });
+    }
+    function add_common(url,_params){
+        jQuery.ajax({
+            url: url,
+            type: "POST",
+            dataType: 'json',
+            data:JSON.stringify(_params),
+            timeout:120000,
+            success:function(data){
+                document.getElementById("mask_loading").style.display="none";
+                if(data.code==0){
+                    modify_id=data.data["id"];
+                    enroll_type="modify";
+                    if(item_info.PAY_TYPE=="2" && item_info.PAY_MONEY!=0){
+                        var param=data.data;
+                        send_wx_pay(param)
+                    }else{
+                        mui.alert("支付成功", function() {
+                            item_info.pay_return_url && (window.location.href=item_info.pay_return_url);
+                        });
+                    }
+                }else{
+                    mui.alert("支付失败："+data.message, function() {
+//                        window.location.href="../activity/online_activity.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id
+                    });
+                }
+            },
+            error:function(){
+            }
+        });
+    }
+    function noScroll(){
+        var  event=event || window.event;
+        event.preventDefault();
+    }
+    function onBridgeReady(param) {
+        WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    appId: param.appId, // 必填，公众号的唯一标识
+                    timeStamp: param.timeStamp, // 必填，生成签名的时间戳
+                    nonceStr: param.nonceStr, // 必填，生成签名的随机串
+                    package: param.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                    signType: param.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                    paySign: param.paySign, // 支付签名
+                    success: function (res) {// 支付成功后的回调函数
+                    }
+                }, function(res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {  //支付成功
+                        mui.alert('支付成功', '提示',function(){
+                            item_info.pay_return_url && (window.location.href=item_info.pay_return_url);
+                        });
+                    }else if(res.err_msg == "get_brand_wcpay_request:cancel") { //取消支付
+                        mui.alert('取消支付', '提示');
+                    }else if(res.err_msg == "get_brand_wcpay_request:fail") {  //支付失败
+                        mui.alert('支付失败', '提示');
+                    } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                }
+        );
+    }
+//    if (typeof WeixinJSBridge == "undefined") {
+//        if (document.addEventListener) {
+//            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+//        } else if (document.attachEvent) {
+//            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+//            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+//        }
+//    } else {
+//        onBridgeReady();
+//    }
+    function send_wx_pay(param){
+        onBridgeReady(param);
+    }
+    (function($,jQuery) {
+        $.init();
+        getActivityDetail();
+        var sure_submit=$("#sure_submit")[0];
+        sure_submit.addEventListener("tap",function(){
+            if(item_info.enroll_status && item_info.enroll_status=="1"){
+                mui.alert("您已经报名该活动!");
+                return;
+            }
+            if(!item_info.PAY_TYPE || item_info.PAY_TYPE==""){
+                mui.alert('请选择支付方式', '提示');
+            }else{
+                var btnArray = ['取消', '确认'];
+                var Cost=item_info.PAY_TYPE=="2"?item_info.PAY_MONEY+'元':item_info.PAY_POINTS+'积分';
+                mui.confirm('确认支付'+Cost+'？',"", btnArray, function(e) {
+                    if (e.index == 1) {
+                        document.getElementById("mask_loading").style.display="block";
+                        document.querySelector('body').addEventListener('touchstart',noScroll);
+                        if(enroll_type && enroll_type=="add"){
+                            var url="/common/add";
+                            var param={
+                                "table":"WX_ENROLL",
+                                "mastertable": {
+                                    "WX_VIP_ID":"@VIPID@",			//所属会员
+                                    "PAY_POINTS":item_info.PAY_POINTS,	//支付积分 free_point
+                                    "PAY_MONEY":item_info.PAY_MONEY,	//支付金额 free_money
+                                    "PAY_TYPE":item_info.PAY_TYPE,		//支付类型（1积分，2现金）
+                                    "ENROLL_CODE":item_info.ENROLL_CODE,		//报名活动编号 activity_code
+                                    "ENROLL_NAME":item_info.ENROLL_NAME,		//报名活动名称 activity_theme
+                                    "ENROLL_PROJECT":item_info.ENROLL_PROJECT,		//报名项目 item_name
+                                    "ENROLL_IMG":item_info.ENROLL_IMG,		//报名项目item_pic
+                                    "ENROLL_ID":item_info.ENROLL_ID,		//CRM报名ID item_id
+                                    "DESCRIPTION":item_info.DESCRIPTION,		//CRM报名描述 activity_desc
+                                    "WX_PUBLIC_ID":"@PUBLICID@"	//所属公众号
+                                }
+                            };
+                        }else if(enroll_type && enroll_type=="modify"){
+                            var url="/common/modify";
+                            var param={
+                                "id":modify_id,
+                                "table":"WX_ENROLL",
+                                "mastertable": {
+                                    "PAY_POINTS":item_info.PAY_POINTS,	//支付积分 free_point
+                                    "PAY_MONEY":item_info.PAY_MONEY,	//支付金额 free_money
+                                    "PAY_TYPE":item_info.PAY_TYPE,		//支付类型（1积分，2现金）
+                                    "ENROLL_NAME":item_info.ENROLL_NAME,		//报名活动名称 activity_theme
+                                    "ENROLL_PROJECT":item_info.ENROLL_PROJECT,		//报名项目 item_name
+                                    "ENROLL_IMG":item_info.ENROLL_IMG,		//报名项目item_pic
+                                    "DESCRIPTION":item_info.DESCRIPTION		//CRM报名描述 activity_desc
+                                }
+                            };
+                        }
+                        add_common(url,param);
+                    } else {
+                        mui.alert("已取消支付", function() {});
+                    }
+                })
+            }
+        },false)
+    })(mui,jQuery)
+</script>
+</body>
+</html>

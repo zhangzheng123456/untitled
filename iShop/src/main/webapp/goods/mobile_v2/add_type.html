@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择秀搭类型</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/add_nwe.css?20170830">
+    <script src="js/iscroll.js"></script>
+    <style>
+        *{-webkit-tap-highlight-color:rgba(255,255,255,0)}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="type_search_box">
+            <form onkeydown="if(event.keyCode==13)return false;" action="">
+                <input class="type_search" type="text" placeholder="搜索秀搭类型"/>
+            </form>
+            <span class="type_search_icon">
+                <img src="image/icon_search.png" alt="search"/>
+            </span>
+            <div class="type_line"></div>
+        </div>
+        <div class="type_choose_box">
+            <div class="type_choose_num">
+
+            </div>
+            <div class="type_choose_btn">
+               <div><img src="image/change_icon.png" alt="change"/></div>
+               <div id="changeFun">换一批</div>
+            </div>
+        </div>
+        <ul class="type_label_box">
+            <!-- 可爱、活泼、阳光、休闲、时尚、炫酷、嘻哈、俏皮、小清新、森女、学院-->
+        </ul>
+    </div>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/gqrequest.js?2017040170331"></script>
+<script>
+    Array.prototype.unique= function(){
+        var res = [];
+        var json = {};
+        for(var i = 0; i < this.length; i++){
+            if(!json[this[i].id]){
+                res.push(this[i]);
+                json[this[i].id] = 1;
+            }
+        }
+        return res;
+    }
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+    var oc=new ObjectControl()
+    var pageNumber=1;
+    var index=location.search.lastIndexOf('=')+1;
+    var corp_code=location.search.slice(index);
+    var searchValue='';
+    var alreadyChoose=[];
+    var chooseArr=[];
+    var msgObj='';
+    function  selected(msg){
+         msgObj=JSON.parse(msg);
+        alreadyChoose=msgObj.map(function(val){
+            return val.id
+        });
+        getLabel();
+    }
+    function getLabel(){
+        var param={};
+        param.pageNumber=pageNumber;
+        param.pageSize=20;
+        param.searchValue=searchValue;
+        param.corp_code=corp_code;
+        oc.postRequire("post","/api/shopMatch/type/searchByApp","0",param,function(data){
+            if(data.code==0){
+                var obj=JSON.parse(JSON.parse(data.message).list);
+                if(!obj.hasNextPage){//没有下一页
+                    pageNumber=1;
+                }else{
+                    pageNumber++;
+                }
+                var typeList=obj.list;
+                if(typeList.length<=0){
+                    $('.type_label_box').html('<li style="border: none;width: 100%;text-align: center"><img width="60%" src="image/img_kong.png"/></li>')
+                }else{
+                    var typeHtml=typeList.map(function(val){
+                        return {'name':val.shopmatch_type,'id':val.id};
+                    })
+                    var html=[];
+                    for(var i=0;i<typeHtml.length;i++){
+                        if(alreadyChoose.indexOf(String(typeHtml[i].id))==-1){
+                            html.push('<li data-id="'+typeHtml[i].id+'">'+typeHtml[i].name+'</li>');
+                        }else{
+                            html.push('<li class="type_active" data-id="'+typeHtml[i].id+'">'+typeHtml[i].name+'</li>');
+                        }
+                    }
+                    $('.type_label_box').html(html.join(''));
+                    $('.type_label_box .type_active').each(function(index,val){
+                        chooseArr.push({'name':val.innerHTML,'id':val.dataset.id});
+                    });
+                    chooseArr=chooseArr.unique();
+                }
+                $('.type_choose_num').html('已选择'+chooseArr.length+'个');
+            }
+        })
+    }
+    function searchLabel(e){
+        if(e.keyCode==13){
+            //准备参
+            pageNumber=1;
+            searchValue=$('.type_search').val();
+            getLabel();
+        }
+    }
+    function chooseLabel(e){
+        console.log(e.target)
+        console.log(alreadyChoose);
+        if(e.target.nodeName=='IMG')return
+        // alreadyChoose=[];
+        var deletI='';
+        if(e.target.nodeName=='UL')return
+        $(e.target).toggleClass('type_active');
+        if($(e.target).hasClass('type_active')){
+            if(!chooseArr.some(function(val){
+               return val.id==e.target.dataset.id
+            }))chooseArr.push({'name':e.target.innerHTML,'id':e.target.dataset.id});
+//            chooseArr.forEach(function(val){
+                alreadyChoose.push(e.target.dataset.id);
+//            });
+        }else{
+            alreadyChoose.remove(e.target.dataset.id);
+                for(var i=chooseArr.length-1;i>=0;i--){
+                    if(chooseArr[i].id==e.target.dataset.id)chooseArr.splice(i,1);
+                }
+                 for(var g=msgObj.length-1;g>=0;g--){
+                    if(msgObj[g].id==e.target.dataset.id)msgObj.splice(g,1)
+                }
+        }
+        $('.type_choose_num').html('已选择'+chooseArr.length+'个');
+    }
+    function completeLabel(){
+        //准备参
+        var arr=[];
+        $('.type_label_box .type_active').each(function(index,val){
+            arr.push({'name':val.innerHTML,'id':val.dataset.id});
+        });
+        chooseArr=chooseArr.concat(msgObj);
+        chooseArr=chooseArr.unique();
+        var param={'label':chooseArr};
+        doAppWebRefresh(JSON.stringify(param));
+        //链接APP
+    }
+    //获取手机系统
+    function getWebOSType(){
+        var browser = navigator.userAgent;
+        var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端
+        var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+            return "Android";
+        }else if (isiOS) {
+            return "iOS";
+        }else{
+            return "Unknown"
+        }
+    }
+    function doAppWebRefresh(param){
+        // var param=JSON.stringify(param);
+        var osType = getWebOSType();
+        if(osType=="iOS"){
+            // window.webkit.messageHandlers.NSCompleteAddXiuda.postMessage(param);
+            window.webkit.messageHandlers.chooseComplete.postMessage(param)//label
+        }else if(osType == "Android"){
+            // iShop.returnAddResult(param);
+            iShop.ChooseComplete(param);//label
+        }
+    }
+   $(function(){
+       $('#changeFun').click(function(){
+
+           getLabel();
+       })
+       $('.type_search').keydown(searchLabel);
+       $('.type_search_icon').click(function(){
+           pageNumber=1;
+           searchValue=$('.type_search').val();
+           getLabel();
+       });
+       $('.type_label_box').click(chooseLabel);
+   });
+</script>
+</body>
+</html>

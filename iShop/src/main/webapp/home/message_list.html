@@ -1,0 +1,144 @@
+<div class="message_body" id="message_body">
+    <div class="slide_hide" ><span id="slide_hide" style="cursor:pointer;"><i class="icon-ishop_8-05" style="vertical-align: middle"></i><span style="vertical-align: middle">收起</span></span></div>
+    <div class="msg_list"  id="msg_list">
+        <span class="msg_loading" id="msg_loading">正在加载...</span>
+        <span class="more_msg" id="more_msg" style="display: none">点击加载更多</span>
+        <span class="more_msg" id="no_more_msg" style="display: none;color:#999">没有更多消息了</span>
+    </div>
+</div>
+<div class="message_content" id="message_content">
+    <div class="msg_img"><div style="margin:0 auto">系统</div></div>
+    <div>
+        <div class="msg_title" style="margin-top: 10px;text-align: center" id="msg_content_title"></div>
+        <div class="msg_time" style="text-align: center;margin: 0 0 20px 0" id="msg_content_time"></div>
+        <div class="msg_content" id="msg_content_all" style="word-wrap: break-word;position: absolute;top:120px;bottom:100px;overflow-y:auto;left: 20px;right: 20px;padding-right: 5px;"></div>
+    </div>
+    <div><span id="message_ok" class="message_ok" style="position: absolute;bottom: 30px;margin-left: 30%">确认</span></div>
+</div>
+<script>
+    var num=0;
+    var msgArray=[];
+    var oc = new ObjectControl();
+    function getMsg(){
+        oc.postRequire("get", "/message/getUserMessage?row_num="+num, "", "", function(data) {
+            if(data.code=="0"){
+                $("#more_msg").text("点击加载更多");
+                $("#more_msg").bind("click");
+                var msglist=JSON.parse(data.message);
+                msglist=msglist.messages;
+                msgArray=msgArray.concat(msglist);
+                msgArray.length==0 && $("#msg_loading").html("暂无消息");
+                msgArray.length!=0 && $("#msg_loading").hide() && $("#more_msg").show();
+                num=msglist.length;
+                for(var i=0;i<msglist.length;i++){
+                    var div='<div>'
+                            +'<div class="line" id="'+msglist[i].message_id+'">'
+                            +'<div class="msg_img"><span class="'+(msglist[i].message_state=="Y"?"": "badge badge-danger")+'"></span><div>系统</div></div>'
+                            +'<div class="msg_info">'
+                            +'<p class="msg_title">'+msglist[i].message_title+'</p>'
+                            +'<p class="msg_time">'+msglist[i].message_time+'</p>'
+                            +'<p class="msg_content">'+msglist[i].message_context+'</p>'
+                            +'</div>'
+                            +'<div class="msg_arrow"><i class="icon-ishop_6-31" style="color: #999;line-height: 60px"></i></div>'
+                            +'</div>'
+                            +'</div>';
+                    $("#more_msg").before(div);
+                }
+                if(msglist.length=="0" || msglist.length<"20"){
+                    $("#more_msg").hide();
+                }
+                if((msglist.length=="0" || msglist.length<"20") && msgArray.length!=0){
+                    $("#no_more_msg").show();
+                }
+            }else{
+                if($("#msg_loading").is(":visible")){
+                    $("#msg_loading").html("获取消息失败");
+                }else{
+                    $("#more_msg").text("加载失败,点击重新加载");
+                    $("#more_msg").bind("click");
+                }
+            }
+        });
+    }
+    $("#msg_loading").html("正在加载...");
+    $("#msg_list").children("div").length==0 &&  getMsg(num);
+    $("#message_body").animate({right:"0px"},200);
+    $("#more_msg").unbind("click").bind("click",function(){
+        $("#more_msg").text("正在加载...");
+        $("#more_msg").unbind("click");
+        getMsg()
+    });
+    $("#msg_list").on("click",".line",function(){
+        var id=$(this).attr("id");
+        var nowVal=null;
+        var self=$(this);
+        if(self.find(".msg_img span").hasClass("badge")){
+            oc.postRequire("get", "/message/updateMessageState?message_id="+id, "", "", function(data) {
+                if(data.code=="0"){
+                    self.find(".msg_img span").removeClass("badge badge-danger");
+                    getUnreadMes();
+                }
+            })
+        }
+        for (var a=0;a<msgArray.length;a++){
+            if(msgArray[a].message_id==id) {
+                nowVal = msgArray[a];
+                $("#msg_content_title").text(nowVal.message_title);
+                $("#msg_content_title").attr("title",nowVal.message_title);
+                $("#msg_content_time").text(nowVal.message_time);
+                $("#msg_content_all").text(nowVal.message_context);
+            }
+        }
+        if($("#message_content").is(":hidden")==true){
+            $("#message_content").show();
+        }
+        $(this).parent().css("backgroundColor","#efefef");
+        $(this).parent().siblings().css("backgroundColor","#FFFFFF");
+        $("#message_body").animate({right:"280px"},200)
+    });
+
+    $("#msg_list").niceScroll({
+        cursorcolor: "#ccc",//#CC0071 光标颜色
+        cursoropacitymax: 1, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+        touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+        cursorwidth: "5px", //像素光标的宽度
+        cursorborder: "0", //     游标边框css定义
+        cursorborderradius: "5px",//以像素为光标边界半径
+        autohidemode: false //是否隐藏滚动条
+    });
+    $("#msg_content_all").niceScroll({
+        cursorcolor: "#ccc",//#CC0071 光标颜色
+        cursoropacitymax: 1, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+        touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+        cursorwidth: "5px", //像素光标的宽度
+        cursorborder: "0", //     游标边框css定义
+        cursorborderradius: "5px",//以像素为光标边界半径
+        autohidemode: false //是否隐藏滚动条
+    });
+    $(window).scroll(function(){
+        if($("#message_body").css("right")=="-320px"){
+            return
+        }
+        var top=(80-$(window).scrollTop())<0?"0":(80-$(window).scrollTop());
+        $("#message_body,#message_content").css({
+            top:top+"px"
+        });
+        $("#msg_content_all,#msg_list").getNiceScroll().resize();
+    });
+    $("#slide_hide").click(function(){
+        if($("#message_body").css("right")=="280px"){
+            $("#message_body").animate({right:"0px"},200)
+        }else if($("#message_body").css("right")=="0px"){
+            $("#message_content").hide();
+            $("#message_body").animate({right:"-320px"},200,function(){
+                $("#message_body,#message_content").css({
+                    top:"80px"
+                });
+                $("#message_body").remove();
+            });
+        }
+    });
+    $("#message_ok").click(function(){
+        $("#message_body").animate({right:"0"},200)
+    })
+</script>

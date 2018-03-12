@@ -11,7 +11,13 @@ import java.util.List;
 public interface DefGoodsMatchService {
     List<DefGoodsMatch> selectMatchGoods(String corp_code)throws Exception;
 
+    List<DefGoodsMatch> selectMatchGoods(String corp_code,String manager_corp)throws Exception;
+
+
     List<DefGoodsMatch> selMatchBySeach(String corp_code,String search_value)throws Exception;
+
+    List<DefGoodsMatch> selMatchBySeach(String corp_code,String search_value,String manager_corp)throws Exception;
+
 
     List<DefGoodsMatch> selectMatchByCode(String corp_code,String goods_match_code)throws Exception;
 

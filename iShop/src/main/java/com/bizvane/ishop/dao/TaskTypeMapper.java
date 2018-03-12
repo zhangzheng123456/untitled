@@ -18,7 +18,7 @@ public interface TaskTypeMapper {
 
     List<TaskType> selectByName(@Param("corp_code") String corp_code,@Param("task_type_name") String task_type_name)throws SQLException;
 
-    List<TaskType> selectAllTaskType(@Param("corp_code") String corp_code,@Param("search_value") String search_value,@Param("isactive")String isactive)throws SQLException;
+    List<TaskType> selectAllTaskType(@Param("corp_code") String corp_code,@Param("search_value") String search_value,@Param("isactive")String isactive,@Param("manager_corp_arr")String[] manager_corp_arr)throws SQLException;
 
     int insertTaskType(TaskType type)throws SQLException;
 

@@ -1,0 +1,31 @@
+@charset "utf-8";
+html,body{color:#000;background:#f3f3f3;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;box-sizing: border-box}
+body{font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;}
+img{border:none;}
+em,strong{font-style:normal;font-weight:normal;}
+li{list-style:none;}
+table {border-collapse:collapse;border-spacing:0;}
+h1{font-size:18px;}
+h2{font-size:16px;}
+h3{font-size:14px;}
+a{text-decoration: none}
+h4, h5, h6{font-size:100%;}
+q:before,q:after{content:'';}
+button,input,select,textarea{font-size:100%;border:none;background:white}
+input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+address,cite,dfn,em,var{font-style:normal;}
+.text-overflow{
+   text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.text-center{
+    text-align: center;
+}
+.text-left{
+    text-align: left;
+}
+.text-right{
+    text-align: right;
+}

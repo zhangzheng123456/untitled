@@ -4,29 +4,34 @@
 	<meta charset="UTF-8">
 	<meta content="telephone=no,email=no" name="format-detection">
 	<title>FAB</title>
-	<link rel="stylesheet" href="css/goods.css?20161229">
+	<link rel="stylesheet" href="css/goods.css?2017040170331">
 	<script src="js/flexible.js"></script>
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-	<script src="js/jquery-1.11.1.js"></script>
-	<script src="js/gqrequest.js?20161202"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/gqrequest.js?2017040170331"></script>
 	<script src="js/iscroll.js"></script>
 </head>
 <body style="font-size: 12px;">
 	<div class="header_line">
 		<div class="search">
-			<form onkeydown="if(event.keyCode==13)return false;">
+			<form onkeydown="if(event.keyCode==13)return false;" action="">
 				<input id="input" type="search" value="" placeholder="搜索商品">
 			</form>
 		</div>
 		<div class="screen" id="screen">筛选</div>
 	</div>
 	<div class="allShops">
-		<!-- <div class="shop">
-			<div class="img">
-			<a href="goods.html"><img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FnThG0ZZ9QH5hKlA4cSw6AoSdEec.jpg?imageView2/2/w/600/h/600/q/75/format/webp" alt=""></a>
-			    </div>
-			<div class="shop-t"><h1>123</h1><p>货号:123</p><p class="pice">价格:<span>￥12</span></p></div>
-		</div> -->
+		<!--<div class="shop">-->
+			<!--<div class="img">-->
+			<!--<a href="goods.html"><img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FnThG0ZZ9QH5hKlA4cSw6AoSdEec.jpg?imageView2/2/w/600/h/600/q/75/format/webp" alt=""></a>-->
+			    <!--</div>-->
+			<!--<div class="shop-t">-->
+				<!--<h1>123</h1>-->
+				<!--<p>货号:123</p>-->
+				<!--<p>销量:2390123 <span style="margin-left: 15px">库存:123123</span></p>-->
+				<!--<p class="pice">价格:<span>￥12</span></p>-->
+			<!--</div>-->
+		<!--</div>-->
 	</div>
 	<div class="more">点击加载更多</div>
 	<div id="kong_img">
@@ -41,7 +46,7 @@
 				<h4>筛选品牌</h4>
 				<div class="list">
 					<ul>
-						
+
 					</ul>
 				</div>
 				<div class="xian"></div>
@@ -50,7 +55,7 @@
 				<h4>筛选波段</h4>
 				<div class="list">
 					<ul>
-						
+
 					</ul>
 				</div>
 				<div class="xian"></div>
@@ -59,7 +64,7 @@
 				<h4>筛选季度</h4>
 				<div class="list">
 					<ul>
-						
+
 					</ul>
 				</div>
 			</div>
@@ -69,19 +74,27 @@
 			<div id="complete" class="bg_h">完成</div>
 		</div>
 	</div>
+	<div id="loading">
+		<div class="tip">
+			<div class="tip_box">
+				<div class="icon_err rotate"><img src="image/icon_apply.png" width="100%"height="100%" alt="icon_error.png"></div>
+				<div class="loading_txt">加载中...</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="js/recommend.js?20161230"></script>
 <script>
 	var myScroll;
 	function loaded() {
 		myScroll = new iScroll('guide', { checkDOMChanges: true });
-		
+
 		// setInterval(function () {
 		// 	if (myScroll.isReady())
 		// 		document.getElementById('thelist').innerHTML += '<li>new row</li>';
 		// }, 2000);
 	}
-	window.onload=function(){loaded();} 
+	window.onload=function(){loaded();}
 	// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 	// document.addEventListener('DOMContentLoaded', loaded, false);
 	$("#screen").click(function(){

@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
@@ -16,7 +17,6 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +46,15 @@ public class BrandController {
     String id;
 
     @Autowired
+    MsgChannelCfgService msgChannelCfgService;
+    @Autowired
     private BrandService brandService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private SmsTemplateTypeService smsTemplateTypeService;
+    @Autowired
+    private MessageQuickReplyService messageQuickReplyService;
     @Autowired
     private CorpService corpService;
     @Autowired
@@ -72,19 +78,19 @@ public class BrandController {
         String area_code = request.getSession().getAttribute("area_code").toString();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
 
             String search_value = "";
             String[] codes = null;
-            if (jsonObject.has("searchValue")) {
+            if (jsonObject.containsKey("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             List<Brand> brandList = new ArrayList<Brand>();
 
-            if (role_code.equals(Common.ROLE_SYS) && jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
+            if (role_code.equals(Common.ROLE_SYS) && jsonObject.containsKey("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                 corp_code = jsonObject.get("corp_code").toString();
                 List<Brand> brand = brandService.getActiveBrand(corp_code, search_value, codes);
                 Brand brand_new = new Brand();
@@ -136,20 +142,41 @@ public class BrandController {
                     brandList = brandService.getActiveBrand(corp_code, search_value, codes);
                 }
             } else if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)) {
-                List<Store> stores = storeService.selectByStoreCodes(store_code, corp_code, Common.IS_ACTIVE_Y);
-                String brand_code1 = "";
-                for (int i = 0; i < stores.size(); i++) {
-                    String brand_code = stores.get(i).getBrand_code();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    if (!brand_code.endsWith(",")) {
-                        brand_code = brand_code + ",";
-                    }
-                    brand_code1 = brand_code1 + brand_code;
-                }
-                if (!brand_code1.equals("")){
-                    codes = brand_code1.split(",");
-                    brandList = brandService.getActiveBrand(corp_code, search_value, codes);
-                }
+//                List<Store> stores = storeService.selectByStoreCodes(store_code, corp_code, Common.IS_ACTIVE_Y);
+//                String brand_code1 = "";
+//                for (int i = 0; i < stores.size(); i++) {
+//                    String brand_code = stores.get(i).getBrand_code();
+//                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+//                    if (!brand_code.endsWith(",")) {
+//                        brand_code = brand_code + ",";
+//                    }
+//                    brand_code1 = brand_code1 + brand_code;
+//                }
+//                if (!brand_code1.equals("")){
+//                    codes = brand_code1.split(",");
+//                    brandList = brandService.getActiveBrand(corp_code, search_value, codes);
+//                }
+                Brand brand_new = new Brand();
+                brand_new.setBrand_code("");
+                brand_new.setBrand_name("全部");
+                brand_new.setCorp_code("");
+                brand_new.setCorp_name("");
+                brand_new.setCreated_date("");
+                brand_new.setCreater("");
+                brand_new.setId(0);
+                brandList.add(0, brand_new);
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value, codes);
+                Brand brand_new = new Brand();
+                brand_new.setBrand_code("");
+                brand_new.setBrand_name("全部");
+                brand_new.setCorp_code("");
+                brand_new.setCorp_name("");
+                brand_new.setCreated_date("");
+                brand_new.setCreater("");
+                brand_new.setId(0);
+                brandList.add(0, brand_new);
+                brandList.addAll(brand);
             }
 
             JSONArray array = new JSONArray();
@@ -226,12 +253,12 @@ public class BrandController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--brand add-------------" + jsString);
-            System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
             String result = brandService.insert(message, user_id);
+            logger.info("json--brand inrsert-----------================--" + result);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
                 String brand_code = jsonObject.get("brand_code").toString().trim();
@@ -263,7 +290,7 @@ public class BrandController {
                 String t_code = action_json.get("brand_code").toString();
                 String t_name = action_json.get("brand_name").toString();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -271,6 +298,7 @@ public class BrandController {
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -290,7 +318,7 @@ public class BrandController {
             String jsString = request.getParameter("param");
             logger.info("json--brand edit-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = brandService.update(message, user_id);
@@ -320,7 +348,7 @@ public class BrandController {
                 String t_code = action_json.get("brand_code").toString();
                 String t_name = action_json.get("brand_name").toString();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -344,14 +372,16 @@ public class BrandController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String delete(HttpServletRequest request) {
+        String user_id = request.getSession().getAttribute("user_code").toString();
+
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             logger.info("json-- delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String brand_id = jsonObject.get("id").toString();
             String[] ids = brand_id.split(",");
             String msg = null;
@@ -373,6 +403,18 @@ public class BrandController {
                         msg = "有使用品牌" + brand_code + "的店铺，请先处理品牌下店铺再删除";
                         break;
                     }
+
+                    count = smsTemplateTypeService.selectTemplateTypeCountByBrand(corp_code, brand_code, "", "").size();
+                    if (count > 0) {
+                        msg = "有使用品牌" + brand_code + "的消息模板分组，请先处理品牌下消息模板分组再删除";
+                        break;
+                    }
+                    count = messageQuickReplyService.selectQuickReplyByBrand(corp_code, brand_code, "", "").size();
+                    if (count > 0) {
+                        msg = "有使用品牌" + brand_code + "的快捷回复，请先处理品牌下快捷回复再删除";
+                        break;
+                    }
+
                 }
                 //----------------行为日志开始------------------------------------------
                 /**
@@ -394,16 +436,72 @@ public class BrandController {
                 String t_code = brand.getBrand_code();
                 String t_name = brand.getBrand_name();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
+            int num = 0;
+            int num1 = 0;
             if (msg == null) {
                 for (int i = 0; i < ids.length; i++) {
-                    brandService.delete(Integer.valueOf(ids[i]));
+                    Brand brand = brandService.getBrandById(Integer.valueOf(ids[i]));
+                    Date now = new Date();
+                    List<MsgChannelCfg> msgChannelCfgs = msgChannelCfgService.selectByCorpBrand(brand.getCorp_code(), Common.SPECIAL_HEAD + brand.getBrand_code() + ",");
+                    List<MsgChannelCfg> msgChannelCfgs_pro = msgChannelCfgService.selectByCorpBrandForProduction(brand.getCorp_code(), Common.SPECIAL_HEAD + brand.getBrand_code() + ",");
+
+                    logger.info("==============msgChannelCfgs======" + msgChannelCfgs.size() + "====" + msgChannelCfgs_pro.size());
+                    try {
+                        String m = "";
+                        String n = "";
+                        if (msgChannelCfgs.size() > 0 || msgChannelCfgs_pro.size() > 0) {
+                            if (msgChannelCfgs.get(0).getId().equals(msgChannelCfgs_pro.get(0).getId())) {
+                                MsgChannelCfg old1 = msgChannelCfgs.get(0);
+                                String code = old1.getBrand_code();
+                                String code3 = old1.getBrand_code_production();
+                                old1.setBrand_code(code.replace(Common.SPECIAL_HEAD + brand.getBrand_code() + ",", ""));
+                                old1.setBrand_code_production(code3.replace(Common.SPECIAL_HEAD + brand.getBrand_code() + ",", ""));
+                                old1.setModified_date(Common.DATETIME_FORMAT.format(now));
+                                old1.setModifier(user_id);
+                                msgChannelCfgService.update(old1);
+                            }else{
+                                if(msgChannelCfgs.size()>0){
+                                    MsgChannelCfg old1 = msgChannelCfgs.get(0);
+                                    String code = old1.getBrand_code();
+                                   // logger.info("===============code===========" + code);
+                                    old1.setBrand_code(code.replace(Common.SPECIAL_HEAD + brand.getBrand_code() + ",", ""));
+
+                                    old1.setModified_date(Common.DATETIME_FORMAT.format(now));
+                                    old1.setModifier(user_id);
+                                    m = msgChannelCfgService.update(old1);
+                                }
+
+                                if (msgChannelCfgs_pro.size() > 0) {
+                                    MsgChannelCfg old3 = msgChannelCfgs_pro.get(0);
+                                    String code3 = old3.getBrand_code_production();
+                                    old3.setBrand_code_production(code3.replace(Common.SPECIAL_HEAD + brand.getBrand_code() + ",", ""));
+                                    old3.setModified_date(Common.DATETIME_FORMAT.format(now));
+                                    old3.setModifier(user_id);
+                                    n = msgChannelCfgService.update(old3);
+
+                                }
+
+                            }
+
+                        }
+
+                        num = brandService.delete(Integer.valueOf(ids[i]), user_id);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage(e.getMessage());
+                    }
+
                 }
-                dataBean.setId(id);
+
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
                 dataBean.setMessage("删除成功");
+
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -433,16 +531,17 @@ public class BrandController {
 
             logger.info("json-select-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String user_id = jsonObject.get("id").toString();
             data = JSON.toJSONString(brandService.getBrandById(Integer.parseInt(user_id)));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
         } catch (Exception e) {
+            e.printStackTrace();
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
             bean.setMessage("品牌信息异常");
@@ -461,31 +560,39 @@ public class BrandController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
+            System.out.println("---role_code------>" + role_code);
 
             JSONObject result = new JSONObject();
             PageInfo<Brand> list = new PageInfo<Brand>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = brandService.getAllBrandByPage(page_number, page_size, "", search_value);
-            } else if(role_code.equals(Common.ROLE_GM)){
-                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "");
+                list = brandService.getAllBrandByPage(page_number, page_size, "", search_value, "");
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>" + manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>" + corp_code);
+                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "", "");
+                //list = brandService.getAllBrandByPage(page_number, page_size, "", search_value,manager_corp);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "", "");
             } else if (role_code.equals(Common.ROLE_BM)) {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
                 list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, search_value);
-            } else if (role_code.equals(Common.ROLE_AM)){
-                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, search_value);
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, search_value, "");
             } else {
                 List<Brand> list1 = new ArrayList<Brand>();
                 list.setList(list1);
@@ -495,6 +602,7 @@ public class BrandController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -510,9 +618,9 @@ public class BrandController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String brand_code = jsonObject.get("brand_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Brand brand = brandService.getBrandByCode(corp_code, brand_code, Common.IS_ACTIVE_Y);
@@ -541,9 +649,9 @@ public class BrandController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String brand_name = jsonObject.get("brand_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Brand brand = brandService.getBrandByName(corp_code, brand_name, Common.IS_ACTIVE_Y);
@@ -575,9 +683,9 @@ public class BrandController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
@@ -586,26 +694,38 @@ public class BrandController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, "", search_value);
+                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, "", search_value, "");
+                } else if (role_code.equals(Common.ROLE_CM)) {
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                    System.out.println("manager_corp=====>" + manager_corp);
+                    corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    System.out.println("getCorpCodeByCm=====>" + corp_code);
+                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, corp_code, "", "");
+                    //list = brandService.getAllBrandByPage(page_number, page_size, "", search_value,manager_corp);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     String[] codes = brand_code.split(",");
                     list = brandService.getPartBrandByPage(1, Common.EXPORTEXECLCOUNT, corp_code, codes, search_value);
                 } else {
-                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
+                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, corp_code, search_value, "");
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, "", null, map);
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, "", null, map, "");
+                } else if (role_code.equals(Common.ROLE_CM)) {
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                    corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, null, map, "");
+                    // list = brandService.getAllBrandScreen(page_number, page_size, "", null,map,manager_corp);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     String[] codes = brand_code.split(",");
-                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, codes, map);
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, codes, map, "");
                 } else {
-                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, null, map);
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, null, map, "");
                 }
             }
             List<Brand> brands = list.getList();
@@ -619,7 +739,7 @@ public class BrandController {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json, brands, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, brands, map, response, request, "品牌列表");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -725,36 +845,36 @@ public class BrandController {
                 int b = 5 / 0;
             }
             //   Pattern pattern = Pattern.compile("B\\d{4}");
-            Cell[] column = rs.getColumn(1);
-            for (int i = 3; i < column.length; i++) {
-                if (column[i].getContents().toString().trim().equals("")) {
-                    continue;
-                }
-//                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
-//                if (matcher.matches() == false) {
-//                    result = "：第" + (i + 1) + "行品牌编号格式有误";
+            //           Cell[] column = rs.getColumn(1);
+//            for (int i = 3; i < column.length; i++) {
+//                if (column[i].getContents().toString().trim().equals("")) {
+//                    continue;
+//                }
+////                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
+////                if (matcher.matches() == false) {
+////                    result = "：第" + (i + 1) + "行品牌编号格式有误";
+////                    int b = 5 / 0;
+////                    break;
+////                }
+//                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+//                if (brand != null) {
+//                    result = "：第" + (i + 1) + "行品牌编号已存在";
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
-                if (brand != null) {
-                    result = "：第" + (i + 1) + "行品牌编号已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
-            Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i < column1.length; i++) {
-                if (column1[i].getContents().toString().trim().equals("")) {
-                    continue;
-                }
-                Brand brand = brandService.getBrandByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
-                if (brand != null) {
-                    result = "：第" + (i + 1) + "行品牌名称已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
+//            }
+//            Cell[] column1 = rs.getColumn(2);
+//            for (int i = 3; i < column1.length; i++) {
+//                if (column1[i].getContents().toString().trim().equals("")) {
+//                    continue;
+//                }
+//                Brand brand = brandService.getBrandByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+//                if (brand != null) {
+//                    result = "：第" + (i + 1) + "行品牌名称已存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
             ArrayList<Brand> brands = new ArrayList<Brand>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
@@ -795,8 +915,15 @@ public class BrandController {
                     //  result = brandService.insertExecl(brand);
                 }
             }
+
             for (Brand brand : brands) {
-                result = brandService.insertExecl(brand);
+                Brand brand1 = brandService.getBrandByCode(brand.getCorp_code().trim(), brand.getBrand_code().trim(), Common.IS_ACTIVE_Y);
+                if (brand1 != null) {
+                    brand.setId(brand1.getId());
+                    result = brandService.updateExecl(brand);
+                } else {
+                    result = brandService.insertExecl(brand);
+                }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -826,29 +953,35 @@ public class BrandController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
 //            JSONObject jsonScreen = new JSONObject(screen);
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
+
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = brandService.getAllBrandScreen(page_number, page_size, "", null, map);
+                list = brandService.getAllBrandScreen(page_number, page_size, "", null, map, "");
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, null, map, "");
+                // list = brandService.getAllBrandScreen(page_number, page_size, "", null,map,manager_corp);
             } else if (role_code.equals(Common.ROLE_BM)) {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
-                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, codes, map);
+                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, codes, map, "");
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, null, map);
+                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, null, map, "");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

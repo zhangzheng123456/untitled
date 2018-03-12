@@ -1,30 +1,18 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Interfacers;
-import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.BaseService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.format.Alignment;
-import jxl.format.Colour;
-import jxl.format.UnderlineStyle;
-import jxl.format.VerticalAlignment;
-import jxl.write.*;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 /**
  * Created by yin on 2016/6/23.
@@ -92,10 +77,10 @@ public class ValidateCodeController {
         String phone = request.getSession().getAttribute("phone").toString();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //-------------------------------------------------------
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
@@ -104,6 +89,13 @@ public class ValidateCodeController {
             PageInfo<ValidateCode> list;
             if (role_code.equals(Common.ROLE_SYS) || phone.equals("18900001111")) {
                 list = validateCodeService.selectAllValidateCode(page_number, page_size, search_value);
+            }else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, search_value);
+                //   list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, search_value,manager_corp);
             }else {
                 list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, search_value);
             }
@@ -131,10 +123,10 @@ public class ValidateCodeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
@@ -142,6 +134,14 @@ public class ValidateCodeController {
             PageInfo<ValidateCode> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = validateCodeService.selectAllScreen(page_number, page_size, map);
+            }else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = validateCodeService.selectByCorpScreen(page_number, page_size, corp_code, map);
+
+                //  list = validateCodeService.selectByCorpScreen(page_number, page_size, corp_code, map,manager_corp);
             }else {
                 list = validateCodeService.selectByCorpScreen(page_number, page_size, corp_code, map);
             }
@@ -169,10 +169,10 @@ public class ValidateCodeController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             ValidateCode validateCode = WebUtils.JSON2Bean(jsonObject, ValidateCode.class);
             //------------操作日期-------------
             Date date = new Date();
@@ -185,40 +185,45 @@ public class ValidateCodeController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("该手机号已存在");
-                return dataBean.getJsonStr();
-            }
-            ValidateCode validateCode1 = validateCodeService.selectPhoneExist(validateCode.getPlatform(),validateCode.getPhone(),validateCode.getIsactive());
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(String.valueOf(validateCode1.getId()));
 
-            //----------------行为日志------------------------------------------
-            /**
-             * mongodb插入用户操作记录
-             * @param operation_corp_code 操作者corp_code
-             * @param operation_user_code 操作者user_code
-             * @param function 功能
-             * @param action 动作
-             * @param corp_code 被操作corp_code
-             * @param code 被操作code
-             * @param name 被操作name
-             * @throws Exception
-             */
-            com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
-            String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
-            String operation_user_code = request.getSession().getAttribute("user_code").toString();
-            String function = "系统管理_验证码管理";
-            String action = Common.ACTION_ADD;
-            String t_corp_code = "";
-            String t_code = action_json.get("phone").toString();
-            String t_name = action_json.get("platform").toString();
-            String remark = "";
-            baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+            }else {
+                ValidateCode validateCode1 = validateCodeService.selectPhoneExist(validateCode.getPlatform(), validateCode.getPhone(), validateCode.getIsactive());
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(String.valueOf(validateCode1.getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "系统管理_验证码管理";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = "";
+                String t_code = action_json.get("phone").toString();
+                String t_name = action_json.get("platform").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
+            }
             //-------------------行为日志结束-----------------------------------------------------------------------------------
-        } catch (Exception ex) {
+        }catch (org.apache.ibatis.exceptions.TooManyResultsException ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage("手机号已存在");
+        }catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage("手机号已存在");
         }
         return dataBean.getJsonStr();
     }
@@ -234,10 +239,10 @@ public class ValidateCodeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String inter_id = jsonObject.get("id").toString();
             String[] ids = inter_id.split(",");
             for (int i = 0; i < ids.length; i++) {
@@ -291,10 +296,10 @@ public class ValidateCodeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String app_id = jsonObject.get("id").toString();
             final ValidateCode validateCode = validateCodeService.selValidateCodeById(Integer.parseInt(app_id));
             JSONObject result = new JSONObject();
@@ -325,10 +330,10 @@ public class ValidateCodeController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             ValidateCode validateCode = WebUtils.JSON2Bean(jsonObject, ValidateCode.class);
             //------------操作日期-------------
             Date date = new Date();
@@ -383,9 +388,9 @@ public class ValidateCodeController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //系统管理员(官方画面)
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
@@ -407,7 +412,7 @@ public class ValidateCodeController {
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,feedbacks, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,feedbacks, map, response, request,"验证码");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

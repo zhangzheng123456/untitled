@@ -1,15 +1,16 @@
 package com.bizvane.ishop.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bizvane.ishop.entity.User;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.common.utils.SpringUtil;
 import com.mongodb.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -155,6 +156,36 @@ public class MongoUtils {
     }
 
 
+    //DBCursor数据集转arrayList+id
+    public static ArrayList dbCursorToListPageViewsLog(DBCursor dbCursor,String user_id) {
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            obj.put("id", id);
+            obj.removeField("_id");
+            if(obj.containsField("user_id")){
+                String user_id_mongo = obj.get("user_id").toString();
+                if(!user_id.equals(user_id_mongo)){
+                    if(obj.containsField("nickName")){
+                        if(null!= obj.get("nickName") && !"".equals(obj.get("nickName"))){
+                            try {
+                                String nickName = String.valueOf(obj.get("nickName")).substring(0, 1);
+                                obj.put("nickName", nickName + "*****");
+                            }catch (Exception ex){
+                                obj.put("nickName", "昵称未知");
+                            }
+                        }else{
+                            obj.put("nickName", "昵称未知");
+                        }
+                    }
+                }
+            }
+            list.add(obj.toMap());
+        }
+        return list;
+    }
+
 
     //DBCursor排序分页
     //sort_type（1：正序，-1：倒序）
@@ -245,4 +276,42 @@ public class MongoUtils {
         DBObject dbCursor=cursor_content.findAndModify(queryDBObject,(DBObject)null,(DBObject)null,false,updateDBObject,true,false);
         return dbCursor.get(increment).toString();
     }
+
+//    //会员活动筛选
+//    public  static  BasicDBList getScreenByActivity(JSONObject jsonObject,BasicDBList basicDBList){
+//        //筛选条件
+//        String user_code = "";
+//        String user_name = "";
+//        String store_code = "";
+//        String store_name = "";
+//        String screen = jsonObject.get("screen").toString();
+//        if (screen != null && !screen.equals("")) {
+//            JSONObject screenJson = JSON.parseObject(screen);
+//            user_code = screenJson.get("user_code").toString();
+//            user_name = screenJson.get("user_name").toString();
+//            store_code = screenJson.get("store_code").toString();
+//            store_name = screenJson.get("store_name").toString();
+//        }
+//        if (user_code != null && !user_code.equals("")) {
+//            Pattern pattern = Pattern.compile("^.*" + user_code + ".*$", Pattern.CASE_INSENSITIVE);
+//            basicDBList.add(new BasicDBObject("user_code", pattern));
+//        }
+//        if (user_name != null && !user_name.equals("")) {
+//            Pattern pattern = Pattern.compile("^.*" + user_name + ".*$", Pattern.CASE_INSENSITIVE);
+//            basicDBList.add(new BasicDBObject("user_name", pattern));
+//        }
+//        if (store_code != null && !store_code.equals("")) {
+//            Pattern pattern = Pattern.compile("^.*" + store_code + ".*$", Pattern.CASE_INSENSITIVE);
+//            basicDBList.add(new BasicDBObject("store_code", pattern));
+//        }
+//
+//        if (store_name != null && !store_name.equals("")) {
+//            Pattern pattern = Pattern.compile("^.*" + store_name + ".*$", Pattern.CASE_INSENSITIVE);
+//            basicDBList.add(new BasicDBObject("store_name", pattern));
+//        }
+//        return  basicDBList;
+//    }
+
+
+
 }

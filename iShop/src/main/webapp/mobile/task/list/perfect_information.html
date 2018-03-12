@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>完善资料</title>
+    <script src="../js/flexible.js"></script>
+    <link rel="stylesheet" href="../mui/mui.min.css">
+    <link rel="stylesheet" href="../mui/mui.picker.min.css">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/perfect_information.css?t=20171227">
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/mobiscroll_002.js" type="text/javascript"></script>
+    <script src="../js/mobiscroll_004.js" type="text/javascript"></script>
+    <link href="../css/mobiscroll_002.css" rel="stylesheet" type="text/css">
+    <link href="../css/mobiscroll.css" rel="stylesheet" type="text/css">
+    <script src="../js/mobiscroll.js" type="text/javascript"></script>
+    <script src="../js/mobiscroll_003.js" type="text/javascript"></script>
+    <script src="../js/mobiscroll_005.js" type="text/javascript"></script>
+    <link href="../css/mobiscroll_003.css" rel="stylesheet" type="text/css">
+    <style>
+        .disabled{
+            background-color: #dfdfdf!important;
+            color: black;
+        }
+        /*.mui-popup-title+.mui-popup-text{*/
+            /*text-align: left;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="information" id="information">
+    <!--<div class="information_line">-->
+        <!--<div class="information_name">字段名称</div>-->
+        <!--<div class="input-container"><input type="text" placeholder="提示文字"></div>-->
+    <!--</div>-->
+    <!--<div class="information_line">-->
+        <!--<div class="information_name">字段名称</div>-->
+        <!--<div class="input-container"><textarea></textarea></div>-->
+    <!--</div>-->
+    <!--<div class="information_line">-->
+        <!--<div class="information_name">字段名称</div>-->
+            <!--<div class="checkbox_line">-->
+                <!--<div class="checkbox">-->
+                    <!--<input type="checkbox" value="" name="test" title="全选/取消" class="check" id="checkboxTwoInput0">-->
+                    <!--<label for="checkboxTwoInput0"></label>-->
+                <!--</div>-->
+                <!--<span class="checkbox_text text-overflow">2呃3123</span>-->
+            <!--</div>-->
+     <!--</div>-->
+    <!--<div class="information_line">-->
+        <!--<div class="information_name">字段名称</div>-->
+     <!--<div class="input-container">-->
+        <!--<select id="orderTimeDataSel" class="text" style="">-->
+            <!--<option>请选择</option>-->
+            <!--<option>20170519-04-26 15:35:4420170519-04-26 15:53:31  </option>-->
+            <!--<option>20170519-04-26 15:35:44</option>-->
+            <!--<option>20170519-04-26 15:35:44</option>-->
+        <!--</select>-->
+        <!--<i class="icon-ishop_8-02"></i>-->
+     <!--</div>-->
+  <!--</div>-->
+</div>
+<div class="tips">
+    <div class="tip_box">
+        <div class="err_txt"></div>
+    </div>
+</div>
+<div id="loading">
+    <div class="tip">
+        <div class="tip_box">
+            <div class="icon_err rotate"><img src="../img/icon_apply.png" width="100%"height="100%" alt="icon_error.png"></div>
+            <div class="loading_txt">加载中...</div>
+        </div>
+    </div>
+</div>
+<div class="submit_info text-center"><div id="submit">提交</div></div>
+<script src="../js/config.js"></script>
+<!--<script src="../js/sha1.js"></script>-->
+<script src="../../../js/insidePostRequire.js"></script>
+<script src="../mui/mui.min.js"></script>
+<script src="../mui/mui.picker.min.js"></script>
+<!--<script src="../mui/city.data.js"></script>-->
+<!--<script src="../mui/city.data-3.js"></script>-->
+<script src="../mui/province.js"></script>
+<!--<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>-->
+<script>
+    var oc = new ObjectControl();
+    var theRequest={};
+    var param={};
+    var ticket="";
+    var time= $.now();
+    var url=window.location.href;
+    var currYear = (new Date()).getFullYear();
+    var opt={};
+    var timeEdit=false;
+    opt.date = {preset : 'date'};
+    opt.datetime = {preset : 'datetime'};
+    opt.time = {preset : 'time'};
+    opt.default = {
+        theme: 'android-ics light', //皮肤样式
+        display: 'modal', //显示方式
+        mode: 'scroller', //日期选择模式
+        dateFormat: 'mm-dd',
+        dateOrder: 'mmdd', //面板中日期排列格
+        lang: 'zh',
+        showNow: true,
+        nowText: "今天",
+        startYear: currYear - 100, //开始年份
+        endYear: currYear + 40 //结束年份
+    };
+    opt.default_b = {
+        theme: 'android-ics light', //皮肤样式
+        display: 'modal', //显示方式
+        mode: 'scroller', //日期选择模式
+        dateFormat: 'yy-mm-dd',
+        dateOrder: 'yymmdd', //面板中日期排列格
+        lang: 'zh',
+        showNow: true,
+        nowText: "今天",
+        startYear: currYear - 100, //开始年份
+        endYear: currYear + 40, //结束年份
+        maxDate: new Date(),
+        onSelect: function (valueText, inst) {//选择时事件（点击确定后），valueText 为选择的时间，\
+            var now=formatNowTime();
+           if(new Date(valueText)-new Date(now)>0){
+               $(this).val("");
+               $(".tips").show();
+               $('.err_txt').html("不能大于当前日期");
+               setTimeout(function () {
+                   $('.tips').hide();
+               },2000);
+           }
+        }
+    };
+    function formatNowTime(){
+        var now="";
+        var Y=new Date().getFullYear();
+        var M=new Date().getMonth()+1;
+        var D=new Date().getDate();
+        M=M<10?"0"+M:M;
+        D=D<10?"0"+D:D;
+        now=Y+"-"+M+"-"+D;
+        return now
+    }
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    var _params={
+        corp_code:theRequest.corp_code,
+        card_no:theRequest.card_no,
+        task_id:theRequest.id,
+        app_id:theRequest.app_id,
+        open_id:theRequest.open_id
+    };
+    $("#information").on("click",".checkbox_text",function(){
+        $(this).prev().find("label").trigger("click")
+    });
+    $("#loading").show();
+    oc.postRequire("post", ajaxUrl.improveData,"", _params, function(data){
+        $("#loading").hide();
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            var vipInfo=msg.vipInfo;
+            var task=msg.task;
+            var task_condition=JSON.parse(task.task_condition);
+            if(task.schedule!="未完成"){
+                $('.err_txt').html('该任务已结束');
+                setTimeout(function () {
+                    $('.tips').hide();
+                    window.location.href="../task_list.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&corp_code="+theRequest.corp_code;
+                },2000);
+            }
+            $("#submit").attr("data-vip_id",vipInfo.vip_id);
+            for(var i=0;i<task_condition.length;i++){
+                switch (task_condition[i].param_type){
+                    case "text":
+                        var val=task_condition[i].param_name;
+                        val=vipInfo[val];
+                        if(task_condition[i].param_name=="province"){
+                            var value=val.province+val.city+val.area;
+                              var html_text= '<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                               +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                 +'<div class="input-container"><div id="province_select"> <i class="icon-ishop_8-02"></i><input data-province="'+val.province+'" data-city="'+val.city+'" data-area="'+val.area+'" type="text" style="-webkit-user-select:none;"  readonly id="cityResult3" placeholder="'+value+'" value="'+value+'"></div></div>'
+                                   +'</div>';
+                        }else{
+                            var type="text";
+                            if(task_condition[i].param_attribute=="phone" || task_condition[i].param_attribute=="zip_code" || task_condition[i].param_attribute=="ID_number"){
+                                type="number"
+                            }
+                          var html_text= '<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                                            +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                            +'<div class="input-container"><input data-attribute="'+task_condition[i].param_attribute+'" type="'+type+'" placeholder="'+val+'" value="'+val+'"></div>'
+                                            +'</div>';
+                              }
+
+                        $("#information").append(html_text);
+                        break;
+                    case "date":
+                        var val=task_condition[i].param_name;
+                        val=vipInfo[val];
+                        var html_text= '<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                                +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                +'<div class="input-container"><input type="text"  style="-webkit-user-select:none;" readonly class="dateClass" placeholder="日期" value="'+val+'"></div>'
+                                +'</div>';
+                        if(task_condition[i].param_name!="birthday"){
+                            var html_text= '<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                                    +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                    +'<div class="input-container"><input type="text"  style="-webkit-user-select:none;" readonly class="dateClassOther" placeholder="日期" value="'+val+'"></div>'
+                                    +'</div>';
+                        }
+                        $("#information").append(html_text);
+                        break;
+                    case "check":
+                        var checkHtml="";
+                        var val=task_condition[i].param_values;
+                        var checkedVal=task_condition[i].param_name;
+                        checkedVal=vipInfo[checkedVal].split(",");
+                        val=val.split(",");
+                        for(var a=0;a<val.length;a++){
+                            var check="";
+                            for(var s=0;s<checkedVal.length;s++){
+                                if(checkedVal[s]==val[a]){
+                                    check="checked=checked";
+                                }
+                            }
+                            checkHtml+='<div class="checkbox_line" >'
+                                    +'<div class="checkbox">'
+                                    +'<input type="checkbox" value="" name="test" class="check" '+check+' id="checkbox'+task_condition[i].param_name+a+'">'
+                                    +'<label for="checkbox'+task_condition[i].param_name+a+'"></label>'
+                                    +'</div>'
+                                    +'<span class="checkbox_text text-overflow">'+val[a]+'</span>'
+                                    +'</div>'
+                        }
+                        var html_check='<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                                +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                +checkHtml
+                                +'</div>';
+                        $("#information").append(html_check);
+                        break;
+                    case "longtext":
+                        var val=task_condition[i].param_name;
+                        val=vipInfo[val];
+                        var html_text= '<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                                +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                +'<div class="input-container"><textarea >'+val+'</textarea></div>'
+                                +'</div>';
+                        $("#information").append(html_text);
+                        break;
+                    case "select":
+                        var option=task_condition[i].param_values;
+                        option=option.split(",");
+                        var val=task_condition[i].param_name;
+                        val=vipInfo[val];
+                        var optionHtml="<option value=''>请选择</option>";
+                        for(var s=0;s<option.length;s++){
+                            optionHtml+='<option value="'+option[s]+'">'+option[s]+'</option>';
+                        }
+                        var html_select='<div class="information_line" id="'+task_condition[i].param_name+'" data-type="'+task_condition[i].param_type+'">'
+                                +'<div class="information_name">'+task_condition[i].param_desc+'</div>'
+                                +'<div class="input-container">'
+                                +'<select class="text" id="orderTimeDataSel'+i+'">'
+                                +optionHtml
+                                +'</select>'
+                                +'<i class="icon-ishop_8-02"></i>'
+                                +'</div>'
+                                +'</div>';
+                        $("#information").append(html_select);
+                        if(val!=""){
+                            $("#orderTimeDataSel"+i).find("option[value='"+val+"']").attr("selected","true");
+                        }
+                        break;
+                }
+            }
+        }else if(data.code=="-1"){
+            $(".tips").show();
+            $('.err_txt').html(data.message);
+            setTimeout(function () {
+                $('.tips').hide();
+            },2000);
+        }
+        if($(".dateClassOther").parents(".information_line").attr("id")!="birthday"){
+            $(".dateClassOther").mobiscroll($.extend(opt['date'], opt['default']));
+        }
+         if($("#birthday .dateClass").length>0 && $("#birthday .dateClass").val().trim()!=""){
+            $("#birthday .dateClass,#birthday .input-container").addClass("disabled");
+            $("#birthday .dateClass,#birthday .input-container").attr("disabled",true)
+        }
+        var province_select=$("#province_select");
+        var birthday=$("#birthday");
+        if(province_select.length!=0 || birthday.length!=0){
+            initMui();
+        }
+    });
+    function testRegex(){
+        var input=$(".information_line[data-type='text'] input");
+        var reg="";
+        for(var i=0;i<input.length;i++){
+            var  type=$(input[i]).attr("data-attribute");
+            var  name=$(input[i]).parent().prev().html();
+            var  value=$(input[i]).val().trim();
+            var  require=$(input[i]).attr("data-required");
+            if(require=="Y" && name){
+                name=name.slice(name.indexOf("*")+1)
+            }
+            if(value && value!=""){
+                if(type && type=="phone"){
+                    reg=/^1\d{10}$/;
+                    if (!reg.test(value)) {
+                        mui.alert(name+"格式不正确","提示");
+                        return false
+                    }
+                }
+                if(type && type=="email"){
+                    reg=/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+                    if (!reg.test(value)) {
+                        mui.alert(name+"格式不正确","提示");
+                        return false
+                    }
+                }
+                if(type && type=="ID_number"){
+                    reg=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                    if (!reg.test(value)) {
+                        mui.alert(name+"格式不正确","提示");
+                        return false
+                    }
+                }
+                if(type && type=="zip_code"){
+                    reg=/^[1-9][0-9]{5}$/;
+                    if (!reg.test(value)) {
+                        mui.alert(name+"格式不正确","提示");
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+    $("#submit").click(function(){
+        var extend={};
+        var vip_id=$(this).attr("data-vip_id");
+        var information_line=$(".information_line");
+        if(!testRegex()){
+            return
+        }
+        for(var f=0;f<information_line.length;f++){
+            switch ($(information_line[f]).attr("data-type")){
+                case "text":
+                      if($(information_line[f]).attr("id")=="province"){
+                          extend[$(information_line[f]).attr("id")]={
+                               province:$(information_line[f]).find("input").attr("data-province"),
+                               city:$(information_line[f]).find("input").attr("data-city"),
+                               area:$(information_line[f]).find("input").attr("data-area")
+                           }
+                        }else{
+                            extend[$(information_line[f]).attr("id")]=$(information_line[f]).find("input").val().trim();
+                        }
+                    break;
+                case "date":
+                    extend[$(information_line[f]).attr("id")]=$(information_line[f]).find("input").val().trim();
+                    break;
+                case "longtext":
+                    extend[$(information_line[f]).attr("id")]=$(information_line[f]).find("textarea").val().trim();
+                    break;
+                case "select":
+                    extend[$(information_line[f]).attr("id")]=$(information_line[f]).find("select").val().trim();
+                    break;
+                case "check":
+                        var input=$(information_line[f]).find("input:checked").parent().next();
+                        var val=input.map(function(){
+                                            return $(this).html();
+                                        }).get().join(",");
+                    extend[$(information_line[f]).attr("id")]=val;
+                    break;
+            }
+        }
+        var params={
+            corp_code:theRequest.corp_code,
+            card_no:theRequest.card_no,
+            task_id:theRequest.id,
+            extend:extend,
+            vip_id:vip_id,
+            app_id:theRequest.app_id,
+            open_id:theRequest.open_id
+        };
+        $("#loading").show();
+        oc.postRequire("post", ajaxUrl.improveData,"", params, function(data){
+            $("#loading").hide();
+//            $(".tips").show();
+          if(data.code==0){
+//                  $('.tips').hide();
+              mui.alert("保存成功","提示",function(){
+                  window.location.href="../task_list.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&corp_code="+theRequest.corp_code;
+              });
+//              $('.err_txt').html('保存成功');
+//              setTimeout(function () {
+//              window.location.href="../task_list.html?card_no="+theRequest.card_no+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&corp_code="+theRequest.corp_code;
+//              },2000);
+          }else if(data.code=="-1"){
+              mui.alert(data.message,"提示");
+//              $(".tips").show();
+//              $('.err_txt').html(data.message);
+//              setTimeout(function () {
+//                  $('.tips').hide();
+//              },2000);
+          }
+        })
+    });
+    function initMui(){
+        (function($,doc,jQuery){
+            mui.init();
+            mui.ready(function() {
+                var cityPicker3 = new $.PopPicker({
+                    layer: 3
+                });
+                cityPicker3.setData(cityData3);
+                var showCityPickerButton = doc.getElementById('province_select');
+                var cityResult3 = doc.getElementById('cityResult3');
+                showCityPickerButton.addEventListener('tap', function(event) {
+                    cityPicker3.show(function(items) {
+                        var itemsValue="";
+                        for(var i=0;i<items.length;i++){
+                            if(items[i].text==undefined){
+                                itemsValue+=""
+                            }else{
+                                itemsValue+=items[i].text;
+                            }
+                        }
+                        cityResult3.value = itemsValue;
+                        cityResult3.setAttribute("data-province",items[0].text==undefined?"":items[0].text);
+                        cityResult3.setAttribute("data-city",items[1].text==undefined?"":items[1].text);
+                        cityResult3.setAttribute("data-area",items[2].text==undefined?"":items[2].text);
+                        //返回 false 可以阻止选择框的关闭
+                        //return false;
+                    });
+                }, false);
+                mui("#information").on('tap', "#birthday .dateClass", function(e) {
+                    var btnArray = ['我再想想', '确定'];
+                    var event=window.event||arguments[0];
+                    if(jQuery(event.target).val()!=""){
+//                        jQuery("#birthday .dateClass").trigger("focus");
+                        return;
+                    }
+                    mui.confirm('我们将根据您填写的生日在生日月送上会员专属生日礼物，请如实填写，填写后将无法修改。(生日仅可修改一次，请谨慎考虑)'," ",btnArray, function(e) {
+                        if (e.index == 1) {
+                            jQuery("#birthday .dateClass").mobiscroll($.extend(opt['date'], opt['default_b']));                           //确认执行的方法
+                            jQuery("#birthday .dateClass").trigger("focus")
+                        } else {
+                              //取消
+                        }
+                    })
+                });
+            })
+        })(mui,document,jQuery)
+    }
+
+</script>
+</body>
+</html>

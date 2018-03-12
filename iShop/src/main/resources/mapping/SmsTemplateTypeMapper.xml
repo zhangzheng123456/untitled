@@ -15,9 +15,12 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
+
     </resultMap>
     <select id="selectSmsTemplateById" resultMap="SmsTemplateType">
        SELECT dstt.id,
@@ -28,10 +31,12 @@
         dstt.modifier,
         dstt.created_date,
         dstt.creater,
+       dstt.brand_code,
         dstt.isactive
-        FROM def_sms_template_type dstt,def_corp
+        FROM def_sms_template_type dstt,def_corp,def_brand
         WHERE dstt.corp_code=def_corp.corp_code
-        and dstt.id=#{id}
+          AND dstt.corp_code=def_brand.corp_code
+         and dstt.id=#{id}
     </select>
     <select id="selectAllSmsTemplateType" resultMap="SmsTemplateType">
         SELECT dstt.id,
@@ -42,6 +47,7 @@
         dstt.modifier,
         dstt.created_date,
         dstt.creater,
+        dstt.brand_code,
         dstt.isactive,
         def_corp.corp_name
         FROM def_sms_template_type dstt,def_corp
@@ -49,11 +55,19 @@
         <if test="corp_code != null and corp_code !=''">
             AND dstt.corp_code = #{corp_code}
         </if>
+
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dstt.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (dstt.template_type_code LIKE concat('%',#{search_value},'%')
             OR dstt.template_type_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+
             )
         </if>
         GROUP By dstt.id
@@ -65,7 +79,8 @@
         dstt.template_type_name,
         dstt.corp_code,
         dstt.modified_date,
-        dstt.modifier,
+        dstt.brand_code,
+         dstt.modifier,
         dstt.created_date,
         dstt.creater,
         dstt.isactive
@@ -105,6 +120,10 @@
             <if test="creater!=null">
                 creater,
             </if>
+            <if test="brand_code!=null">
+                brand_code,
+            </if>
+
             <if test="isactive!=null">
                 isactive,
             </if>
@@ -130,6 +149,9 @@
             </if>
             <if test="creater!=null">
                 #{creater},
+            </if>
+            <if test="brand_code!=null">
+                #{brand_code},
             </if>
             <if test="isactive!=null">
                 #{isactive},
@@ -174,6 +196,9 @@
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
+            <if test="brand_code!=null">
+                brand_code=#{brand_code},
+            </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
@@ -193,23 +218,62 @@
         WHERE id=#{id};
     </update>
 
+
+    <select id="selectTemplateTypeCountByBrand" resultType="com.bizvane.ishop.entity.SmsTemplateType">
+        SELECT dstt.id,
+
+        dstt.template_type_code,
+        dstt.template_type_name,
+        dstt.corp_code,
+        dstt.brand_code
+        FROM def_sms_template_type dstt,def_corp dc
+        WHERE dstt.corp_code = dc.corp_code
+        AND dstt.corp_code=#{corp_code}
+        AND
+        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+            dstt.brand_code LIKE concat('%',#{item},'%')
+        </foreach>
+        <if test="search_value != null and search_value !=''">
+            AND dstt.template_type_name LIKE concat('%',#{search_value},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND dstt.isactive = #{isactive}
+        </if>
+        AND dc.isactive = 'Y'
+        GROUP BY dstt.id
+        ORDER BY dstt.id DESC
+    </select>
+
     <select id="selectSmsTemplateTypeScreen" resultMap="SmsTemplateType">
         SELECT dstt.id,
         dstt.template_type_code,
         dstt.template_type_name,
         dstt.corp_code,
+        dstt.brand_code,
         dstt.modified_date,
         dstt.modifier,
         dstt.created_date,
         dstt.creater,
         dstt.isactive,
         def_corp.corp_name
-        FROM def_sms_template_type dstt,def_corp
+        FROM def_sms_template_type dstt,def_corp,def_brand db
         WHERE dstt.corp_code=def_corp.corp_code
+        AND dstt.corp_code=db.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND dstt.corp_code=#{corp_code}
         </if>
-
+        <if test="brand_codes != null and brand_codes!=''">
+            AND
+            <foreach collection="brand_codes" item="item" index="index" open="(" separator="or" close=")">
+                dstt.brand_code LIKE concat('%',#{item},'%')
+            </foreach>
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dstt.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">

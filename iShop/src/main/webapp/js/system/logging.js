@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除的默认的第一页;
 var pageSize=10;//默认传的每页多少行
@@ -9,6 +7,7 @@ var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
 var cout="";
+var exportAlllog_num="";
 var filtrate="";//筛选的定义的值
 var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
@@ -93,12 +92,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize) {
+function setPage(container, count, pageindex,pageSize,funcCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total = total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -150,7 +150,7 @@ function setPage(container, count, pageindex,pageSize) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -329,11 +329,13 @@ function GET(a,b){
             var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;
+            var total = message.total;
+            exportAlllog_num=message.total;
             superaddition(list,pageNum);
             jumpBianse();
             $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
             $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             // alert(data.message);
         }
@@ -378,7 +380,6 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
 //鼠标按下时触发的收索
@@ -419,6 +420,8 @@ function POST(a,b){
             var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;
+            var total = message.total;
+            exportAlllog_num=message.total;
             $(".table tbody").empty();
             $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
             $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
@@ -438,7 +441,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -548,9 +551,6 @@ function clearAll(name){
 $("#more_down").on("click","#leading_out",function(){
     var l=$(window).width();
     var h=$(document.body).height();
-    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
-    $(".file").css({"left":+left+"px","top":+tp+"px"});
     $("#p").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').show();
@@ -583,15 +583,74 @@ function bianse(){
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
 //导出提交的
+// $("#file_submit").click(function(){
+//     var li=$("#file_list_r input[type='checkbox']").parents("li");
+//     var param={};
+//     var tablemanager=[];
+//     if(li.length=="0"){
+//         frame();
+//         $('.frame').html('请把要导出的列移到右边');
+//         return;
+//     }
+//     for(var i=0;i<li.length;i++){
+//         var r=$(li[i]).attr("data-name");
+//         var z=$(li[i]).children("span").html();
+//         var param1={"column_name":r,"show_name":z};
+//         tablemanager.push(param1);
+//     }
+//     tablemanager.reverse();
+//     param["tablemanager"]=tablemanager;
+//     param["searchValue"]=value;
+//     if(filtrate==""){
+//         param["list"]="";
+//     }else if(filtrate!==""){
+//         param["list"]=list;
+//     }
+//     whir.loading.add("",0.5);//加载等待框
+//
+//     oc.postRequire("post","/apploginlog/exportExecl","0",param,function(data){
+//         if(data.code=="0"){
+//             var message=JSON.parse(data.message);
+//             var path=message.path;
+//             var path=path.substring(1,path.length-1);
+//             $("#enter").html("<a href='/"+path+"'>下载文件</a>");
+//             $(".file").hide();
+//             $("#code_ma").show();
+//             // $('#file_submit').hide();
+//             $('#download').show();
+//             //导出关闭按钮
+//             $('#file_close').click(function(){
+//                 $('.file').hide();
+//             })
+//             $('#download').click(function(){
+//                 $("#p").hide();
+//                 $('.file').hide();
+//                 $('#file_submit').show();
+//                 $('#download').hide();
+//             })
+//         }else if(data.code=="-1"){
+//             alert(data.message);
+//         }
+//         whir.loading.remove();//移除加载框
+//     })
+// })
+//导出提交的
 $("#file_submit").click(function(){
+    var allPage=Math.ceil(exportAlllog_num/1000);
     var li=$("#file_list_r input[type='checkbox']").parents("li");
+    var value = $("#search").val().trim();
     var param={};
     var tablemanager=[];
+    var screen = [];
+    var list_html="";
     if(li.length=="0"){
         frame();
         $('.frame').html('请把要导出的列移到右边');
         return;
     }
+    $("#to_zip").show();
+    $("#download_all").hide();
+    $("#download_all a").removeProp("href");
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
         var z=$(li[i]).children("span").html();
@@ -601,36 +660,110 @@ $("#file_submit").click(function(){
     tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
+    $('.file').hide();
+    $("#export_list_all ul").html("");
+    for(var a=1;a<allPage+1;a++){
+        var start_num=(a-1)*1000 + 1;
+        var end_num="";
+        if (exportAlllog_num < a*1000 ){
+            end_num = exportAlllog_num;
+        }else{
+            end_num = a*1000
+        }
+        list_html+= '<li>'
+            +'<span style="float: left">爱秀登录日志('+start_num+'~'+end_num+')</span>'
+            +'<span class="export_list_btn" data-page="'+a+'">导出</span>'
+            +'<span style="margin-right:10px;" class="state"></span>'
+            +'</li>'
+    }
+    $("#export_list_all ul").html(list_html);
+    $("#export_list").show();
+    $("#export_list_all").scrollTop(0);
     if(filtrate==""){
         param["list"]="";
     }else if(filtrate!==""){
         param["list"]=list;
     }
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/apploginlog/exportExecl","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var path=message.path;
-            var path=path.substring(1,path.length-1);
-            $('#download').html("<a href='/"+path+"'>下载文件</a>");
-            $('#download').addClass("download");
-            $('#file_submit').hide();
-            $('#download').show();
-            //导出关闭按钮
-            $('#file_close').click(function(){
-                $('.file').hide();
-            })
-            $('#download').click(function(){
-                $("#p").hide();
-                $('.file').hide();
-                $('#file_submit').show();
-                $('#download').hide();
-            })
-        }else if(data.code=="-1"){
-            alert(data.message);
+    //whir.loading.add("",0.5);//加载等待框
+    $("#export_list_all .export_list_btn").click(function () {
+        if($(this).hasClass("btn_active")){
+            return
         }
-        whir.loading.remove();//移除加载框
+        var self=$(this);
+        var page=$(this).attr("data-page");
+        $(this).next().text("导出中...");
+        $(this).addClass("btn_active");
+        param["pageNumber"]=page;
+        param["pageSize"]="1000";
+        param["sort_key"]=$("table th").children(".sort_active").attr("data-code");
+        param["sort_value"]=$("table th").children(".sort_active").attr("data-type");
+        oc.postRequire("post","/apploginlog/exportExecl","0",param,function(data){
+            if(data.code=="0"){
+                var message=JSON.parse(data.message);
+                var path=message.path;
+                path=path.substring(1,path.length-1);
+                self.attr("data-path",path);
+                self.next().text("导出完成");
+                self.html("<a href='/"+path+"' style='display: inline-block;width: 100%;height: 100%;color: #FFFFFF'>下载</a>");
+                self.css("backgroundColor","#637ea4");
+            }else if(data.code=="-1"){
+                self.removeClass("btn_active");
+                self.next().text("导出失败");
+            }
+        })
+    });
+});
+$("#hide_export").click(function(){
+    //$(document.body).css("overflow","auto");
+    $("#export_list").hide();
+    $("#p").hide();
+});
+$("#to_zip").click(function(){
+    var a=$("#export_list_all ul li a");
+    var URL="";
+    var param={};
+    if(a.length==0){
+        frame();
+        $('.frame').html('请先导出文件');
+        return;
+    }
+    for(var i=a.length-1;i>=0;i--){
+        if(i>0){
+            URL+=$(a[i]).attr("href")+","
+        }else{
+            URL+=$(a[i]).attr("href");
+        }
+    }
+    param.url=URL;
+    param.name="登录日志";
+    whir.loading.add("","0.5");
+    oc.postRequire("post","/vip/exportZip", "",param, function(data){
+        if(data.code=="0"){
+            var path=JSON.parse(data.message).path;
+            path=path.substring(1,path.length-1);
+            $("#download_all a").prop("href","/"+path);
+            $("#p").css("zIndex","789");
+            whir.loading.remove();
+            $("#download_all").show();
+        }
+        if(data.code=="-1"){
+            whir.loading.remove();
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "操作失败"
+            });
+        }
     })
+});
+$("#dao").click(function(){
+    $("#p").hide();
+    $("#code_ma").hide();
+})
+$("#code_q").click(function(){
+    $("#p").hide();
+    $("#code_ma").hide();
 })
 //导出关闭按钮
 $('#file_close').click(function(){
@@ -639,6 +772,11 @@ $('#file_close').click(function(){
     $('#file_submit').show();
     $('#download').hide();
 })
+$("#cancel_download,#X_download").click(function(){
+    $("#p").css("zIndex","787");
+    $("#download_all").hide();
+    $("#download_all a").removeProp("href");
+});
 //筛选按钮
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
@@ -829,6 +967,8 @@ function filtrates(a,b){
             var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;
+            var total = message.total;
+            exportAlllog_num=message.total;
             // var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -840,7 +980,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

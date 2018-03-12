@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除默认第一行
 var pageSize=10;//默认传的每页多少行
@@ -83,12 +81,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize,funcCode) {
+function setPage(container, count, pageindex,pageSize,funcCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -140,7 +139,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -334,10 +333,11 @@ function GET(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            total=list.total;
             var list=list.list;
             superaddition(list,a);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,a,b,funcCode,total);
         }else if(data.code=="-1"){
         }
     });
@@ -426,7 +426,6 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
 //鼠标按下时触发的收索
@@ -461,6 +460,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            total=list.total;
             var list=list.list;
             var actions=message.actions;
             if(list.length<=0){
@@ -479,7 +479,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,a,b,funcCode,total);
         }else if(data.code=="-1"){
         }
     })
@@ -803,6 +803,7 @@ function filtrates(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            total=list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -815,7 +816,7 @@ function filtrates(a,b){
                 superaddition(list,a);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,a,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

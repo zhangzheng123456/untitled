@@ -27,7 +27,7 @@ public interface MessageMapper {
 //
 //    int insertMessage(Message record) throws SQLException;
 
-    List<MessageInfo> selectAllMessageInfo(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("search_value") String search_value) throws SQLException;
+    List<MessageInfo> selectAllMessageInfo(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("search_value") String search_value,@Param("manager_corp_arr") String[] manager_corp_arr) throws SQLException;
 
     List<Message> selectMessageDetail(@Param("message_code") String message_code) throws SQLException;
 

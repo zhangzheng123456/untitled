@@ -4,13 +4,20 @@
     <select id="selectMatchGoods" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
         SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg,def_brand db
+        FROM def_goods_match dgm,def_goods dg
+--         ,def_brand db
         WHERE dgm.corp_code = dg.corp_code
         AND dgm.goods_code = dg.goods_code
-        AND dg.corp_code = db.corp_code
-        AND dg.brand_code = db.brand_code
+--         AND dg.corp_code = db.corp_code
+--         AND dg.brand_code = db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dgm.corp_code =#{item}
+            </foreach>
         </if>
         AND dg.isactive ='Y'
         ORDER BY dgm.goods_match_code DESC
@@ -19,19 +26,24 @@
     <select id="selMatchBySeach" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
         SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg,def_brand db
+        FROM def_goods_match dgm,def_goods dg
         WHERE dgm.corp_code = dg.corp_code
         AND dgm.goods_code = dg.goods_code
-        AND dg.corp_code = db.corp_code
-        AND dg.brand_code = db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dgm.corp_code =#{item}
+            </foreach>
         </if>
         AND dgm.goods_match_code in
         (SELECT goods_match_code FROM def_goods_match
         WHERE 1=1 AND (
         goods_code like concat('%',#{search_value},'%')
         OR goods_match_title LIKE concat ('%',#{search_value},'%')
+        OR corp_code LIKE concat ('%',#{search_value},'%')
         ))
         AND dg.isactive ='Y'
         ORDER BY dgm.goods_match_code DESC
@@ -40,11 +52,9 @@
     <select id="selectMatchByCode" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
         SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg,def_brand db
+        FROM def_goods_match dgm,def_goods dg
         WHERE dgm.corp_code = dg.corp_code
         AND dgm.goods_code = dg.goods_code
-        AND dg.corp_code = db.corp_code
-        AND dg.brand_code = db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
@@ -98,6 +108,9 @@
             <if test="goods_match_desc!=null ">
                 goods_match_desc,
             </if>
+            <if test="match_display!=null ">
+                match_display,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="goods_match_code!=null ">
@@ -130,6 +143,10 @@
             <if test="goods_match_desc!=null ">
                 #{goods_match_desc},
             </if>
+            <if test="match_display!=null ">
+                #{match_display},
+            </if>
+
         </trim>
     </insert>
 
@@ -166,6 +183,9 @@
             <if test="goods_match_desc!=null ">
                 goods_match_desc =  #{goods_match_desc},
             </if>
+            <if test="match_display!=null ">
+                match_display =  #{match_display},
+            </if>
         </trim>
         where id=#{id}
     </update>
@@ -175,6 +195,7 @@
         dgm.goods_code,
         dgm.corp_code,
         dgm.goods_match_code,
+         dgm.match_display,
         dg.id,
         dg.goods_image
         FROM def_goods_match dgm, def_goods dg, def_corp dc,def_brand db

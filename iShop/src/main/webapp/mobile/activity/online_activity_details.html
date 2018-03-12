@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/reset.css">
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="mui/mui.min.css">
+    <link rel="stylesheet" href="mui/mui.picker.min.css">
+    <link rel="stylesheet" href="css/online_activity.css?t=20810202">
+    <title>活动详情</title>
+</head>
+<body>
+    <div class="online_details" id="online_details" style="display: none">
+        <div class="header" id="header">
+            <h4></h4>
+            <div class="activity_detail_dec"></div>
+        </div>
+        <div class="container" id="container"></div>
+    </div>
+    <div class="mask_loading" id="mask_loading" style="display: block">
+        <div>请稍后...</div>
+    </div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script src="mui/mui.min.js"></script>
+<script src="mui/mui.picker.min.js"></script>
+<script>
+    var theRequest={};
+    var oc = new ObjectControl();
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    (function($){
+        $("body").on("tap",".applyBtn",function(){
+            var activity_code=$(this).attr("data-code");
+            var points=$(this).attr("data-points");
+            var id=$(this).attr("data-id");
+            var pay_type=JSON.parse($(this).attr("data-pay_type"));
+            var limit_count=$(this).attr("data-count");
+            if(limit_count<0 || limit_count==0){
+                mui.alert('报名名额已满！', function() {});
+                return
+            }
+            if(pay_type.type && pay_type.type=="points"){
+                if(points < pay_type.value){
+                    mui.alert('积分不足', function() {
+//                        info.innerText = '你刚关闭了警告框';
+                    });
+                }else{
+                    window.location.href="online_activity_perfect_information.html?id="+id+"&activity_code="+activity_code+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&card_no="+theRequest.card_no
+                }
+            }else{
+                    window.location.href="online_activity_perfect_information.html?id="+id+"&activity_code="+activity_code+"&app_id="+theRequest.app_id+"&open_id="+theRequest.open_id+"&card_no="+theRequest.card_no
+            }
+        });
+    })(jQuery);
+    function getActivityList(){
+        var _params={
+            card_no:theRequest.card_no,
+            app_id:theRequest.app_id,
+            open_id:theRequest.open_id,
+            activity_code:theRequest.activity_code
+        };
+        oc.postRequire("post", "/vipActivity/detail/mobile/applyDetail","", _params, function(data){
+            $("#mask_loading").hide();
+            if(data.code==0){
+                $("#online_details").show();
+                var msg=JSON.parse(data.message);
+                var apply_list=msg.apply_list;
+                var info=msg.vipInfo;
+                $("#header h4").html(msg.activity_theme);
+                $("#header .activity_detail_dec").html((msg.activity_desc).replace(/\n/g,"<br>"));
+                initListData(apply_list,info);
+            }else{
+                jQuery("body").append('<div class="noDataTip">获取数据失败</div>')
+            }
+        },function(){
+            $("#mask_loading").hide();
+            jQuery("body").append('<div class="noDataTip">获取数据失败</div>')
+        });
+    }
+    function initListData(data,info){
+       if(data && data.length>0){
+        var html="";
+           for(var i=0;i<data.length;i++){
+               var payment="";
+               var pay_type={};
+               var disabled={
+                   type:"",
+                   name:""
+               };
+               if(data[i].fee_money!=""){
+                   if(data[i].fee_points!=""){
+                       payment+="金额:<span>"+data[i].fee_money+"元</span>或 "
+                   }else{
+                       payment+="金额:<span>"+data[i].fee_money+"元</span>"
+                   }
+               }else{
+                   pay_type={
+                       type:"points",
+                       value:data[i].fee_points
+                   }
+               }
+               if(data[i].fee_points!=""){
+                   payment+="积分:<span>"+data[i].fee_points+"</span>"
+               }
+               var imgUrl=data[i].item_picture==""?"img/goods_default_image.png":data[i].item_picture;
+               if(data[i].last_count<0 || data[i].last_count==0){
+                   disabled.type="disabled";
+                   disabled.name="名额已满";
+               }
+               var sku_id='';
+               if(data[i].sku_id && data[i].sku_id!=""){
+                   sku_id='<div>条码: <span>'+data[i].sku_id+'</span></div>';
+               }
+               html+=' <div class="activity_list_line"><span style="width: 20%;text-align: center; display: inline-block;height: 100%;vertical-align: middle;"> ' +
+                       '<img src="'+imgUrl+'" alt="" style="display: inline-block; vertical-align: middle;max-width:100%;width: auto;"> ' +
+                       '</span>'+
+                       '<div class="activity_list" style="width: 80%;padding-left: 10px;display: inline-block;vertical-align: middle;">'+
+                       '<h4 class="activity_title">'+data[i].item_name+'</h4>'+
+                       '<div class="list_detail">'+
+                       '<div class="activity_dec">'+
+                       '<div class="item_cost">'+payment+'</div>'+
+                       sku_id+
+                       '<div>剩余名额: <span>'+data[i].last_count+'</span></div>'+
+                       '</div>'+
+                       '<div class="ope_btn"><button '+disabled.type+' type="button"'+
+                       'class="mui-btn applyBtn" data-id="'+data[i].id+'" data-count="'+data[i].last_count+'" data-code="'+data[i].activity_code+'" data-points="'+info.points+'" data-pay_type='+JSON.stringify(pay_type)+'>'+(disabled.name==""?"立即报名":disabled.name)+'</button></div>'+
+                       '</div>'+
+                       '</div>'+
+                       '</div>'
+           }
+           $("#container").html(html)
+       }else{
+           var headerHeight=$("#header").outerHeight();
+           $("#container").html('<div class="noDataTip">暂无活动项目</div>').css({
+               "position":"fixed",
+               "top":headerHeight+"px",
+               "bottom":"0"
+           });
+           document.querySelector('body').addEventListener('touchstart', function (ev) {
+               var  event=event || window.event;
+               event.preventDefault();
+           },false);
+       }
+    }
+    getActivityList();
+    (function($) {
+        $.init();
+//        var applyBtn=$(".applyBtn");
+//        var dateNow=new Date();
+//        var Month=dateNow.getMonth()+1<10?"0"+(dateNow.getMonth()+1):dateNow.getMonth()+1;
+//        var date=dateNow.getDate()<10?"0"+dateNow.getDate():dateNow.getDate();
+//        function getNum(max){
+//            var numberArray=[];
+//            for(var n=1;n<max+1;n++){
+//                if(n<10){
+//                    numberArray.push({"text":"0"+n,"value":"0"+n});
+//                }else{
+//                    numberArray.push({"text": n.toString(),"value": n.toString()});
+//                }
+//            }
+//            return numberArray
+//        }
+//        applyBtn.each(function(i,btn){
+//            btn.addEventListener("tap",function(){
+//                var option={
+//                    "value":"2015-10-10 "+Month+":"+date,
+//                    "type":"time",
+//                    "customData":{
+//                        "h":getNum(12),
+//                        "i":getNum(31)
+//                    },
+//                    "labels":["年", "月", "日", "月", "日"]
+//                };
+//                var picker=new $.DtPicker(option);
+//                picker.show(function(rs){
+//                    var val=rs.text;
+//                    alert(val.replace(":","-"))
+//                })
+//            },false)
+//        })
+    })(mui)
+</script>
+</body>
+</html>

@@ -1,4 +1,14 @@
 var oc = new ObjectControl();
+Array.prototype.remove = function(val) {
+	var index = this.indexOf(val);
+	if (index > -1) {
+		this.splice(index, 1);
+	}
+};
+var brand_param={
+	marketing_id:"",
+	production_id:""
+};
 (function(root,factory){
 	root.brand = factory();
 }(this,function(){
@@ -57,6 +67,8 @@ var oc = new ObjectControl();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var app_id=$("#Accounts").attr("data-appid");
+				var Production=$("#Production").attr("data-type");
+				var Marketing=$("#Marketing").attr("data-type");
 				var a=$('.xingming input');
 				var cus_user_code="";
 				for(var i=0;i<a.length;i++){
@@ -67,6 +79,14 @@ var oc = new ObjectControl();
 			            cus_user_code+=u;
 			        }     
     			}
+				var li=$("#Acc_dropdown li");
+				var app_logo=[];
+				for(var j=0;j<li.length;j++){
+					var wx_id=$(li[j]).find("p input").val();
+					var logo_url=$(li[j]).find("div img").attr("data-src");
+					var app_logo1={"app_id":wx_id,"logo_url":logo_url};
+					app_logo.push(app_logo1);
+				}
 				var ISACTIVE="";
 				var input=$("#is_active")[0];
 				if(input.checked==true){
@@ -86,7 +106,10 @@ var oc = new ObjectControl();
 					"brand_name": BRAND_NAME,
 					"app_id":app_id,
 					"cus_user_code":cus_user_code,
-					"isactive": ISACTIVE
+					"app_logo":app_logo,
+					"isactive": ISACTIVE,
+					"Marketing":Marketing,
+					"Production":Production
 				};
 				brandjs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -117,6 +140,8 @@ var oc = new ObjectControl();
 				var app_id=$("#Accounts").attr("data-appid");//公众号
 				var a=$('.xingming input');//所属客服
 				var logo=$("#brandLogo").attr("data-src");
+				var Production=$("#Production").attr("data-type");
+				var Marketing=$("#Marketing").attr("data-type");
 				var cus_user_code="";
 				for(var i=0;i<a.length;i++){
 			        var u=$(a[i]).attr("data-code");
@@ -126,6 +151,14 @@ var oc = new ObjectControl();
 			            cus_user_code+=u;
 			        }     
     			}
+				var li=$("#Acc_dropdown li");
+				var app_logo=[];
+				for(var j=0;j<li.length;j++){
+					var wx_id=$(li[j]).find("p input").val();
+					var logo_url=$(li[j]).find("div img").attr("data-src");
+					var app_logo1={"app_id":wx_id,"logo_url":logo_url};
+					app_logo.push(app_logo1);
+				}
     			var ISACTIVE="";
 				var input=$("#is_active")[0];
 				if(input.checked==true){
@@ -147,7 +180,12 @@ var oc = new ObjectControl();
 					"cus_user_code":cus_user_code,
 					"brand_name": BRAND_NAME,
 					"logo":logo,
-					"isactive": ISACTIVE
+					"app_logo":app_logo,
+					"isactive": ISACTIVE,
+					"Marketing":Marketing,
+					"Production":Production,
+					"production_id":brand_param.production_id,
+					"marketing_id":brand_param.marketing_id
 				};
 				brandjs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -219,14 +257,13 @@ jQuery(document).ready(function(){
 	var checknow_data=[];
     var checknow_namedata=[];
 	window.brand.init();//初始化
-	$(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
+	$(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false,autohidemode:false});
 	if($(".pre_title label").text()=="编辑品牌信息"){
 		var id=sessionStorage.getItem("id");
 		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 		key_val=JSON.parse(key_val);
 		var funcCode=key_val.func_code;
 		$.get("/detail?funcCode="+funcCode+"", function(data){
-			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
@@ -246,7 +283,6 @@ jQuery(document).ready(function(){
 				var list=msg.cus_user;
 				var corp_code=msg.corp.corp_code;//公司编号
 				var logo=msg.logo;
-				console.log(list);
 				$("#BRAND_ID").val(msg.brand_code);
 				$("#BRAND_ID").attr("data-name",msg.brand_code);
 				$("#BRAND_NAME").val(msg.brand_name);
@@ -259,6 +295,21 @@ jQuery(document).ready(function(){
 				$("#modifier").val(msg.modifier);
 				$("#Accounts").val(msg.app_name);
 				$("#Accounts").attr("data-appid",msg.app_id);
+				$("#Marketing").val(msg.channel_marketing);
+				$("#Marketing").attr("data-type",msg.market_id);
+				$("#Production").val(msg.channel_production);
+				$("#Production").attr("data-type",msg.product_id);
+				if(msg.market_id==undefined){
+					brand_param.marketing_id="";
+				}else {
+					brand_param.marketing_id=msg.market_id;
+				}
+				if(msg.product_id==undefined){
+					brand_param.production_id="";
+				}else {
+					brand_param.production_id=msg.product_id;
+				}
+
 				if(logo!==""){
 					$("#brandLogo").attr({"src":logo,"data-src":logo});
 				}
@@ -284,6 +335,7 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist(corp_code);
+				uploadLOGO();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -314,7 +366,7 @@ jQuery(document).ready(function(){
 	               }else if(data.code=="-1"){
 	               		$("#BRAND_ID").attr("data-mark","N");
 	               		div.addClass("error_tips");
-						div.html("该编号已经存在！");	
+						div.html("该编号已经存在！");
 	               }
 		    })
 		}
@@ -381,9 +433,15 @@ jQuery(document).ready(function(){
                 }
                 if(list.length>0){
                     for(var i=0;i<list.length;i++){
+						var img_url='';
+						if(list[i].app_logo.indexOf("http")=="-1"){
+							img_url="../img/bg1.png";
+						}else if(list[i].app_logo.indexOf("http")!==-1){
+							img_url=list[i].app_logo;
+						}
                    		html+="<li><p class='checkbox_isactive'><input  type='checkbox' value='"+list[i].app_id+"' data-appname='"+list[i].app_name+"' name='test'  class='check'"
                         + "'/><label></label>\
-                        </p><span class='p16'>"+list[i].app_name+"</span></li>"
+                        </p><span class='p16'>"+list[i].app_name+"</span><div><img src='"+img_url+"'  data-src='"+img_url+"'><input type='file' class='app_logo'><span>上传LOGO</span></div></li>"
                     }
                 }
                 $("#Acc_dropdown").html(html);
@@ -416,6 +474,9 @@ jQuery(document).ready(function(){
     }
     $("#Acc_dropdown").on("click","li",function(e){
     	e.stopPropagation();
+		if($(e.target).is('.app_logo')||$(e.target).is('.Acc_dropdown div')||$(e.target).is('.Acc_dropdown div img')){
+			return;
+		}
     	var input=$(this).find("input")[0];
 	    if(input.type=="checkbox"&&input.checked==false){
 	        input.checked = true;
@@ -440,53 +501,32 @@ jQuery(document).ready(function(){
 	$("#back_brand").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
-	uploadLOGO();
+	$("#Acc_dropdown").on("change",".app_logo",function(e){
+		event.stopPropagation();
+		var client = new OSS.Wrapper({
+			region: 'oss-cn-hangzhou',
+			accessKeyId: 'O2zXL39br8rSn1zC',
+			accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+			bucket: 'products-image'
+		});
+		whir.loading.add("上传中,请稍后...",0.5);
+		var file = e.target.files[0];
+		var corp_code=$("#OWN_CORP").val();
+		var brand_code=$("#BRAND_ID").attr("data-name");
+		var app_id=$(this).parents("li").find("p input").val();
+		var storeAs='publicNumber/logo'+corp_code+'_'+app_id+'.jpg';
+		var img=$(this).parent().find('img');
+		client.multipartUpload(storeAs, file).then(function (result) {
+			console.log(result);
+			var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name+"?"+new Date().getTime();
+			var no_url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
+			img.attr({"src":url,"data-src":url});
+			whir.loading.remove();
+		}).catch(function (err) {
+			console.log(err);
+		});
+	})
 });
-function getcorplist(a){
-	//获取所属企业列表
-	var corp_command="/user/getCorpByUser";
-	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			var index=0;
-			var corp_html='';
-			for( var i=0;i<msg.corps.length;i++){
-				corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
-			}
-			$("#OWN_CORP").append(corp_html);
-			if(a!==""){
-				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
-			}
-			$('.corp_select select').searchableSelect();
-			$('.corp_select .searchable-select-input').keydown(function(event){
-				var event=window.event||arguments[0];
-				if(event.keyCode == 13){
-					$("#services").html("");
-					$("input[verify='Code']").val("");
-					$("#BRAND_NAME").val("");
-					$("input[verify='Code']").attr("data-mark","");
-					$("#BRAND_NAME").attr("data-mark","");
-				}
-			});
-			$('.searchable-select-item').click(function(){
-				$("#services").html("");
-				$("input[verify='Code']").val("");
-				$("#BRAND_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
-				$("#BRAND_NAME").attr("data-mark","");
-			})
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	});
-}
 //logo OSS
 function uploadLOGO() {
 	var _this=this;
@@ -530,3 +570,142 @@ function getNowFormatDate() {
 	var currentdate = ""+year+month+strDate+H+M+S+m;
 	return currentdate
 }
+function getcorplist(a){
+	//获取所属企业列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			var corp_html='';
+			for(var i=0;i<msg.corps.length;i++){
+				corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
+			}
+			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
+			var corp_code=$("#OWN_CORP").val();
+			$('.corp_select select').searchableSelect();
+			getselProductionByType();
+			getselMarketingByType();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					var corp_code1=$("#OWN_CORP").val();
+					if(corp_code!==corp_code1){
+						message.cache.vip_id="";
+						message.cache.area_codes="";
+						message.cache.area_names="";
+						message.cache.brand_codes="";
+						message.cache.brand_names="";
+						message.cache.store_codes="";
+						message.cache.store_names="";
+						message.cache.user_codes="";
+						message.cache.user_names="";
+						corp_code=corp_code1;
+						getselProductionByType();
+						getselMarketingByType();
+						$("#services").empty();
+						$("input[verify='Code']").val("");
+						$("#BRAND_NAME").val("");
+						$("input[verify='Code']").attr("data-mark","");
+						$("#BRAND_NAME").attr("data-mark","");
+						$("#Accounts").val("");
+						$("#Accounts").attr("data-appid","");
+					}
+				}
+			})
+			$('.searchable-select-item').click(function(){
+				var corp_code1=$("#OWN_CORP").val();
+				if(corp_code!==corp_code1){
+					message.cache.area_codes="";
+					message.cache.area_names="";
+					message.cache.brand_codes="";
+					message.cache.brand_names="";
+					message.cache.store_codes="";
+					message.cache.store_names="";
+					message.cache.user_codes="";
+					message.cache.user_names="";
+					corp_code=corp_code1;
+					getselProductionByType();
+					getselMarketingByType();
+					$("#services").empty();
+					$("input[verify='Code']").val("");
+					$("#BRAND_NAME").val("");
+					$("input[verify='Code']").attr("data-mark","");
+					$("#BRAND_NAME").attr("data-mark","");
+					$("#Accounts").val("");
+					$("#Accounts").attr("data-appid","");
+				}
+			})
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+}
+//获取生产短信通道
+function getselProductionByType() {
+    var param={};
+	param["corp_code"]=$("#OWN_CORP").val();
+	oc.postRequire("post","/msgChannelCfg/selChannelByCorp","",param, function(data){
+		var message=JSON.parse(data.message).list;
+		var list=JSON.parse(message);
+		var html="";
+		for(var i=0;i<list.length;i++){
+			var channel_child="";
+			if(list[i].channel_child==""){
+				channel_child="无";
+			}else {
+				channel_child=list[i].channel_child;
+			}
+			html+="<li data-type='"+list[i].id+"'>"+list[i].channel_account+list[i].channel_sign+" ("+channel_child+")</li>"
+		}
+		$("#production_parent ul").html(html);
+	})
+}
+//获取营销短信通道
+function getselMarketingByType() {
+	var param={};
+	param["corp_code"]=$("#OWN_CORP").val();
+	param["type"]="Marketing";
+	oc.postRequire("post","/msgChannelCfg/selChannelByType","",param, function(data){
+		var message=JSON.parse(data.message).list;
+		var list=JSON.parse(message);
+		var html="";
+		for(var i=0;i<list.length;i++){
+			var channel_child="";
+			if(list[i].channel_child==""){
+				channel_child="无";
+			}else {
+				channel_child=list[i].channel_child;
+			}
+			html+="<li data-type='"+list[i].id+"'>"+list[i].channel_account+list[i].channel_sign+" ("+channel_child+")</li>";
+		}
+		$("#marke_parent ul").html(html);
+	})
+}
+$(".item_1").on("click","ul li",function(){
+	var txt = $(this).text();
+	var type=$(this).attr("data-type")
+	$(this).parents(".item_1").find(".input_select").val(txt);
+	$(this).parents(".item_1").find(".input_select").attr("data-type",type);
+	var value = $(this).attr("rel");
+	$(".item_1 ul").hide();
+});
+$(".item_1 .input_select").click(function(){
+	var ul = $(this).parent().find("ul li");
+	if(ul.length=="0"){
+		art.dialog({
+			time: 1,
+			lock:true,
+			cancel: false,
+			content:"暂无数据"
+		});
+	}
+});

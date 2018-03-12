@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户行为日志</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170105">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170105">
+    <link rel="stylesheet" href="../css/staff_behavior.css">
+    <script src="../table/js/jquery.min.js"></script>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table"@click="document($event)">
+        <div class="title">
+            <span>员工管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>用户行为日志</span>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul id="jurisdiction">
+                </ul>
+                <ul>
+                    <li class="login_way"@click="login_way_show=!login_way_show">
+                        {{login_way}}
+                        <transition name="fade">
+                            <ul id="login_way"v-if="login_way_show">
+                                <li v-for="val in login_way_arr">{{val}}</li>
+                            </ul>
+                        </transition>
+                    </li>
+                    <li class="login_times"@click="login_times_show=!login_times_show">
+                        {{login_times}}
+                        <transition name="fade">
+                            <ul id="login_times"v-if="login_times_show">
+                                <li v-for="val in login_times_arr">{{val}}</li>
+                            </ul>
+                        </transition>
+                    </li>
+                    <li class="li">
+                        <input type="text" class="input" id="search" placeholder="当前页面搜索">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="filtrate"@click="sxk=!sxk">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                    <!--<li class="bg">-->
+                    <!--<span class="icon-ishop_6-06"></span>-->
+                    <!--配置-->
+                    <!--</li>-->
+                    <li class="bg">
+                        <span class="icon-ishop_6-07"></span>
+                        刷新
+                    </li>
+                    <li id="more">
+                        <span class="icon-ishop_6-08"></span>
+                        更多
+                        <div class="more_down">
+                            <div id="leading_out">导出</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sxk" id="sxk"v-if="sxk"style="display: block;">
+            <div class="sbtn">
+                <div class="empty" id="empty"@click="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up"@click="sxk=!sxk">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find"@click="search">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                    <filtrate ref="child"></filtrate>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th  style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: left;" id="tableOrder">序号</th>
+                    <!--<th>员工编号</th>-->
+                    <!--<th>姓名</th>-->
+                    <!--<th>会员编号</th>-->
+                    <!--<th>动作地址</th>-->
+                    <!--<th>动作描述</th>-->
+                    <!--<th>所属企业</th>-->
+                    <!--<th>动作时间</th>-->
+                    <model></model>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div class="tk" id="tk">
+    <span class="icon-ishop_6-12" id="X"></d="X"
+    <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="delete" id="delete">删除</em>
+    </div>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<!--<script src="../js/staff/vue.min.js"></script>-->
+<script src="../js/staff/vue.js"></script>
+<!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+<script src="../js/staff/vue-resource.js"></script>
+<script src="../js/staff/staff_behavior.js"></script>
+</body>
+<script>
+    $(".icon-ishop_6-07").parent().click(function () {
+        window.location.reload();
+    });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0033']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0033']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0033']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0033']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0033']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0033']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
+</html>

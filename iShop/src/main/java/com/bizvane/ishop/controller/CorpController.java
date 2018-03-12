@@ -6,10 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
-//import com.bizvane.ishop.entity.CorpWechatRelation;
 import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -113,7 +111,6 @@ public class CorpController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -356,6 +353,8 @@ public class CorpController {
     @ResponseBody
     public String search(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -365,10 +364,29 @@ public class CorpController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
-
+            if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>" + manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+            }
             JSONObject result = new JSONObject();
-            PageInfo<Corp> list = corpService.selectAllCorp(page_number, page_size, search_value);
-            result.put("list", JSON.toJSONString(list));
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员(官方画面)
+                PageInfo<Corp> corpInfo = corpService.selectAllCorp(page_number, page_size, search_value);
+                result.put("list", JSON.toJSONString(corpInfo));
+            }
+//            else if(role_code.equals((Common.ROLE_CM))){
+//                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+//                System.out.println("manager_corp=====>"+manager_corp);
+//                PageInfo<Corp> corpInfo = corpService.selectAllCorp(page_number, page_size, search_value,manager_corp);
+//                result.put("list", JSON.toJSONString(corpInfo));
+//            }
+            else {
+                //用户画面
+                Corp corp = corpService.selectByCorpId(0, corp_code, "");
+                result.put("list", JSON.toJSONString(corp));
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -397,7 +415,7 @@ public class CorpController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Store> list = storeService.getAllStore(request, page_number, page_size, corp_code, "", "", "");
+            PageInfo<Store> list = storeService.getAllStore(request, page_number, page_size, corp_code, "", "", "","","","","All");
             result.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -423,9 +441,9 @@ public class CorpController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_name = jsonObject.get("corp_name").toString();
             String existInfo = corpService.getCorpByCorpName(corp_name, Common.IS_ACTIVE_Y);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
@@ -486,15 +504,23 @@ public class CorpController {
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
         String errormessage = "数据异常，导出失败";
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             //系统管理员(官方画面)
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<Corp> corpInfo = null;
+            if (!role_code.equals(Common.ROLE_SYS)){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("-1");
+                dataBean.setMessage("无导出权限");
+                return dataBean.getJsonStr();
+            }
             if (screen.equals("")) {
                 corpInfo = corpService.selectAllCorp(1, Common.EXPORTEXECLCOUNT, search_value);
             } else {
@@ -515,7 +541,7 @@ public class CorpController {
                 int i = 9 / 0;
             }
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json, corps, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, corps, map, response, request,"企业列表");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -714,19 +740,34 @@ public class CorpController {
     @ResponseBody
     public String screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             JSONObject result = new JSONObject();
-            PageInfo<Corp> list = corpService.selectAllCorpScreen(page_number, page_size, map);
-            result.put("list", JSON.toJSONString(list));
+            if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>" + manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+            }
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员(官方画面)
+                PageInfo<Corp> list = corpService.selectAllCorpScreen(page_number, page_size, map);
+                result.put("list", JSON.toJSONString(list));
+            } else {
+                //用户画面
+                Corp corp = corpService.selectByCorpId(0, corp_code, "");
+                result.put("list", JSON.toJSONString(corp));
+            }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
@@ -745,6 +786,8 @@ public class CorpController {
     @ResponseBody
     public String selectWx(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -752,7 +795,9 @@ public class CorpController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            }
             JSONObject result = new JSONObject();
             List<CorpWechat> wechatlist = corpService.getWAuthByCorp(corp_code);
             result.put("list", wechatlist);
@@ -782,7 +827,7 @@ public class CorpController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
             String result = corpService.updateCorpWechat(wechat, corp_code, user_code);

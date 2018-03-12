@@ -49,18 +49,14 @@ var oc = new ObjectControl();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_DESC = $("#PARAM_DESC").val();
-                var PARAM_TYPE = $("#PARAM_TYPE").val();
+                var PARAM_TYPE = $(".paramType").prev("input").val();
                 var param_class = $("#param_class").val();
-                var required =$("#is_fill").val();
-                if(required=="是"){
-                    required="Y";
-                }else{
-                    required="N";
-                }
                 if(PARAM_TYPE=="时间"){
                     PARAM_TYPE="date"
-                }else if(PARAM_TYPE=="选择列表"){
+                }else if(PARAM_TYPE=="单选"){
                     PARAM_TYPE="select"
+                }else if(PARAM_TYPE=="多选框"){
+                    PARAM_TYPE="check"
                 }else if(PARAM_TYPE=="自定义"){
                     PARAM_TYPE="text"
                 }else if(PARAM_TYPE=="长文本"){
@@ -88,13 +84,9 @@ var oc = new ObjectControl();
                     return;
                 }
                 var REMARK = $("#REMARK").val();
-                var ISACTIVE = "";
-                var input = $(".checkbox_isactive").find("input")[0];
-                if (input.checked == true) {
-                    ISACTIVE = "Y";
-                } else if (input.checked == false) {
-                    ISACTIVE = "N";
-                }
+                var ISACTIVE = $(".checkbox_isactive").find("#is_active").prop("checked") ? "Y" : 'N';
+                var required = $(".checkbox_isactive").find("#require").prop("checked") ? "Y" : 'N';
+                var param_attribute = $("#param_attr").attr("data-id");
                 var _command = "/vipparam/add";//接口名
                 var opt = {//返回成功后的操作
                     success: function () {
@@ -108,6 +100,7 @@ var oc = new ObjectControl();
                     "param_values":PARAM_VALUE,
                     "required" : required,
                     "param_class" : param_class,
+                    "param_attribute":param_attribute,
                     "remark": REMARK,
                     "isactive":ISACTIVE
                 };
@@ -130,18 +123,14 @@ var oc = new ObjectControl();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_DESC = $("#PARAM_DESC").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
-                var PARAM_TYPE = $("#PARAM_TYPE").val();
+                var PARAM_TYPE = $(".paramType").prev("input").val();
                 var param_class = $("#param_class").val();
-                var required =$("#is_fill").val();
-                if(required=="是"){
-                    required="Y";
-                }else{
-                    required="N";
-                }
                 if(PARAM_TYPE=="时间"){
                     PARAM_TYPE="date"
-                }else if(PARAM_TYPE=="选择列表"){
+                }else if(PARAM_TYPE=="单选"){
                     PARAM_TYPE="select"
+                }else if(PARAM_TYPE=="多选框"){
+                    PARAM_TYPE="check"
                 }else if(PARAM_TYPE=="自定义"){
                     PARAM_TYPE="text"
                 }else if(PARAM_TYPE=="长文本"){
@@ -160,13 +149,9 @@ var oc = new ObjectControl();
                     return;
                 }
                 var REMARK = $("#REMARK").val();
-                var ISACTIVE = "";
-                var input = $(".checkbox_isactive").find("input")[0];
-                if (input.checked == true) {
-                    ISACTIVE = "Y";
-                } else if (input.checked == false) {
-                    ISACTIVE = "N";
-                }
+                var ISACTIVE = $(".checkbox_isactive").find("#is_active").prop("checked") ? "Y" : 'N';
+                var required = $(".checkbox_isactive").find("#require").prop("checked") ? "Y" : 'N';
+                var param_attribute = $("#param_attr").attr("data-id");
                 var _command = "/vipparam/edit";//接口名
                 var opt = {//返回成功后的操作
                     success: function () {
@@ -181,6 +166,7 @@ var oc = new ObjectControl();
                     "param_values":PARAM_VALUE,
                     "required" : required,
                     "param_class" : param_class,
+                    "param_attribute":param_attribute,
                     "remark": REMARK,
                     "isactive":ISACTIVE
                 };
@@ -192,7 +178,6 @@ var oc = new ObjectControl();
         });
     };
     paramjs.ajaxSubmit = function (_command, _params, opt) {
-        console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
                 if(_command=="/vipparam/add"){
@@ -255,14 +240,13 @@ var oc = new ObjectControl();
 
 jQuery(document).ready(function () {
     window.param.init();
-    if ($(".pre_title label").text() == "编辑会员参数") {
+    if ($(".pre_title label").text() == "编辑拓展参数") {
         var id = sessionStorage.getItem("id");
         var key_val = sessionStorage.getItem("key_val");//取页面的function_code
         key_val = JSON.parse(key_val);
         var funcCode = key_val.func_code;
         whir.loading.add("", 0.5);
         $.get("/detail?funcCode=" + funcCode + "", function (data) {
-            var data = JSON.parse(data);
             if (data.code == "0") {
                 var message = JSON.parse(data.message);
                 var action = message.actions;
@@ -275,27 +259,28 @@ jQuery(document).ready(function () {
         var _params = {"id": id};
         var _command = "/vipparam/selectById";
         oc.postRequire("post", _command, "", _params, function (data) {
-            console.log(data);
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                     msg = JSON.parse(msg.vipParam);
-                console.log(msg);
                 var corp_code=msg.corp_code;//公司编号
+                var param_attribute = msg.param_attribute;
                 $("#PARAM_NAME").val(msg.param_name);
                 $("#PARAM_NAME").attr("data-name", msg.param_name);
                 $("#PARAM_DESC").val(msg.param_desc);
-                var input=$(".checkbox_isactive").find("input")[0];
-                if(msg.isactive=="Y"){
-                    input.checked=true;
-                }else if(msg.isactive=="N"){
-                    input.checked=false;
-                }
+                msg.required == "Y" ? $(".checkbox_isactive").find("#require").prop("checked",true) : $(".checkbox_isactive").find("#require").prop("checked",false);
+                msg.isactive=="Y" ? $(".checkbox_isactive").find("#is_active").prop("checked",true) : $(".checkbox_isactive").find("#is_active").prop("checked",false);
                 var param_type=msg.param_type
                 if(param_type=="date"){
                     param_type="时间";
                     $("#PARAM_VALUE").attr("disabled","true");
                 }else if(param_type=="select"){
-                    param_type="选择列表";
+                    param_type="单选";
+                    $("#PARAM_VALUE").prev("label").html("参数值*");
+                    $("#PARAM_VALUE").prev("label").css('color','#c26555');
+                }else if(param_type=="check"){
+                    param_type="多选框";
+                    $("#PARAM_VALUE").prev("label").html("参数值*");
+                    $("#PARAM_VALUE").prev("label").css('color','#c26555');
                 }else if(param_type=="text"){
                     param_type="自定义";
                     $("#PARAM_VALUE").attr("disabled","true");
@@ -306,16 +291,11 @@ jQuery(document).ready(function () {
                     param_type="分割线";
                     $("#PARAM_VALUE").attr("disabled","true");
                 }
-                var required=msg.required;
-                if(required=="Y"){
-                    required="是";
-                }else if(required=="N"){
-                    required="否"
-                }
-                $("#is_fill").val(required);
                 $("#PARAM_TYPE").val(param_type);
                 $("#PARAM_VALUE").val(msg.param_values);
                 $("#param_class").val(msg.param_class);
+                $("#param_attr").val(param_attribute != '' ? $(".param_attr li[data-id="+param_attribute+"]").text() : '');
+                $("#param_attr").attr("data-id",msg.param_attribute);
                 $("#REMARK").val(msg.remark);
                 $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
@@ -361,23 +341,21 @@ jQuery(document).ready(function () {
     })
 
     $(".operadd_btn ul li:nth-of-type(2)").click(function () {
-        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
+        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html?t="+ $.now());
     });
     $(".operedit_btn ul li:nth-of-type(2)").click(function () {
-        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
+        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html?t="+ $.now());
     });
     $("#back_vip_param").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
+        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html?t="+ $.now());
     })
 });
 function getcorplist(a, b) {
     //获取所属企业列表
     var corp_command = "/user/getCorpByUser";
     oc.postRequire("post", corp_command, "", "", function (data) {
-        console.log(data);
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
-            console.log(msg);
             var index = 0;
             var corp_html = '';
             var c = null;
@@ -390,12 +368,6 @@ function getcorplist(a, b) {
                 $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
             }
             $("#OWN_CORP").searchableSelect();
-            // var c = $('#corp_select .selected').attr("data-value");
-            // param_data(c, b);
-            // $("#corp_select .searchable-select-item").click(function () {
-            //     var c = $(this).attr("data-value");
-            //     param_data(c, b);
-            // })
         } else if (data.code == "-1") {
             art.dialog({
                 time: 1,
@@ -407,37 +379,55 @@ function getcorplist(a, b) {
     });
 }
 //参数类型下拉
-$("#PARAM_TYPE").click(function () {
+$("#page-wrapper").on("click","#PARAM_TYPE",function () {
     $(".paramType").toggle();
 });
-$("#PARAM_TYPE").blur(function () {
+$("#page-wrapper").on("blur","#PARAM_TYPE",function () {
     setTimeout(function () {
         $(".paramType").hide();
     }, 200)
-})
+});
 $(".paramType li").click(function () {
     var val = $(this).html();
-    console.log(val);
-    $("#PARAM_TYPE").val(val);
+    $(".paramType").prev("input").val(val);
     if(val=="自定义"||val=="时间"||val=="长文本"||val=="分割线"){
         $("#PARAM_VALUE").attr("disabled","true");
-    }else if(val=="选择列表"){
+        $("#PARAM_VALUE").prev("label").html("参数值");
+        $("#PARAM_VALUE").prev("label").css('color','#434960');
+        $("#PARAM_VALUE").val("");
+    }else if(val=="单选"||val=="多选框"){
         $("#PARAM_VALUE").removeAttr("disabled");
+        $("#PARAM_VALUE").prev("label").html("参数值*");
+        $("#PARAM_VALUE").prev("label").css('color','#c26555');
     }
-})
+});
 
-$("#is_fill").click(function () {
-    if ($(".is_fill").css("display") == "none") {
-        $(".is_fill").show();
-    } else {
-        $(".is_fill").hide();
-    }
-})
-$("#is_fill").blur(function () {
+$("#param_attr").click(function () {
+    $(".param_attr").toggle();
+});
+$("#param_attr").blur(function () {
     setTimeout(function () {
-        $(".is_fill").hide();
+        $(".param_attr").hide();
     }, 200)
-})
-$(".is_fill li").click(function () {
-    $("#is_fill").val($(this).html());
-})
+});
+$(".param_attr li").click(function () {
+    $("#param_attr").val($(this).attr("data-id") != '' ? $(this).text() : "");
+    $("#param_attr").attr("data-id",$(this).attr("data-id"));
+    if($(this).attr("data-id") != ''){
+        if($(this).attr("data-id") == 'sex'){
+            $(".paramType li:contains('单选')").trigger("click");
+            $("#PARAM_VALUE").val("男,女");
+            $("#PARAM_VALUE").attr("disabled","true");
+            $("#PARAM_TYPE").removeAttr("id");
+        }else if($(this).attr("data-id") != 'sex'){
+            $(".paramType li:contains('自定义')").trigger("click");
+            $("#PARAM_VALUE").val("");
+            $("#PARAM_TYPE").removeAttr("id");
+        }else {
+            $(".paramType").prev("input").attr("id","PARAM_TYPE");
+        }
+    }else {
+        $(".paramType").prev("input").attr("id","PARAM_TYPE");
+        $(".paramType").prev("input").removeAttr("disabled");
+    }
+});

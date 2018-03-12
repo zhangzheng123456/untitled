@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除的默认的第一页;
 var pageSize=10;//默认传的每页多少行
@@ -10,6 +8,8 @@ var _param={};//筛选定义的内容
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
+var sort_key="new";
+var sort_type="-1";
 var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -84,13 +84,15 @@ $("#empty").click(function(){
     param["funcCode"]=funcCode;
     param["searchValue"]="";
     GET(inx,pageSize);
+    getAction()
 })
-function setPage(container, count, pageindex,pageSize) {
+function setPage(container, count, pageindex,pageSize,funcCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -142,7 +144,7 @@ function setPage(container, count, pageindex,pageSize) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -200,38 +202,43 @@ function superaddition(data,num){//页面加载循环
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-
-
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
         pageNumber=num;
     }
-    for (var i = 0; i < data.length; i++) {
-        var TD="";
-        if(num>=2){
-            var a=i+1+(num-1)*pageSize;
-        }else{
-            var a=i+1;
+    if(data.length>0){
+        for (var i = 0; i < data.length; i++) {
+            var TD="";
+            if(num>=2){
+                var a=i+1+(num-1)*pageSize;
+            }else{
+                var a=i+1;
+            }
+            var d_match_image=data[i].d_match_image.split(",");
+            for (var c=0;c<titleArray.length;c++){
+                (function(j){
+                       var code=titleArray[j].column_name;
+                        if(code=="d_match_image"){
+                            TD+="<td><img src='"+d_match_image[0]+"' alt=''></td>";
+                        }else{
+                            TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                        }
+                })(c)
+            }
+            $(".table tbody").append("<tr id="+data[i].id+"  data_corp_code="+data[i].corp_code+" data_d_match_code="+data[i].d_match_code+" data_user_code="+data[i].creater+"><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                + i
+                + 1
+                + "'/><label for='checkboxTwoInput"
+                + i
+                + 1
+                + "'></label></div>"
+                + "</td><td style='text-align:center;'>"
+                + a
+                + "</td>" +
+                TD +
+                "</tr>");
         }
-        for (var c=0;c<titleArray.length;c++){
-            (function(j){
-                var code=titleArray[j].column_name;
-                TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
-            })(c)
-        }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-            + i
-            + 1
-            + "'/><label for='checkboxTwoInput"
-            + i
-            + 1
-            + "'></label></div>"
-            + "</td><td style='text-align:center;'>"
-            + a
-            + "</td>" +
-            TD +
-            "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -311,12 +318,20 @@ function qjia(){
         jumpBianse();
         InitialState();
         tableTh();
+        getAction();
     })
 };
 function tableTh(){ //table  的表头
     var TH="";
     for(var i=0;i<titleArray.length;i++){
-        TH+="<th>"+titleArray[i].show_name+"</th>"
+        if(titleArray[i].column_name=="d_match_likeCount"||titleArray[i].column_name=="d_match_commentCount"||titleArray[i].column_name=="d_match_collectCount"||titleArray[i].column_name=="shopCount"){
+            TH+="<th data-type='"+titleArray[i].column_name+"'>"+titleArray[i].show_name+"<span class='sort_list'></span></th>"
+        }else if(titleArray[i].column_name=="created_date"){
+            TH+="<th data-type='"+titleArray[i].column_name+"'>"+titleArray[i].show_name+"<span class='icon-ishop_7-03 sort_list'></span></th>"
+        }
+        else {
+            TH+="<th>"+titleArray[i].show_name+"</th>"
+        }
     }
     $("#tableOrder").after(TH);
 };
@@ -324,21 +339,21 @@ qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    //oc.postRequire("get","/userOperation/list?pageNumber="+a+"&pageSize="+b
-    //    +"&funcCode="+funcCode+"","","",function(data){
-    oc.postRequire("post","/userOperation/search","0",param,function(data){
+    oc.postRequire("get","/api/shopMatch/list?pageNumber="+a+"&pageSize="+b+"&type=web&search_value=&sort_key="+sort_key+"&sort_type="+sort_type+"","0","",function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
             var list=message.list;
             var page_number = message.page_number;
+            var total = message.total;
             cout=message.pages;
             superaddition(list,page_number);
             jumpBianse();
             $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
             $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
-            setPage($("#foot-num")[0],cout,page_number,b,funcCode);
+            console.log(total);
+            setPage($("#foot-num")[0],cout,a,b,funcCode,total);
+            setPage($("#foot-num")[0],cout,page_number,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -383,41 +398,126 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
+//点击编辑时页面进行的跳转
+    $('#jurisdiction').on("click","#compile",function() {
+        var tr = $("tbody input[type='checkbox']:checked").parents("tr");
+        if (tr.length == 1) {
+            var id = $(tr).children().eq(2).attr("id");
+            var user_code = $(tr).attr("data_user_code");
+            var corp_code = $(tr).attr("data_corp_code");
+            var d_match_code=$(tr).attr("data_d_match_code");
+            var return_jump = {}; //定义一个对象
+            return_jump["inx"] = inx; //跳转到第几页
+            return_jump["value"] = value; //搜索的值;
+            return_jump["filtrate"] = filtrate; //筛选的值
+            return_jump["param"] = JSON.stringify(param); //搜索定义的值
+            return_jump["_param"] = JSON.stringify(_param) //筛选定义的值
+            return_jump["list"] = list; //筛选的请求的list;
+            return_jump["pageSize"] = pageSize; //每页多少行
+            sessionStorage.setItem("return_jump", JSON.stringify(return_jump));
+            sessionStorage.setItem("id", id);
+            $.cookie('user_code',user_code);
+            $.cookie('corp_code',corp_code);
+            $.cookie('d_match_code',d_match_code);
+            $(window.parent.document).find('#iframepage').attr("src", "/goods/xiuda_editor.html");
+        } else if (tr.length == 0) {
+            frame();
+            $('.frame').html("请先选择");
+        } else if (tr.length > 1) {
+            frame();
+            $('.frame').html("不能选择多个");
+        }
+    })
+//双击
+//点击tr input是选择状态  tr增加class属性
+    $(".table tbody").on("dblclick","tr",function(){
+            var user_code = $(this).attr("data_user_code");
+            var corp_code = $(this).attr("data_corp_code");
+            var d_match_code=$(this).attr("data_d_match_code");
+            var return_jump = {}; //定义一个对象
+            return_jump["inx"] = inx; //跳转到第几页
+            return_jump["value"] = value; //搜索的值;
+            return_jump["filtrate"] = filtrate; //筛选的值
+            return_jump["param"] = JSON.stringify(param); //搜索定义的值
+            return_jump["_param"] = JSON.stringify(_param) //筛选定义的值
+            return_jump["list"] = list; //筛选的请求的list;
+            return_jump["pageSize"] = pageSize; //每页多少行
+            sessionStorage.setItem("return_jump", JSON.stringify(return_jump));
+            $.cookie('user_code',user_code);
+            $.cookie('corp_code',corp_code);
+            $.cookie('d_match_code',d_match_code);
+        if(d_match_code == "" || d_match_code == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src", "/goods/xiuda_editor.html");
+        }
+    })
+$("#table thead").on("click","tr th",function(){
+    if($(this).find("span").length>0){
+        var type=$(this).attr("data-type");
+        if(type=="d_match_likeCount"){
+            sort_key="like";
+        }
+        if(type=="d_match_commentCount"){
+            sort_key="comment";
+        }
+        if(type=="d_match_collectCount"){
+            sort_key="collect";
+        }
+        if(type=="shopCount"){
+            sort_key="shopCount";
+        }
+        if(type=="created_date"){
+            sort_key="new";
+        }
+        if($(this).find("span").attr("class")=="icon-ishop_7-03 sort_list"){
+            $(this).find("span").attr("class","icon-ishop_7-04 sort_list");
+            sort_type="1";
+        }else if($(this).find("span").attr("class")=="sort_list"){
+            $(this).find("span").attr("class","icon-ishop_7-03 sort_list");
+            sort_type="-1";
+        }else if($(this).find("span").attr("class")=="icon-ishop_7-04 sort_list"){
+            $(this).find("span").attr("class","icon-ishop_7-03 sort_list");
+            sort_type="-1";
+        }
+        $(this).siblings("th").find("span").attr("class","sort_list");
+        if (value == "" && filtrate == "") {
+            GET(inx, pageSize);
+        } else if (value !== "") {
+            POST(inx, pageSize);
+        } else if (filtrate !== "") {
+            filtrates(inx, pageSize);
+        }
+    }
+})
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     inx=1;
-    param["pageNumber"]=inx;
-    param["pageSize"]=pageSize;
-    //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         value=this.value.trim();
-        param["searchValue"]=value;
         POST(inx,pageSize);
     }
 });
 //点击放大镜触发搜索
 $("#d_search").click(function(){
-    value=$("#search").val().replace(/\s+/g,"");
     inx=1;
-    param["searchValue"]=value;
-    param["pageNumber"]=inx;
-    param["pageSize"]=pageSize;
-    //param["funcCode"]=funcCode;
     POST(inx,pageSize);
 })
 //搜索的请求函数
 function POST(a,b){
+    value=$("#search").val().trim();
+    getAction();
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/userOperation/search","0",param,function(data){
+    oc.postRequire("get","/api/shopMatch/list?pageNumber="+a+"&pageSize="+b+"&type=web&search_value="+value+"&sort_key="+sort_key+"&sort_type="+sort_type+"","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;
-            var pageNum = message.page_number;
+            var pageNum= message.page_number;
+            var total= message.total;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -429,16 +529,12 @@ function POST(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            var input=$(".inputs input");
-            for(var i=0;i<input.length;i++){
-                input[i].value="";
-            }
             $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
             $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -460,7 +556,7 @@ $("#delete").click(function(){
     $("#tk").hide();
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
     for(var i=tr.length-1,ID="";i>=0;i--){
-        var r=$(tr[i]).attr("id");
+        var r=$(tr[i]).attr("data_d_match_code");
         if(i>0){
             ID+=r+",";
         }else{
@@ -468,8 +564,8 @@ $("#delete").click(function(){
         }
     }
     var params={};
-    params["id"]=ID;
-    oc.postRequire("post","/userOperation/delete","0",params,function(data){
+    params["d_match_code"]=ID;
+    oc.postRequire("post","/api/shopMatch/deleteByBatch","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame().then(function(){
@@ -640,8 +736,8 @@ $('#file_close').click(function(){
     $('#file_submit').show();
     $('#download').hide();
 })
-//筛选按钮
-oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+function getAction(){
+    oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
         var message=JSON.parse(data.message);
         var filter=message.filter;
@@ -657,26 +753,26 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
                 }
                 ul+="</ul>";
-                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly value='全部'>"+ul+"</li>"
             }else if(filter[i].type=="date"){
                 li+="<li class='created_date' id='"
-                    +filter[i].col_name
-                    +"'><label>"
-                    +filter[i].show_name
-                    +"</label>"
-                    +"<input type='text' id='start' class='time_data laydate-icon' autocomplete='off' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})\">"
-                    +"<label class='tm20'>至</label>"
-                    +"<input type='text' id='end' class='time_data laydate-icon' autocomplete='off' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})\">"
-                    +"</li>";
+                +filter[i].col_name
+                +"'><label>"
+                +filter[i].show_name
+                +"</label>"                                                         
+                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})\">"
+                +"<label class='tm20'>至</label>"
+                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})\">"
+                +"</li>";
             }else if(filter[i].type=='number'){
-                li+="<li class='isActive_select' id='"
+                li+="<li class='isActive_select2' id='"
                     +filter[i].col_name
                     +"'><label>"
                     +filter[i].show_name
                     +"</label>"
-                    +"<input style='width: 66px' type='text' id='isactive' readonly>"
-                    +" <ul class='isActive_select_down'style='display:none;width:41px;left:65px'><li style='text-indent: 5px'>>=</li><li  style='text-indent: 5px'><=</li><li  style='text-indent: 5px'>介于</li><li style='text-indent: 5px'>等于</li><li style='text-indent: 5px'>全部</li></ul>"
-                    +"</li>";
+                +"<input style='width: 66px' type='text' class='isactive' readonly value='全部'>"
+                +" <ul class='isActive_select_down'style='display:none;width:41px;left:65px'><li style='text-indent: 5px'>>=</li><li  style='text-indent: 5px'><=</li><li  style='text-indent: 5px'>介于</li><li style='text-indent: 5px'>等于</li><li style='text-indent: 5px'>全部</li></ul>"
+                +"</li>";
             }
         }
         $("#sxk .inputs ul").html(li);
@@ -694,6 +790,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         filtrateDown();
     }
 });
+};
 //筛选的keydow事件
 $('#sxk .inputs').on("keydown","input",function(){
     var event=window.event||arguments[0];
@@ -712,10 +809,24 @@ $('#sxk .inputs').on("keydown","input",function(){
         getInputValue();
     }
 })
+function checkStart(data){
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
+function checkEnd(data){
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
+};
 function filtrateDown(){
     //筛选select框
-    $(".isActive_select input:nth-child(2)").click(function (){
-        var ul=$(this).nextAll("ul.isActive_select_down");
+    $(".isActive_select2 input").click(function (){
+        var ul=$(this).nextAll(".isActive_select_down");
+        if(ul.css("display")=="none"){
+            ul.show();
+        }else{
+            ul.hide();
+        }
+    });
+    $(".isActive_select input").click(function(){
+        var ul=$(this).next(".isActive_select_down");
         if(ul.css("display")=="none"){
             ul.show();
         }else{
@@ -736,12 +847,6 @@ function filtrateDown(){
         $(".isActive_select_down").hide();
     })
 }
-function checkStart(data){
-    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
-};
-function checkEnd(data){
-    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
-};
 //筛选查找
 $("#find").click(function(){
     var test_input=$('#isactive').nextAll('input');
@@ -758,6 +863,7 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
+    // var input=$('#sxk .inputs li');
     var input=$('#sxk .inputs>ul>li');
     inx=1;
     _param["pageNumber"]=inx;
@@ -768,15 +874,15 @@ function getInputValue(){
     for(var i=0;i<input.length;i++){
         var screen_key="";
         var screen_value={};
-        if($(input[i]).attr("class")=="isActive_select"){
+        if($(input[i]).attr("class")=="isActive_select2"){
             screen_key=$(input[i]).attr("id");
             switch ($(input[i]).find("input").val()){
-                case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
-                case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
-                case '介于':screen_value['type']='between';_value();break;
-                case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
-                case '全部':screen_value['type']='all';screen_value['value']='';;break;
-                case '':screen_value['type']='all';screen_value['value']='';;break;
+              case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '介于':screen_value['type']='between';_value();break;
+              case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
+              case '全部':screen_value['type']='all';screen_value['value']='';;break;
+              case '':screen_value['type']='all';screen_value['value']='';;break;
             }
             function _value(){
                 screen_value['value']={};
@@ -789,6 +895,9 @@ function getInputValue(){
             var end=$('#end').val();
             screen_key=$(input[i]).attr("id");
             screen_value={"start":start,"end":end};
+        }else if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input").attr("id");
+            screen_value=$(input[i]).find("input").attr("data-code");
         }else{
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");
@@ -812,13 +921,16 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/userOperation/screen","0",_param,function(data){
+    _param["sort_key"]=sort_key;
+    _param["sort_type"]=sort_type;
+    oc.postRequire("post","/api/shopMatch/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;
-            var actions=message.actions;
+            var total = message.total;
+            // var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -829,7 +941,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

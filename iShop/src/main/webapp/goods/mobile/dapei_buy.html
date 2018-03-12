@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <title>搭配购买</title>
+    <link rel="stylesheet" href="css/goods.css?2017040170331">
+    <link rel="stylesheet" href="css/font_style.css?2017040170331">
+    <script src="js/flexible.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/gqrequest.js?2017040170331"></script>
+    <script src="js/iscroll.js"></script>
+</head>
+<body>
+    <div class="dapei_buy">
+        <div class="dapei_buy_header">
+            <div class="left">
+                <div class="checkbox">
+                    <input type="checkbox" onclick="if(this.checked==true) { buy.checkAll('test'); } else { buy.clearAll('test'); }" value="" name="test" title="全选/取消" class="check" id="checkboxTwoInput0">
+                    <label for="checkboxTwoInput0"></label>
+                </div>
+                <span>全选</span>
+            </div>
+            <div class="right">该搭配包含<span id="shop_num"></span>件商品</div>
+        </div>
+        <div class="dapei_buy_content" id="dapei_buy_content">
+
+        </div>
+    </div>
+    <div class="dapei_buy_footer">
+        <ul>
+            <li class="pirce_total" id="pirce_total">￥0</li>
+            <li class="buy" id="buy"><span class="buy_bg"></span>立即购买</li>
+            <li class="num_total" id="num_total">已选0件</li>
+        </ul>
+    </div>
+    <div class="dapeidetails" id="dapeidetails" style="display: block;">
+        <div class="dapeidetails_header">
+            <div class="img">
+                <img src="" alt="" id="dapeidetails_img">
+            </div>
+            <div class="shop-t">
+                <p id="dapeidetails_name"></p>
+                <div class="pirce" id="dapeidetails_pirce">
+                </div>
+                <p class="stock" id="dapeidetails_stock"></p>
+            </div>
+            <div>
+                <div class="close" id="close">
+                    <span class="icon-ishop_6-12"></span>
+                </div>
+                <div class="checkd_guige" id="checkd_guige">请选择规格</div>
+            </div>
+        </div>
+        <div class="dapeidetails_parent" id="dapeidetails_parent" style="display: block">
+            <div class="dapeidetails_content" id="dapei_color">
+                <div class="fengexian" id="color_xian">
+                    <div class="xian"></div>
+                    <div class="text">选择颜色</div>
+                </div>
+                <ul>
+
+                </ul>
+            </div>
+            <div class="dapeidetails_content" id="dapei_Size">
+                <div class="fengexian" id="size_xian">
+                    <div class="xian"></div>
+                    <div class="text">选择尺码</div>
+                </div>
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="cover"></div>
+    <div class="success">
+
+    </div>
+</body>
+<script src="js/buy.js"></script>
+</html>

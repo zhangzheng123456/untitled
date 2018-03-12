@@ -33,7 +33,7 @@
     </list>
     </property>
     </bean>
-
+    <bean id="springBeanFactoryUtils" class="com.bizvane.ishop.utils.SpringBeanFactoryUtils"/>
     <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
     <bean
     class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -44,9 +44,14 @@
     </property>
     </bean>
     <!--上传文件-->
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:defaultEncoding="UTF-8" />
+    <!--<bean id="multipartResolver"-->
+          <!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver"-->
+          <!--p:defaultEncoding="UTF-8" />-->
+    <bean id="multipartResolver" class="com.bizvane.ishop.interceptor.MyMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="excludeUrls" value="excludeMultipart"></property>
+        <!-- url中带有excludeMultipart的http请求就不会被multipartResolver先解析-->
+    </bean>
     <!--&lt;!&ndash; 对模型视图名称的解析，即在模型视图名称添加前后缀 p:prefix中模板放置路径&ndash;&gt;-->
     <bean id="velocityConfig"
           class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
@@ -85,10 +90,12 @@
         <mvc:exclude-mapping path="/js/**"/>
         <mvc:exclude-mapping path="/img/**"/>
         <mvc:exclude-mapping path="/goods/mobile/**"/>
+        <mvc:exclude-mapping path="/goods/mobile_v2/**"/>
         <mvc:exclude-mapping path="/register"/>
         <mvc:exclude-mapping path="/authcode"/>
         <mvc:exclude-mapping path="/user/change_passwd"/>
         <mvc:exclude-mapping path="/login.html"/>
+        <!--<mvc:exclude-mapping path="/navigation_bar.html"/>-->
         <mvc:exclude-mapping path="/register_account.html"/>
         <mvc:exclude-mapping path="/Retrieve_password.html"/>
         <mvc:exclude-mapping path="/user/PhoneExist"/>
@@ -96,8 +103,16 @@
         <mvc:exclude-mapping path="/checkAuthcode"/>
         <mvc:exclude-mapping path="/api/**"/>
         <mvc:exclude-mapping path="/Websocket/**"/>
+        <mvc:exclude-mapping path="/mobile/**"/>
+        <mvc:exclude-mapping path="/vipTask/mobile/**"/>
+        <mvc:exclude-mapping path="/vipTask/select"/>
         <mvc:exclude-mapping path="/user/creatQrcodesForUser"/>
         <mvc:exclude-mapping path="/activity/active_ueditor.html"/>
+        <mvc:exclude-mapping path="/vipActivity/**"/>
+        <mvc:exclude-mapping path="/Auth/**"/>
+        <mvc:exclude-mapping path="/questionnaire/**"/>
+        <mvc:exclude-mapping path="/board/**"/>
+        <mvc:exclude-mapping path="/shop/brand"/>
 
         <!--<mvc:exclude-mapping path="/corp/CorpNameExist"/>-->
 

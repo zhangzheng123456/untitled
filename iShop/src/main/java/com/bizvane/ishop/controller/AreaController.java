@@ -1,14 +1,12 @@
 package com.bizvane.ishop.controller;
 
-import IceInternal.Ex;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -20,7 +18,6 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +57,7 @@ public class AreaController {
 
     /**
      * 根据企业拉取区域
+     *
      * @param request
      * @return
      */
@@ -74,30 +71,54 @@ public class AreaController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             String searchValue = jsonObject.get("searchValue").toString();
-            PageInfo<Area> list = null;
+            PageInfo<Area> list = new PageInfo<Area>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                if (jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
+                if (jsonObject.containsKey("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                     corp_code = jsonObject.get("corp_code").toString();
+                }else {
+                    corp_code = "C10000";
                 }
-                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
+            } else if (role_code.equals(Common.ROLE_CM)) {
+//                corp_code = jsonObject.get("corp_code").toString();
+//                if(corp_code.equals("C10000")){
+//                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+//                    System.out.println("manager_corp=====>"+manager_corp);
+//                    list = areaService.selAreaByCorpCode(page_number, page_size, "", "","", searchValue,manager_corp);
+//                }else{
+//                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+//                }
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>" + manager_corp);
+//                if (jsonObject.containsKey("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
+//                    corp_code = jsonObject.get("corp_code").toString();
+//                } else {
+                    corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+//                }
+                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
             } else {
-                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
+                } else if (role_code.equals(Common.ROLE_BM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code, area_code, searchValue);
+
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
-                }else{
-                    String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code, "", searchValue);
+                } else {
+//                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
+                    list.setList(new ArrayList<Area>());
                 }
             }
             JSONObject result = new JSONObject();
@@ -115,10 +136,10 @@ public class AreaController {
     }
 
 
-
     /**
      * session企业拉取区域
      * (包含全部)
+     *
      * @param request
      * @return
      */
@@ -126,24 +147,24 @@ public class AreaController {
     @ResponseBody
     public String findAreaByCorpCode(HttpServletRequest request) {
         String role_code = request.getSession().getAttribute("role_code").toString();
-        String corp_code =request.getSession().getAttribute("corp_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String searchValue = jsonObject.get("searchValue").toString();
-            PageInfo<Area> list = null;
-            if (role_code.equals(Common.ROLE_SYS) && page_number==1) {
+            PageInfo<Area> list = new PageInfo<Area>();
+            if (role_code.equals(Common.ROLE_SYS) && page_number == 1) {
                 //系统管理员
-                if (jsonObject.has("corp_code"))
+                if (jsonObject.containsKey("corp_code"))
                     corp_code = jsonObject.get("corp_code").toString();
-                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
                 List<Area> areas = new ArrayList<Area>();
                 Area area = new Area();
                 area.setArea_code("");
@@ -156,12 +177,12 @@ public class AreaController {
                 area.setIsactive("");
                 area.setModified_date("");
                 area.setModifier("");
-                areas.add(0,area);
+                areas.add(0, area);
                 areas.addAll(list.getList());
                 list.setList(areas);
-            } else if(!role_code.equals(Common.ROLE_SYS) && page_number==1){
-                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+            } else if (!role_code.equals(Common.ROLE_SYS) && page_number == 1) {
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
                     List<Area> areas = new ArrayList<Area>();
                     Area area = new Area();
                     area.setArea_code("");
@@ -174,12 +195,12 @@ public class AreaController {
                     area.setIsactive("");
                     area.setModified_date("");
                     area.setModifier("");
-                    areas.add(0,area);
+                    areas.add(0, area);
                     areas.addAll(list.getList());
                     list.setList(areas);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_AM) || role_code.equals(Common.ROLE_BM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code, "", searchValue);
                     List<Area> areas = new ArrayList<Area>();
                     Area area = new Area();
                     area.setArea_code("");
@@ -192,26 +213,56 @@ public class AreaController {
                     area.setIsactive("");
                     area.setModified_date("");
                     area.setModifier("");
-                    areas.add(0,area);
+                    areas.add(0, area);
                     areas.addAll(list.getList());
                     list.setList(areas);
-                }else{
-                    String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
+                } else {
+                    List<Area> areas = new ArrayList<Area>();
+                    Area area = new Area();
+                    area.setArea_code("");
+                    area.setArea_name("全部");
+                    area.setCorp_code("");
+                    area.setCorp_name("");
+                    area.setCreated_date("");
+                    area.setCreater("");
+                    area.setId(0);
+                    area.setIsactive("");
+                    area.setModified_date("");
+                    area.setModifier("");
+                    areas.add(0, area);
+                    list.setList(areas);
+
+//                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
                 }
-            }else if(role_code.equals(Common.ROLE_SYS) && page_number!=1){
-                if (jsonObject.has("corp_code"))
+            } else if (role_code.equals(Common.ROLE_SYS) && page_number != 1) {
+                if (jsonObject.containsKey("corp_code"))
                     corp_code = jsonObject.get("corp_code").toString();
-                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
-            }else if(!role_code.equals(Common.ROLE_SYS) && page_number!=1){
-                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
+            } else if (!role_code.equals(Common.ROLE_SYS) && page_number != 1) {
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_CM)) {
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "", "", searchValue);
+                } else if (role_code.equals(Common.ROLE_AM) || role_code.equals(Common.ROLE_BM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
-                }else{
-                    String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code, "", searchValue);
+                } else {
+                    List<Area> areas = new ArrayList<Area>();
+                    Area area = new Area();
+                    area.setArea_code("");
+                    area.setArea_name("全部");
+                    area.setCorp_code("");
+                    area.setCorp_name("");
+                    area.setCreated_date("");
+                    area.setCreater("");
+                    area.setId(0);
+                    area.setIsactive("");
+                    area.setModified_date("");
+                    area.setModifier("");
+                    areas.add(0, area);
+                    list.setList(areas);
+
+//                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
                 }
             }
             JSONObject result = new JSONObject();
@@ -242,7 +293,7 @@ public class AreaController {
             String area_code = request.getSession(false).getAttribute("area_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            List<Area> list = areaService.selectArea( corp_code, area_code);
+            List<Area> list = areaService.selectArea(corp_code, area_code);
             result.put("list", JSON.toJSONString(list));
             result.put("role_code", JSON.toJSONString(role_code));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -310,18 +361,18 @@ public class AreaController {
             String jsString = request.getParameter("param");
             logger.info("json--area add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
             String result = areaService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                JSONObject jsonObject = new JSONObject(message);
+                JSONObject jsonObject = JSONObject.parseObject(message);
 
                 String area_code = jsonObject.get("area_code").toString().trim();
                 String corp_code = jsonObject.get("corp_code").toString().trim();
                 String isactive = jsonObject.get("isactive").toString();
-                Area area = areaService.getAreaByCode(corp_code,area_code,isactive);
+                Area area = areaService.getAreaByCode(corp_code, area_code, isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(area.getId()));
@@ -347,7 +398,7 @@ public class AreaController {
                 String t_code = action_json.get("area_code").toString();
                 String t_name = action_json.get("area_name").toString();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -374,7 +425,7 @@ public class AreaController {
             String jsString = request.getParameter("param");
             logger.info("json--area edit-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = areaService.update(message, user_id);
@@ -404,7 +455,7 @@ public class AreaController {
                 String t_code = action_json.get("area_code").toString();
                 String t_name = action_json.get("area_name").toString();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -432,10 +483,10 @@ public class AreaController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String area_id = jsonObject.get("id").toString();
             String[] ids = area_id.split(",");
             String msg = "";
@@ -445,7 +496,7 @@ public class AreaController {
                 if (area != null) {
                     String area_code = area.getArea_code();
                     String corp_code = area.getCorp_code();
-                    List<Store> stores = storeService.selectStoreCountByArea(corp_code,area_code,"");
+                    List<Store> stores = storeService.selectStoreCountByArea(corp_code, area_code, "Y");
                     if (stores.size() > 0) {
                         msg = "区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除";
                         break;
@@ -471,7 +522,7 @@ public class AreaController {
                 String t_code = area.getArea_code();
                 String t_name = area.getArea_name();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (!msg.equals("")) {
@@ -510,14 +561,14 @@ public class AreaController {
 
             logger.info("json-select-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String area_id = jsonObject.get("id").toString();
             Area area = areaService.getAreaById(Integer.parseInt(area_id));
             String area_code = area.getArea_code();
-            int count = storeService.selectStoreCountByArea(area.getCorp_code(),area_code,Common.IS_ACTIVE_Y).size();
+            int count = storeService.selectStoreCountByArea(area.getCorp_code(), area_code, Common.IS_ACTIVE_Y).size();
             area.setStore_count(String.valueOf(count));
             data = JSON.toJSONString(area);
 
@@ -543,10 +594,10 @@ public class AreaController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -557,15 +608,20 @@ public class AreaController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = areaService.getAllAreaByPage(page_number, page_size, "", search_value);
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", search_value);
+                //  list = areaService.getAllAreaByPageByCm(page_number, page_size, "", search_value, manager_corp);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
+                if (role_code.equals(Common.ROLE_GM)) {
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", search_value);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_AM) || role_code.equals(Common.ROLE_BM)) {
                     // list = areaService.getAllAreaByPage(page_number, page_size, corp
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, search_value);
-                }else {
+                } else {
                     List<Area> list1 = new ArrayList<Area>();
                     list.setList(list1);
                 }
@@ -590,12 +646,12 @@ public class AreaController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String area_code = jsonObject.get("area_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Area area = areaService.getAreaByCode(corp_code, area_code,Common.IS_ACTIVE_Y);
+            Area area = areaService.getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -620,12 +676,12 @@ public class AreaController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String area_name = jsonObject.get("area_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Area area = areaService.getAreaByName(corp_code, area_name,Common.IS_ACTIVE_Y);
+            Area area = areaService.getAreaByName(corp_code, area_name, Common.IS_ACTIVE_Y);
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -654,9 +710,9 @@ public class AreaController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
@@ -666,20 +722,30 @@ public class AreaController {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = areaService.getAllAreaByPage(1, Common.EXPORTEXECLCOUNT, "", search_value);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_CM)) {
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                     corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    list = areaService.selectByAreaCode(1, Common.EXPORTEXECLCOUNT, corp_code, "", search_value);
+                    //  list = areaService.getAllAreaByPageByCm(page_number, page_size, "", search_value, manager_corp);
+                } else if (role_code.equals(Common.ROLE_AM) || role_code.equals(Common.ROLE_BM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.selectByAreaCode(1, Common.EXPORTEXECLCOUNT, corp_code, area_code, search_value);
-                }else {
+                } else {
                     list = areaService.getAllAreaByPage(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = areaService.getAllAreaScreen(1, Common.EXPORTEXECLCOUNT, "", "", map);
-                }else if(role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_CM)) {
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                     corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    list = areaService.getAllAreaScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", map);
+                    //  list = areaService.getAllAreaScreen(page_number, page_size, "", "", map, manager_corp);
+                }  else if (role_code.equals(Common.ROLE_AM) || role_code.equals(Common.ROLE_BM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.getAllAreaScreen(1, Common.EXPORTEXECLCOUNT, corp_code, area_codes, map);
-                }else {
+                } else {
                     list = areaService.getAllAreaScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", map);
                 }
             }
@@ -695,7 +761,7 @@ public class AreaController {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,areas, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, areas, map, response, request, "店铺群组列表");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -731,8 +797,8 @@ public class AreaController {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = 4;//得到所有的列
-            int rows= rs.getRows();//得到所有的行
-      //      int actualRows = LuploadHelper.getRightRows(rs);
+            int rows = rs.getRows();//得到所有的行
+            //      int actualRows = LuploadHelper.getRightRows(rs);
 //            if(actualRows != rows){
 //                if(rows-actualRows==1){
 //                    result = "：第"+rows+"行存在空白行,请删除";
@@ -753,7 +819,7 @@ public class AreaController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
+                    if (column3[i].getContents().toString().trim().equals("")) {
                         continue;
                     }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
@@ -769,69 +835,68 @@ public class AreaController {
                     }
                 }
             }
-                for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
-                        continue;
-                    }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
-
+            for (int i = 3; i < column3.length; i++) {
+                if (column3[i].getContents().toString().trim().equals("")) {
+                    continue;
+                }
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                if (corp == null) {
+                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
                 }
 
+            }
 
 
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
-            if(onlyCell1.equals("存在重复值")){
+            if (onlyCell1.equals("存在重复值")) {
                 result = "：Execl中区域编号存在重复值";
                 int b = 5 / 0;
             }
             String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
-            if(onlyCell2.equals("存在重复值")){
+            if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中区域名称存在重复值";
                 int b = 5 / 0;
             }
-          //  Pattern pattern = Pattern.compile("A\\d{4}");
-            Cell[] column = rs.getColumn(1);
-            for (int i = 3; i < column.length; i++) {
-//                Matcher matcher = pattern.matcher(column[i].getContents().toString());
-//                if (matcher.matches() == false) {
-//                    result = "：第" + (i + 1) + "行区域编号格式有误";
+            //  Pattern pattern = Pattern.compile("A\\d{4}");
+//            Cell[] column = rs.getColumn(1);
+//            for (int i = 3; i < column.length; i++) {
+////                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+////                if (matcher.matches() == false) {
+////                    result = "：第" + (i + 1) + "行区域编号格式有误";
+////                    int b = 5 / 0;
+////                    break;
+////                }
+//                if(column[i].getContents().toString().trim().equals("")){
+//                    continue;
+//                }
+//                Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
+//                if (area != null) {
+//                    result = "：第" + (i + 1) + "行区域编号已存在";
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                if(column[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
-                Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                if (area != null) {
-                    result = "：第" + (i + 1) + "行区域编号已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
-            Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
-                Area area = areaService.getAreaByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                if (area != null) {
-                    result = "：第" + (i + 1) + "行区域名称已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
-            ArrayList<Area> areas=new ArrayList<Area>();
+//            }
+//            Cell[] column1 = rs.getColumn(2);
+//            for (int i = 3; i < column1.length; i++) {
+//                if(column1[i].getContents().toString().trim().equals("")){
+//                    continue;
+//                }
+//                Area area = areaService.getAreaByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
+//                if (area != null) {
+//                    result = "：第" + (i + 1) + "行区域名称已存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
+            ArrayList<Area> areas = new ArrayList<Area>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Area area = new Area();
@@ -843,16 +908,16 @@ public class AreaController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && area_code.equals("") && area_name.equals("")){
+                    if (cellCorp.equals("") && area_code.equals("") && area_name.equals("")) {
                         continue;
                     }
-                    if(cellCorp.equals("") || area_code.equals("") || area_name.equals("")){
-                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
-                        int a=5/0;
+                    if (cellCorp.equals("") || area_code.equals("") || area_name.equals("")) {
+                        result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
+                        int a = 5 / 0;
                     }
-                    if(!role_code.equals(Common.ROLE_SYS)){
+                    if (!role_code.equals(Common.ROLE_SYS)) {
                         area.setCorp_code(corp_code);
-                    }else{
+                    } else {
                         area.setCorp_code(cellCorp);
                     }
                     area.setArea_code(area_code);
@@ -868,11 +933,18 @@ public class AreaController {
                     area.setModified_date(Common.DATETIME_FORMAT.format(now));
                     area.setModifier(user_id);
                     areas.add(area);
-                  //  result = areaService.insertExecl(area);
+                    //  result = areaService.insertExecl(area);
                 }
             }
-            for (Area area:areas) {
-                result = areaService.insertExecl(area);
+
+            for (Area area : areas) {
+                Area area1 = areaService.getAreaByCode(area.getCorp_code().trim(), area.getArea_code().trim(), Common.IS_ACTIVE_Y);
+                if (area1 != null) {
+                    area.setId(area1.getId());
+                    result = areaService.updateExecl(area);
+                } else {
+                    result = areaService.insertExecl(area);
+                }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -903,10 +975,10 @@ public class AreaController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
@@ -917,14 +989,19 @@ public class AreaController {
             PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = areaService.getAllAreaScreen(page_number, page_size, "", "", map);
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                list = areaService.getAllAreaScreen(page_number, page_size, corp_code, "", map);
+                //  list = areaService.getAllAreaScreen(page_number, page_size, "", "", map, manager_corp);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
+                if (role_code.equals(Common.ROLE_GM)) {
                     list = areaService.getAllAreaScreen(page_number, page_size, corp_code, "", map);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_AM) || role_code.equals(Common.ROLE_BM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.getAllAreaScreen(page_number, page_size, corp_code, area_codes, map);
-                }else {
+                } else {
                     List<Area> list1 = new ArrayList<Area>();
                     list.setList(list1);
                 }
@@ -943,73 +1020,104 @@ public class AreaController {
 
     /**
      * 区域分配多个店铺
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/stores/check", method = RequestMethod.POST)
     @ResponseBody
-    public String checkStores(HttpServletRequest request)throws Exception {
+    public String checkStores(HttpServletRequest request) throws Exception {
         DataBean dataBean = new DataBean();
         String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json-----stores/check----------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = "";
             String search_area_code = "";
-            if (jsonObject.has("searchValue")) {
+            if (jsonObject.containsKey("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
-            if (jsonObject.has("searchAreaCode")){
+            if (jsonObject.containsKey("searchAreaCode")) {
                 search_area_code = jsonObject.getString("searchAreaCode");
             }
             String area_code = jsonObject.get("area_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String offline_area = "";
+            String store_type = "";
+            String dealer = "";
+            if (jsonObject.containsKey("offline_area")) {
+                offline_area = jsonObject.get("offline_area").toString();
+            }
+            if (jsonObject.containsKey("store_type")) {
+                store_type = jsonObject.get("store_type").toString();
+            }
+            if (jsonObject.containsKey("dealer")) {
+                dealer = jsonObject.get("dealer").toString();
+            }
             PageInfo<Store> list = new PageInfo<Store>();
-            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
-                list = storeService.getAllStore(request,page_number, page_size, corp_code, search_value,Common.IS_ACTIVE_Y,search_area_code);
-            }else if (role_code.equals(Common.ROLE_BM)){
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM) ||role_code.equals(Common.ROLE_CM)) {
+                if (role_code.equals(Common.ROLE_CM)) {
+                    //登录用户为admin或企业管理员
+                    String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                    System.out.println("manager_corp=====>" + manager_corp);
+                    if (jsonObject.containsKey("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
+                        corp_code = jsonObject.get("corp_code").toString();
+                    } else {
+                        corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                    }
+                    System.out.println("getCorpCodeByCm=====>" + corp_code);
+                }
+                list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value, Common.IS_ACTIVE_Y, search_area_code, offline_area, store_type, dealer, "All");
+            } else if (role_code.equals(Common.ROLE_BM)) {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+
                 String[] brandCodes = brand_code.split(",");
                 for (int i = 0; i < brandCodes.length; i++) {
-                    brandCodes[i] = Common.SPECIAL_HEAD+brandCodes[i]+",";
+                    brandCodes[i] = Common.SPECIAL_HEAD + brandCodes[i] + ",";
                 }
-                list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null,null, brandCodes, search_value,Common.IS_ACTIVE_Y,search_area_code);
-            }else if (role_code.equals(Common.ROLE_AM)){
+                String area_code1 = request.getSession().getAttribute("area_code").toString();
+                area_code1 = area_code1.replace(Common.SPECIAL_HEAD, "");
+                String[] areaCodes = area_code1.split(",");
+                for (int i = 0; i < areaCodes.length; i++) {
+                    areaCodes[i] = Common.SPECIAL_HEAD + areaCodes[i] + ",";
+                }
+                list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, null, brandCodes, search_value, Common.IS_ACTIVE_Y, search_area_code, offline_area, store_type, dealer, "All");
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code1 = request.getSession().getAttribute("area_code").toString();
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
+                area_code1 = area_code1.replace(Common.SPECIAL_HEAD, "");
                 String[] areaCodes = area_code1.split(",");
                 String[] storeCodes = null;
                 for (int i = 0; i < areaCodes.length; i++) {
-                    areaCodes[i] = Common.SPECIAL_HEAD+areaCodes[i]+",";
+                    areaCodes[i] = Common.SPECIAL_HEAD + areaCodes[i] + ",";
                 }
-                if (!store_code.equals("")){
-                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                if (!store_code.equals("")) {
+                    store_code = store_code.replace(Common.SPECIAL_HEAD, "");
                     storeCodes = store_code.split(",");
                 }
-                list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes,storeCodes,null, search_value,Common.IS_ACTIVE_Y,search_area_code);
+                list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, storeCodes, null, search_value, Common.IS_ACTIVE_Y, search_area_code, offline_area, store_type, dealer, "All");
             }
-            if (jsonObject.has("list")) {
+            if (jsonObject.containsKey("list")) {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "","", "", map,"",Common.IS_ACTIVE_Y);
-                }else if (role_code.equals(Common.ROLE_BM)) {
+                    list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "", "", "", map, "", Common.IS_ACTIVE_Y, "All");
+                } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    list = storeService.getAllStoreScreen(page_number,page_size,corp_code,"",brand_code,"",map,"",Common.IS_ACTIVE_Y);
+                    list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "", brand_code, "", map, "", Common.IS_ACTIVE_Y, "All");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = storeService.getAllStoreScreen(page_number, page_size, corp_code, area_codes,"", "", map,store_code,Common.IS_ACTIVE_Y);
+                    list = storeService.getAllStoreScreen(page_number, page_size, corp_code, area_codes, "", "", map, store_code, Common.IS_ACTIVE_Y, "All");
                 }
             }
-            areaService.trans(list,area_code);
+            areaService.trans(list, area_code);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1084,20 +1192,20 @@ public class AreaController {
 
             String jsString = request.getParameter("param");
             logger.info("json-------stores/save--------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String area_code=jsonObject.get("area_code").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String area_code = jsonObject.get("area_code").toString();
 
             String choose_id = "";
             String quit_id = "";
-            if (jsonObject.has("choose"))
+            if (jsonObject.containsKey("choose"))
                 choose_id = jsonObject.get("choose").toString();
-            if (jsonObject.has("quit"))
+            if (jsonObject.containsKey("quit"))
                 quit_id = jsonObject.get("quit").toString();
 
-            if(!choose_id.equals("")) {
+            if (!choose_id.equals("")) {
                 String[] choose_ids = choose_id.split(",");
                 for (int i = 0; i < choose_ids.length; i++) {
                     logger.info("--------check-------" + Integer.valueOf(choose_ids[i]));
@@ -1114,17 +1222,18 @@ public class AreaController {
 //                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
 //                            dataBean.setId(id);
 //                            dataBean.setMessage("success");
-                        } else {
-                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                            dataBean.setId(id);
-                            dataBean.setMessage(store.getStore_name() + "已在该区域，请勿重复选择");
-                            return dataBean.getJsonStr();
                         }
+//                        else {
+//                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                            dataBean.setId(id);
+//                            dataBean.setMessage(store.getStore_name() + "已在该区域，请勿重复选择");
+//                            return dataBean.getJsonStr();
+//                        }
                     }
                 }
             }
 
-            if(!quit_id.equals("")) {
+            if (!quit_id.equals("")) {
                 String[] quit_ids = quit_id.split(",");
                 for (int i = 0; i < quit_ids.length; i++) {
                     logger.info("--------check-------" + Integer.valueOf(quit_ids[i]));
@@ -1141,12 +1250,13 @@ public class AreaController {
 //                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
 //                            dataBean.setId(id);
 //                            dataBean.setMessage("success");
-                        } else {
-                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                            dataBean.setId(id);
-                            dataBean.setMessage(store.getStore_name() + "不在该区域");
-                            return dataBean.getJsonStr();
                         }
+//                        else {
+//                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                            dataBean.setId(id);
+//                            dataBean.setMessage(store.getStore_name() + "不在该区域");
+//                            return dataBean.getJsonStr();
+//                        }
                     }
                 }
             }

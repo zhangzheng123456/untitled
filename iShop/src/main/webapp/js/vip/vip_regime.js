@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
@@ -18,7 +16,7 @@ var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 //模仿select
 $(function(){  
-        $("#page_row").click(function(){
+        $("#page_row,.page_p .icon-ishop_8-02").click(function(){
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  
@@ -70,7 +68,18 @@ $("#pack_up").click(function(){//点击收回 取消下拉框
 $("#empty").click(function(){
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
-        input[i].value="";
+        var hasAll=false;
+        if($(input[i]).parent().hasClass("isActive_select")){
+            var li=$(input[i]).next().children("li");
+            for(var a=0;a<li.length;a++){
+                if($(li[a]).text()=="全部"){
+                    hasAll=true;
+                }
+            }
+            input[i].value=hasAll==true?"全部":"";
+        }else{
+            input[i].value="";
+        }
         $(input[i]).attr("data-code","");
     }
     value="";
@@ -83,12 +92,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize,funcCode){
+function setPage(container, count, pageindex,pageSize,funcCode,total){
    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
               //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -140,7 +150,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -197,11 +207,12 @@ function superaddition(data,num){//页面加载循环
         var i;
         for(i=0;i<10;i++){
             $(".table tbody").append("<tr></tr>");
-            for(var j=0;j<len;j++){
-                $($(".table tbody tr")[i]).append("<td></td>");
+            if(i==4){
+                $($(".table tbody tr")[i]).append("<td colspan='"+len+"'>暂无内容</td>");
+            }else {
+                $($(".table tbody tr")[i]).append("<td colspan='"+len+"'></td>");
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     if(data.length>0){
         for (var i = 0; i < data.length; i++) {
@@ -356,11 +367,12 @@ function GET(a,b){
                 var list=JSON.parse(message.list);
                 cout=list.pages;
                 var pageNum = list.pageNum;
+                var total = list.total;
                 var list=list.list;
                 superaddition(list,pageNum);
                 jumpBianse();
-               setPage($("#foot-num")[0],cout,a,b,funcCode);
-                setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+               setPage($("#foot-num")[0],cout,a,b,funcCode,total);
+                setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
             }else if(data.code=="-1"){
                 alert(data.message);
             }
@@ -377,6 +389,10 @@ function jumpBianse(){
 $("#table").on("click","tbody tr",function(){
     var input=$(this).find("input")[0];
     var thinput=$("thead input")[0];
+    var id=$(this).attr("id");
+    if(id==undefined){
+        return
+    }
     $(this).toggleClass("tr");
     if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
         input.checked = true;
@@ -392,7 +408,7 @@ $("#table").on("click","tbody tr",function(){
 //点击新增时页面进行的跳转
 $('#jurisdiction').on("click","#add",function(){
     sessionStorage.removeItem("id");
-    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_add.html");
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_add.html?t="+ $.now());
 })
 //点击编辑的时候进行跳转
 $('#jurisdiction').on("click","#compile",function(){
@@ -409,7 +425,7 @@ $('#jurisdiction').on("click","#compile",function(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html?t="+ $.now());
     }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -434,7 +450,7 @@ $("#table").on("dblclick","tbody tr",function(){
     if(id == "" || id == undefined){
          return ;
     }else{
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html?t="+ $.now());
     }
 });
 //删除
@@ -450,7 +466,6 @@ $('#jurisdiction').on("click","#remove",function(){
     $("#p").show();
     $("#tk").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
-    $("#tk").css({"left":+left+"px","top":+tp+"px"});
 })
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -484,6 +499,7 @@ function POST(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -503,13 +519,12 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -654,7 +669,7 @@ $("#file_submit").click(function(){
         return;
     }
     for(var i=0;i<li.length;i++){
-        var r=$(li[i]).attr("data-name");
+        var r=$(li[i]).attr("data-names");
         var z=$(li[i]).children("span").html();
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
@@ -774,13 +789,17 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
+                var hasAll=false;
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
+                    if(msg[j].key=="全部"){
+                        hasAll=true;
+                    }
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
                 }
                 ul+="</ul>";
-                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+                var value=hasAll==true?"全部":"";
+                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' value='"+value+"' data-code='' readonly>"+ul+"</li>"
             }
 
         }
@@ -857,10 +876,10 @@ function getInputValue(){
        var param1={"screen_key":screen_key,"screen_value":screen_value};
        list.push(param1);
    }
-   _param["list"]=list;
+    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
+    filtrates(inx,pageSize);
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){
@@ -876,6 +895,7 @@ function filtrates(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -888,7 +908,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

@@ -2,19 +2,15 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.ParamConfigure;
-import com.bizvane.ishop.service.BaseService;
-import com.bizvane.ishop.service.CorpParamService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.ParamConfigureService;
-
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +40,6 @@ public class ParamConfigureController {
     @Autowired
     private BaseService baseService;
     private static final Logger logger = Logger.getLogger(ParamConfigureController.class);
-
 
 //    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @ResponseBody
@@ -84,13 +78,13 @@ public class ParamConfigureController {
             String jsString = request.getParameter("param");
             logger.info("json--area add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
             String result = paramConfigureService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                JSONObject jsonObject = new JSONObject(message);
+                JSONObject jsonObject = JSONObject.parseObject(message);
                 String param_name = jsonObject.get("param_name").toString();
                 String isactive = jsonObject.get("isactive").toString();
                 ParamConfigure paramConfigure = paramConfigureService.getParamByKey(param_name,Common.IS_ACTIVE_Y);
@@ -151,7 +145,7 @@ public class ParamConfigureController {
             String jsString = request.getParameter("param");
             logger.info("json--param ---- edit-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
@@ -212,10 +206,10 @@ public class ParamConfigureController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             logger.info("-------------delete--" + id);
             String param_id = jsonObject.get("id").toString();
             String[] ids = param_id.split(",");
@@ -293,10 +287,10 @@ public class ParamConfigureController {
 
             logger.info("json-select-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String user_id = jsonObject.get("id").toString();
             data = JSON.toJSONString(paramConfigureService.getParamById(Integer.parseInt(user_id)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -325,10 +319,10 @@ public class ParamConfigureController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -401,10 +395,10 @@ public class ParamConfigureController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json-------screen--------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>编辑帮助文章</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201704070331">
+    <link href="../css/style.css?201704070331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?201704070331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?201704070331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201704070331">
+    <script src="../js/loading.js?201704070331"></script>.
+    <style>
+        #page-wrapper {
+            width:100%;
+        }
+        body{
+            margin-top:81px;
+        }
+        #edit div,#edit_show div{margin-bottom: 0px;}
+        #edit,#edit_show{ margin-left: 120px;width: 420px; margin-top: -20px;}
+    </style>
+</head>
+<body style="    margin-right: 200px">
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span id="back_goods_fab">秀搭类型</span><i class="icon-ishop_8-03"></i><label>编辑秀搭类型</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg" style="margin-left:0px">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <span><label style="color:#c26555;">秀搭类型*</label>
+                    <input type="text" id="app_help_title" verify="Empty" maxlength="20"/>
+                </span>
+            </div>
+            <div style="padding-left:125px;display:none" class="hint"><div hintinfo="文章标题不能为空！" class="error_tips">秀搭类型不能为空！</div></div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="fabadd_oper_btn">
+            <ul>
+                <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+            </div>
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201704070331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201704070331"></script>
+<!-- Custom and plugin javascript -->
+<!-- moni select -->
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?201704070331"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?201704070331"></script>
+<!--富文本编辑器-->
+<script type="text/javascript">
+    var oc = new ObjectControl();
+    function getInformation(){
+        var param={};
+        param.id=location.search.split('=')[1]
+        oc.postRequire("post",'/api/shopMatch/type/selectById','', param, function(data){
+            var obj=JSON.parse(JSON.parse(data.message).shopMatchType);
+            $('#OWN_CORP').attr("corp_code",obj.corp_code);
+            $('#OWN_CORP').val(obj.corp_name)
+            $('#app_help_title').val(obj.shopmatch_type)
+            $('#created_time').val(obj.created_date);
+            $('#creator').val(obj.creater);
+            $('#modify_time').val(obj.modified_date);
+            $('#modifier').val(obj.modifier);
+            getcorplist(obj.corp_code);
+            if(obj.isactive=='Y'){
+                $('#is_active').attr('checked','true')
+            }else{
+                $('#is_active').removeAttr('checked')
+            }
+
+        })
+    }
+    function getcorplist(a){
+        //获取所属企业列表
+        var corp_command="/user/getCorpByUser";
+        oc.postRequire("post", corp_command,"", "", function(data){
+            if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                var index=0;
+                var corp_html='';
+                for( var i=0;i<msg.corps.length;i++){
+                    corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
+                }
+                $("#OWN_CORP").append(corp_html);
+                if(a!==""){
+                    $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+                }
+                $('.corp_select select').searchableSelect();
+                $('.corp_select .searchable-select-input').keydown(function(event){
+                    var event=window.event||arguments[0];
+                    if(event.keyCode == 13){
+                        $("#services").html("");
+                        $("input[verify='Code']").val("");
+                        $("#BRAND_NAME").val("");
+                        $("input[verify='Code']").attr("data-mark","");
+                        $("#BRAND_NAME").attr("data-mark","");
+                    }
+                });
+                $('.searchable-select-item').click(function(){
+                    $("#services").html("");
+                    $("input[verify='Code']").val("");
+                    $("#BRAND_NAME").val("");
+                    $("input[verify='Code']").attr("data-mark","");
+                    $("#BRAND_NAME").attr("data-mark","");
+                })
+            }else if(data.code=="-1"){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        });
+    }
+    function testFun(e){
+        //验证
+        if(e.target.value==''){
+            $('.hint').show()
+            return
+        }else{
+            $('.hint').hide();
+        }
+        var param={};
+        param.corp_code=$("#OWN_CORP").val();
+        param.shopmatch_type=$('#app_help_title').val();;
+        oc.postRequire("post",'../api/shopMatch/type/checkName','', param, function(data){
+            if(data.code==0){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content:data.message
+                });
+            }else if(data.code==-1){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        })
+    }
+    function addFun(){
+        //保存
+        var param={};
+        var ISACTIVE="";
+        var input=$("#is_active")[0];
+        if(input.checked==true){
+            ISACTIVE="Y";
+        }else if(input.checked==false){
+            ISACTIVE="N";
+        }
+        param.corp_code=$("#OWN_CORP").val();
+        param.shopmatch_type=$('#app_help_title').val();
+        param.isactive=ISACTIVE;
+        param.id=location.search.split('=')[1]
+        oc.postRequire("post",'/api/shopMatch/type/edit','', param, function(data){
+            console.log(data);
+            if(data.code==0){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content:'保存成功'
+                });
+            }else if(data.code==-1){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        })
+    }
+    $(function(){
+        getInformation();
+        $('#app_help_title').blur(testFun);
+        $('#edit_save').click(addFun)
+        $('#edit_close').click(function(){ window.location.assign("show_type.html")});
+    });
+</script>
+</body>
+
+</html>

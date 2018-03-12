@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <title>帮助中心</title>
+    <link rel="stylesheet" href="css/help.css?2017040170331">
+    <link rel="stylesheet" href="css/font_style.css?2017040170331">
+    <script src="js/flexible.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/gqrequest.js?2017040170331"></script>
+    <script src="js/help.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="search">
+            <div class="input">
+                <form onkeydown="if(event.keyCode==13)return false;" action="">
+                    <input id="search" type="search" value="" placeholder="搜索问题关键词..." autocomplete="off">
+                </form>
+            </div>
+            <div class="search_right" id="search_right">
+                <span class="icon-ishop_3-05"></span>
+            </div>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <ul>
+            <!--<li>-->
+                <!--<h1>苹果手机信任问题-->
+                    <!--<span class="icon-ishop_8-03"></span>-->
+                <!--</h1>-->
+                <!--<dl>-->
+                    <!--<dd>苹果手机信任问题-->
+                        <!--<span class="icon-ishop_8-03"></span>-->
+                    <!--</dd>-->
+                <!--</dl>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<h1>苹果手机信任问题-->
+                    <!--<span class="icon-ishop_8-03"></span>-->
+                <!--</h1>-->
+                <!--<dl>-->
+                    <!--<dd>苹果手机信任问题-->
+                        <!--<span class="icon-ishop_8-03"></span>-->
+                    <!--</dd>-->
+                <!--</dl>-->
+            <!--</li>-->
+        </ul>
+    </div>
+    <div id="kong_img">
+            <img src="image/img_kong.png" alt="">
+    </div>
+    <script>
+        //input输入框里面
+//        $('#search').bind('input propertychange', function() {
+//            var value=$("#search").val();
+//            if(value==""){
+//                $("#content p").parent().show();
+//            }
+//        });
+        $('#search').keydown(function() {
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                var value=$("#search").val();
+                $("#content h1").parent().hide();
+                $("#content h1:contains('"+value+"')").parent().show();
+                if($("#content h1:contains('"+value+"')").length<=0){
+                    $("#kong_img").show();
+                    $("#content").hide();
+                }else  if($("#content h1:contains('"+value+"')").length>0){
+                    $("#kong_img").hide();
+                    $("#content").show();
+                }
+            }
+        });
+        $("#search_right").click(function(){
+            var value=$("#search").val();
+            $("#content h1").parent().hide();
+            $("#content h1:contains('"+value+"')").parent().show();
+            if($("#content h1:contains('"+value+"')").length<=0){
+                $("#kong_img").show();
+                $("#content").hide();
+            }else  if($("#content h1:contains('"+value+"')").length>0){
+                $("#kong_img").hide();
+                $("#content").show();
+            }
+        })
+    </script>
+</body>
+</html>

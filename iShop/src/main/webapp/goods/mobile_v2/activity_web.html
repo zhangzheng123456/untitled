@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<style>
+    #iframe{
+        position: absolute;
+        top:0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<body>
+<iframe id="iframe" src="" frameborder="0">
+</iframe>
+</body>
+</html>
+<script src="../../js/jquery-2.1.1.min.js"></script>
+<script>
+    $(function () {
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if(url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        var command="/api/activity/openUrl?activity_code="+theRequest.activity_code;
+        console.log(theRequest);
+        $.ajax({
+            url: command,
+            type: "get",
+            dataType: 'json',
+//            data:{param:JSON.stringify(_params)},
+            timeout: 120000,
+            success:function(data){
+                if(data){
+                    var src=JSON.parse(data.message);
+                    $("#iframe").attr("src",src.url);
+                    console.log(src);
+                }else{
+
+                }
+            },
+            error:function(data){
+                var str=data.responseText.trim().substring(252,257);
+                if(str=="iShop"){
+                    location.href=data;
+                }
+            }
+        });
+    });
+</script>

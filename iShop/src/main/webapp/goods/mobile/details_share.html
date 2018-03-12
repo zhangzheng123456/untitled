@@ -3,11 +3,11 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>搭配详情</title>
-    <link rel="stylesheet" href="css/swiper.3.1.7.min.css?20161209">
+    <link rel="stylesheet" href="css/swiper.3.1.7.min.css?2017040170331">
     <link rel="stylesheet" href="css/details.css"/>
     <link rel="stylesheet" href="css/reset.css"/>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <meta content="telephone=no,email=no" name="format-detection">
     <style>
         body{
@@ -18,6 +18,21 @@
         }
         .carousel-control.right{
             background: none;
+        }
+        .item{
+            width: 100%;
+            position:relative;
+        }
+        .item img{
+            /*width:50%;*/
+            /*height:50%;*/
+            /*background:#990;*/
+            margin:auto;
+            position:absolute;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
         }
     </style>
 </head>
@@ -62,7 +77,7 @@
     </li>
     <li class="main_list">
         <div class="main_list_title">共<span class="num"></span>件搭配</div>
-        <div class="main_list_main">
+        <div class="main_list_main" id="main_list_share">
         </div>
     </li>
     <li class="main_select">
@@ -112,15 +127,32 @@
         <!--&lt;!&ndash;<img src="image/face.jpg" alt="" id="face"/>&ndash;&gt;-->
         <!--<input type="text" id="input"/><span id="send">发送</span>-->
     <!--</li>-->
+    <div id="loading">
+        <div class="tip">
+            <div class="tip_box">
+                <div class="icon_err rotate"><img src="image/icon_apply.png" width="100%"height="100%" alt="icon_error.png"></div>
+                <div class="loading_txt">加载中...</div>
+            </div>
+        </div>
+    </div>
 </ul>
-<script src="js/flexible.js?20161209"></script>
-<script src="js/jquery-1.11.1.js"></script>
+<div class="share_bottom">
+    <!--<div style="width: 24%;"><img src="image/icon_点赞@2x.png" alt=""/><span class="num">0</span></div>-->
+    <!--<div style="width: 24%;"><img src="image/icon_收藏@2x.png" alt=""/><span class="num">0</span></div>-->
+    <!--<div style="width: 24%;"><img src="image/icon_评论@2x.png" alt=""/><span class="num">0</span></div>-->
+    <div class="buy" id="buy">
+        <span class="buy_bg"></span>
+        购买搭配
+    </div>
+</div>
+<script src="js/flexible.js?2017040170331"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="https//cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="js/insidePostRequire.js"></script>
-<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <!--匹配js-->
-<script src="js/details.js"></script>
+<script src="js/details.js?2017040171123123"></script>
 <!--<script src="js/jquery.qqFace.js"></script>-->
 </body>
 <script>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../activity/css/reset.css">
+    <script src="../activity/js/flexible.js"></script>
+    <link rel="stylesheet" href="../activity/mui/mui.min.css">
+    <link rel="stylesheet" href="../activity/mui/mui.picker.min.css">
+    <link rel="stylesheet" href="../activity/css/online_activity.css?t=20810202">
+    <link rel="stylesheet" href="../activity/css/success_detail.css?t=20810202">
+    <link rel="stylesheet" href="../activity/css/perfect_information.css?t=20810202">
+    <title>报名详情</title>
+    <style>
+        body{
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="online_details" id="online_details">
+    <div class="header" id="header">
+        <h4></h4>
+        <div class="activity_detail_dec"></div>
+    </div>
+    <div class="spline_no_text"></div>
+    <div class="item_line"><span class="line_left">活动项目：</span><span id="activity_name"></span></div>
+    <div class="item_line"><span class="line_left">条码：</span><span id="sku_id"></span></div>
+    <div class="item_line"><span class="line_left">消费：</span><span id="cost" style="color: #da5a5a"></span></div>
+    <div class="enroll_data" id="enroll_data">
+        <!--<div class="data-line">姓名：赵薇</div>-->
+        <!--<div class="data-line">年龄：29</div>-->
+    </div>
+</div>
+<div class="footer" style="position: fixed;bottom: -10px;left:0;right: 0;display: none;z-index: 2">
+    <a type="button" style="background-color: #555;border-color: #555;padding: 10px 0;" class="mui-btn mui-btn-danger mui-btn-block" id="sure_refund">退订</a>
+</div>
+<div class="mask_loading" id="mask_loading" style="display: block">
+    <div>请稍后...</div>
+</div>
+<script src="../activity/js/jquery-2.1.1.min.js"></script>
+<script src="../activity/mui/mui.min.js"></script>
+<script src="../../js/insidePostRequire.js"></script>
+<script>
+    var oc = new ObjectControl();
+    var theRequest={};
+    function geUrl(){
+        var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+    }
+    geUrl();
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) location.reload();    //如果检测到页面是从“往返缓存”中读取的，刷新页面
+    });
+    function assignment(data){
+        this.msg = JSON.parse(data.message);
+        this.item_id=this.msg.item_id;
+        this.open_id=this.msg.open_id;
+        this.activity_code=this.msg.activity_code;
+        this.vipActivity =this. msg.vipActivity;
+        this.apply_item = this.msg.apply_item;
+        this.apply_info = this.msg.apply_info;
+        this.app_id=this.vipActivity.app_id;
+        this.data_html = "";
+        this.initData=function (){
+            $(".header h4").html(this.vipActivity.activity_theme);
+            $(".header .activity_detail_dec").html((this.vipActivity.activity_desc).replace(/\n/g, "<br>"));
+            $("#activity_name").html(this.apply_item.item_name);
+            if(this.apply_item.sku_id && this.apply_item.sku_id!=""){
+                $("#sku_id").html(this.apply_item.sku_id);
+            }else{
+                $("#sku_id").parent(".item_line").hide();
+            }
+            if (this.msg.pay_type == 1) {
+                $("#cost").html(this.apply_item.fee_points + "积分");
+            } else if (this.msg.pay_type == 2) {
+                $("#cost").html(this.apply_item.fee_money + "元");
+            } else {
+                $("#cost").html("获取金额失败");
+            }
+            for (var i = 0; i < this.apply_info.length; i++) {
+                if(this.apply_info[i].column=="province"){
+                    var objName=JSON.parse(this.apply_info[i].value);
+                    var value=objName.area+objName.province+objName.city;
+                    this.data_html+='<div class="data-line">'+this.apply_info[i].param_desc+'：'+value+'</div>'
+                }else{
+                    this.data_html+='<div class="data-line">'+this.apply_info[i].param_desc+'：'+this.apply_info[i].value+'</div>'
+                }
+            }
+            $("#enroll_data").html(this.data_html);
+            if(this.msg.td_allow && this.msg.td_allow=="Y"){
+                $(".footer").show();
+                refund.apply(this)
+            }
+        }
+    }
+    function getActivitySuccess (){
+        var _params={
+        app_id:theRequest.app_id,
+        open_id:theRequest.open_id,
+        activity_code:theRequest.activity_code
+        //            item_id:theRequest.item_id
+        };
+        oc.postRequire("post", "/vipActivity/detail/mobile/getSuccessApplyInfo","", _params, function(data){
+            $("#mask_loading").hide();
+            if (data.code == 0) {
+               var assignmentData=new assignment(data);
+               assignmentData.initData();
+            } else {
+                mui.alert(data.message, function () {
+                  history.go(-1)
+                })
+            }
+        },function(){
+            mui.alert("获取数据失败")
+        })
+    }
+    getActivitySuccess();
+    function refund(){
+        var _this=this;
+        $("#sure_refund").click(function(){
+            var btnArray = ['取消', '确认'];
+            mui.confirm('确认退订？',"", btnArray, function(e) {
+                if (e.index == 1) {
+                    var param={
+                        app_id:_this.app_id,
+                        open_id:_this.open_id,
+                        activity_code:_this.activity_code,
+                        item_id:_this.item_id
+                    };
+                    $("#mask_loading").show();
+                    oc.postRequire("post", "/vipActivity/detail/mobile/refund","", param, function(data){
+                        $("#mask_loading").hide();
+                        if(data.code==0){
+                            mui.alert("退订成功",function(){
+                                sessionStorage.setItem("tabs_index","enroll");
+                                window.location.href="online_activity.html?app_id="+_this.app_id+"&open_id="+_this.open_id
+                            });
+                        }else{
+                            mui.alert(data.message);
+                        }
+                    },function(){
+                        mui.alert("退订失败")
+                    })
+                }
+            });
+        })
+    }
+</script>
+</body>
+</html>

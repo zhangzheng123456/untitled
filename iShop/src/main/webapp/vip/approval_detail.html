@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>核准详情</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <script src="../table/js/jquery.min.js"></script>
+    <style>
+        #bill_no,#integral_name{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span id="back_shop">会员运营</span>
+            <span class="icon-ishop_8-03"></span>
+            <span id="back_approved">核准记录</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>核准详情</span>
+        </div>
+        <div class="list" style="margin-bottom: 20px">
+            <div class="list_l">
+                <ul>
+                    <li>
+                        <label>核准名称</label>
+                        <input type="text" id="approved_name">
+                    </li>
+                    <li class="r">
+                        <label>核准时间</label>
+                        <input type="text" id="approved_date">
+                    </li>
+                </ul>
+            </div>
+            <div class="list_r">
+                <div class="turnoff" id="turnoff"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-12"></i>关闭</div>
+            </div>
+        </div>
+        <!--<div class="action">-->
+            <!--<div class="action_l">-->
+                <!--<ul>-->
+                    <!--<li class="li">-->
+                        <!--<input type="text" id="search" class="input" placeholder="姓名/卡号/会员卡号">-->
+                        <!--<i id="d_search" class="icon-ishop_3-05"></i>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="action_r">-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: left;">序号</th>
+                    <th>会员名称</th>
+                    <th>会员卡号</th>
+                    <th>手机号</th>
+                    <th>原会员类型</th>
+                    <th>现会员类型</th>
+                    <th>所属导购</th>
+                    <th>所属店铺</th>
+                    <th>出生日期</th>
+                    <th>开卡日期</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="1" id="input-txt" >
+                    <em>页</em>
+                </li>
+                <li class="foot-num">
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+                        </li>
+                        <li class="icon-ishop_4-02">
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 0 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="../js/loading.js"></script>
+<script type="text/javascript" src="../js/vip/approval_detail.js"></script>
+</body>
+</html>

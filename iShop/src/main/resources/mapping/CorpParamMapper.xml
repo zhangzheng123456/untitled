@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.CorpParamMapper">
-
     <select id="selectById" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
@@ -17,13 +16,17 @@
     <select id="selectAllParam" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
+        dc.corp_name,
         dcc.param_name,
         dcc.param_desc
-        FROM rel_corp_cfg rcc,def_corp_cfg dcc
+        FROM rel_corp_cfg rcc,def_corp_cfg dcc,def_corp dc
         WHERE rcc.param_id=dcc.id
+        AND dc.corp_code=rcc.corp_code
         <if test="search_value != null and search_value !=''">
             AND
             (rcc.param_value like concat('%',#{search_value},'%')
+            OR rcc.corp_code like concat('%',#{search_value},'%')
+            OR dc.corp_name like concat('%',#{search_value},'%')
             OR dcc.param_desc like concat('%',#{search_value},'%')
             OR rcc.remark like concat('%',#{search_value},'%')
             )
@@ -39,6 +42,16 @@
         AND  param_id=#{param_id}
         <if test="isactive != null and isactive !=''">
         AND isactive = #{isactive}
+        </if>
+    </select>
+
+    <select id="selectByParamName" resultType="com.bizvane.ishop.entity.CorpParam">
+        SELECT *
+        FROM def_corp_cfg
+        WHERE 1=1
+        AND  param_name=#{param_name}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
         </if>
     </select>
 
@@ -193,4 +206,16 @@
         GROUP By rcc.id
         ORDER BY rcc.id DESC
     </select>
+
+
+    <select id="selectParamByName" resultType="com.bizvane.ishop.entity.CorpParam">
+        SELECT rel_corp_cfg.*
+        FROM rel_corp_cfg ,def_corp_cfg
+        WHERE rel_corp_cfg.corp_code = #{corp_code}
+        AND rel_corp_cfg.param_id = def_corp_cfg.id
+        AND  def_corp_cfg.param_name=#{param_name}
+        AND rel_corp_cfg.isactive = 'Y'
+        AND def_corp_cfg.isactive = 'Y'
+    </select>
+
 </mapper>

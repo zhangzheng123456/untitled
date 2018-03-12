@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员分析</title>
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/laydate5.0.7/laydate.js"></script>
+    <link rel="stylesheet" href="../css/vip_data_view_analysis.css?v=20170922">
+</head>
+<body>
+    <div class="data_view_title">
+        <div style="margin: 0 auto;display: inline-block">
+            <div class="icon-ishop_8-05"></div>
+            <span class="title_text">会员分析</span>
+            <div class="icon-ishop_8-05"></div>
+        </div>
+    </div>
+    <div class="data_view_content container-fluid">
+        <div class="allVipHead"><span class="allVipTitle">会员总数(人)</span><span class="allVipNum" id="allVipNum">0</span></div>
+        <div class="row" id="vip_content">
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">渠道会员占比</span>
+                    <div id="div1" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">品牌会员占比</span>
+                    <div id="div2" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">新老会员占比</span>
+                    <div id="div3" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">会员类型占比</span>
+                    <div id="div4" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">90天活跃会员占比</span>
+                    <div id="div6" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">180天活跃会员占比</span>
+                    <div id="div7" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xs-12  data_view_block">
+                <div>
+                    <span class="model_title">生命周期占比</span>
+                    <div id="div5" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="split_line"></div>
+        <div style="margin: 10px 0;text-align: right">
+            <span class="search_line">
+                <input class="search" type="text" id="search" placeholder="请选择时间" readonly autocomplete="off" data-start="" data-end=""/>
+                <span class="icon-ishop_8-02"></span>
+            </span>
+            <button  class="btn btn-sm btn-info" id="sure_select">确定</button>
+        </div>
+        <div class="row" id="trade_content">
+            <div class="col-sm-6  col-md-3 data_view_block">
+                <div>
+                    <span class="model_title">渠道业绩占比</span>
+                    <div id="div8" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6  col-md-3 data_view_block">
+                <div>
+                    <span class="model_title">线上线下业绩占比</span>
+                    <div id="div9" style="height:100%"></div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12  col-md-6 data_view_block">
+                <div id="channel_content_warp">
+                    <span class="ranking_title">渠道业绩排行</span>
+                    <div class="ranking_tabs channel">
+                        <span class="list_num_head">序号</span>
+                        <span>渠道</span>
+                        <span>销售金额</span>
+                        <span>占比</span>
+                    </div>
+                    <div class="ranking_content channel_content">
+                       <ul id="channelRank">
+                       </ul>
+                    </div>
+                </div>
+                <div class="spinner_warp">
+                    <div class="spinner">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../echart/echarts.min.js"></script>
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <script src="../js/insidePostRequire.js"></script>
+    <script src="../js/vip/vip_data_view_analysis.js?v=201709251500"></script>
+</body>
+</html>

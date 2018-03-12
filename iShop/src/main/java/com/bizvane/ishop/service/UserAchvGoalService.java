@@ -63,6 +63,9 @@ public interface UserAchvGoalService {
      */
     PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
+    PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception;
+
+
     PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code,String area_store_code, String role_code) throws Exception;
 
     int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws Exception;
@@ -74,9 +77,14 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    UserAchvGoal getUserAchvForId(String corp_code, String user_code,String user_target,String target_type,String target_time )throws  Exception;
+    UserAchvGoal getUserAchvForId(String corp_code, String user_code,String store_code,String target_type,String target_time )throws  Exception;
 
     List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws Exception;
 
     PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map,String area_store_code) throws Exception;
+
+    PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map,String area_store_code,String manager_corp) throws Exception;
+
+    int userAchvGoalIfExist(String corp_code, String user_code,String target_type, String target_time,String isactive,String store_code) throws Exception;
+
 }

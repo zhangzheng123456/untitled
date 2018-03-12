@@ -2,8 +2,6 @@
  * Created by Administrator on 2016/11/25.
  */
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除的默认的第一页;
 var pageSize=10;//默认传的每页多少行
@@ -157,7 +155,6 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     });
 }
 //获取数据
@@ -185,7 +182,6 @@ function getVal(){
             for(i=0;i< list.length;i++){
                 arr.push(list[i].goods_match_code);
             }
-            console.log(arr);
             //搭配id去重
             for(var i=0;i<arr.length;i++){
                 if(!hash[arr[i]]){
@@ -208,56 +204,75 @@ function getVal(){
 }
 //数据模板
 function pageVal(arr,unqiuearr,list){
+    console.log(unqiuearr);
     //盒子上部分+复选框
     var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" title="${titleShow}" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
    //搭配标题
     var tempTitle='<div class="box_title">${msg}</div>'
     //内容（图片+文字）迭代生成
-    var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
+    var tempHTML2='<div class="oneArea"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
     var tempHTML3='</div></li>';
-    for(i=0;i<unqiuearr.length;i++){
-        var html = '';
-        var nowHTML1 = tempHTML1;
-        nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
-        nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
-        var nowHTML2 = "";
-        var nowTitle = '';
-        for(k=0;k<list.length;k++){
-            if(list[k].goods_match_code ==unqiuearr[i]){
-                nowHTML2 += tempHTML2;
-                nowTitle += tempTitle;
-                var titleShow = list[k].goods_match_desc;
-                nowHTML1 = nowHTML1.replace("${titleShow}",titleShow);
-                var goods_image="";
-                if(list[k].goods_image.indexOf("http")!==-1){
-                    goods_image = list[k].goods_image;
+    if(unqiuearr.length==0){
+        $(".waterfull ul").html("<div style='position: absolute;left: 50%;top: 50%;font-size: 18px;color: #999;'>暂无内容</div>");
+    }else{
+        var num="";
+        for(i=0;i<unqiuearr.length;i++){
+            var html = '';
+            var nowHTML1 = tempHTML1;
+            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+            var nowHTML2 = "";
+            var nowTitle = '';
+            var dismatch = [];
+            for(k=0;k<list.length;k++){
+                if(list[k].goods_match_code ==unqiuearr[i]){
+                    if(list[k].match_display!==""&&list[k].match_display!==undefined){
+                        dismatch=list[k].match_display.split(",");
+                    }
+                    if(num!==i){
+                        for(var j=0;j<dismatch.length;j++){
+                            nowHTML2 += tempHTML2;
+                            nowTitle += tempTitle;
+                            nowHTML2 = nowHTML2.replace("${goods_image}", dismatch[j]);
+                            nowHTML2 = nowHTML2.replace("${goods_code}","效果图");
+                        }
+                    }
+                    num=i;
+                    nowHTML2 += tempHTML2;
+                    nowTitle += tempTitle;
+                    var titleShow = list[k].goods_match_desc;
+                    nowHTML1 = nowHTML1.replace("${titleShow}",titleShow);
+                    var goods_image="";
+                    if(list[k].goods_image.indexOf("http")!==-1){
+                        goods_image = list[k].goods_image;
+                    }
+                    if(list[k].goods_image.indexOf("http")==-1){
+                        goods_image="../img/goods_default_image.png";
+                    }
+                    var  goods_match_title =list[k].goods_match_title;
+                    var goods_code = list[k].goods_code;
+                    nowTitle = nowTitle.replace("${msg}", goods_match_title);
+                    nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
+                    nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+                    nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+                    nowHTML1 = nowHTML1.replace("${corp_code}", list[k].corp_code);
                 }
-                if(list[k].goods_image.indexOf("http")==-1){
-                    goods_image="../img/goods_default_image.png";
-                }
-                var  goods_match_title =list[k].goods_match_title;
-                var goods_code = list[k].goods_code;
-                nowTitle = nowTitle.replace("${msg}", goods_match_title);
-                nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
-                nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
-                nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
-                nowHTML1 = nowHTML1.replace("${corp_code}", list[k].corp_code);
+            }
+            var nowHTML3 = tempHTML3;
+            html += nowHTML1;
+            html += nowTitle;
+            html += nowHTML2;
+            html += nowHTML3;
+            $(".waterfull ul").append(html);
+            $('.boxArea').find('.box_title:not(.box_title:first)').css('display', 'none');
         }
-        }
-        var nowHTML3 = tempHTML3;
-        html += nowHTML1;
-        html += nowTitle;
-        html += nowHTML2;
-        html += nowHTML3;
-        $(".waterfull ul").append(html);
-        $('.boxArea').find('.box_title:not(.box_title:first)').css('display', 'none');
+        waterFull();
     }
-    waterFull();
 }
 //点击放大镜触发搜索
 $("#d_search").click(function () {
-    value = $("#search").val().replace(/\s+/g, "");
+    value = $("#search").val().trim();
     inx = 1;
     param["searchValue"] = value;
     //param["pageNumber"] = inx;
@@ -265,9 +280,22 @@ $("#d_search").click(function () {
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
 });
+$("#search").keydown(function(){
+    var event=window.event||arguments[0];
+    inx=1;
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
+    if(event.keyCode == 13){
+        value=this.value.trim();
+        param["searchValue"]=value;
+        POST(inx,pageSize);
+    }
+})
 //搜索的请求函数
 function POST(a, b) {
     whir.loading.add("", 0.5);//加载等待框
+    $('#search').attr("disabled",true);
     oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -280,7 +308,10 @@ function POST(a, b) {
             $(".masonry").empty();
             if (forLength <= 0) {
                 whir.loading.remove();//移除加载框
+                $('#search').removeAttr("disabled");
                 $("#waterfull p").remove();
+                $("#waterfull ul").html("");
+                $('.masonry').css('height','');
                 $("#waterfull").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
             } else if (forLength > 0) {
                 $("#waterfull p").remove();
@@ -291,7 +322,6 @@ function POST(a, b) {
                 for(i=0;i< list.length;i++){
                     arr.push(list[i].goods_match_code);
                 }
-                console.log(arr);
                 //搭配id去重
                 for(var i=0;i<arr.length;i++){
                     if(!hash[arr[i]]){
@@ -304,7 +334,7 @@ function POST(a, b) {
                 //var goods_image = list[i].goods_image;
                 pageVal(arr,unqiuearr,list);
                 whir.loading.remove();//移除加载框
-
+                $('#search').removeAttr("disabled");
                 jumpBianse();
             }
 
@@ -431,7 +461,6 @@ $("#leading_out").click(function () {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var message = JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -529,7 +558,6 @@ $("#x1").click(function () {
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/goods/fab/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -545,7 +573,6 @@ function UpladFile() {
             if (xhr.status === 200) {
                 doResult(xhr.responseText);
             } else {
-                console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
                 whir.loading.remove();//移除加载框
             }
@@ -587,7 +614,6 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
                 }
             } else if (filter[i].type == "select") {
                 var msg = filter[i].value;
-                console.log(msg);
                 var ul = "<ul class='isActive_select_down'>";
                 for (var j = 0; j < msg.length; j++) {
                     ul += "<li data-code='" + msg[j].value + "'>" + msg[j].key + "</li>"
@@ -708,28 +734,11 @@ function filtrates(a, b) {
         }
     });
 }
-//键盘事件
-$(function(){
-    document.onkeydown = function(e){
-        var ev = document.all ? window.event : e;
-        if(ev.keyCode==13) {
-            value = $("#search").val().replace(/\s+/g, "");
-            inx = 1;
-            param["searchValue"] = value;
-            param["pageNumber"] = inx;
-            param["pageSize"] = pageSize;
-            param["funcCode"] = funcCode;
-            POST(inx, pageSize);
-
-        }
-    }
-});
 function dblclick(dom) {
     var goods_match_code = $(dom).find('.check').attr('id');
     var corp_code = $(dom).attr("data-code");
     sessionStorage.setItem("corp_code", corp_code);//存储的方法
     sessionStorage.setItem("goods_match_code", goods_match_code);//存储的方法
-    console.log('双击跳转搭配编辑页面');
     $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
 }
 //刷新

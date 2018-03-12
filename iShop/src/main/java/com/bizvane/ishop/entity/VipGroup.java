@@ -28,6 +28,8 @@ public class VipGroup {
     //是否可用
     private String isactive;
 
+    private String is_public;
+
     private String corp_name;
 
     public int getId() {
@@ -124,6 +126,14 @@ public class VipGroup {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getIs_public() {
+        return is_public;
+    }
+
+    public void setIs_public(String is_public) {
+        this.is_public = is_public;
     }
 
     public String getCorp_name() {

@@ -9,6 +9,7 @@ public class DataBean {
     private String id;
     private String code;
     private String message;
+    private String remark;
 
 
     public String getId() {
@@ -40,6 +41,13 @@ public class DataBean {
         this.message = message;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getJsonStr() {
 

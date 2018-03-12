@@ -133,12 +133,12 @@
         AND (p.master_code = #{user_code}
         OR p.master_code = #{role_code}
         OR p.master_code = #{group_code})
-        AND p.enable = 'Y'
         AND p.isactive = 'Y'
         AND a.isactive = 'Y'
         ORDER BY a.action_code
     </select>
 
+    <!--获取列表显示字段-->
     <select id="selectColumnByFun" resultMap="privilege">
         SELECT *
         FROM def_table_manager a, def_table_privilege p
@@ -148,9 +148,25 @@
         AND (p.master_code = #{user_code}
         OR p.master_code = #{role_code}
         OR p.master_code = #{group_code})
-        AND p.enable = 'Y'
         AND p.isactive = 'Y'
         AND a.isactive = 'Y'
+        ORDER BY a.filter_weight
+    </select>
+
+    <!--获取详情页可修改字段-->
+    <select id="selectRWByFun" resultMap="privilege">
+        SELECT *
+        FROM def_table_manager a, def_table_privilege p
+        WHERE a.column_name = p.column_name
+        AND a.function_code = p.function_code
+        AND p.function_code = #{function_code}
+        AND (p.master_code = #{user_code}
+        OR p.master_code = #{role_code}
+        OR p.master_code = #{group_code})
+        AND p.enable = '1'
+        AND p.isactive = 'Y'
+--         AND a.isactive = 'Y'
+        AND a.can_edit regexp '^1'
         ORDER BY a.filter_weight
     </select>
 
@@ -317,4 +333,27 @@
         AND master_code = #{master_code}
         AND p.isactive = 'Y'
     </select>
+
+    <!--获取具有审核权限的Master_Code-->
+    <select id="selectMasterCodeByFunctionName" resultMap="privilege">
+        SELECT p.*
+        FROM def_action a, def_privilege p,def_function f
+        WHERE
+        <if test="function_name!=null and function_name!=''">
+            f.function_name=#{function_name}
+             AND
+        </if>
+        <if test="action_name!=null and action_name!=''">
+            a.action_name =#{action_name}
+            AND
+        </if>
+        a.function_code= f.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        AND f.isactive = 'Y' 
+    </select>
+
+
 </mapper>

@@ -35,13 +35,12 @@
 	</bean>
 
 	<!-- redis 连接工厂 -->
-	<bean id="connectionFactory"
-		  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+	<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
 		<property name="poolConfig" ref="poolConfig"/>
 		<property name="port" value="${redis.port}"/>
+		<property name="database" value="${redis.database}"/>
 		<property name="hostName" value="${redis.host}"/>
 		<property name="password" value="${redis.password}"/>
-		<property name="database" value="${redis.database}"/>
 		<property name="timeout" value="${redis.timeout}"></property>
 	</bean>
 
@@ -58,7 +57,7 @@
 	<bean id="redisClient" class="com.bizvane.sun.common.service.redis.RedisClient">
 		<property name="redisTemplate" ref="redisTemplate"/>
 	</bean>
-	<!--jedis 配置 结束-->
+	<!-- jedis 配置 结束-->
 
 	<!-- MongoDB Client 配置开始 -->
 	<bean id="mongodbClient" class="com.bizvane.sun.common.service.mongodb.MongoDBClient">

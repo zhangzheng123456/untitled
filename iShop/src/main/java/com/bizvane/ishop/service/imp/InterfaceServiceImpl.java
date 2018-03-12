@@ -78,4 +78,6 @@ public class InterfaceServiceImpl implements InterfaceService{
     public Interfacers selectForId(String corp_code, String version) throws Exception {
         return interfaceMapper.selectForId(corp_code,version);
     }
+
+
 }

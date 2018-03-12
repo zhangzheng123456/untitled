@@ -1,0 +1,74 @@
+.message_body{
+    width: 320px;position: fixed;right:-320px;top:80px;bottom: 0;background-color: #FFFFFF;z-index: 10003;color: #888;
+}
+.msg_list{
+    background-color: #FFFFFF;overflow: hidden;left: 0; position: absolute;top: 40px;right:0;bottom: 0;overflow-y: auto;
+}
+.msg_list>div{
+    padding: 0 20px;
+}
+.msg_list .line{
+    border-bottom: 1px solid #dfdfdf;overflow: hidden;position: relative;padding-top: 5px;box-sizing: border-box;height: 70px;
+}
+.msg_list .line .msg_img{
+    width: 20%;float: left;padding-left: 10px;box-sizing: border-box;
+}
+.msg_img div{
+    margin-top: 10px;width: 40px;height: 40px;background-color: #dfdfe8;border-radius: 20px;line-height:40px;text-align:center;color:#9096a4;font-size: 12px;
+}
+.msg_list .line .msg_info{
+    width: 70%;float: left
+}
+.msg_list .line .msg_info .msg_title{
+    height: 20px;line-height:20px;margin: 0;
+}
+.msg_list .line  .msg_info .msg_time{
+    height: 20px;line-height:20px;margin: 0;
+}
+.msg_list .line  .msg_info .msg_content{
+    height: 20px;line-height:20px;margin: 0;font-size: 12px;color:#8e939e;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;
+}
+.msg_list .line .msg_arrow{
+    width: 10%;float: left;font-size: 20px;text-align: center;line-height: 60px;cursor: pointer;
+}
+.msg_title{
+    font-size: 14px;color:#4a5f7c;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;
+}
+.msg_time{
+    font-size: 12px;color:#a1a7b4;
+}
+.msg_content{
+    color:#8e939e;
+}
+.slide_hide{
+    padding-left: 10px;height: 40px;line-height: 40px;border-bottom: 1px solid #dfdfdf;color: #4a5f7c;margin: 0 20px;box-sizing: border-box;
+}
+.message_ok{
+    color: #ffffff;margin: 20px auto;cursor:pointer;width: 90px;background-color: #41c7db;display: block;height: 26px;line-height: 26px;text-align: center;border-radius: 5px;
+}
+.badge:empty{
+    display: block;
+}
+.message_content{
+    border-left:1px solid #dfdfdf;display: none;width: 280px;position: fixed;right: 0;top:80px;bottom: 0;background-color: #ffffff;padding: 20px 10px 0 20px;z-index: 10002;box-sizing: border-box;
+}
+.badge-danger{
+    background-color: #41c7db ;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 10px;
+    height: 15px;
+    border: 2px solid #FFFFFF;
+}
+.msg_loading{
+    position: absolute;left: 50%;top:50%;margin-left:-50px;margin-top:-25px;text-align:center;display: inline-block;width: 100px;height: 50px;line-height: 50px;
+}
+.more_msg{
+    cursor: pointer;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    display: inline-block;
+}

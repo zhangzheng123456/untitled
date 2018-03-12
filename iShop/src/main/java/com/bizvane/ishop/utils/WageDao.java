@@ -2,24 +2,11 @@ package com.bizvane.ishop.utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 import java.util.Vector;
 
-import javax.sql.DataSource;
 
-//import org.apache.commons.dbutils.QueryRunner;
-//import org.apache.commons.dbutils.ResultSetHandler;
-//import org.apache.commons.dbutils.handlers.ArrayHandler;
-//import org.apache.commons.dbutils.handlers.ArrayListHandler;
-//import org.junit.Test;
-//import com.utils.ConnUtils;
-//import com.utils.XlsUtils;
 /**
  * Created by yin on 2016/7/6.
  */

@@ -58,6 +58,35 @@ var swip_image = [];
                 var nowValLength = $(".conpany_msg .goods_code").length;
                 var goods_match_title = $('#goodsTitle').val();
                 var goods_match_desc = $('#goodsDescribe').val();
+                var dapei= $("#daipei_list ul li img");
+                var match_display="";
+                for(var i=0;i<dapei.length;i++){
+                    var img=$(dapei[i]).attr("data-img");
+                    if(i<dapei.length-1){
+                        match_display+=img+",";
+                    }else {
+                        match_display+=img;
+                    }
+                }
+                console.log(match_display);
+                if(goods_match_title.trim()==''){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"商品名称未填写"
+                    });
+                    return;
+                }
+                if(goods_match_desc.trim()==''){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"商品描述未填写"
+                    });
+                    return;
+                }
                 if(nowValLength<1){
                     art.dialog({
                         time: 2,
@@ -65,14 +94,8 @@ var swip_image = [];
                         cancel: false,
                         content:"未添加商品"
                     });
-                }else if(goods_match_title.trim()=='' || goods_match_desc.trim()==''){
-                    art.dialog({
-                        time: 2,
-                        lock: true,
-                        cancel: false,
-                        content:"商品名称或商品描述未填写"
-                    });
-                }else{
+                    return;
+                }
                     $(".conpany_msg .goods_code").each(function () {
                         var nowVal = $(this).text();
                         GOODS_CODE += nowVal + ',';
@@ -107,53 +130,15 @@ var swip_image = [];
                         ISACTIVE="N";
                     }
                     var _params = {
-                        //"corp_code": OWN_CORP,
                         "goods_code": GOODS_CODE,
                         "isactive": ISACTIVE,
                         "goods_match_title": goods_match_title,
                         "goods_match_desc": goods_match_desc,
+                        "match_display":match_display
                     };
                     console.log(_params);
                     fabjs.ajaxSubmit(_command, _params, opt);
-                } }else{
-                return;
-            }
-        });
-        $("#edit_save").click(function(){
-            if(fabjs.firstStep()){
-                // var ID=sessionStorage.getItem("id");
-                // var OWN_CORP=$("#OWN_CORP").val();
-                var GOODS_CODE=$("#GOODS_CODE").val().trim();
-                var ISACTIVE="";
-                var input=$("#is_active")[0];
-                if(input.checked==true){
-                    ISACTIVE="Y";
-                }else if(input.checked==false){
-                    ISACTIVE="N";
-                }
-                var li=$(".match_goods ul").find("li");
-                for(var i=0,matchgoods="";i<li.length;i++){
-                    var r=$(li[i]).attr("id");
-                    if(i<li.length-1){
-                        matchgoods+=r+",";
-                    }else{
-                        matchgoods+=r;
-                    }
-                }
-                var _command="/goods/fab/edit";//接口名
-                var opt = {//返回成功后的操作
-                    success:function(){
-
-                    }
-                };
-                var _params = {
-                    //"id": ID,
-                    //"corp_code": OWN_CORP,
-                    "goods_code": GOODS_CODE,
-                };
-                fabjs.ajaxSubmit(_command,_params,opt);
-
-            }else{
+                }else{
                 return;
             }
         });
@@ -477,7 +462,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
     var goods_code=$(this).parent().find(".goods_code").html();
     var goods_code2=$("#GOODS_CODE").val();
     var len=$(".conpany_msg li").length;
-    if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
+    if(goods_code== $('.conpany_msg li[data-id="'+goods_code+'"]').attr('data-id')|| goods_code==goods_code2){
         art.dialog({
             time: 1,
             lock: true,
@@ -493,7 +478,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $("#add").before('<li onmousemove="overShow(this)" onmouseout="outHide(this)" id="'+goods_code+'">'+li+'</li>');
+        $("#add").before('<li onmousemove="overShow(this)" onmouseout="outHide(this)" data-id="'+goods_code+'">'+li+'</li>');
         $(".conpany_msg li i").css('display','none');
     }
 
@@ -530,7 +515,7 @@ $("#search_match_goods ul").on("click","li i",function () {
     $(this).hide();
     $(this).parent("#search_match_goods ul li").css("background","");
     var goods_code=$(this).parent().find(".goods_code").html();
-    $("#"+goods_code).remove();
+    $('.conpany_msg li[data-id="'+goods_code+'"]').remove();
 })
 // }
 //删除图片
@@ -570,7 +555,7 @@ function getmatchgoodsList(a) {
             var list=list.list;
             console.log(list);
             if(list.length<=0){
-                jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>");
+                jQuery('#search_match_goods ul').append("<p>没有相关商品</p>");
             }else{
                 var len = $(".conpany_msg li").length;
                 for(var i=0;i<list.length;i++){
@@ -638,6 +623,7 @@ $("#add").click(function () {
     }else {
         num=1;
         next=false;
+        $("#search").val("");
         jQuery('#search_match_goods ul').empty();
         getmatchgoodsList(num);
     }

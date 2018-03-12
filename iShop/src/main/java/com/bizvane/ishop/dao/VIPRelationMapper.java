@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface VIPRelationMapper {
 
-	List<VIPEmpRelation> selectEmpVip(@Param("open_id") String open_id, @Param("app_user_name") String app_user_name) throws SQLException;
-
 	List<VIPStoreRelation> selectStoreVip(@Param("open_id") String open_id, @Param("app_user_name") String app_user_name) throws SQLException;
 
+	int deleteStoreVip(@Param("store_code") String store_code, @Param("app_user_name") String app_user_name) throws SQLException;
+
+	List<VIPStoreRelation> selectVip(@Param("created_date_start") String created_date_start, @Param("created_date_end") String created_date_end) throws SQLException;
 }

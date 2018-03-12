@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,378 +12,3137 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css?20171208">
     <link rel="stylesheet" href="../css/set_vip_activity.css">
+    <link rel="stylesheet" href="../css/activity_details.css?20171128">
+    <link rel="stylesheet" href="../css/active_detailNew.css?20180226">
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
     <style>
-        body{
+        body {
             margin-top: 80px;
-            font-size:13px;
+            font-size: 14px;
         }
-        .activity_statistics_head{
+        
+        .activity_statistics_head {
             width: 100%;
             height: 110px;
             background-color: #61c7db;
-            color:#4a5f7c;
+            color: #4a5f7c;
             padding: 20px 20px 0 20px;
         }
-        .activity_statistics_head_left{
+        
+        .activity_statistics_head_left {
             width: 50%;
             float: left;
         }
-        .activity_statistics_head_left_title{
-           color: #FFFFFF;
-            font-size:20px;
+        
+        .activity_statistics_head_left_title {
+            color: #FFFFFF;
+            font-size: 20px;
             height: 20px;
             line-height: 20px;
         }
-        .activity_statistics_head_left_time{
-           margin: 12px 0;
+        
+        .activity_statistics_head_left_time {
+            margin: 12px 0;
         }
-        .activity_statistics_head_center,.activity_statistics_head_right{
+        
+        .activity_statistics_head_center,
+        .activity_statistics_head_right {
             width: 25%;
             float: left;
             position: relative;
             height: 100%
         }
-        .activity_statistics_head_center>div,.activity_statistics_head_right>div{
-            position:absolute;
-            margin-top:-10px;
+        
+        .activity_statistics_head_center>div,
+        .activity_statistics_head_right>div {
+            position: absolute;
+            margin-top: -10px;
             text-align: center;
-            top:50%;
-            left:50%;
-            -webkit-transform: translate(-50%,-50%);
-            -moz-transform: translate(-50%,-50%);
-            -ms-transform: translate(-50%,-50%);
-            -o-transform: translate(-50%,-50%);
-            transform: translate(-50%,-50%);
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
-        .activity_statistics_head_center>div span,.activity_statistics_head_right>div span{
+        
+        .activity_statistics_head_center>div span,
+        .activity_statistics_head_right>div span {
             display: block;
         }
-        .activity_statistics_head_center>div span.num,.activity_statistics_head_right>div span.num{
+        
+        .activity_statistics_head_center>div span.num,
+        .activity_statistics_head_right>div span.num {
             font-size: 18px;
             color: #FFFFFF;
             margin-top: 10px;
         }
-        ul li{
-            float: left;
-        }
-        .active_tabs ul li.current{
+        
+        .active_tabs ul li.current {
             background-color: #61c7db;
         }
-        .active_tabs ul li{
+        
+        .active_tabs ul li {
             text-align: center;
             cursor: pointer;
             height: 30px;
             margin-top: 10px;
             width: 160px;
             color: #FFFFFF;
+            float: left;
         }
-        .tabs_content ul{
-            margin-right: -0.5%;
+        
+        .tabs_content {
+            height: 100%;
         }
-        .tabs_content ul li{
+        
+        .before_year_data {
+            display: inline-block;
+            height: 10px;
+            width: 40%;
+            background-color: #d8d8e1
+        }
+        
+        .activity_data {
+            background-color: #5f8bc8;
+            display: inline-block;
+            height: 10px;
+            width: 80%;
+        }
+        
+        .percent {
+            font-size: 20px;
+            color: #41c7db;
+            position: absolute;
+            left: 35%;
+            top: 40px;
+        }
+        
+        .ticket_table ul {
+            overflow: hidden;
+            padding-left: 15px;
+        }
+        
+        .ticket_table li {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            width: 8%;
+            float: left;
+        }
+        
+        .ticket_table li:nth-child(1) {
+            text-align: left;
+            width: 3%;
+        }
+        
+        .ticket_list ul:nth-child(even) {
+            background-color: #efefef;
+        }
+        
+        .data_detail .detail {
+            width: 60px;
+            height: 29px;
+            margin-top: 5px;
+            line-height: 29px;
+            /* border: 1px solid #f5f5f5; */
+            border-radius: 5px;
+            /* background-color: #fcfcfc; */
+            color: #5f8bc8;
+            text-align: center;
+        }
+        
+        .no_data {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        
+        li.peopleContent {
+            float: none;
+        }
+        
+        .influence_head {
+            width: 100px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            text-align: center
+        }
+        
+        .people_title_counts {
+            width: 80px;
+            margin-right: 0;
+        }
+        /************************图**************/
+        
+        .charts_left {
+            width: 20%;
+            max-width: 20%;
+            border-right: 1px dotted #ddd;
             height: 300px;
-            width: 32.833%;
-            margin: 0.5% 0.5% 0 0;
+            padding-right: 20px;
+            padding-top: 50px;
+            float: left;
+        }
+        
+        .charts_left li {
+            float: none;
+            cursor: pointer;
+            text-align: right;
+            height: 30px;
+            line-height: 30px;
+            color: #587297;
+            padding-right: 20px;
+            position: relative;
+        }
+        
+        .charts_left li div {
+            display: none;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-left: 5px solid #5f8bc8;
+            border-bottom: 5px solid transparent;
+            border-right: 5px solid transparent;
+            position: absolute;
+            right: -9px;
+            top: 10px;
+        }
+        
+        .charts_left li.active {
+            background-color: #5f8bc8!important;
+            color: #fff
+        }
+        
+        .charts_right {
+            float: left;
+            width: 80%;
+        }
+        
+        .charts_right>div {
+            width: 100%;
+            height: 300px;
+            display: none;
+        }
+        
+        .charts_right .bottom_data {
+            position: absolute;
+            bottom: -10px;
+            color: #5f8bc8;
+        }
+        
+        .charts_right .top_data_old {
+            color: #acacac;
+            position: absolute;
+            left: 20%;
+            margin-left: 25px;
+            top: -15px;
+        }
+        
+        .charts_right .top_data_new {
+            color: #9a9acc;
+            margin-left: 200px;
+            top: -15px;
+            position: absolute;
+            left: 20%
+        }
+        
+        .charts_right .top_data_bi {
+            font-size: 13px;
+            position: absolute;
+            right: 30%;
+            top: -13px;
+            text-align: center;
+            color: #888888;
+        }
+        
+        .select_class div {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        
+        .select_class ul {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            width: 160px;
+            border: 1px solid #d7d7d7;
+            border-top: none;
+            border-radius: 5px;
+            display: none;
             background-color: #FFFFFF;
         }
-
+        
+        .select_class ul,
+        .select_class ul li {
+            cursor: pointer
+        }
+        
+        .select_class ul li {
+            width: 100%;
+            padding: 3px 10px;
+            color: #888888;
+        }
+        
+        .select_class ul li:hover {
+            color: #FFFFFF;
+            background-color: #4a5f7c;
+        }
+        
+        .select_class input {
+            width: 160px;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid #d7d7d7;
+            padding: 5px 10px;
+            color: #888;
+            outline: none;
+        }
+        
+        .select_class .icon-ishop_8-02,
+        .select_class .icon-ishop_8-03 {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            color: #6cc1c8;
+        }
+        
+        #contribution_parent {
+            position: relative;
+        }
+        
+        #contribution_parent>span {
+            margin-top: -15px;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            font-size: 30px;
+            transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            color: #EEEEEE;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        #contribution_parent span:nth-child(2) {
+            right: 0;
+            left: auto;
+            transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+        }
+        
+        .couponvipbox {
+            margin: 30px 60px;
+        }
+        
+        .couponvipbox span {
+            width: 120px;
+            text-align: center;
+            display: inline-block;
+        }
+        
+        .couponvipbox .color5f8bc8 {
+            color: #5f8bc8;
+        }
+        
+        .couponvipbox .color6cc1c8 {
+            color: #6cc1c8;
+        }
+        
+        .couponvipbox .colorddd {
+            color: #ddd;
+        }
+        
+        .couponvipbox li {
+            margin-bottom: 15px;
+        }
+        
+        .couponvipbox span+span {
+            margin-left: 11px;
+        }
+        
+        #tutu {
+            overflow: hidden;
+            white-space: nowrap
+        }
+        
+        .legend {
+            overflow: hidden;
+            padding-left: 43%;
+            font-size: 12px;
+            color: #888
+        }
+        
+        .legend_icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background-color: #d8d8e1;
+            border-radius: 2px;
+            vertical-align: middle;
+            margin-top: 18px
+        }
+        
+        .legend_icon+span {
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle
+        }
+        
+        .contribute_bottom_box span {
+            position: relative;
+            left: 17%;
+        }
+        
+        #contribution_parent .contribute_bottom_box span:nth-child(2) {
+            left: 40%;
+        }
+        
+        .contribute_bottom_box span:nth-child(3) {
+            left: 64%;
+        }
+        
+        #chart_loading,
+        #load_1 {
+            position: absolute;
+            left: -20px;
+            top: -81px;
+            right: -20px;
+            bottom: -15px;
+            opacity: 0.5;
+            z-index: 10000;
+            background: gray;
+        }
+        
+        #chart_text,
+        #chart_1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            width: 130px;
+            height: 50px;
+            line-height: 50px;
+            padding: 0px 5px;
+            font-size: 12px;
+            z-index: 100001;
+            border-radius: 8px;
+            text-align: center;
+            color: rgb(255, 255, 255);
+            background-color: rgba(0, 0, 0, 0.498039);
+        }
+        
+        .chart_analyze {
+            width: 100%;
+            height: 350px;
+            background-color: #FFFFFF;
+            margin: 10px 0;
+            padding: 15px 20px;
+            position: relative
+        }
     </style>
 </head>
-<body>
-<div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><label>活动分析</label></div>
-    <div class="main col-lg-12">
-        <div class="activity_statistics_head">
-            <div class="activity_statistics_head_left">
-                <div class="activity_statistics_head_left_title"><span id="them">加载中...</span></div>
-                <div class="activity_statistics_head_left_time"><span id="startTime">加载中...</span> 至 <span id="endTime">加载中...</span></div>
-                <div><span id="mode">加载中...</span> | <span id="corp">加载中...</span></div>
-            </div>
-            <div class="activity_statistics_head_center">
-                <div style="width: 100%">
-                    <span>参与门店数</span>
-                    <span class="num" id="store_num">加载中...</span>
-                </div>
-            </div>
-            <div class="activity_statistics_head_right">
-                <div style="width:100%;">
-                    <span >活动历时</span>
-                    <span class="num" id="activity_all_day">加载中...</span>
-                </div>
-            </div>
-        </div>
-        <div style="width: 100%;height: 320px;background-color: #4a5f7c;padding: 30px;">
-            <div style="width: 20%;float: left;height: 100%">
-                <div>
-                    <span style="color:#cdd0d3;display: block">活动销售总额</span>
-                    <span style="color:#FFFFFF;display: block;font-size: 25px;">2904893</span>
-                </div>
-                <div id="achievement_chart" style="width: 250px;height: 230px;">
-                </div>
-            </div>
-            <div style="width: 80%;float: left">
-                <div style="color: #ffffff;text-align: center;font-size: 16px;overflow: hidden">
-                    <div style="width: 100px;float: right">
-                        <span style="color:#cdd0d3;display: block;font-size: 13px;">同店同比增</span>
-                        <span style="padding-top: 5px;display: block">33.87%</span>
-                    </div>
-                    <div style="width: 100px;float: right">
-                        <span style="color:#cdd0d3;display: block;font-size: 13px;">同比增</span>
-                        <span style="padding-top:5px;display: block">29.365%</span>
-                    </div>
-                </div>
-                <div id="allDataShow" style="width: 100%;height: 230px;">
 
+<body>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="col-lg-12 pre_title"><span>活动营销</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><label>活动分析</label></div>
+        <div class="main col-lg-12">
+            <div class="activity_statistics_head">
+                <div class="activity_statistics_head_left">
+                    <div class="activity_statistics_head_left_title"><span id="them">加载中...</span>
+                        <span class="icon-ishop_6-29 title_action"
+                              id="cancel_box">
+                    <div class="action_tip">
+                        <p class="action_set">查看活动设置</p>
+                          <p class="action_twoCode">查看活动二维码</p>
+                        <p class="action_openWeb">查看活动页面</p>
+                    </div>
+                </span>
+                    </div>
+                    <div class="activity_statistics_head_left_time"><span id="startTime">加载中...</span> 至 <span id="endTime">加载中...</span></div>
+                    <div><span id="mode">加载中...</span> | <span id="corp">加载中...</span></div>
+                </div>
+                <div class="activity_statistics_head_center">
+                    <div style="width: 100%">
+                        <span>参与门店数</span>
+                        <span class="num" id="store_num">加载中...</span>
+                    </div>
+                </div>
+                <div class="activity_statistics_head_right">
+                    <div style="width:100%;">
+                        <span>活动历时</span>
+                        <span class="num" id="activity_all_day">加载中...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart_analyze">
+                <div class="tabs_content">
+                    <div class="select_title" style="border: none"> <i class="icon-ishop_6-28"></i> <span>活动分析图</span></div>
+                    <div style="">
+                        <div class="charts_left" id="charts_left">
+                            <ul>
+                                <li class="active" data-chart="lastYear">去年同期比
+                                    <div style="display: block"></div>
+                                </li>
+                                <li data-chart="beforeTime">活动前同时段比
+                                    <div></div>
+                                </li>
+                                <li data-chart="price">客单价/件单价
+                                    <div></div>
+                                </li>
+                                <li data-code="contribute" data-chart="vipContribution">活动贡献度分析
+                                    <div></div>
+                                </li>
+                                <li data-code="discount" data-chart="relateRate">连带率-折扣
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="charts_right" class="charts_right">
+                            <div style="display: block;position: relative">
+                                <span class="top_data_old" id="top_data_old"></span>
+                                <span class="top_data_new" id="top_data_new"></span>
+                                <span class="top_data_bi" id="top_data_bi"><br/>同比增长率</span>
+                                <!--<span  class="bottom_data" style="left: 13%;">+100%</span>-->
+                                <!--<span  class="bottom_data" style="left: 31.5%;">+20%</span>-->
+                                <!--<span  class="bottom_data" style="left: 49.5%;">-1%</span>-->
+                                <!--<span  class="bottom_data" style="left: 67.5%;color: #acacac">-20%</span>-->
+                                <!--<span  class="bottom_data" style="left: 85%;bottom: -10px;">+1000%</span>-->
+                                <div id="tongQi" style="width: 100%;height: 98%"></div>
+                            </div>
+                            <div style="position: relative">
+                                <span class="top_data_old" id="top_data_old_s"></span>
+                                <span class="top_data_new" style="margin-left:200px;color: #5f8bc8" id="top_data_new_s"></span>
+                                <span class="top_data_bi"><span style="color: #5f8bc8" id="top_data_bi_s">0%</span><br/>环比增长率</span>
+                                <!--<span  class="bottom_data" style="left: 13%;">+100%</span>-->
+                                <!--<span  class="bottom_data" style="left: 31.5%;">+20%</span>-->
+                                <!--<span  class="bottom_data" style="left: 49.5%;">-1%</span>-->
+                                <!--<span  class="bottom_data" style="left: 67.5%;color: #acacac">-20%</span>-->
+                                <!--<span  class="bottom_data" style="left: 85%;bottom: -10px;">+1000%</span>-->
+                                <div id="tongQiTime" style="width: 100%;height: 98%"></div>
+                            </div>
+                            <div id="price"></div>
+                            <div id="contribution_parent">
+                                <!--<span class="icon-ishop_6-31" id="to_left"></span>-->
+                                <!--<div id="contribution" style="width: 20%;height: 100%"></div>-->
+                                <!--<span class="icon-ishop_6-31" id="to_right"></span>-->
+                                <div class="legend">
+                                    <div style="float: left">
+                                        <span class="legend_icon"></span>
+                                        <span><span id="contributeTotal" style="font-size: 14px;color: #acacac">0</span><br/>活动期间总销售额</span>
+                                    </div>
+                                    <!--<div style="margin-left: 100px;float: left">-->
+                                    <!--<span class="legend_icon" style="background-color: #9a9acc;"></span>-->
+                                    <!--<span ><span style="font-size: 14px;color: #9a9acc">213</span><br/>会销金额</span>-->
+                                    <!--</div>-->
+                                    <!--<span  class="top_data_bi" style="top:0;">+<span style="color: #9a9acc">71%</span><br/>与去年同期比</span>-->
+                                </div>
+                                <div id="tutu" style="height:240px"></div>
+                                <div class="contribute_bottom_box">
+                                    <span>店铺类型</span>
+                                    <span>经销商</span>
+                                    <span>店铺群组</span>
+                                </div>
+                            </div>
+                            <div id="discount"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="select_class" id="select_class">
+                    <div>
+                        <input type="text" style="cursor:pointer" readonly data-type="storeType" value="按店铺类型"> <span class="icon-ishop_8-02"></span>
+                    </div>
+                    <ul>
+                        <!--<li>全部</li>-->
+                        <!--<li data-type="vipType">按会员类型</li>-->
+                        <!-- <li data-type="storeDegree">按店铺等级</li> -->
+                        <li data-type="storeType">按店铺类型</li>
+                        <li data-type="storeGroup">按店铺群组</li>
+                        <li data-type="storeDealer">按经销商</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="width: 100%;height: 50px;background-color: #587297;line-height: 30px;padding: 0 10px;" class="active_tabs" id="active_tabs">
+                <ul>
+                    <li class="current">任务完成度分析</li>
+                    <li data-nav="customer" id="customer_nav">意向客户分析</li>
+                    <li data-nav="influence">导购影响力分析</li>
+                    <li data-nav="spread">通知传播分析</li>
+                    <li data-nav="coupon" id="ticket" style="display: none">优惠券分析</li>
+                    <li data-nav="btn_signUp" id="btn_signUp" style="display: none">报名会员</li>
+                    <li data-nav="online"  style="display: none;" id="btn_online">报名会员</li>
+                    <li data-nav="vip_effect" id="vip_effect" style="display: none">会员影响力分析</li>
+                    <li data-nav="achievement_percent" id="achievement_percent">业绩占比</li>
+                </ul>
+            </div>
+            <div id="analyze_wrap">
+                <!--进度分析-->
+                <div id="progress">
+                    <div class="progress_nav">
+                    </div>
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_l task_block">
+                                <div>
+                                    <p class="task_title">
+                                        任务标题</p>
+                                    <p class="task_title_describe p1"></p>
+                                </div>
+                                <div>
+                                    <p class="task_title">
+                                        任务类型</p>
+                                    <p class="task_title_describe p2"></p>
+                                </div>
+                                <div>
+                                    <p class="task_title">
+                                        任务状态</p>
+                                    <p class="task_title_describe doing p8">
+                                        正在执行</p>
+                                </div>
+                                <div>
+                                    <p class="task_title">
+                                        参与门店</p>
+                                    <p class="task_title_describe">
+                                        <span class="count p3"></span>门店
+                                        <span class="task_list">参与门店列表 <span
+                                        class="icon-ishop_8-03"></span></span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="task_title">
+                                        任务时间</p>
+                                    <div class="task_title_describe">
+                                        <p class="p4"></p>
+                                        <p class="p5"></p>
+                                        <p>
+                                            还剩
+                                            <span class="count p6"></span>天
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="task_title">
+                                        任务简述</p>
+                                    <p class="task_title_describe p7"></p>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    任务完成度</p>
+                                <div id="chart_pie"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>
+                                                下达导购数</p>
+                                            <p class="shoppers">
+                                                0</p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_m">
+                                        <div>
+                                            <p>
+                                                已覆盖会员数</p>
+                                            <p class="covers">
+                                                10100</p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>
+                                                目标会员数</p>
+                                            <p class="target">
+                                                12663</p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block">
+                                <p class="chart_title">
+                                    任务完成度</p>
+                                <div id="chart_bar" style="line-height: 231px;text-align: center"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span style="margin-right: 5px">
+                 <input type="radio"
+                        name="ck"
+                        class="check"
+                        style="display: none;"
+                        id="ck_1">
+                 <b class="radio_b"></b>
+                 <label for="ck_1"
+                        id="showDone">仅显示已完成</label>
+             </span>
+                            <span style="margin-right: 5px">
+                 <input type="radio"
+                        name="ck"
+                        class="check"
+                        style="display: none"
+                        id="ck_2">
+                 <b class="radio_b"></b>
+                 <label for="ck_2"
+                        id="showDoing">仅显示未完成</label>
+            </span>
+                            <span style="margin-right: 5px">
+                 <input type="radio"
+                        name="ck"
+                        class="check"
+                        style="display: none"
+                        id="ck_3" checked="checked">
+                 <b class="radio_b"></b>
+                 <label for="ck_3"
+                        id="showAll">显示全部</label>
+            </span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                        </div>
+                        <div class="screening" id="screening">
+                            <div class="sxk" id="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li>
+                                            <label>员工姓名</label><input type="text" id="p1" placeholder="请输入员工姓名">
+                                        </li>
+                                        <li>
+                                            <label>员工编号</label><input type="text" id="p2" placeholder="请输入员工编号">
+                                        </li>
+                                        <li>
+                                            <label>店铺编号</label><input type="text" id="p3" placeholder="请输入店铺编号">
+                                        </li>
+                                        <li>
+                                            <label>所属店铺</label><input type="text" id="p4" placeholder="请输入所属店铺">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <ul class="people_head">
+                            <li class="people_title">
+                                <div class="people_title_order">
+                                    序号
+                                </div>
+                                <div class="people_title_name">
+                                    员工姓名
+                                </div>
+                                <div class="people_title_num">
+                                    员工编号
+                                </div>
+                                <div class="people_title_area">
+                                    店铺编号
+                                </div>
+                                <div class="people_title_shop">
+                                    所属店铺
+                                </div>
+                                <div class="people_title_plan">
+                                    完成进度
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="people">
+                            <li class="people_content">
+                                <ul id='peopleContent' class="peopleContent"></ul>
+                                <!--js动态生成-->
+                                <li id="peopleError" style="float: none">
+                                    <div>
+                                        没有匹配信息，请核对关键字重新搜索
+                                    </div>
+                                </li>
+                        </ul>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--客户分析-->
+                <div id="customer" style="display: none">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    意向客户占比</p>
+                                <div id="customer_pie" style="height: 165px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>目标会员数</p>
+                                            <p class="shoppers" id="all_customers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>意向会员数</p>
+                                            <p class="shoppers" id="intent_customers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>链接点击数</p>
+                                            <p class="target" id="click_customers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <p class="chart_title">
+                                    意向客户统计</p>
+                                <div id="customer_bar" style="height: 231px;"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="doType_active" data-type="store">按门店查看</span>
+                            <span data-type="user" class="doType">按员工查看</span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4" data-id="customer">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li style="display: none">
+                                            <label>员工编号</label><input type="text" id="customer_userCode" placeholder="请输入员工编号">
+                                        </li>
+                                        <li style="display: none">
+                                            <label>员工姓名</label><input type="text" id="customer_user" placeholder="请输入员工姓名">
+                                        </li>
+                                        <li>
+                                            <label>店铺编号</label><input type="text" id="customer_storeCode" placeholder="请输入店铺编号">
+                                        </li>
+                                        <li>
+                                            <label>店铺名称</label><input type="text" id="customer_store" placeholder="请输入店铺名称">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <ul class="people_head">
+                            <li class="people_title">
+                                <!--js动态生成-->
+                            </li>
+                        </ul>
+                        <ul class="people">
+                            <li class="peopleContent">
+                                <ul>
+                                    <!--js动态生成-->
+                                </ul>
+                            </li>
+                            <li class="peopleError">
+                                <div>
+                                    未找到相关信息
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--影响分析-->
+                <div id="influence" style="display: none">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    已分享导购占比</p>
+                                <div id="user_pie_chart" style="height: 165px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>下达导购数</p>
+                                            <p class="shoppers" id="usersAll"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_m">
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>已分享导购数</p>
+                                            <p class="target" id="shareUsers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <div id="influence_line_chart" style="height: 240px;line-height: 240px;text-align: center;font-size: 25px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="do" style="background: #6cc1c8;border-radius: 0px">按员工查看</span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4" data-id="influence">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li>
+                                            <label>员工编号</label><input type="text" id="influence_userCode" placeholder="请输入员工编号">
+                                        </li>
+                                        <li>
+                                            <label>员工姓名</label><input id="influence_user" type="text" placeholder="请输入员工姓名">
+                                        </li>
+                                        <li>
+                                            <label>店铺编号</label><input type="text" id="influence_storeCode" placeholder="请输入店铺编号">
+                                        </li>
+                                        <li>
+                                            <label>所属店铺</label><input type="text" id="influence_store" placeholder="请输入所属店铺">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <ul class="people_head">
+                            <li class="people_title">
+                                <div class="people_title_order">
+                                    序号
+                                </div>
+                                <div class="people_title_counts">
+                                    员工编号
+                                </div>
+                                <div class="people_title_counts">
+                                    员工姓名
+                                </div>
+                                <div class="people_title_counts">
+                                    店铺编号
+                                </div>
+                                <div class="people_title_shop">
+                                    所属店铺
+                                </div>
+                                <div class="influence_head">
+                                    分享链接次数
+                                </div>
+                                <div class="influence_head">
+                                    链接点击总数
+                                </div>
+                                <div class="influence_head">
+                                    点击链接会员数
+                                </div>
+                                <div class="influence_head">
+                                    会员点击次数
+                                </div>
+                                <div class="influence_head" style="width: 140px">
+                                    点击链接非会员数
+                                </div>
+                                <div class="influence_head">
+                                    非会员点击次数
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="people">
+                            <li class="peopleContent">
+                                <ul>
+                                    <!--<li>-->
+                                    <!--<div class="influence_head">1</div>-->
+                                    <!--<div class="influence_head">上海闵行分店</div>-->
+                                    <!--<div class="influence_head">会员卡</div>-->
+                                    <!--<div class="influence_head">1000</div>-->
+                                    <!--<div class="influence_head">500</div>-->
+                                    <!--<div class="influence_head">200</div>-->
+                                    <!--<div class="influence_head">200</div>-->
+                                    <!--</li>-->
+                                    <!--js动态生成-->
+                                </ul>
+                            </li>
+                            <li class="peopleError">
+                                <div>
+                                    未找到相关信息
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--传播分析-->
+                <div id="spread" style="display: none">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_r task_block" style="width: 49.5%">
+                                <p class="chart_title">会员卡类型点击次数</p>
+                                <div id="cardTypeChart" style="height: 231px;text-align: center"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_m task_block" style="width: 49.5%">
+                                <p class="chart_title">
+                                    店铺点击次数统计</p>
+                                <div id="shopChart" style="height: 231px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <!--<div class="task_blank"></div>-->
+                            <!--<div class="task_detail_r task_block">-->
+                            <!--<p class="chart_title">-->
+                            <!--店铺-会员卡类型点击次数</p>-->
+                            <!--<div id="shopTypeChart" style="height: 231px"></div>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="doType_active" data-type="store">按门店查看</span>
+                            <span data-type="user" class="doType">按员工查看</span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4" data-id="spread">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li>
+                                            <label>店铺名称</label><input id="spreadStorename" type="text" placeholder="请输入店铺名称">
+                                        </li>
+                                        <li style="display: none">
+                                            <label>员工姓名</label><input id="spreadUsername" type="text" placeholder="请输入员工姓名">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <ul class="people_head">
+                            <li class="people_title">
+                                <div class="people_title_order">
+                                    序号
+                                </div>
+                                <div class="people_title_shop">
+                                    店铺名称
+                                </div>
+                                <div class="people_title_shop" style="width: 90px">
+                                    分享链接次数
+                                </div>
+                                <div class="people_title_num">
+                                    总点击数
+                                </div>
+                                <div class="people_title_num">
+                                    点开1次
+                                </div>
+                                <div class="people_title_num">
+                                    点开2次
+                                </div>
+                                <div class="people_title_num">
+                                    点开3次
+                                </div>
+                                <div class="people_title_num">
+                                    点开4次
+                                </div>
+                                <div class="people_title_num">
+                                    点开5次
+                                </div>
+                                <div style="width:90px">
+                                    5次及以上
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="people">
+                            <li class="peopleContent">
+                                <ul>
+                                    <!--<li>-->
+                                    <!--<div class="influence_head">1</div>-->
+                                    <!--<div class="influence_head">上海闵行分店</div>-->
+                                    <!--<div class="influence_head">会员卡</div>-->
+                                    <!--<div class="influence_head">1000</div>-->
+                                    <!--<div class="influence_head">500</div>-->
+                                    <!--<div class="influence_head">200</div>-->
+                                    <!--<div class="influence_head">200</div>-->
+                                    <!--</li>-->
+                                    <!--js动态生成-->
+                                </ul>
+                            </li>
+                            <li class="peopleError">
+                                <div>
+                                    未找到相关信息
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--优惠券分析-->
+                <div id="coupon" style="display: none;margin: 0!important;padding: 0">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    优惠券使用占比</p>
+                                <span class="coupon_percent couponUseper" id="couponUseper"></span>
+                                <span class="coupon_percent couponReceiveper" id="couponReceiveper"></span>
+                                <div id="coupon_chart_pie" style="height: 160px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>使用会员数</p>
+                                            <p class="shoppers" id="coupon_vipUse"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_m">
+                                        <div>
+                                            <p>领取会员数</p>
+                                            <p class="covers" id="coupon_vipGet"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>目标会员数</p>
+                                            <p class="target" id="coupon_vipTarget"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <p class="chart_title">优惠券统计</p>
+                                <div id="couponbarChart" style="height: 231px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <div class="coupon_inputs_box">
+                                <input type="text" id="choose_store_input" placeholder="请选择店铺" data-code="">
+                                <i class="icon-ishop_8-02"></i>
+                                <div class="screen_select">
+                                    <ul id="store_select">
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="coupon_inputs_box">
+                                <input type="text" id="choose_coupon_input" placeholder="请选择优惠券" data-code="">
+                                <i class="icon-ishop_8-02"></i>
+                                <div class="screen_select">
+                                    <ul id="coupon_select">
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="export" style="background: #4a5f7c;border-radius: 5px" id="couponListExport">导出</span>
+                            <!--<span class="do choose" style="background: #97b3db">筛选</span>-->
+                            <!--<span class="do empty" style="background: #c4c8d4">清空筛选</span>-->
+                        </div>
+                        <!--人员区-->
+                        <ul class="people_head">
+                            <li class="people_title">
+                                <div class="people_title_order">
+                                    序号
+                                </div>
+                                <div class="people_title_shop">
+                                    门店名称
+                                </div>
+                                <div class="people_title_count">
+                                    使用会员数
+                                </div>
+                                <div class="people_title_count">
+                                    使用券数
+                                </div>
+                                <div class="people_title_count">
+                                    卡均使用券数
+                                </div>
+                                <div class="people_title_count">
+                                    券抵销售额
+                                </div>
+                                <div class="people_title_count">
+                                    用券销售额
+                                </div>
+                                <div class="people_title_count">
+                                    用券客单价
+                                </div>
+                                <!--<div class="people_title_count">-->
+                                    <!--人均使用券数-->
+                                <!--</div>-->
+                                <div class="people_title_count">
+                                    用券平均销售折扣
+                                </div>
+                                <div class="people_title_detadis">
+                                    使用券会员统计
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="people">
+                            <li class="peopleContent">
+                                <ul>
+                                    <!--js动态生成-->
+                                </ul>
+                            </li>
+                            <li class="peopleError">
+                                <div>
+                                    未找到相关信息
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--报名会员分析-->
+                <div id="page_signUp" style="display: none;">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    报名人数占比</p>
+                                <div id="pie_signUp" style="height: 165px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>报名人数</p>
+                                            <p class="shoppers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <!--<p>报名会员数</p>-->
+                                            <!--<p class="shoppers"></p>-->
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>目标会员数</p>
+                                            <p class="target"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <p class="chart_title">报名人数统计</p>
+                                <div id="axis_signUp" style="height: 231px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="doType_active" data-type="store">按门店查看</span>
+                            <!--<span data-type="user" class="doType">按员工查看</span>-->
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li>
+                                            <label>店铺编号</label><input type="text" placeholder="请输入店铺编号" id="signUpStoreCode">
+                                        </li>
+                                        <li>
+                                            <label>店铺名称</label><input type="text" placeholder="请输入店铺名称" id="signUpStoreName">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <div class="people_area" style="position: relative">
+                            <div id="chart_loading">
+                                <div id="chart_text">加载中，请稍候...</div>
+                            </div>
+                            <ul class="people_title_temp">
+                                <li style="background-color: #efefef;"> <span>序号</span> <span>店铺编号</span><span>店铺名称</span><span>店铺群组</span> <span>目标会员数</span><span>报名会员数</span><span>报名会员占比</span></li>
+                            </ul>
+                            <ul class="people" id="signUpPeople">
+                                <li class="peopleContent">
+                                    <ul>
+                                        <!--js动态生成-->
+                                    </ul>
+                                </li>
+                                <li class="peopleError" style="background-color: white;display:none">
+                                    <div>
+                                        没有相关数据
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--线上报名会员-->
+                <div id="online_apply" class="online_store_class" style="display: none;">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    报名人数占比</p>
+                                <div id="pie_online_apply" style="height: 165px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>报名人数</p>
+                                            <p class="shoppers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <!--<p>报名会员数</p>-->
+                                            <!--<p class="shoppers"></p>-->
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>目标会员数</p>
+                                            <p class="target"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <p class="chart_title">报名人数统计</p>
+                                <div id="axis_online_apply" style="height: 231px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="doType_active" data-type="store">按门店查看</span>
+                            <span data-type="vip" class="doType">按会员查看</span>
+                            <span class="export" style="background: #4a5f7c;border-radius: 5px" id="onlineExportBtn">导出</span>
+                            <span class="do enter" id="onlineEnter" style="background: #6cc2c8">查找</span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4" data-id="online">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li>
+                                            <label>店铺编号</label><input type="text" id="onlineStoreCode">
+                                        </li>
+                                        <li>
+                                            <label>店铺名称</label><input type="text" id="onlineStoreName">
+                                        </li>
+                                    </ul>
+                                    <ul style="display: none">
+                                        <li>
+                                            <label>会员编号</label><input type="text" id="onlineVipCode">
+                                        </li>
+                                        <li>
+                                            <label>会员名称</label><input type="text" id="onlineVipName">
+                                        </li>
+                                        <li>
+                                            <label>手机号</label><input type="text" id="onlineVipPhone">
+                                        </li>
+                                        <li>
+                                            <label>报名项目</label><input type="text" id="onlineItem">
+                                        </li>
+                                        <li>
+                                            <label>支付单号</label><input type="text" id="onlinePayCode">
+                                        </li>
+                                        <li>
+                                            <label>支付方式</label><input type="text" class="select_input" id="onlinePayType" readonly>
+                                            <div class="screen_select">
+                                                <ul><li>全部</li><li>积分</li><li>现金</li></ul>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label>是否签到</label><input type="text" class="select_input" id="onlineSign" readonly>
+                                            <div class="screen_select">
+                                                <ul><li>全部</li><li>是</li><li>否</li></ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <div class="people_area">
+                            <ul class="people_title_temp">
+                                <li style="background-color: #efefef;"> <span>序号</span> <span>店铺编号</span><span>店铺名称</span><span>所属店铺群组</span> <span>目标会员数</span><span>报名会员数</span><span>报名会员占比</span></li>
+                            </ul>
+                            <ul class="people">
+                                <li class="peopleContent">
+                                    <ul>
+                                        <!--js动态生成-->
+                                    </ul>
+                                </li>
+                                <li class="peopleError" style="background-color: white;display:none">
+                                    <div>
+                                        没有相关数据
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--会员影响力分析-->
+                <div id="vip_effect_content" style="display: none">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    邀请成功率</p>
+                                <div id="invitation_success_rate" style="height: 165px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>注册会员数</p>
+                                            <p class="shoppers" id="registered_members_num"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_m">
+                                    </div>
+                                    <div class="blank_3"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>分享次数</p>
+                                            <p class="target" id="link_open"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <div id="vip_effect_chart" style="height: 241px;line-height: 241px;font-size: 25px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="do" style="background: #6cc1c8;border-radius: 0px">按会员查看</span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <li>
+                                            <label>会员名称</label><input type="text" id="vip_name" placeholder="请输入会员名称">
+                                        </li>
+                                        <li>
+                                            <label>会员卡号</label><input id="vip_card" type="text" placeholder="请输入会员卡号">
+                                        </li>
+                                        <li>
+                                            <label>手机号</label><input type="text" id="vip_phone" placeholder="请输入手机号">
+                                        </li>
+                                        <li>
+                                            <label>会员类型</label><input type="text" id="vip_card_type" placeholder="请输入会员类型">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人员区-->
+                        <ul class="people_head">
+                            <li class="people_title">
+                                <span class="people_title_order" style="width: 4%">
+                            序号
+                        </span>
+                                <span class="people_title_counts">
+                            会员名称
+                        </span>
+                                <span class="people_title_counts">
+                            会员卡号
+                        </span>
+                                <span class="people_title_counts">
+                            手机号
+                        </span>
+                                <span class="people_title_shop">
+                            会员类型
+                        </span>
+                                <span class="influence_head">
+                            分享次数
+                        </span>
+                                <span class="influence_head">
+                            注册会员数
+                        </span>
+                                <span class="influence_head">
+                            注册详情
+                        </span>
+
+                            </li>
+                        </ul>
+                        <ul class="people" id="vip_effect_list">
+                            <!--list加载-->
+                        </ul>
+                        <div class="listLoading_box">
+                            <div>加载中，请稍候...</div>
+                        </div>
+                    </div>
+                </div>
+                <!--业绩占比-->
+                <div id="page_achievement" style="display: none;">
+                    <div class="task_box">
+                        <div class="task_detail">
+                            <div class="task_detail_m task_block">
+                                <p class="chart_title">
+                                    活动占比</p>
+                                <div id="pie_achievement" style="height: 165px"></div>
+                                <div class="chart_count">
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <p>活动金额</p>
+                                            <p class="shoppers"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_l">
+                                        <div>
+                                            <!--<p>报名会员数</p>-->
+                                            <!--<p class="shoppers"></p>-->
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                    <div class="chart_count_r">
+                                        <div>
+                                            <p>销售总额</p>
+                                            <p class="target"></p>
+                                        </div>
+                                    </div>
+                                    <div class="blank_2"></div>
+                                </div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                            <div class="task_blank"></div>
+                            <div class="task_detail_r task_block_lg">
+                                <p class="chart_title">活动趋势统计</p>
+                                <div id="axis_achievement" style="height: 231px"></div>
+                                <div class="listLoading_box">
+                                    <div>加载中，请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_list"></div>
+                    </div>
+                    <div class="list_box">
+                        <!--二级按钮-->
+                        <div class="btnSecond">
+                            <span class="doType_active" data-type="store">按门店查看</span>
+                            <!--<span data-type="user" class="doType">按员工查看</span>-->
+                            <span class="export" style="background: #4a5f7c;border-radius: 5px" id="achievementListExport">导出</span>
+                            <span class="do choose" style="background: #97b3db">筛选</span>
+                            <span class="do empty" style="background: #c4c8d4">清空筛选</span>
+                        </div>
+                        <div class="screening">
+                            <div class="sxk">
+                                <div class="inputs">
+                                    <ul>
+                                        <!--筛选框-->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--列表-->
+                        <div class="people_area" style="position: relative;">
+                            <div id="load_1">
+                                <div id="chart_1">加载中，请稍候...</div>
+                            </div>
+                            <ul class="people_title_temp">
+                                <!--title加载-->
+                            </ul>
+                            <ul class="people" id="achievementPeople">
+                                <!--list加载-->
+                                <li class="peopleError" style="background-color: white;display:none">
+                                    <div>
+                                        没有相关数据
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--报名会员分析结束-->
+                <!--店铺报名会员列表-->
+                <div class="modify_time_box" id="table_signUp" style="display: none">
+                    <div class="modify">
+                        <div class="modify_l">
+                            <span class="icon-ishop_6-28 add_bar"></span>店铺报名会员列表
+                            <div style="margin-top: 10px;color: #637ea4;">店铺: <span id="table_shopName"></span> <label style="margin-left: 25px" id="table_area"></label></div>
+                        </div>
+                        <ul>
+                            <li style="background-color:#efefef">
+                                <span>序号</span>
+                                <span>会员名称</span>
+                                <span>手机号</span>
+                                <span>报名时间</span>
+                            </li>
+                            <li style="height: 280px;overflow-y: auto;background-color: white">
+                                <ul id="table_signUp_area">
+                                    <!--内容填充-->
+                                </ul>
+                            </li>
+
+                        </ul>
+                        <div class="modify_footer" style="margin-top: 0px">
+                            <div class="modify_footer_l" style="margin-top: 20px;margin-left: 360px;">
+                                关闭
+                            </div>
+                            <!--<div class="modify_footer_r">-->
+                            <!--保存修改-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--店铺线上报名会员列表-->
+                <div class="modify_time_box" id="online_vip_detail_wrap" style="display: none">
+                    <div class="modify">
+                        <div class="modify_l">
+                            <span class="icon-ishop_6-28 add_bar"></span>店铺报名会员列表
+                            <div style="margin-top: 10px;color: #637ea4;">店铺: <span class="shopName"></span> <span class="shopArea"></span></div>
+                        </div>
+                        <ul>
+                            <li style="background-color:#efefef">
+                                <span>序号</span>
+                                <span>会员名称</span>
+                                <span>手机号</span>
+                                <span>报名时间</span>
+                            </li>
+                            <li style="height: 280px;overflow-y: auto;background-color: white">
+                                <ul class="vip_detail">
+                                    <!--内容填充-->
+                                </ul>
+                            </li>
+
+                        </ul>
+                        <div class="modify_footer" style="margin-top: 0px">
+                            <div class="modify_footer_l" style="margin-top: 20px;margin-left: 360px;">
+                                关闭
+                            </div>
+                            <!--<div class="modify_footer_r">-->
+                            <!--保存修改-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--线上活动会员报名资料查看-->
+                <div class="modify_time_box" id="online_apply_detail_wrap">
+                    <div class="modify" style="height: auto;width: 400px">
+                        <div class="modify_l">
+                            <span class="icon-ishop_6-28 add_bar"></span>会员资料完善详情
+                        </div>
+                        <div class="modify_content">
+
+                        </div>
+                        <div class="modify_footer" style="margin-top: 0px">
+                            <div class="modify_footer_l" style="margin-left: 120px">
+                                关闭
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--业绩详情-->
+                <div class="modify_time_box" id="table_achievement_area" style="display: none;">
+                    <div class="modify" style="height: 400px">
+                        <div class="modify_l">
+                            <span class="icon-ishop_6-28 add_bar"></span>业绩详情
+                            <div style="margin-top: 10px;color: #637ea4;"> <span id="achievement_shopName"></span> <span id="achievement_area"></span></div>
+                        </div>
+                        <ul>
+                            <li>
+                                <p>折扣</p>
+                                <span>50%</span>
+                            </li>
+                            <li>
+                                <p>客单价</p>
+                                <span>50%</span>
+                            </li>
+                            <li>
+                                <p>件单价</p>
+                                <span>50%</span>
+                            </li>
+                            <li>
+                                <p>连带率</p>
+                                <span>50%</span>
+                            </li>
+                            <li>
+                                <p>活动折扣</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>活动客单价</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>活动件单价</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>活动连带率</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>会销折扣</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>会销客单价</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>会销件单价</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>会销连带率</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>活动件数 </p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                            <li>
+                                <p>活动笔数</p>
+                                <span style="color: #41c7db;!important;"></span>
+                            </li>
+                        </ul>
+                        <div class="modify_footer" style="margin-top: 0px">
+                            <div class="modify_footer_l" style="margin-top: 15px;margin-left: 180px;">
+                                关闭
+                            </div>
+                            <!--<div class="modify_footer_r">-->
+                            <!--保存修改-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--查看活动设置-->
+                <div class="modify_time_box" id="activitySetPage">
+                    <div class="modify" id="activitySet" style="padding-right: 0;">
+                        <div class="modify_l" style="width: 620px"><span class="icon-ishop_6-28 add_bar"></span>查看活动设置</div>
+                        <div class="activitySet">
+                            <div class="activitySet_header">
+                                <h3 id="activitySet_title"></h3>
+                                <div class="colorAaa">
+                                    <span class="time_l"></span>
+                                    <span class="">至</span>
+                                    <span class="time_r"></span>
+                                </div>
+                            </div>
+                            <div class="activitySet_content">
+                                <div><span class="width52">参与会员</span><span class="color6cc1c8 width230"><span id="toSee">查看 <i class="icon-ishop_8-03"></i></span></span><span class="width52">公众号</span><span id="appName"></span></div>
+                                <div><span class="width52">活动类型</span><span class="width230" id="activityType">优惠券活动</span><span class="width52">所属企业</span><span id="corpName"></span></div>
+                                <div><span class="width52 floot-l" style="vertical-align: top;">活动简述</span><p id="activityDesc"></p></div>
+                            </div>
+                            <div class="activitySet_detail" id="activitySet_detail"></div>
+                        </div>
+                        <div class="activitySet_footer">
+                            <span id="toClose">关闭</span>
+                        </div>
+                    </div>
+                </div>
+                <!--参与会员列表-->
+                <div class="modify_time_box" id="activityVipListPage">
+                    <div class="modify" id="activityVipList" style="margin-top: -180px;margin-left: -320px">
+                        <div class="modify_l"><span class="icon-ishop_6-28 add_bar"></span><span id="listTitle">参与会员列表</span></div>
+                        <div class="vip_list" id="vip_list">
+                            <div class="vip_list_title"><span>序号</span><span>姓名</span><span>手机号</span><span>会员类型</span><span>会员卡号</span></div>
+                            <ul style="text-align: center">
+
+                            </ul>
+                        </div>
+                        <div class="foot">
+                            <ul>
+                                <li class="foot-jum" style="width: 25%;opacity: 0">
+                                    <span>跳转至</span>
+                                    <input class="input-txt" value="" id="input-txt" style="border: 1px solid #ddd">
+                                    <em>页</em>
+                                </li>
+                                <li class="foot-num" style="width: 50%">
+                                    <ul id="foot-num" style="min-width: 290px;">
+                                        <li class="icon-ishop_4-01" style="color: #afafaf">
+                                        </li>
+                                        <li class="icon-ishop_4-02">
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="foot-sum" style="width: 25%;opacity: 0">
+                                    <div class="page_p">
+                                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly" style="border: 1px solid #ddd;width: 100px;">
+                                        <ul class="liebiao" style="display:none;" id="liebiao">
+                                            <li id="10">10行/页</li>
+                                            <li id="30">30行/页</li>
+                                            <li id="50">50行/页</li>
+                                            <li id="100">100行/页</li>
+                                        </ul>
+                                        <span class="icon-ishop_8-02 icon"></span>
+                                    </div>
+                                    <!--<span class="zy">共 0 页</span>-->
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<ul class="activityVipList">-->
+                        <!--<li id="listTitle"><span>序号</span><span>会员</span><span>等级</span><span>手机</span></li>-->
+                        <!--&lt;!&ndash;内容填充&ndash;&gt;-->
+                        <!--</ul>-->
+                        <div class="modify_footer">
+                            <div style="position: absolute;bottom: 15px;right: 20px; width: 90px;height: 25px;background: #c4c8d4;color: #fff;text-align: center;line-height: 25px;border-radius: 5px;cursor: pointer;" id="toPre">
+                                返回
+                            </div>
+                            <!--<div class="modify_footer_r">-->
+                            <!--保存修改-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--注册会员消费详情-->
+                <div class="modify_time_box" id="vip_consume_detail">
+                    <div class="vip_consume_detail">
+                        <div class="vip_consume_detail_title">
+                            <span></span>
+                            <span>注册会员消费详情</span>
+                        </div>
+                        <div class="vip_consume_detail_info">
+                            <div>
+                                <span>会员名称：</span><span id="detail_vip_name"></span>
+                            </div>
+                            <div>
+                                <span>会员卡号：</span><span id="detail_vip_card"></span>
+                            </div>
+                        </div>
+                        <div class="vip_consume_detail_list">
+                            <div class="head">
+                                <ul>
+                                    <li>序号</li>
+                                    <li>会员名称</li>
+                                    <li>会员卡号</li>
+                                    <li>手机号</li>
+                                    <li>会员类型</li>
+                                    <li>所属店铺</li>
+                                    <li>所属导购</li>
+                                    <li>首单消费金额</li>
+                                </ul>
+                            </div>
+                            <div id="vip_consume_detail_list">
+                            </div>
+                        </div>
+                        <div class="vip_consume_detail_foot">
+                            <span id="hide_detail">返回</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div style="width: 100%;height: 50px;background-color: #587297;line-height: 30px;padding: 0 10px;" class="active_tabs" id="active_tabs">
-            <ul>
-                <li class="current">任务完成度分析</li>
-                <li>意向客户分析</li>
-                <li>导购影响力分析</li>
-                <li>通知传播分析</li>
-            </ul>
-        </div>
-        <div class="tabs_content">
-            <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
+    </div>
+    <div id='detail' class="detailBox">
+        <div class="vip_status_store" style="height: 460px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>员工任务详情
+                    <div class="action_detail_box">
+                        <span class="s1">员工：员工1</span>
+                        <span class="s2">10001</span>
+                        <span class="s3">华东一区</span>
+                        <span class="s4">上海闵行分店</span>
+                        <span class="s7">50%</span>
+                        <span class="s5"><span
+                                class="s6"></span></span>
+                    </div>
+                </div>
+            </div>
+            <table id="vip_status_tb">
+                <thead>
+                    <th>
+                        序号
+                    </th>
+                    <th>
+                        会员名称
+                    </th>
+                    <th>
+                        手机号
+                    </th>
+                    <th>
+                        活动状态
+                    </th>
+                </thead>
+            </table>
+            <div id="showList_box3">
+                <table id="showList3">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn">
+                    返回
+                </div>
+            </div>
         </div>
     </div>
+    <!--参与门店-->
+    <div class="join_store_box">
+        <div class="join_store">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>任务参与门店
+                </div>
+            </div>
+            <table id="join_store_tb">
+                <thead>
+                    <th>
+                        序号
+                    </th>
+                    <th>
+                        门店名称
+                    </th>
+                    <th>
+                        门店地址
+                    </th>
+                </thead>
+            </table>
+            <div id="showList_box2">
+                <table id="showList2">
+                    <tbody>
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                上海徐汇分店一店
+                            </td>
+                            <td>
+                                上海市闵行区xxx路xxx号xxx楼
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="join_footer_btn">
+                    返回
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<!-- Mainly scripts -->
-<script src="../js/jquery-2.1.1.min.js"></script>
-<script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<script src="../js/insidePostRequire.js"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js"></script>
-<!--<script src="../js/vip/vip_activity_add.js"></script>-->
-<!--<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>-->
-<!--<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>-->
-<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
-<script src="../js/loading.js"></script>
-<script src="../js/echarts.js"></script>
-<!--<script src="../js/artDialog/plugins/iframeTools.js"></script>-->
-<!--<script src="../js/artDialog/jquery.artDialog.js"></script>-->
-<!--<script src="../js/artDialog/plugins/iframeTools.js"></script>-->
-<!--<script src="../js/vip_screen.js?20161214"></script>-->
-<!--//带搜索的下拉框 -->
-<!--<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>-->
-<!--<script type="text/javascript" src="../js/moni_select.js"></script>-->
-<!--&lt;!&ndash;富文本编辑&ndash;&gt;-->
-<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.config.js"></script>-->
-<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"></script>-->
-<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>-->
-<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>-->
-</body>
-<script>
-    $(function(){
-        var oc=new ObjectControl();
-        // 给日期类对象添加日期差方法，返回日期与diff参数日期的时间差，单位为天
-        Date.prototype.diff = function(date){
-            if((this.getTime()-date.getTime())<0){
-                $("#activity_all_day").html("活动时间异常");
-                return;
-            }
-            var time=(this.getTime()-date.getTime())/1000;
-            var d=parseInt(time/(24*60*60));
-            var h=parseInt((time-d*(24*60*60))/(60*60));
-            var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
-            var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
-                d==0?d="":d=d+"天";
-                h==0?h="":h=h+"时";
-                m==0?m="":m=m+"分";
-                s==0?s="":s=s+"秒";
-                $("#activity_all_day").html(d+h+m+s);
-        };
-        function getActivityDataInfo(){
-            var param={
-                activity_code:sessionStorage.getItem("activity_code")
+    <!--意向客户详情列表-->
+    <div id='customer_detail' class="detailBox">
+        <div class="vip_status_store" style="height: 460px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>
+                    <span class="customer_title"></span>
+                    <div class="action_detail_box">
+                        <span class="s1"></span>
+                        <span class="s2"></span>
+                        <span class="s3"></span>
+                        <span class="s4"></span>
+                        <span class="s7"></span>
+                        <span class="s5"><span class="s6"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="customerDetails_tableBox">
+                <table class="customerDetails_thead" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>手机号</th>
+                        <th>会员卡号</th>
+                        <th>会员类型</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn" id="customerDetails_back">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--券会员统计-->
+    <div class="detailBox" id="couponVip" style="display: none">
+        <div class="vip_status_store" style="height: 460px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>
+                    <span class="customer_title">使用券会员统计</span>
+                    <div class="action_detail_box">
+                        <span class="s1">店铺：上海闵行分店</span>
+                        <!--<span class="s2">优惠券：满200减200</span>-->
+                        <!--<div style="float: right;color: #888">-->
+                            <!--<span>-->
+                                 <!--<input type="radio" name="ck1" class="check" id="ck_11">-->
+                                 <!--<label for="ck_11" class="radio_b"></label>-->
+                                 <!--<label>仅显示已完成</label>-->
+                            <!--</span>-->
+                            <!--<span>-->
+                                 <!--<input type="radio"-->
+                                        <!--name="ck1"-->
+                                        <!--class="check"-->
+                                        <!--id="ck_22">-->
+                                 <!--<label for="ck_22" class="radio_b"></label>-->
+                                 <!--<label>仅显示未完成</label>-->
+                            <!--</span>-->
+                            <!--<span>-->
+                                 <!--<input type="radio"-->
+                                        <!--name="ck1"-->
+                                        <!--class="check"-->
+                                        <!--id="ck_33">-->
+                                 <!--<label for="ck_33" class="radio_b"></label>-->
+                                 <!--<label>显示全部</label>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="customerDetails_tableBox">
+                <table class="customerDetails_thead" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th>序号</th>
+                        <th>会员名称</th>
+                        <th>会员卡号</th>
+                        <th>手机号</th>
+                        <!--<th>获券数</th>-->
+                        <th>券使用数</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--券使用统计-->
+    <div class="detailBox" id="couponUse" style="display: none">
+        <div class="vip_status_store" style="height: 350px">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>
+                    <span class="customer_title">券使用统计</span>
+                    <div class="action_detail_box">
+                        <span class="s1">店铺：上海闵行分店</span>
+                        <!--<span class="s2">优惠券：满200减200</span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="customerDetails_tableBox">
+                <div class="couponvipbox">
+                    <ul>
+                        <li>
+                            <span>券使用率</span><span>卡均使用券数</span><span>人均使用率</span><span>用券客单价</span><span>人均使用券数</span>
+                        </li>
+                        <li>
+                            <!--<span class="color5f8bc8">50%</span>-->
+                            <!--<span class="color6cc1c8">10000</span>-->
+                            <!--<span class="color6cc1c8">50%</span>-->
+                            <!--<span class="color5f8bc8">1000</span>-->
+                            <!--<span class="color5f8bc8">50%</span>-->
+                        </li>
+                    </ul>
+                </div>
+                <div class="couponvipbox">
+                    <ul>
+                        <li>
+                            <span>用券销售额</span><span>券抵销售额</span><span>用券平均销售折扣</span><span>过期券数</span><span>券过期率</span>
+                        </li>
+                        <li>
+                            <!--<span class="color5f8bc8">10000</span>-->
+                            <!--<span class="color5f8bc8">10000</span>-->
+                            <!--<span class="color6cc1c8">50%</span>-->
+                            <!--<span class="colorddd">1000</span>-->
+                            <!--<span class="colorddd">50%</span>-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--优惠券，业绩导出-->
+    <div class="export_wrapper" id="coupon_export_wrapper">
+        <div class="tk" id="coupon_export_download" style="display: none;">
+            <span class="icon-ishop_6-12 download_close"></span>
+            <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+            <div class="btn">
+                <em class="cancel">返回</em>
+                <em class="album_enter"><a
+                    href="">下载</a></em>
+            </div>
+        </div>
+        <div class="export_list" id="export_list" style="display: none;">
+            <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+            <div style="height: 220px;">
+                <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+                <div class="export_list_all" id="export_list_all">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="hide_export">
+                <span id="hide_export" style="float: left">关闭</span>
+                <span id="to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+            </div>
+        </div>
+        <div class="file" id="export_chooseCondition" style="display:block;position: fixed">
+            <div class="file_content">
+                <div class="icon-ishop_6-12" id="X_points"></div>
+            </div>
+            <div id="file_list_t">
+                <div id="file_list_left">
+                    <ul>
+                        <li data-name="store_name">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput001' /><label for='checkboxInput001'></label></div><span class='p15'>门店名称</span></li>
+                        <li data-name="verify_vip">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput03' /><label for='checkboxInput03'></label></div><span class='p15'>使用会员数</span></li>
+                        <li data-name="verify_count">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput04' /><label for='checkboxInput04'></label></div><span class='p15'>使用券数</span></li>
+                        <li data-name="num_coupon_card">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput07' /><label for='checkboxInput07'></label></div><span class='p15'>卡均使用券数</span></li>
+                        <li data-name="verify_coupon_offset_price">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput12' /><label for='checkboxInput12'></label></div><span class='p15'>券抵销售额</span></li>
+                        <li data-name="verify_coupon_total_price">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput11' /><label for='checkboxInput11'></label></div><span class='p15'>用券销售额</span></li>
+                        <li data-name="verify_coupon_price">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput09' /><label for='checkboxInput09'></label></div><span class='p15'>用券客单价</span></li>
+                        <!--<li data-name="coupon_rate">-->
+                            <!--<div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput10' /><label for='checkboxInput10'></label></div><span class='p15'>人均使用券数</span></li>-->
+                        <li data-name="verify_coupon_dis">
+                            <div class='checkbox1'><input type='checkbox' value='' name='test' class='check' id='checkboxInput13' /><label for='checkboxInput13'></label></div><span class='p15'>用券平均销售折扣</span></li>
+                    </ul>
+                </div>
+                <div id="file_list_zhong">
+                    <div class="c_shift">
+                        <div id="left_shift_t" class="shift" title="右移">></div>
+                        <div id="left_shift_all_t" class="shift" title="右移全部">>></div>
+                        <div id="right_shift_t" class="shift" title="左移">
+                            <</div>
+                                <div id="right_shift_all_t" class="shift" title="左移全部">
+                                    <<</div>
+                                </div>
+                        </div>
+                        <div id="file_list_right">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="file_btn">
+                        <div class="file_submit" id="points_enter">提交</div>
+                    </div>
+                </div>
+            </div>
+    <div class="export_wrapper" id="achievement_export_wrapper">
+                <div class="tk" id="achievement_export_download" style="display: none;">
+                    <span class="icon-ishop_6-12 close_achievement"></span>
+                    <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+                    <div class="btn">
+                        <em class="cancel">返回</em>
+                        <em class="album_enter"><a
+                    href="">下载</a></em>
+                    </div>
+                </div>
+                <div class="file" id="achievement_chooseCondition" style="display:block;position: fixed">
+                    <div class="file_content">
+                        <div class="icon-ishop_6-12 close_achievement"></div>
+                    </div>
+                    <div id="file_list">
+                        <div id="file_list_l">
+                            <ul>
+                            </ul>
+                        </div>
+                        <div id="file_list_z">
+                            <div class="c_shift">
+                                <div id="left_shift" class="shift" title="右移">></div>
+                                <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                                <div id="right_shift" class="shift" title="左移">
+                                    <</div>
+                                        <div id="right_shift_all" class="shift" title="左移全部">
+                                            <<</div>
+                                        </div>
+                                </div>
+                                <div id="file_list_r">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="file_btn">
+                                <div class="file_submit" id="record_enter">提交</div>
+                            </div>
+                        </div>
+                    </div>
+    <div class="export_wrapper" id="online_export_wrapper">
+        <div class="tk" id="online_export_download" style="display: none;">
+            <span class="icon-ishop_6-12 download_close"></span>
+            <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+            <div class="btn">
+                <em class="cancel">返回</em>
+                <em class="album_enter"><a
+                        href="">下载</a></em>
+            </div>
+        </div>
+        <div class="export_list" id="online_export_list" style="display: none;">
+            <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+            <div style="height: 220px;">
+                <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+                <div class="export_list_all" id="online_export_list_all">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="hide_export">
+                <span id="online_hide_export" style="float: left">关闭</span>
+                <span id="online_to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+            </div>
+        </div>
+        <div class="file" id="online_export_chooseCondition" style="display:block;position: fixed">
+            <div class="file_content">
+                <div  class="icon-ishop_6-12 close_achievement"></div>
+            </div>
+            <div class="file_list_wrap">
+                <div class="file_list_left">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="file_list_zhong">
+                    <div class="c_shift">
+                        <div class="export_left_shift shift" title="右移">></div>
+                        <div class="export_left_shift_all shift" title="右移全部">>></div>
+                        <div class="export_right_shift shift" title="左移"><</div>
+                        <div class="export_right_shift_all shift" title="左移全部"><<</div>
+                    </div>
+                </div>
+                <div class="file_list_right">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="file_btn">
+                <div class="file_submit" id="online_export_submit">提交</div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/activity/echarts.common.min.js"></script>
+    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
+    <script src="../js/silide.js?20180201"></script>
+    <script src="../js/jquery.blockUI.js"></script>
+    <script src="../js/loading.js"></script>
+    <script src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/vip/vip_activity_statistics.js?20180206"></script>
+    <script type="text/javascript" src="../js/activity/activity_details_listPage.js?20180204"></script>
+    <script type="text/javascript" src="../js/vip/activity_chartData.js?20180301"></script>
+    <script>
+        $(function() {
+            var Chartdata = {
+                xData: [],
+                lastYear: [],
+                activity_trade_amt: []
             };
-            oc.postRequire("post","/vipActivity/select","0",param,function(data){
-                if(data.code!="0") return;
-                var msg=JSON.parse(data.message);
-                var activityVip=JSON.parse(msg.activityVip);
-                $("#them").html(activityVip.activity_theme);
-                $("#startTime").html(activityVip.start_time);
-                $("#endTime").html(activityVip.end_time);
-                $("#mode").html(activityVip.run_mode);
-                $("#corp").html(activityVip.corp_name);
-                $("#store_num").html(JSON.parse(activityVip.activity_store_code).length);
-                if(activityVip.start_time=="" || activityVip.start_time==undefined || activityVip.end_time=="" || activityVip.end_time==undefined ){
-                    $("#activity_all_day").html("活动时间异常");
-                    return;
-                }
-                var startTime=new Date(activityVip.start_time.replace(/-/g,"/")); //构造两个日期，活动截止日期和开始日期
-                var endTime=new Date(activityVip.end_time.replace(/-/g,"/"));
-                endTime.diff(startTime)
-            })
-        }
-//    // 构造两个日期，分别是系统时间和2013/04/08 12:43:45
-//        var now = new Date();
-//        var date = new Date('2013/04/08 12:43:45');
-//    // 调用日期差方法，求得参数日期与系统时间相差的天数
-//        var diff = now.diff(date);
-//    // 打印日期差
-//        alert(diff);
-        getActivityDataInfo();
-        $("#active_tabs li").bind("click",function(){
-            $(this).addClass("current");
-            $(this).siblings().removeClass("current");
-        });
-        var option_pie = {
-            color:['#678cc7', '#61c7db', '#9a9acc', '#d8d8e1'] ,
-            tooltip : {
-                textStyle : {
-                    fontSize : '10'
-                },
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                right:0,
-                bottom:0,
-                itemWidth:10,
-                itemHeight:10,
-                itemGap:5,
-                textStyle: {
-                    color: '#cdd0d3'
-                },
-                data:['图例一','图例二','图例三','图例四']
-            },
-            series : [
-                {   name:'活动销售总额',
-                    type:'pie',
-                    center:['42%','50%'],
-                    radius : ['70%', '80%'],
-                    avoidLabelOverlap: false,
+            var dataBJ = [];
+            var dataGZ = [];
+            var dataSH = [];
+            var labelTop = {
+                normal: {
+                    color: '#9999cc',
                     label: {
-                        normal: {
-                            show: false,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            textStyle: {
-                                fontSize: '20'
-                            }
+                        show: false,
+                        position: 'center',
+                        formatter: '{b}',
+                        textStyle: {
+                            baseline: 'bottom'
                         }
                     },
                     labelLine: {
-                        normal: {
-                            show: false
+                        show: false
+                    }
+                }
+            };
+            var labelFromatter = {
+                normal: {
+                    label: {
+                        formatter: function(params) {
+                            var data = (100 - params.value).toString().length > 3 ? (100 - params.value).toFixed(2) : (100 - params.value);
+                            data = data > 100 ? 100 : data;
+                            return data + '%'
+                        },
+                        textStyle: {
+                            color: '#7bc7cd',
+                            fontSize: 14
                         }
+                    }
+                }
+            };
+            var labelBottom = {
+                normal: {
+                    color: '#eaeaea',
+                    label: {
+                        show: true,
+                        position: 'center'
                     },
-                    data:[{value:335, name:'图例一'},
-                        {value:310, name:'图例二'},
-                        {value:234, name:'图例三'},
-                        {value:135, name:'图例四'}]
+                    labelLine: {
+                        show: false
+                    }
+                },
+                emphasis: {
+                    color: '#eaeaea'
                 }
-            ]
-        };
-        var dataAxis = ['1-3', '1-4', '1-5', '1-6', '1-7', '1-8', '1-9', '1-10', '1-11', '1-12', '1-13', '1-14', '1-15', '1-16', '1-17', '1-18', '1-19', '1-20', '1-21', '1-22','1-23','1-24','1-25','1-26'];
-        var data = [220, 182, 191, 234, 290, 330, 310, 123, 542, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220,100,300,150,200];
-        var option = {
-            grid:{
-                top:10,
-                right:0
-            },
-            xAxis: {
-                data: dataAxis,
-                axisLabel: {
-
-                    textStyle: {
-                        color: '#cdd0d3'
-                    }
-                },
-
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-
-                    show: false
-                },
-                z: 10
-            },
-            yAxis: {
-                splitNumber:5,
-                minInterval: 1,
-                splitLine: {
-                    lineStyle: {
-                        color:"#546883",
-                        type: 'dashed'
-                    }
-                },
-                axisLine: {
-
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: '#cdd0d3'
-                    }
-                }
-            },
-            tooltip: {
-
-            },
-            series: [
+            };
+            var schema = [
+                //        {name: 'date', index: 0, text: '日'},
                 {
-                    smooth:true,
-                    symbolSize:0,
-                    type:'line',
-                    data:[100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100,500,100,500,100,500],
-                    itemStyle:{
-                        normal:{
-                            color:"#6DADC8"
-                        }
-                    }
-                },{
-                    smooth:true,
-                    symbolSize:0,
-                    type:'line',
-                    data:[ 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100,500,100,500,100,500,100],
-                    itemStyle:{
-                        normal:{
-                            color:"#41a0d5"
-                        }
-                    }
-                },{
-                    type: 'bar',
-                    name:"销售总额",
-                    barWidth:"8",
-                    itemStyle: {
-                        normal: {
-                            color:"#d8d8e1"
+                    name: '折扣',
+                    index: 1,
+                    text: '折扣'
+                }, {
+                    name: '连带率',
+                    index: 2,
+                    text: '连带率'
+                }, {
+                    name: '卡类型',
+                    index: 3,
+                    text: '卡类型'
+                }
+            ];
+            var chartTongQi = echarts.init(document.getElementById('tongQi'));
+            var chartTongQiTime = echarts.init(document.getElementById('tongQiTime'));
+            var chartDiscount = echarts.init(document.getElementById('discount'));
+            var chartPrice = echarts.init(document.getElementById('price'));
+            var chartContribution = echarts.init(document.getElementById('tutu'));
+            var option_tong_qi = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+                        shadowStyle: {
+                            opacity: "0"
                         }
                     },
-                    data: data
+                    formatter: function (params){
+                        var html=params[0].name+"<br>";
+                        for(var i=0;i<params.length;i++){
+                            html+=params[i].seriesName+":"+params[i].value+"<br>";
+                        }
+                        return html;
+
+                    }
+
+                },
+                color: [
+                    '#d8d8e1', '#9a9acc'
+                ],
+                legend: {
+                    itemWidth: 15,
+                    left: "20%",
+                    itemGap: 70,
+                    data: ['去年同期销售额', '活动期间销售额'],
+                    textStyle: {
+                        color: '#888',
+                        fontSize: 12
+                    }
+                },
+                grid: {
+                    // left: '3%',
+                    // right: '4%',
+                    // bottom: '3%',
+                    // containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: [],
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: "dotted",
+                            color: "#d4d7e0"
+                        }
+                    }
+                }],
+                yAxis: {
+                    name: "销售额(元)",
+                    nameLocation: 'end',
+                    nameGap: 20,
+                    offset: 10,
+                    nameTextStyle: {
+                        color: '#888',
+                        fontSize: 10
+                    },
+                    type: 'value',
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: "dotted",
+                            color: "#d4d7e0"
+                        }
+                    },
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#888'
+                        }
+                    }
+                },
+                dataZoom: {
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'empty',
+                    start: 0,
+                    end: 100
+                },
+                series: [
+
+                    {
+                        name: '去年同期销售额',
+                        type: 'bar',
+                        data: []
+
+                    }, {
+                        name: '活动期间销售额',
+                        type: 'bar',
+                        data: []
+                    }
+                    , {
+                        name: '同比增长率',
+                        type: 'bar',
+                        barMaxWidth: "10px",
+                        itemStyle: {
+                            normal: {
+                                opacity: 0
+                            }
+                        },
+                        data: []
+                    }
+                ]
+            };
+            var option_tong_qi_time = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+                        shadowStyle: {
+                            opacity: "0"
+                        }
+                    },
+                    formatter: function (params){
+                        var html=params[0].name+"<br>";
+                        for(var i=0;i<params.length;i++){
+                            html+=params[i].seriesName+":"+params[i].value+"<br>";
+                        }
+                        return html;
+
+                    }
+
+                },
+                color: [
+                    '#d8d8e1', '#5f8bc8'
+                ],
+                legend: {
+                    itemWidth: 15,
+                    left: "20%",
+                    itemGap: 94,
+                    data: ['上期销售额', '活动期间销售额'],
+                    textStyle: {
+                        color: '#888',
+                        fontSize: 12
+                    }
+                },
+                grid: {
+                    // left: '3%',
+                    // right: '4%',
+                    // bottom: '3%',
+                    // containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: ['钻石卡', '金卡', '银卡', '铜卡', '非会员'],
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: "dotted",
+                            color: "#d4d7e0"
+                        }
+                    }
+                }],
+                dataZoom: {
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'empty',
+                    start: 0,
+                    end: 100
+                },
+                yAxis: {
+                    name: "销售额(元)",
+                    nameLocation: 'end',
+                    nameGap: 20,
+                    offset: 10,
+                    nameTextStyle: {
+                        color: '#888',
+                        fontSize: 10
+                    },
+                    type: 'value',
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: "dotted",
+                            color: "#d4d7e0"
+                        }
+                    },
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#888'
+                        }
+                    }
+                },
+                series: [
+
+                    {
+                        name: '上期销售额',
+                        type: 'bar',
+                        data: [62, 118, 64, 26, 169]
+
+                    }, {
+                        name: '活动期间销售额',
+                        type: 'bar',
+                        data: [262, 118, 164, 26, 179]
+
+                    }
+                    , {
+                        name: '环比增长率',
+                        type: 'bar',
+                        barMaxWidth: "10px",
+                        itemStyle: {
+                            normal: {
+                                opacity: 0
+                            }
+                        },
+                        data: []
+                    }
+                ]
+            };
+            var option_discount = {
+                backgroundColor: '#fff',
+                color: [
+                    "#9a9acc", '#eb8bbf', '#61c7db'
+                ],
+                legend: {
+                    y: 'top',
+                    itemHeight: 10,
+                    data: ['店铺类型', '经销商', '店铺群组'],
+                    textStyle: {
+                        color: '#888',
+                        fontSize: 12
+                    }
+                },
+
+                tooltip: {
+                    padding: 10,
+                    borderColor: '#777',
+                    textStyle: {
+                        fontSize: "10"
+                    },
+                    formatter: function(obj) {
+                        var value = obj.value;
+                        switch (obj.seriesName) {
+                            case '店铺类型':
+                                option_discount.tooltip["backgroundColor"] = "rgba(174,174,214,0.8)";
+                                chartDiscount.setOption(option_discount);
+                                break;
+                            case "店铺群组":
+                                option_discount.tooltip["backgroundColor"] = "rgba(97,199,219,0.8)";
+                                chartDiscount.setOption(option_discount);
+                                break;
+                            case "经销商":
+                                option_discount.tooltip["backgroundColor"] = "rgba(239,162,204,0.8)";
+                                chartDiscount.setOption(option_discount);
+                                break;
+                                //                    case "店铺编号":
+                                //                        option_discount.tooltip["backgroundColor"]="rgba(174,174,214,0.8)";
+                                //                        chartDiscount.setOption(option_discount);
+                                //                        break;
+                        }
+                        return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 10px;padding-bottom: 7px;margin-bottom: 7px;text-align:center">' +
+                            obj.seriesName +
+                            '</div>' +
+                            schema[0].text + '：' + value[0] + '<br>' +
+                            schema[1].text + '：' + value[1] + '<br>' +
+                            (schema[2].text = obj.seriesName) + '：' + value[2] + '<br>'
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '折扣',
+                    nameGap: 2,
+                    max:1,
+                    nameTextStyle: {
+                        color: '#888',
+                        fontSize: 10
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#888'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '连带率（件/单）',
+                    nameLocation: 'end',
+                    //            nameGap: 20,
+                    nameTextStyle: {
+                        color: '#888',
+                        fontSize: 10
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: "dotted",
+                            color: "#d4d7e0"
+                        }
+                    },
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#888'
+                        }
+                    }
+                },
+                series: [{
+                        name: '店铺类型',
+                        type: 'scatter',
+
+                        data: dataBJ
+                    }, {
+                        name: '经销商',
+                        type: 'scatter',
+
+                        data: dataSH
+                    }, {
+                        name: '店铺群组',
+                        type: 'scatter',
+
+                        data: dataGZ
+                    }
+                    //            {
+                    //                name: '店铺编号',
+                    //                type: 'scatter',
+                    //
+                    //                data: datalast
+                    //            }
+                ]
+            };
+            var option_price = {
+                color: ["#9a9acc", "#9a9acc"],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['客单价', '件单价']
+                },
+                dataZoom: {
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'empty',
+                    start: 0,
+                    end: 100
+                },
+                grid: {
+//                                left: '3%',
+//                                right: '4%',
+//                                bottom: '3%',
+//                                containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: [],
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#888'
+                        }
+                    }
+                }],
+                yAxis: [{
+                    type: 'value',
+                    name: '件单价（元）',
+                    splitLine: {
+                        show: false,
+                        lineStyle: {
+                            type: "dotted",
+                            color: "#d4d7e0"
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#888'
+                        }
+                    }
+                }],
+                series: [{
+                        name: '客单价',
+                        type: 'line',
+                        stack: '总量',
+                        data: []
+                    }, {
+                        name: '件单价',
+                        type: 'bar',
+                        barWidth: "10px",
+                        data: []
+                    }
+
+                ]
+            };
+            var option_contribution = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                color: ['#e5e8ea', '#c1e7ed', '#93d7e2', "#41c7db","#6db0d3","#9999cc","#7c92ca","#5f8bc8","#5475a2","#4a5f7c","#44556c"],
+                series: [{
+                        name: '店铺类型',
+                        type: 'pie',
+                        hoverAnimation: false,
+                        radius: ['50%', '60%'],
+                        center: ['20%', '50%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center',
+                                fontSize: '14'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '14',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: []
+                    }, {
+                        name: '经销商',
+                        type: 'pie',
+                        hoverAnimation: false,
+                        radius: ['50%', '60%'],
+                        center: ['50%', '50%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center',
+                                fontSize: '14'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '14',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: []
+                    }, {
+                        name: '店铺群组',
+                        type: 'pie',
+                        hoverAnimation: false,
+                        radius: ['50%', '60%'],
+                        center: ['80%', '50%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center',
+                                fontSize: '14'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '14',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: []
+                    }
+                ]
+            };
+            $("#charts_left li").click(function() {
+                var index = $(this).index();
+                if ($(this).attr("data-code") == "discount" || $(this).attr("data-code") == "contribute") {
+                    $("#select_class").hide();
+                } else {
+                    $("#select_class").show();
                 }
-            ]
-        };
-        var myChart_type=echarts.init(document.getElementById("achievement_chart"));
-        var allData=echarts.init(document.getElementById("allDataShow"));
-        myChart_type.setOption(option_pie);
-        allData.setOption(option);
-        window.addEventListener("resize",function(){
-            allData.resize();
-            myChart_type.resize();
-        });
-        $("#back_corp_param").bind("click",function(){
-            $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
+                $(this).addClass("active").siblings().removeClass("active");
+                $(this).children("div").show();
+                $(this).siblings().children("div").hide();
+                $("#charts_right").children().eq(index).show().siblings().hide();
+                getchartMidData();
+                resize();
+            });
+
+            function getchartMidData() {
+                var param = {};
+                var activity_code = sessionStorage.getItem("activity_code");
+                var type = "";
+                var chart = $("#charts_left .active").attr("data-chart");
+                if ($("#select_class").css("display") !== "none") {
+                    type = $("#select_class input").attr("data-type");
+                }
+                param.activity_code = activity_code;
+                param.type = type;
+                param.chart = chart;
+                $(".chart_analyze").block({
+                    message: "加载中...",
+                    overlayCSS: {
+                        cursor: "default",
+                        opacity: "0.3"
+                    },
+                    css: {
+                        padding: 0,
+                        margin: 0,
+                        width: '140px',
+                        height: '50px',
+                        lineHeight: '50px',
+                        top: '40%',
+                        left: '35%',
+                        zIndex: 100,
+                        textAlign: 'center',
+                        color: '#fff',
+                        border: 'none',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        borderRadius: "8px",
+                        fontSize: "12px",
+                        cursor: 'default'
+                    },
+                    fadeIn: 0
+                });
+                oc.postRequire("post", "/activityAnaly/compActi/achvRate", "", param, function(data) {
+                    $(".chart_analyze").unblock({
+                        fadeOut: 0
+                    });
+                    if (data.code == 0) {
+                        if (chart == "vipContribution") {
+                            var message = JSON.parse(data.message);
+                            //                        var list = message.activity_list;
+                            var listVipType = message.storeType;
+                            var listStoreType = message.storeGroup;
+                            var listGrade = message.storeDealer;
+                            $('#contributeTotal').text(message.all);
+                            option_contribution.series[0].data = listVipType;
+                            option_contribution.series[1].data = listGrade;
+                            option_contribution.series[2].data = listStoreType;
+                            chartContribution.setOption(option_contribution);
+                        } else if (chart == "price") {
+                            var message = JSON.parse(data.message);
+                            var list = message.activity_list;
+                            var xData = [];
+                            var kPrice = [];
+                            var OnePrice = [];
+                            for (var j = 0; j < list.length; j++) {
+                                xData.push(list[j].type);
+                                kPrice.push(list[j].num_trade_amt); //客单价
+                                OnePrice.push(list[j].num_sales_amt); //件单价
+                            }
+                            xData.length > 8 ? option_price.dataZoom.show = true : option_price.dataZoom.show = false;
+                            option_price.xAxis[0].data = xData;
+                            option_price.series[0].data = kPrice;
+                            option_price.series[1].data = OnePrice;
+                            chartPrice.setOption(option_price);
+                        } else if (chart == "relateRate") {
+                            var list = JSON.parse(data.message);
+                            //                        var list = message.activity_list;
+                            var vipType = [];
+                            var storeDegree = [];
+                            var storeType = [];
+                            for (var i = 0; i < list.storeType.length; i++) { //店铺类型
+                                var arr = [list.storeType[i].discount, list.storeType[i].relateRate, list.storeType[i].name];
+                                vipType.push(arr);
+                            }
+                            for (var j = 0; j < list.storeDealer.length; j++) { //经销商
+                                var arr = [list.storeDealer[j].discount, list.storeDealer[j].relateRate, list.storeDealer[j].name];
+                                storeDegree.push(arr);
+                            }
+                            for (var k = 0; k < list.storeGroup.length; k++) { //店铺群组
+                                var arr = [list.storeGroup[k].discount, list.storeGroup[k].relateRate, list.storeGroup[k].name];
+                                storeType.push(arr);
+                            }
+                            option_discount.series[0].data = vipType;
+                            option_discount.series[1].data = storeDegree;
+                            option_discount.series[2].data = storeType;
+                            chartDiscount.setOption(option_discount);
+                        } else {
+                            var activity_list = JSON.parse(data.message).activity_list;
+                            var list = activity_list.list;
+                            //                        var lastTotal = 0;
+                            //                        var activityTotal = 0;
+                            var rate = [];
+                            Chartdata.xData = [];
+                            Chartdata.lastYear = [];
+                            Chartdata.activity_trade_amt = [];
+                            for (var i = 0; i < list.length; i++) {
+                                //                            lastTotal += parseInt(list[i].value.last_trade_amt);
+                                //                            activityTotal += parseInt(list[i].value.activity_trade_amt);
+                                rate.push(Math.round(list[i].rate*100)+"%");
+                                Chartdata.xData.push(list[i].type);
+                                Chartdata.lastYear.push(list[i].last_trade_amt);
+                                Chartdata.activity_trade_amt.push(list[i].activity_trade_amt);
+                            }
+                            //                        var top_data_bi = parseInt(activityTotal/lastTotal*100);
+                            switch (chart) {
+                                case "lastYear":
+                                    option_tong_qi.xAxis[0].data = Chartdata.xData;
+                                    Chartdata.xData.length > 8 ? option_tong_qi.dataZoom.show = true : option_tong_qi.dataZoom.show = false;
+                                    option_tong_qi.series[0].data = Chartdata.lastYear;
+                                    option_tong_qi.series[1].data = Chartdata.activity_trade_amt;
+                                    option_tong_qi.series[2].data = rate;
+                                    chartTongQi.setOption(option_tong_qi);
+                                    $("#top_data_old").text(activity_list.upamt.toFixed(2));
+                                    $("#top_data_new").text(activity_list.amt.toFixed(2));
+                                    $('#top_data_bi').html(Math.round(activity_list.ratio*100) + "%<br>同比增长率");
+                                    break;
+                                case "beforeTime":
+                                    option_tong_qi_time.xAxis[0].data = Chartdata.xData;
+                                    Chartdata.xData.length > 8 ? option_tong_qi_time.dataZoom.show = true : option_tong_qi_time.dataZoom.show = false;
+                                    option_tong_qi_time.series[0].data = Chartdata.lastYear;
+                                    option_tong_qi_time.series[1].data = Chartdata.activity_trade_amt;
+                                    option_tong_qi_time.series[2].data = rate;
+                                    chartTongQiTime.setOption(option_tong_qi_time);
+                                    $("#top_data_old_s").text(activity_list.upamt);
+                                    $("#top_data_new_s").text(activity_list.amt);
+                                    $('#top_data_bi_s').text(Math.round(activity_list.ratio*100) + "%");
+                                    break;
+                                    //                    case  "price" :
+                                    //                        chartPrice.xAxis[0].data = Chartdata.xData;
+                                    //                        chartPrice.series[0].data = Chartdata.lastYear;
+                                    //                        chartPrice.series[1].data = Chartdata.activity_trade_amt;
+                                    //                        chartPrice.setOption(option_price);
+                                    //                        break;
+                            }
+                        }
+                    } else if (data.code == -1) {
+                        console.log(data.message);
+                    }
+                });
+            }
+
+            function resize() {
+                chartTongQi.resize();
+                chartTongQiTime.resize();
+                chartDiscount.resize();
+                chartPrice.resize();
+                chartContribution.resize();
+            }
+            window.addEventListener("resize", resize);
+
+            $("#select_class input").click(function() {
+                $("#select_class ul").toggle()
+            });
+            $("#select_class").mouseleave(function() {
+                $(this).find("ul").hide();
+            });
+            $("#select_class ul li").click(function() {
+                $("#select_class input").val($(this).text());
+                $("#select_class input").attr("data-type", $(this).attr("data-type"));
+                getchartMidData();
+                $(this).parent().hide();
+            });
+            getchartMidData();
+            $("#vip_consume_detail_list").niceScroll({
+                cursorborder: "0 none",
+                cursoropacitymin: "0",
+                boxzoom: false,
+                cursorcolor: " #dfdfdf",
+                cursoropacitymax: 1,
+                touchbehavior: false,
+                cursorminheight: 100,
+                autohidemode: true,
+                cursorwidth: "9px",
+                cursorborderradius: "10px"
+            });
+            $(".activitySet").niceScroll({
+                cursorborder: "0 none",
+                cursoropacitymin: "1",
+                boxzoom: false,
+                cursorcolor: " #dfdfdf",
+                cursoropacitymax: 1,
+                touchbehavior: false,
+                cursorminheight: 100,
+                autohidemode: true,
+                cursorwidth: "6px",
+                cursorborderradius: "10px"
+            });
         })
-    })
-</script>
+    </script>
+</body>
+
 </html>

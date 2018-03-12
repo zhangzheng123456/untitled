@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.CorpJDMapper">
+
+
+    <select id="selectAuthByCorp" resultType="com.bizvane.ishop.entity.CorpJD">
+        SELECT *
+        FROM rel_corp_jd
+        WHERE corp_code = #{corp_code}
+        AND is_authorize = 'Y'
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectAuthByUid" resultType="com.bizvane.ishop.entity.CorpJD">
+        SELECT *
+        FROM rel_corp_jd
+        WHERE u_id = #{u_id}
+        AND is_authorize = 'Y'
+        AND isactive = 'Y'
+    </select>
+
+    <insert id="insertCorpJD" parameterType="com.bizvane.ishop.entity.CorpJD">
+        INSERT INTO rel_corp_jd
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="u_id != null">
+                u_id,
+            </if>
+            <if test="user_nick != null">
+                user_nick,
+            </if>
+            <if test="is_authorize != null">
+                is_authorize,
+            </if>
+            <if test="authorizer_token != null">
+                authorizer_token,
+            </if>
+            <if test="authorizer_refresh_token != null">
+                authorizer_refresh_token,
+            </if>
+            <if test="expires_in != null">
+                expires_in,
+            </if>
+            <if test="last_time != null">
+                last_time,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="u_id != null">
+                #{u_id},
+            </if>
+            <if test="user_nick != null">
+                #{user_nick},
+            </if>
+            <if test="is_authorize != null">
+                #{is_authorize},
+            </if>
+            <if test="authorizer_token != null">
+                #{authorizer_token},
+            </if>
+            <if test="authorizer_refresh_token != null">
+                #{authorizer_refresh_token},
+            </if>
+            <if test="expires_in != null">
+                #{expires_in},
+            </if>
+            <if test="last_time != null">
+                #{last_time},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+
+    </insert>
+
+    <update id="updateCorpJD" parameterType="com.bizvane.ishop.entity.CorpJD">
+        UPDATE rel_corp_jd
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code = #{corp_code},
+            </if>
+            <!--<if test="u_id != null">-->
+                <!--u_id = #{u_id},-->
+            <!--</if>-->
+            <if test="user_nick != null">
+                user_nick = #{user_nick},
+            </if>
+            <if test="is_authorize != null">
+                is_authorize = #{is_authorize},
+            </if>
+            <if test="authorizer_token !=null">
+                authorizer_token = #{authorizer_token},
+            </if>
+            <if test="authorizer_refresh_token !=null ">
+                authorizer_refresh_token = #{authorizer_refresh_token},
+            </if>
+            <if test="expires_in !=null">
+                expires_in = #{expires_in},
+            </if>
+            <if test="last_time !=null">
+                last_time = #{last_time},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
+            </if>
+        </trim>
+        WHERE u_id = #{u_id};
+    </update>
+
+    <delete id="deleteCorpJD">
+        DELETE FROM
+        rel_corp_jd
+        WHERE 1=1
+        <if test="corp_code != null and corp_code != ''">
+            AND corp_code = #{corp_code}
+        </if>
+    </delete>
+
+</mapper>

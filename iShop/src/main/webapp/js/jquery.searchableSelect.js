@@ -202,8 +202,10 @@
       if(!(this.status === 'show'))
         return;
 
-      if(this.items.find(':not(.searchable-select-hide)').length === 0)
-          this.input.val('');
+      if(this.items.find(':not(.searchable-select-hide)').length === 0){
+
+      }
+          // this.input.val('');
       this.dropdown.addClass('searchable-select-hide');
       this.searchableElement.trigger('focus');
       this.status = 'hide';

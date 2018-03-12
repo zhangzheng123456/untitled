@@ -1,11 +1,9 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Message;
-import com.bizvane.ishop.entity.MessageInfo;
-import com.bizvane.ishop.entity.MessageType;
 import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -13,7 +11,6 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,10 +95,10 @@ public class SmsTemplateController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int SmsTemplate_id = Integer.parseInt(jsonObject.getString("id"));
             SmsTemplate SmsTemplate = smsTemplateService.getSmsTemplateById(SmsTemplate_id);
             data = JSON.toJSONString(SmsTemplate);
@@ -129,10 +126,10 @@ public class SmsTemplateController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             SmsTemplate smsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
             smsTemplate.setModifier(user_id);
             smsTemplate.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
@@ -162,7 +159,7 @@ public class SmsTemplateController {
                 String t_code = action_json.get("template_code").toString();
                 String t_name = action_json.get("template_name").toString();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -187,10 +184,10 @@ public class SmsTemplateController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String[] ids = jsonObject.getString("id").split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
                 SmsTemplate smsTemplateById = smsTemplateService.getSmsTemplateById(Integer.parseInt(ids[i]));
@@ -216,7 +213,7 @@ public class SmsTemplateController {
                 String t_code = smsTemplateById.getTemplate_code();
                 String t_name = smsTemplateById.getTemplate_name();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -241,18 +238,26 @@ public class SmsTemplateController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            int page_Number = jsonObject.getInt("pageNumber");
-            int page_Size = jsonObject.getInt("pageSize");
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            int page_Number = jsonObject.getInteger("pageNumber");
+            int page_Size = jsonObject.getInteger("pageSize");
             String search_value = jsonObject.getString("searchValue").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<SmsTemplate> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = this.smsTemplateService.selectBySearch(page_Number, page_Size, "", search_value);
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>" + manager_corp);
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>" + corp_code);
+                list = this.smsTemplateService.selectBySearch(page_Number, page_Size, corp_code, search_value);
+
+                //   list = this.smsTemplateService.selectBySearch(page_Number, page_Size, "", search_value,manager_corp);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = this.smsTemplateService.selectBySearch(page_Number, page_Size, corp_code, search_value);
@@ -283,10 +288,10 @@ public class SmsTemplateController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             SmsTemplate SmsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
             SmsTemplate.setModifier(user_id);
             Date now = new Date();
@@ -302,7 +307,7 @@ public class SmsTemplateController {
                 dataBean.setMessage("消息模板名称已经存在");
             } else {
                 this.smsTemplateService.insert(SmsTemplate);
-                SmsTemplate smsTemplate = smsTemplateService.getSmsTemplateForId(SmsTemplate.getCorp_code(),SmsTemplate.getTemplate_code());
+                SmsTemplate smsTemplate = smsTemplateService.getSmsTemplateForId(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(smsTemplate.getId()));
 
@@ -328,7 +333,7 @@ public class SmsTemplateController {
                 String t_code = action_json.get("template_code").toString();
                 String t_name = action_json.get("template_name").toString();
                 String remark = "";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
         } catch (Exception ex) {
@@ -353,10 +358,10 @@ public class SmsTemplateController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObject1 = new JSONObject(jsString);
+            JSONObject jsonObject1 = JSONObject.parseObject(jsString);
             id = jsonObject1.get("id").toString();
             String message = jsonObject1.get("message").toString();
-            JSONObject jsonObject2 = new JSONObject(message);
+            JSONObject jsonObject2 = JSONObject.parseObject(message);
             String corp_code = jsonObject2.getString("corp_code");
             String template_name = jsonObject2.getString("template_name");
             String result = this.smsTemplateService.SmsTemplateNameExist(corp_code, template_name);
@@ -383,10 +388,10 @@ public class SmsTemplateController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObject1 = new JSONObject(jsString);
+            JSONObject jsonObject1 = JSONObject.parseObject(jsString);
             id = jsonObject1.get("id").toString();
             String message = jsonObject1.get("message").toString();
-            JSONObject jsonObject2 = new JSONObject(message);
+            JSONObject jsonObject2 = JSONObject.parseObject(message);
             String corp_code = jsonObject2.getString("corp_code");
             String template_code = jsonObject2.getString("template_code");
             String result = this.smsTemplateService.SmsTemplateCodeExist(corp_code, template_code);
@@ -415,9 +420,9 @@ public class SmsTemplateController {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<SmsTemplate> list;
@@ -444,7 +449,7 @@ public class SmsTemplateController {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(smsTemplates);
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json, smsTemplates, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, smsTemplates, map, response, request, "短信模板");
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -474,10 +479,10 @@ public class SmsTemplateController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
@@ -488,6 +493,14 @@ public class SmsTemplateController {
             PageInfo<SmsTemplate> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = smsTemplateService.getAllSmsTemplateScreen(page_number, page_size, "", map);
+            } else if (role_code.equals(Common.ROLE_CM)) {
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>" + manager_corp);
+                String corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>" + corp_code);
+                list = smsTemplateService.getAllSmsTemplateScreen(page_number, page_size, corp_code, map);
+
+                //  list = smsTemplateService.getAllSmsTemplateScreen(page_number, page_size, "", map, manager_corp);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = smsTemplateService.getAllSmsTemplateScreen(page_number, page_size, corp_code, map);

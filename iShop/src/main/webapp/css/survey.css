@@ -1,0 +1,385 @@
+#page-wrapper{
+    margin-top: 80px;
+}
+#page-wrapper:after{
+    content: ",";
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
+.conpany_msg textarea{
+    width: 420px;
+    height: 80px;
+    outline:none;
+    padding: 10px;
+}
+.survey_template_wrap{
+    display: inline-block;
+    width: 420px;
+    background: #fff;
+    color: #888;
+    font-size: 12px;
+}
+.survey_template_header img{
+    width: 25px;
+    height: 25px;
+    margin-bottom: 10px;
+}
+.conpany_msg .survey_template_header{
+    margin-bottom: 0;
+    padding: 15px 0 10px 0;
+    border-bottom:1px solid #ddd;
+}
+.survey_template_header li{
+    text-align: center;
+    width: 20%;
+}
+.conpany_msg .survey_template_content{
+    max-height: 590px;
+    overflow-y: auto;
+    /*overflow-x: hidden;*/
+    position: relative;
+    padding: 20px 40px;
+    margin: 0;
+}
+.conpany_msg .template_box{
+    width: 350px;
+    padding: 10px 0;
+    margin: 0;
+    position: relative;
+}
+.template_box:hover{
+    border: 1px dashed #eee;
+}
+.template_box:hover .radio_add_btn,.template_box:hover .template_delete_btn,.template_box:hover .template_drag_area,.template_box:hover .template_setting{
+    display: block;
+}
+.template_box li{
+    width: 100%;
+    margin-bottom: 10px;
+    /*clear: both;*/
+    position: relative;
+}
+.template_box_index,.exercise_index{
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.gray-bg input[type=radio],.gray-bg input[type=checkbox]{
+    width: 30px;
+    visibility: hidden;
+    position: absolute;
+}
+.gray-bg input[type=radio] + label{
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.gray-bg input[type=checkbox] + label{
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.gray-bg input[type=radio]:checked + label{
+    border: none;
+    background:url('../img/radio_checked.png') no-repeat center;
+    background-size:20px ;
+}
+.gray-bg input[type=checkbox]:checked + label{
+    border: none;
+    background:url('../table/images/icon_checkbox_S.png') no-repeat center;
+    background-size:20px ;
+}
+.conpany_msg .radio_add_btn{
+    display: none;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    background: #f2f2f2;
+    color: #cccccc;
+    cursor: pointer;
+}
+.radio_add_btn i{
+    position: absolute;
+    top:5px;
+    left: 100px;
+    font-size: 18px;
+}
+.conpany_msg .radio_name_input{
+    width: 196px;
+    border: 1px solid #ddd;
+}
+.radio_delete{
+    float: right;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    line-height: 20px;
+    margin-top: 5px;
+    text-align: center;
+    cursor: pointer;
+    background: #f2f2f2;
+}
+.conpany_msg .template_input_border{
+    width: 290px;
+    border: 1px solid #ddd;
+}
+.conpany_msg .template_input{
+    width: 290px;
+    text-indent: 0;
+}
+.conpany_msg .template_input_focus{
+    border: 1px solid #ddd;
+    padding-left: 10px;
+}
+.template_box .grade_star{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    display: inline-block;
+    background: url('../img/star.png')no-repeat;
+    background-size: 20px;
+}
+.template_delete_btn{
+    display: none;
+    position: absolute;
+    right:0;
+    top:0;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #eab9b6;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 0 0 0 5px;
+    cursor: pointer;
+}
+.template_drag_area{
+    display: none;
+    background: url('../img/drag_area.png')no-repeat center;
+    background-size:20px ;
+    width: 20px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: -20px;
+}
+.template_setting{
+    display: none;
+    position: absolute;
+    top:50px;
+    left: -20px;
+}
+.template_setting .setting_btn{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    background: #92d3dd;
+    border-radius: 3px 0 0 3px;
+    font-size: 20px;
+}
+.template_setting:hover .is_fill_bpx{
+    display: block;
+}
+.template_setting .is_fill_bpx{
+    display: none;
+    position: absolute;
+    top:20px;
+    right: -60px;
+    width: 80px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+.template_title{
+    font-size: 14px;
+    font-weight: 900;
+    color: black;
+}
+.icon_arrow_up{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    vertical-align: middle;
+    background: url("../img/arrow_blue_up.png")no-repeat center;
+    background-size: 10px;
+}
+.template_box .icon_arrow_up_disabled{
+    background: url("../img/arrow_grey_up.png")no-repeat center;
+    background-size: 10px;
+}
+.template_box .icon_arrow_down_disabled{
+    background: url("../img/arrow_grey_down.png")no-repeat center;
+    background-size: 10px;
+}
+.icon_arrow_down{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: middle;
+    cursor: pointer;
+    background: url("../img/arrow_blue_down.png")no-repeat center;
+    background-size: 10px;
+}
+.operate_btn_box li{
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    margin-right: 10px;
+    background: #6dc1c8;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.preview_wrap{
+    display: none;
+    position: absolute;
+    top:0;
+    left: 0;
+    right:0;
+    padding: 40px 0;
+    background: #e8e8e8;
+    z-index: 1000;
+}
+.preview_wrap:after{
+    content: ",";
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
+.preview_content_wrap{
+    width: 700px;
+    margin: 0 auto;
+}
+.survey_view_web{
+    font-size: 13px;
+    color: #555;
+    width: 700px;
+    height: 1000px;
+    overflow-y: auto;
+    background: #fff;
+    margin-top: 15px;
+    padding: 80px 60px;
+}
+.preview_header_left{
+    display: inline-block;
+    width: 50%;
+    font-weight: 900;
+    font-size: 16px;
+}
+.preview_header_right{
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+}
+.preview_header_right span{
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: #fff;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    cursor: pointer;
+}
+.preview_header_right .icon_phone{
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    background: url('../img/icon_phone.png')no-repeat center;
+    background-size: 10px;
+}
+.survey_title{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.survey_desc{
+    padding: 0 75px;
+    text-align: left;
+    color: #888;
+    margin-bottom: 100px;
+}
+.exercise_box{
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+.must_fill{
+    color: #888;
+    font-weight: normal;
+    margin-right: 5px;
+}
+.exercise_box li{
+    padding-left: 30px;
+    font-weight: normal;
+}
+.exercise_box li + li{
+    margin-top: 10px;
+}
+.exercise_input{
+    width: 330px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 5px;
+}
+.exercise_box .grade_star{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url('../img/star.png')no-repeat;
+    background-size: 20px;
+    padding: 0;
+}
+.preview_phone_wrap{
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.6);
+    text-align: center;
+}
+.preview_phone_tips{
+    margin-top: 150px;
+    display: inline-block;
+    color: #fff;
+}
+.preview_phone_bg{
+    width: 260px;
+    height: 510px;
+    padding: 110px 30px 90px 30px;
+    margin: 0 auto;
+    background: url('../img/phone_background.png')no-repeat center;
+    background-size: 100%;
+}
+.template_drag_area{
+    cursor: move;
+}

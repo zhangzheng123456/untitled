@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
@@ -86,12 +84,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 });
-function setPage(container, count, pageindex,pageSize,funcCode){
+function setPage(container, count, pageindex,pageSize,funcCode,total){
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -143,7 +142,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -219,7 +218,7 @@ function superaddition(data,num){//页面加载循环
                 TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"' template_type_code='"+data[i].template_type_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -328,10 +327,11 @@ function GET(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             superaddition(list,pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -366,6 +366,12 @@ function jumpBianse(){
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
+        var template_type_code=$(this).attr("template_type_code");
+        if(template_type_code=="M00001"){
+            frame();
+            $('.frame').html("个人模板不可编辑");
+            return;
+        }
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -387,6 +393,12 @@ function jumpBianse(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
             var id=$(tr).attr("id");
+            var template_type_code=$(tr).attr("template_type_code");
+            if(template_type_code=="M00001"){
+                frame();
+                $('.frame').html("个人模板不可编辑");
+                return;
+            }
             var return_jump={};//定义一个对象
             return_jump["inx"]=inx;//跳转到第几页
             return_jump["value"]=value;//搜索的值;
@@ -404,6 +416,7 @@ function jumpBianse(){
         }else if(tr.length>1){
             frame();
             $('.frame').html("不能选择多个");
+            console.log(123123);
         }
     })
     //删除
@@ -419,7 +432,6 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
 //鼠标按下时触发的收索
@@ -454,6 +466,7 @@ function POST(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -473,7 +486,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -843,6 +856,7 @@ function filtrates(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -855,7 +869,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接收会员</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20171213">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="../js/laydate5.0.7/laydate.js"></script>
+    <style>
+        #bill_no,#integral_name{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .selectDate input{
+            color: #888;
+            width: 210px;
+            height: 30px;
+            cursor: pointer;
+            outline: none;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding-left: 10px;
+            background-repeat: no-repeat;
+            background-position: 98%;
+            background-image: url(../js/laydate/skins/molv/icon.png);
+        }
+         .action_r li{
+            text-align: center;
+            color: #ffffff;
+            border-radius: 5px;
+             padding: 0;
+        }
+        /***************自定义laydate样式**************/
+        .layui-laydate-main{
+            width: 244px;
+        }
+        .layui-laydate-range{
+            width:490px;
+            font-size: 12px;
+        }
+        .layui-laydate-header{
+            font-size: 14px;
+        }
+        .layui-laydate-content td, .layui-laydate-content th{
+            width: 32px;
+            height: 32px;
+        }
+        .layui-laydate-content td.laydate-selected{
+            background-color: rgba(91,192,222,0.5);
+        }
+        .laydate-selected:hover{
+            background-color: rgb(91,192,222) !important;
+        }
+        .layui-laydate .layui-this{
+            background-color: rgb(91,192,222) !important;
+        }
+        .isActive_select input ,.isActive_select li{
+            cursor: pointer;
+        }
+        .isActive_select li{
+            width: 100%!important;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>会员营销</span>
+            <span class="icon-ishop_8-03"></span>
+            <span id="back_message">群发消息</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>接收会员</span>
+        </div>
+        <div class="list" style="margin-bottom: 20px">
+            <!--<div class="list_l">-->
+                <!--<ul>-->
+                    <!--<li>-->
+                        <!--<label>核准名称</label>-->
+                        <!--<input type="text" id="bill_no">-->
+                    <!--</li>-->
+                    <!--<li class="r">-->
+                        <!--<label>核准时间</label>-->
+                        <!--<input type="text" id="integral_name">-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <div class="list_r">
+                <div class="turnoff" id="turnoff" style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-12"></i>关闭</div>
+            </div>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul>
+                    <li class="li s">
+                        <input type="text" class="input" placeholder="姓名/会员卡号" id="search">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="empty" style="margin-right: 10px;background-color: rgb(196, 200, 212);display: none">清空筛选</li>
+                    <li id="select" style="margin-right: 10px;background-color: #6cc1c8;display: none">查找</li>
+                    <li id="filtrate" style="margin-right: 10px;background-color: #97b3db;">筛选</li>
+                    <li id="export" style="background-color: rgb(74, 95, 124);">导出</li>
+                </ul>
+            </div>
+        </div>
+        <div class="sxk" id="sxk">
+            <div class="inputs">
+                <ul>
+                    <li><label>会员姓名</label><input type="text" id="vip_name"></li>
+                    <li><label>会员卡号</label><input type="text" id="vip_cardno"></li>
+                    <li class="isActive_select">
+                        <label>发送状态</label>
+                        <input type="text" id="is_send" value="全部" data-code="" readonly="">
+                        <ul class="isActive_select_down">
+                            <li data-code="Y">发送成功</li>
+                            <li data-code="N">发送失败</li>
+                            <li data-code="">全部</li>
+                        </ul>
+                    </li>
+                    <li class="selectDate">
+                        <label>发送时间</label>
+                        <input type="text" id="send_date" readonly="" data-start="" data-end="" style="width: 310px">
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: left;">序号</th>
+                    <th>会员编号</th>
+                    <th>会员名称</th>
+                    <th>手机号</th>
+                    <th>会员卡号</th>
+                    <th>发送状态</th>
+                    <th>发送时间</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="1" id="input-txt" >
+                    <em>页</em>
+                </li>
+                <li class="foot-num">
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+                        </li>
+                        <li class="icon-ishop_4-02">
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 0 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tk" id="export_list">
+    <span class="icon-ishop_6-12 export_list_cancel"></span>
+    <p>是否下载文件?</p>
+    <div class="btn">
+        <em class="cancel export_list_cancel">取消</em>
+        <em class="album_enter" id="export_list_sure"></em>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20171213"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20171213"></script>
+<script src="../js/loading.js"></script>
+<script type="text/javascript" src="../js/vip/message_vips.js?2018011510"></script>
+</body>
+</html>

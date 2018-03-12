@@ -25,4 +25,8 @@ public interface CorpParamMapper {
 
     List<CorpParam> selectAllParamScreen(Map<String, Object> params) throws SQLException;
 
+    CorpParam selectByParamName(@Param("param_name") String param_name,@Param("isactive") String isactive)throws Exception;
+
+    List<CorpParam> selectParamByName(@Param("corp_code") String corp_code,@Param("param_name") String param_name) throws SQLException;
+
 }

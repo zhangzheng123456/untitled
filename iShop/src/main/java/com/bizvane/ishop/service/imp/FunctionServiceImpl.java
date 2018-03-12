@@ -1,6 +1,5 @@
 package com.bizvane.ishop.service.imp;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
@@ -33,6 +32,9 @@ public class FunctionServiceImpl implements FunctionService {
      */
     public JSONArray selectAllFunctions(String corp_code,String user_code, String group_code, String role_code) throws Exception{
         List<Function> func_info;
+        if (role_code.equals(Common.ROLE_CM)){
+            corp_code = "C00000";
+        }
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         //获取user所有功能模块
@@ -151,14 +153,19 @@ public class FunctionServiceImpl implements FunctionService {
      */
     public List<Map<String,String>> selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
         List<Privilege> act_info;
+        if (role_code.equals(Common.ROLE_CM)){
+            corp_code = "C00000";
+        }
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         List<Map<String,String>> actionList = new ArrayList<Map<String,String>>();
         act_info = privilegeMapper.selectActionByFun(user_code, group_code, role_code, function_code);
         for (int i = 0; i < act_info.size(); i++) {
             String act = act_info.get(i).getAction_name();
+            String ac_name = act_info.get(i).getAction_show_name();
             Map<String,String> action = new HashMap<String, String>();
             action.put("act_name", act);
+            action.put("show_name", ac_name);
             if (!actionList.contains(action))
                 actionList.add(action);
         }
@@ -170,6 +177,9 @@ public class FunctionServiceImpl implements FunctionService {
      * 按功能获取user列表显示字段
      */
     public List<Map<String,String>> selectColumnByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
+        if (role_code.equals(Common.ROLE_CM)){
+            corp_code = "C00000";
+        }
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         List<Map<String,String>> columnList = new ArrayList<Map<String,String>>();
@@ -191,9 +201,39 @@ public class FunctionServiceImpl implements FunctionService {
 
 
     /**
+     * 按功能获取user详情可编辑字段
+     */
+    public List<Map<String,String>> selectRWByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
+        if (role_code.equals(Common.ROLE_CM)){
+            corp_code = "C00000";
+        }
+        user_code = corp_code +"U"+user_code;
+        group_code = corp_code +"G"+group_code;
+        List<Map<String,String>> columnList = new ArrayList<Map<String,String>>();
+
+        List<Privilege> column_info = privilegeMapper.selectRWByFun(user_code, group_code, role_code, function_code);
+        for (int i = 0; i < column_info.size(); i++) {
+            String column_name = column_info.get(i).getColumn_name();
+            String show_name = column_info.get(i).getShow_name();
+
+            Map<String,String> column = new HashMap<String, String>();
+            column.put("column_name", column_name);
+            column.put("show_name", show_name);
+
+            if (!columnList.contains(column))
+                columnList.add(column);
+        }
+        return columnList;
+    }
+
+
+    /**
      * 列出登录用户的所有权限
      */
     public List<Function> selectAllPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) throws Exception{
+        if (role_code.equals(Common.ROLE_CM)){
+            corp_code = "C00000";
+        }
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         List<Function> privilege = functionMapper.selectPrivilege(user_code, role_code, group_code, search_value);
@@ -312,6 +352,9 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出登录用户的所有权限
      */
     public JSONArray selectLoginPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) throws Exception{
+        if (role_code.equals(Common.ROLE_CM)){
+            corp_code = "C00000";
+        }
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         List<Privilege> privilege_act = privilegeMapper.selectPrivilegeAct(user_code, group_code, role_code);
@@ -491,7 +534,7 @@ public class FunctionServiceImpl implements FunctionService {
             privilege.setColumn_name(column_name);
             privilege.setFunction_code(function_code);
             privilege.setMaster_code(master_code);
-            privilege.setEnable(Common.IS_ACTIVE_Y);
+//            privilege.setEnable(Common.IS_ACTIVE_Y);
             privilege.setModified_date(Common.DATETIME_FORMAT.format(now));
             privilege.setModifier(user_code);
             privilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -515,7 +558,7 @@ public class FunctionServiceImpl implements FunctionService {
      *
      */
     @Transactional
-    public int updateColPrivilegeByUser(String id,String function_code,String chart_order,String corp_code,String user_code) throws Exception{
+    public int updateColPrivilegeByUser(String function_code,String chart_order,String corp_code,String user_code) throws Exception{
 //       if (!id.equals("")){
 //           String[] ids = id.split(",");
 //           Map<String,Object> map = new HashMap<String, Object>();
@@ -530,7 +573,7 @@ public class FunctionServiceImpl implements FunctionService {
         p.setColumn_name(chart_order);
         p.setMaster_code(master_code);
         p.setIsactive(Common.IS_ACTIVE_Y);
-        p.setEnable(Common.IS_ACTIVE_Y);
+//        p.setEnable(Common.IS_ACTIVE_Y);
         Date now = new Date();
         p.setModified_date(Common.DATETIME_FORMAT.format(now));
         p.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -541,4 +584,18 @@ public class FunctionServiceImpl implements FunctionService {
         return i;
     }
 
+    public List<Privilege> selectPrivilegeByAct(String search_value,String action_name,String function_code) throws Exception{
+        return functionMapper.selectPrivilegeByAct(search_value,action_name,function_code);
+    }
+
+    /**
+     *
+     * @param function_name
+     * @return    获取具有审核权限的所有master_code
+     * @throws Exception
+     */
+    public  List<Privilege> selectMasterCodeByFunctionName(String function_name,String action_name) throws Exception{
+        List<Privilege> privilegeList=privilegeMapper.selectMasterCodeByFunctionName(function_name,action_name);
+        return  privilegeList;
+    }
 }

@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
@@ -82,13 +80,15 @@ $("#empty").click(function(){
     param["pageSize"]=pageSize;
     param["searchValue"]="";
     GET(inx,pageSize);
+    getAction();
 })
-function setPage(container, count, pageindex,pageSize) {
+function setPage(container, count, pageindex,pageSize,funCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
               //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -140,7 +140,7 @@ function setPage(container, count, pageindex,pageSize) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -212,6 +212,19 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
+        var bg="";
+        var Off="";
+        var isopne=""
+        if(data[i].isopen=="N"){
+            bg="";
+            Off="";
+            isopne="start";
+        }
+        if(data[i].isopen=="Y"){
+            bg="bg";
+            Off="Off";
+            isopne="end";
+        }
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
@@ -219,7 +232,9 @@ function superaddition(data,num){//页面加载循环
                     TD+="<td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
                     +"查看"
                     + "</a></td>"
-                }else{
+                }else if(code=="isopen") {
+                    TD+="<td><div class='switch' data-isopen='"+isopne+"'><div class='"+bg+"'><span class='"+Off+"'></span></div></div>"
+                }else {
                     TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>"
                 }
             })(c)
@@ -233,8 +248,10 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td>" +
-                        TD+
+                        + "</td>"
+                        +
+                        TD
+                        +
                         //"<td><span title='"+data[i].store_code+"'>"
                         //+ data[i].store_code
                         //+"</span></td><td><span title='"+data[i].store_id+"'>"
@@ -271,11 +288,17 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="qrcode"){
             $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成二维码</a></li>");
         }else if(actions[i].act_name=="output"){
-            $("#more_down").append("<div id='leading_out'>导出</div>");
+            $("#more_down").append("<div id='leading_out' style='font-size: 10px'>导出</div>");
         }else if(actions[i].act_name=="input"){
-            $("#more_down").append("<div id='guide_into'>导入</div>");
+            $("#more_down").append("<div id='guide_into' style='font-size: 10px;'>导入</div>");
         } else if(actions[i].act_name=="synchronization"){
-            $('#more_down').append("<div id='synchronization'>同步</div>");
+            $('#more_down').append("<div id='synchronization' style='font-size: 10px;'>同步</div>");
+        } else  if(actions[i].act_name=="output_qrcode"){
+            $('#more_down').append("<div id='output_qrcode' style='font-size: 10px;'>导出二维码</div>");
+        } else  if(actions[i].act_name=="output_zip"){
+            $('#more_down').append("<div id='output_zip' style='font-size: 10px;'>打包二维码</div>");
+        } else  if(actions[i].act_name=="batchStartOrEnd"){
+            $('#jurisdiction').append("<li id='batchStartOrEnd'><a href='javascript:void(0);'><span class='icon-ishop_6-35'></span>开启店铺</a></li>");
         }
     }
 }
@@ -334,6 +357,7 @@ function qjia(){
         jumpBianse();
         InitialState();
         tableTh();
+        getAction();
     })
 }
 function tableTh(){ //table  的表头
@@ -349,6 +373,7 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     //oc.postRequire("get","/shop/list?pageNumber="+a+"&pageSize="+b
     //    +"&funcCode="+funcCode+"","","",function(data){
+    param["find_type"]="user";
     oc.postRequire("post","/shop/search","0",param,function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -356,10 +381,11 @@ function GET(a,b){
                 var list=JSON.parse(message.list);
                 cout=list.pages;
                 var pageNum = list.pageNum;
+                var total = list.total;
                 var list=list.list;
                 superaddition(list,pageNum);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+                setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
             }else if(data.code=="-1"){
                 alert(data.message);
             }
@@ -373,7 +399,11 @@ function jumpBianse(){
          $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
     })
     //双击跳转
-    $(".table tbody tr").dblclick(function(){
+    $(".table tbody tr").dblclick(function(e){
+        e.stopPropagation();
+        if($(e.target).is('.switch')||$(e.target).is('.switch div')||$(e.target).is('.switch span')){
+            return;
+        }
         var id=$(this).attr("id");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
@@ -388,11 +418,14 @@ function jumpBianse(){
         if(id == "" || id == undefined){
             return ;
         }else{
-            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html?201705190331");
         }
     })
     //点击tr input是选择状态  tr增加class属性
-    $(".table tbody tr").click(function(){
+    $(".table tbody tr").click(function(e){
+        if($(e.target).is('.switch')||$(e.target).is('.switch div')||$(e.target).is('.switch span')){
+            return;
+        }
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");  
@@ -407,10 +440,6 @@ function jumpBianse(){
             $(this).removeClass("tr");
         }
     })
-    //点击新增时页面进行的跳转
-    $('#add').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
-        })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
@@ -426,7 +455,7 @@ function jumpBianse(){
             return_jump["pageSize"]=pageSize;//每页多少行
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html?201705190331");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -448,7 +477,6 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
     //查看员工跳转查看员工页面
     $('.staff').click(function(){
@@ -519,6 +547,59 @@ function jumpBianse(){
         })
     });
 }
+//点击新增时页面进行的跳转
+$('#jurisdiction').on("click","#add",function(){
+    whir.loading.add("mask",0.1);//加载等待框
+    $("#screen_filtrate").show();
+})
+$("#table").on("click","tr .switch",function(e){
+    if(e && e.stopPropagation) {//非IE浏览器
+        e.stopPropagation();
+    }
+    else {//IE浏览器
+        window.event.cancelBubble = true;
+    }
+    var type=$(this).attr("data-isopen");
+    var id=$(this).parents("tr").attr("id");
+    var param={"id":id,type:type};
+    var div=$(this).find("div");
+    var span=$(this).find("span");
+    var self=this;
+    whir.loading.add("mask",0.5);//加载等待框
+    if(type=="end"){
+        $("#code_ma3 p").html("是否关闭爱秀?")
+    }
+    if(type=="start"){
+        $("#code_ma3 p").html("是否开启爱秀?")
+    }
+    $("#code_ma3").show();
+    $("#code_ma3").css("z-index","10003");
+    $("#enter3").unbind().bind("click",function(){
+        whir.loading.add("",0.5);//加载等待框
+        oc.postRequire("post","/shop/batchStartOrEnd","0",param,function(data){
+            if(data.code=="0"){
+                if(type=="start"){
+                    div.attr("class","bg");
+                    span.attr("class","Off");
+                    $(self).attr("data-isopen","end");
+                }
+                if(type=="end"){
+                    div.attr("class","");
+                    span.attr("class","");
+                    $(self).attr("data-isopen","start");
+                }
+                $("#code_ma3").hide();
+                whir.loading.remove();//移除加载框
+                frame();
+                $('.frame').html(data.message);
+                }else if(data.code=="-1"){
+                    frame();
+                    $('.frame').html(data.message);
+                }
+            whir.loading.remove();//移除加载框
+        })
+    })
+})
 //同步掉接口
 $("#more_down").on("click","#synchronization",function(){
     whir.loading.add("",0.5);//加载等待框
@@ -532,6 +613,94 @@ $("#more_down").on("click","#synchronization",function(){
         }
         whir.loading.remove();//移除加载框
     })
+})
+//导出二维码
+$("#more_down").on("click","#output_qrcode",function(){
+    var param={};
+    param["searchValue"]=value;
+    if(filtrate==""){
+        param["list"]="";
+    }else if(filtrate!==""){
+        param["list"]=list;
+    }
+    param["is_logo"]="Y";
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/shop/exportExecl_view ","0",param,function(data){
+        if(data.code=="0"){
+            var url=JSON.parse(data.message);
+            $("#code_ma p").html("是否确认导出二维码?");
+            $("#code_ma").show();
+            $("#code_ma").css("z-index","10002");
+            whir.loading.add("mask",0.5);//加载等待框
+            $("#enter").html("<a href='/"+JSON.parse(url.path)+"' target='_blank'>确认</a>");
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();//移除加载框
+    })
+})
+//压缩成店铺二维码
+$("#more_down").on("click","#output_zip",function(){
+    var param={};
+    param["searchValue"]=value;
+    if(filtrate==""){
+        param["list"]="";
+    }else if(filtrate!==""){
+        param["list"]=list;
+    }
+    param["is_logo"]="Y";
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/shop/exportZip ","0",param,function(data){
+        if(data.code=="0"){
+            var url=JSON.parse(data.message);
+            $("#code_ma p").html("是否确认打包二维码?");
+            $("#code_ma").show();
+            $("#code_ma").css("z-index","10002");
+            whir.loading.add("mask",0.5);//加载等待框
+            $("#enter").html("<a href='/"+JSON.parse(url.path)+"'>确认</a>");
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();//移除加载框
+    })
+})
+//开启店铺
+$("#jurisdiction").on("click","#batchStartOrEnd",function(){
+    var l=$(window).width();
+    var h=$(document.body).height();
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    if(tr.length==0){
+        frame();
+        $('.frame').html("请先选择");
+        return;
+    }
+    $("#code_ma2").show();
+    $("#code_ma2").css("z-index","10002");
+    whir.loading.add("mask",0.5);//加载等待框
+})
+$("#dao").click(function(){
+    $("#code_ma").hide();
+    whir.loading.remove();//移除加载框
+})
+$("#code_q").click(function(){
+    $("#code_ma").hide();
+    whir.loading.remove();//移除加载框
+})
+$("#dao2").click(function(){
+    $("#code_ma2").hide();
+    whir.loading.remove();//移除加载框
+})
+$("#dao3").click(function(){
+    $("#code_ma3").hide();
+    whir.loading.remove();//移除加载框
+})
+$("#code_q2").click(function(){
+    $("#code_ma2").hide();
+    whir.loading.remove();//移除加载框
+})
+$("#code_q3").click(function(){
+    $("#code_ma3").hide();
+    whir.loading.remove();//移除加载框
 })
 //二维码弹框
 $("#code_close").click(function(){
@@ -596,12 +765,15 @@ $("#d_search").click(function(){
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
+    $('#search').attr("disabled",true);
+    param["find_type"]="user";
     oc.postRequire("post","/shop/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -609,8 +781,10 @@ function POST(a,b){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
+                $('#search').removeAttr("disabled");
             }else if(list.length>0){
                 $(".table p").remove();
+                $('#search').removeAttr("disabled");
                 superaddition(list,pageNum);
                 jumpBianse();
             }
@@ -621,7 +795,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -668,7 +842,8 @@ function frame(){
         }
         var params= {};
         params["id"] = ID;
-        oc.postRequire("post", "/shop/delete", "0", params, function(data) {
+        params["type"]="end";
+        oc.postRequire("post", "/shop/batchStartOrEnd", "0", params, function(data) {
             if (data.code == "0") {
                 if (value == "" && filtrate == "") {
                     frame().then(function(){
@@ -735,7 +910,7 @@ $("#more_down").on("click","#leading_out",function(){
     $("#p").css({"width":+l+"px","height":+h+"px"});
     var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
     var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
-    $(".file").css({"left":+left+"px","top":+tp+"px"});
+    $(".file").css("position","fixed");
     $('.file').show();
     $(".into_frame").hide();
     var param={};
@@ -783,6 +958,7 @@ $("#file_submit").click(function(){
     tablemanager.reverse();//反序
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
+    param["find_type"]="user";
     if(filtrate==""){
         param["list"]="";
     }else if(filtrate!==""){
@@ -794,9 +970,12 @@ $("#file_submit").click(function(){
             var message=JSON.parse(data.message);
             var path=message.path;
             var path=path.substring(1,path.length-1);
-            $('#download').html("<a href='/"+path+"'>下载文件</a>");
-            $('#download').addClass("download");
-            $('#file_submit').hide();
+            // $('#download').html("<a href='/"+path+"'>下载文件</a>");
+            // $('#download').addClass("download");
+            $("#enter1").html("<a href='/"+path+"'>下载文件</a>");
+            $(".file").hide();
+            $("#code_ma1").show();
+            // $('#file_submit').hide();
             $('#download').show();
             //导出关闭按钮
             $('#file_close').click(function(){
@@ -814,6 +993,14 @@ $("#file_submit").click(function(){
             whir.loading.remove();//移除加载框
         }
     })
+})
+$("#dao1").click(function(){
+    $("#p").hide();
+    $(".tk").hide();
+})
+$("#code_q1").click(function(){
+    $("#p").hide();
+    $(".tk").hide();
 })
 //导出关闭按钮
 $('#file_close').click(function(){
@@ -833,12 +1020,12 @@ $("#more_down").on("click","#guide_into",function(){
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').hide();
     $(".into_frame").show();
-})
+});
 //导入关闭按钮
 $("#x1").click(function(){
     $("#p").hide();
     $(".into_frame").hide();
-})
+});
 //上传文件
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
@@ -884,52 +1071,98 @@ function UpladFile() {
     $(".into_frame").hide();
 }
 //筛选按钮
-oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
-    if(data.code=="0"){
-        var message=JSON.parse(data.message);
-        var filter=message.filter;
-        $("#sxk .inputs ul").empty();
-        var li="";
-        for(var i=0;i<filter.length;i++){
-            if(filter[i].type=="text"){
-                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
-            }else if(filter[i].type=="select"){
-                var msg=filter[i].value;
-                var ul="<ul class='isActive_select_down'>";
-                for(var j=0;j<msg.length;j++){
-                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+function getAction(){
+    oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var filter=message.filter;
+            $("#sxk .inputs ul").empty();
+            var li="";
+            for(var i=0;i<filter.length;i++){
+                if(filter[i].type=="text"){
+                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                }else if(filter[i].type=="select"){
+                    var msg=filter[i].value;
+                    var ul="<ul class='isActive_select_down'>";
+                    for(var j=0;j<msg.length;j++){
+                        ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                    }
+                    ul+="</ul>";
+                    li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+                }else  if(filter[i].type=="check"){
+                    var msg=filter[i].value;
+                    var ul="<ul class='isActive_select_down'>";
+                    for(var j=0;j<msg.length;j++){
+                        var type="";
+                        if(msg[j].key=="微信"){
+                            type="wx";
+                        }
+                        if(msg[j].key=="短信"){
+                            type="sms";
+                        }
+                        if(msg[j].key=="手机"){
+                            type="call";
+                        }
+                        ul+="<li data-code='"+msg[j].value+"' id='"+type+"'><div class='checkbox1'><input type='checkbox' value='"+msg[j].key+"' name='test' class='check'><label for='' style='min-width: 16px;'></label></div><span class='p16' style='margin-left: 16px;'>"+msg[j].key+"</span></li>"
+                    }
+                    ul+="</ul>";
+                    li+="<li class='check_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
                 }
-                ul+="</ul>";
-                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
-            }
 
-        }
-        $("#sxk .inputs ul").html(li);
-        if(filtrate!==""){
-            $(".sxk").slideDown();
-            for(var i=0;i<list.length;i++){
-                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
-                    $("#"+list[i].screen_key).val(list[i].screen_value);
-                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
-                    var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
-                    $("#"+list[i].screen_key).val(svalue);
+            }
+            $("#sxk .inputs ul").html(li);
+            filtrateDown();
+            if(filtrate!==""){
+                $(".sxk").slideDown();
+                for(var i=0;i<list.length;i++){
+                    if($("#"+list[i].screen_key).parent("li").attr("class")==undefined){
+                        $("#"+list[i].screen_key).val(list[i].screen_value);
+                    }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+                        var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
+                        $("#"+list[i].screen_key).val(svalue);
+                    }else if($("#"+list[i].screen_key).parent("li").attr("class")=="check_select"){
+                        if(list[i].screen_value==""){
+                            $(".check_select .isActive_select_down").find("li:contains('全部')").click();
+                        }else {
+                            for(var key in list[i].screen_value){
+                                if(list[i].screen_value[key]=="Y"){
+                                    $("#"+key).click();
+                                };
+                            }
+                        }
+                    }
                 }
+            }else if(filtrate==""){
+                $(".check_select .isActive_select_down").find("li:contains('全部')").click();
             }
         }
-        filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
+    });
+}
+//筛选的keydow事件
+$('#sxk .inputs').on("keydown","input",function(){
+    var event=window.event||arguments[0];
+    if(event.keyCode == 13){
+        var test_input=$('#isactive').nextAll('input');
+        for(var i=0;i<test_input.length;i++){
+            var reg=/^[0-9]*$/g;
+            var input_value=$(test_input[i]).val().trim();
+            var test_value=reg.test(input_value);
+            if(!test_value){
+                frame();
+                $('.frame').html('请输入数字');
+                return
             }
-        })
+        }
+        getInputValue();
     }
-});
+})
 function filtrateDown(){
+    var username=[];
     //筛选select框
     $(".isActive_select input").click(function (){
         var ul=$(this).next(".isActive_select_down");
+        var sibiling=$(this).parent("li").siblings().find(".isActive_select_down");
+        sibiling.hide();
         if(ul.css("display")=="none"){
             ul.show();
         }else{
@@ -942,12 +1175,42 @@ function filtrateDown(){
             ul.hide();
         },200);
     })
-    $(".isActive_select_down li").click(function () {
+    $(".isActive_select .isActive_select_down li").click(function () {
         var html=$(this).text();
         var code=$(this).attr("data-code");
         $(this).parents("li").find("input").val(html);
         $(this).parents("li").find("input").attr("data-code",code);
         $(".isActive_select_down").hide();
+    })
+    $(".check_select .isActive_select_down li").click(function () {
+        var input=$(this).find("input")[0];
+        if(input.type=="checkbox"&&input.checked==false){
+            input.checked = true;
+            if($(this).find("input").val()=="全部"){
+                username=[];
+                var siblingsInput= $(this).siblings().find("input");
+                for(var i=0;i<siblingsInput.length;i++){
+                    $(siblingsInput[i])[0].checked=false;
+                }
+            }else if($(this).find("input").val()!=="全部"){
+                $(this).siblings().find("input[value='全部']")[0].checked=false;
+                username.remove("全部");
+            }
+            username.push($(this).find("input").val());
+            $(this).parents("li").find("input[type='text']").val(username.toString());
+        }else if(input.type=="checkbox"&&input.checked==true){
+            input.checked = false;
+            username.remove($(this).find("input").val());
+            $(this).parents("li").find("input[type='text']").val(username.toString());
+        }
+    })
+    $(".check_select input").click(function(){
+        var ul=$(this).next(".isActive_select_down");
+        if(ul.css("display")=="none"){
+            ul.show();
+        }else{
+            ul.hide();
+        }
     })
 }
 //筛选查找
@@ -955,29 +1218,77 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
-   inx=1;
-   _param["pageNumber"]=inx;
-   _param["pageSize"]=pageSize;
-   _param["funcCode"]=funcCode;
-   var num=0;
-   list=[];//定义一个list
-   for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
-        var screen_value="";
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_value=$(input[i]).attr("data-code");
-       }else{
-           screen_value=$(input[i]).val().trim();
-       }
+    // var input=$('#sxk .inputs li');
+    var input=$('#sxk .inputs>ul>li');
+    inx=1;
+    _param["pageNumber"]=inx;
+    _param["pageSize"]=pageSize;
+    _param["funcCode"]=funcCode;
+    var num=0;
+    list=[];//定义一个list
+    for(var i=0;i<input.length;i++){
+        var screen_key="";
+        var screen_value={};
+        if($(input[i]).attr("class")=="isActive_select2"){
+            screen_key=$(input[i]).attr("id");
+            switch ($(input[i]).find("input").val()){
+                case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
+                case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
+                case '介于':screen_value['type']='between';_value();break;
+                case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();break;
+                case '全部':screen_value['type']='all';screen_value['value']='';break;
+                case '':screen_value['type']='all';screen_value['value']='';break;
+            }
+            function _value(){
+                screen_value['value']={};
+                var between_value=$(input[i]).find("input").nextAll();
+                screen_value['value'].start=$(between_value[0]).val();
+                screen_value['value'].end=$(between_value[1]).val();
+            }
+        }else if($(input[i]).attr("class")=="created_date"){
+            var start=$('#start').val();
+            var end=$('#end').val();
+            screen_key=$(input[i]).attr("id");
+            screen_value={"start":start,"end":end};
+        }else if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input[type='text']").attr("id");
+            screen_value=$(input[i]).find("input[type='text']").attr("data-code");
+        }else if($(input[i]).attr("class")=="check_select"){
+            screen_key=$(input[i]).find("input[type='text']").attr("id");
+            if($(input[i]).find("input[type='text']").val()=="全部"){
+                screen_value="";
+            }else {
+                var wx="";
+                if($(input[i]).find("input[type='text']").next(".isActive_select_down").find("input[value='微信']")[0].checked==true){
+                    wx="Y";
+                }else if($(input[i]).find("input[type='text']").next(".isActive_select_down").find("input[value='微信']")[0].checked==false ){
+                    wx="N";
+                }
+                var sms="";
+                if($(input[i]).find("input[type='text']").next(".isActive_select_down").find("input[value='短信']")[0].checked==true){
+                    sms="Y";
+                }else if($(input[i]).find("input[type='text']").next(".isActive_select_down").find("input[value='短信']")[0].checked==false ){
+                    sms="N";
+                }
+                var call="";
+                if($(input[i]).find("input[type='text']").next(".isActive_select_down").find("input[value='手机']")[0].checked==true){
+                    call="Y";
+                }else if($(input[i]).find("input[type='text']").next(".isActive_select_down").find("input[value='手机']")[0].checked==false ){
+                    call="N";
+                }
+                screen_value={"wx":wx,"sms":sms,"call":call};
+            }
+        }else{
+            screen_value=$(input[i]).find("input[type='text']").val().trim();
+            screen_key=$(input[i]).find("input[type='text']").attr("id");
+        }
         if(screen_value!=""){
             num++;
         }
-       var param1={"screen_key":screen_key,"screen_value":screen_value};
-       list.push(param1);
-   }
-   _param["list"]=list;
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
     filtrates(inx,pageSize)
@@ -990,12 +1301,14 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
+    _param["find_type"]="user";
     oc.postRequire("post","/shop/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -1008,7 +1321,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

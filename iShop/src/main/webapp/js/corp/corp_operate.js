@@ -1,7 +1,7 @@
 var oc = new ObjectControl();
 var val = sessionStorage.getItem("key");
 val = JSON.parse(val);
-var message = JSON.parse(val.message);
+var messages= JSON.parse(val.message);
 (function (root, factory) {
     root.corp = factory();
 }(this, function () {
@@ -93,16 +93,18 @@ var message = JSON.parse(val.message);
                 var CORPADDRESS = $("#CORPADDRESS").val();
                 var CONTACTS = $("#CONTACTS").val();
                 var PHONE = $("#PHONE").val();
+                var use_offline=$("#use_offline").val();
                 var list=[];
                 var len=$(".wx_app").find(".wx_span");
                 for(var i=0;i<len.length;i++){
                     var app_id=$(len[i]).find('.WXID').val();
                     var app_name=$(len[i]).find('.AppName').val();
+                    var access_key=$(len[i]).find('.access_key').val();
                     if(app_id!==""&&app_name==""){
                         alert("名称不能为空！")
                         return;
                     }
-                    var wechat={"app_id":app_id,"app_name":app_name}
+                    var wechat={"app_id":app_id,"app_name":app_name,"access_key":access_key}
                     list.push(wechat);
                 }
                 var ISACTIVE = "";
@@ -127,6 +129,7 @@ var message = JSON.parse(val.message);
                     "contact": CONTACTS,
                     "phone": PHONE,
                     "isactive": ISACTIVE,
+                    "use_offline":use_offline,
                     "wechat":list
                 };
                 corpjs.ajaxSubmit(_command, _params, opt);
@@ -165,12 +168,14 @@ var message = JSON.parse(val.message);
                 var CORPADDRESS = $("#CORPADDRESS").val();
                 var CONTACTS = $("#CONTACTS").val();
                 var PHONE = $("#PHONE").val();
+                var use_offline=$("#use_offline").val();
                 var list=[];
                 var arr=[];
                 var len=$(".wx_app").find(".wx_span");
                 for(var i=0;i<len.length;i++){
                     var app_id=$(len[i]).find('.WXID').val();
                     var app_name=$(len[i]).find('.AppName').val();
+                    var access_key=$(len[i]).find('.access_key').val();
                     arr.push(app_id);
                     arr.sort();
                     for(var j=0;j<arr.length;j++){
@@ -186,7 +191,7 @@ var message = JSON.parse(val.message);
                         alert("公众号ID不能为空")
                         return;
                     }
-                    var wechat={"app_id":app_id,"app_name":app_name}
+                    var wechat={"app_id":app_id,"app_name":app_name,"access_key":access_key}
                     list.push(wechat);
                 }
                 var a=$('.xingming input');//所属客服
@@ -221,6 +226,7 @@ var message = JSON.parse(val.message);
                     "contact": CONTACTS,
                     "phone": PHONE,
                     "isactive": ISACTIVE,
+                    "use_offline":use_offline,
                     "cus_user_code":cus_user_code,
                     "wechat":list
                 };
@@ -247,12 +253,12 @@ var message = JSON.parse(val.message);
                     });
                 }
             } else if (data.code == "-1") {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: data.message
-                });
+                // art.dialog({
+                //     time: 1,
+                //     lock: true,
+                //     cancel: false,
+                //     content: data.message
+                // });
             }
             whir.loading.remove();//移除加载框
         });
@@ -264,6 +270,7 @@ var message = JSON.parse(val.message);
         } else {
             _this = jQuery(this);
         }
+        
         var command = _this.attr("verify");
         var obj = _this.val();
         var hint = _this.nextAll(".hint").children();
@@ -299,7 +306,6 @@ jQuery(document).ready(function () {
         key_val = JSON.parse(key_val);
         var funcCode = key_val.func_code;
         $.get("/detail?funcCode=" + funcCode + "", function (data) {
-            var data = JSON.parse(data);
             if (data.code == "0") {
                 var message = JSON.parse(data.message);
                 var action = message.actions;
@@ -348,6 +354,8 @@ jQuery(document).ready(function () {
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
                 $("#CORPNAME").attr("data-name", msg.corp_name);
+                $("#use_offline").val(msg.use_offline);
+                selChannelByCorp();
                 var wechat=msg.wechats;
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
@@ -362,7 +370,8 @@ jQuery(document).ready(function () {
                         $(".wx_app").append('<span class="wx_span" style="display:inline-flex">'
                         + '<input type="text" class="WXID" value=' + wechat[i].app_id + '>'
                         + '<input type="text" class="AppName" value=' + wechat[i].app_name + '>'
-                        + '<input type="text" disabled="true" value="'+is_authorize+'" ><p class="icon-ishop_6-12"onclick="removeselect(this)"></p>'
+                        + '<input type="text" class="access_key" value=' + wechat[i].access_key+ '>'
+                        + '<input type="text" disabled="true" value="'+is_authorize+'" style="margin-top: 10px;"><p class="icon-ishop_6-12"onclick="removeselect(this)" style="margin-top: 10px;"></p>'
                         + '</span>')
                     }
                 }
@@ -462,6 +471,7 @@ jQuery(document).ready(function () {
         for (var i = 0; i < len.length; i++) {
             var app_id = $(len[i]).find('.WXID').val();
             var app_name = $(len[i]).find('.AppName').val();
+            var access_key=$(len[i]).find('.access_key').val();
             arr.push(app_id);
             arr.sort();
             for (var j = 0; j < arr.length; j++) {
@@ -480,7 +490,8 @@ jQuery(document).ready(function () {
             }
             var wechat = {
                 "app_id": app_id,
-                "app_name": app_name
+                "app_name": app_name,
+                "access_key":access_key
             }
             list.push(wechat);
         }
@@ -510,7 +521,7 @@ jQuery(document).ready(function () {
         });
         return a;
     })
-    if (message.user_type == "admin") {
+    if (messages.role_code == "R6000"||messages.role_code == "R5500") {
         $(".corpadd_oper_btn ul li:nth-of-type(2)").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
         });
@@ -532,3 +543,474 @@ jQuery(document).ready(function () {
         });
     }
 });
+//短信通道
+$(".select_list").on("click","div",function () {
+    var text=$(this).text();
+    var type=$(this).attr("data-type");
+    $(this).addClass("active");
+    $(this).siblings("div").removeClass("active");
+    $(this).parents(".content_right").find(".select").attr("data-type",type);
+    $(this).parents(".content_right").find(".select").val(text);
+    $(this).parent(".select_list").hide();
+});
+//点击input框
+$(".content_right").on("click",".select",function () {
+    var ul=$(this).parents(".content_right").find(".select_list");
+    if(ul.css("display")=="none"){
+        ul.show();
+    }else{
+        ul.hide();
+    }
+});
+//input框失去焦点的时候
+$(".content_right").on("blur",".select",function () {
+    var ul=$(this).parents(".content_right").find(".select_list");
+    setTimeout(function(){
+        ul.hide();
+    },200);
+});
+//点击左侧选中
+$("#sms_list_content").on("click",".check_left",function () {
+    var thinput=$("#checkboxTwoInput0")[0];
+    if($(this).find(".checkbox input")[0].checked==true){
+        $(this).find(".checkbox input")[0].checked=false;
+        thinput.checked=false;
+    }else if($(this).find(".checkbox input")[0].checked==false){
+        $(this).find(".checkbox input")[0].checked=true;
+        if($("#sms_list_content .check_left input[type='checkbox']:checked:visible").parents(".sms_content").length==$("#sms_list_content .check_left input[type='checkbox']:visible").parents(".sms_content").length){
+            thinput.checked=true;
+        }
+    }
+});
+//新增行
+$("#add").click(function(){
+    // var html=$("#sms_content").clone();
+    // $(html).show();
+    // $("#sms_list_content").append(html);
+    whir.loading.add("mask", 0.5);
+    $("#batchbomb").show();
+    $("#batchbomb").attr("data-id","");
+    $("#type").val("");
+    $("#type").attr("data-type","");
+    $("#channel_name").val("");
+    $("#channel_name").attr("data-type","");
+    $("#channel_account").val("");
+    $("#password").val("");
+    $("#channel_price").val("");
+    $("#channel_sign").val("");
+    $("#channel_code").val("");
+    $("#channel_child").val("");
+    var input = $("#is_forced")[0];
+    input.checked = false;
+})
+$("#close_batchbomb").click(function(){
+    whir.loading.remove("mask", 0.5);
+    $("#batchbomb").hide();
+})
+$("#batchbomb_return").click(function () {
+    whir.loading.remove("mask", 0.5);
+    $("#batchbomb").hide();
+})
+//删除行
+$("#del").click(function(){
+    whir.loading.add("mask", 0.5);
+    $("#tk").show();
+})
+$("#cancel,#X").click(function () {
+    whir.loading.remove("mask", 0.5);
+    $("#tk").hide();
+})
+//删除
+$("#delete").click(function(){
+    var li=$("#sms_list_content .check_left input[type='checkbox']:checked:visible").parents(".sms_content");
+    for(var i=li.length-1,ID="";i>=0;i--){
+        var r=$(li[i]).attr("data-id");
+        if(i>0){
+            ID+=r+",";
+        }else{
+            ID+=r;
+        }
+    }
+    var param={};
+    param["id"]=ID;
+    oc.postRequire("post","/msgChannelCfg/delete","",param, function (data) {
+        if(data.code=="0"){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content:"删除成功"
+            });
+            $("#tk").hide();
+            whir.loading.remove("mask", 0.5);
+            selChannelByCorp();
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content:data.message
+            });
+            $("#tk").hide();
+            whir.loading.remove("mask", 0.5);
+        }
+    })
+})
+//编辑行
+$("#edit").click(function(){
+    var li=$("#sms_list_content .check_left input[type='checkbox']:checked:visible").parents(".sms_content");
+    var param={};
+    param["id"]=$(li[0]).attr("data-id");
+    if(li.length=="0"){
+        art.dialog({
+            zIndex: 10004,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"请先选择"
+        });
+        return;
+    }
+    if(li.length>1){
+        art.dialog({
+            zIndex: 10004,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"不能选择多个"
+        });
+        return;
+    }
+    assignment(param);
+});
+//双击行
+$("#sms_list_content").on("dblclick",".sms_content",function () {
+    var id=$(this).attr("data-id");
+    var param={};
+    param["id"]=id;
+    assignment(param);
+});
+//赋值
+function assignment(param) {
+    oc.postRequire("post","/msgChannelCfg/select","",param, function (data) {
+        var message=JSON.parse(data.message);
+        if(data.code=="0"){
+            if(message.type=="Marketing"){
+                $("#type").val("营销短信通道");
+            }
+            if(message.type=="Production"){
+                $("#type").val("生产短信通道");
+            }
+            $("#type").attr("data-type",message.type);
+            $("#channel_name").val(message.name);
+            $("#channel_name").attr("data-type",message.channel_name);
+            $("#channel_account").val(message.channel_account);
+            $("#password").val(message.password);
+            $("#channel_price").val(message.channel_price);
+            $("#channel_sign").val(message.channel_sign);
+            $("#channel_code").val(message.channel_code);
+            $("#channel_child").val(message.channel_child);
+            var input = $("#is_forced")[0];
+            if (message.is_forced == "Y") {
+                input.checked = true;
+            } else if (message.is_forced == "N") {
+                input.checked = false;
+            }
+        }
+    })
+    whir.loading.add("mask", 0.5);
+    $("#batchbomb").show();
+    $("#batchbomb").attr("data-id",param.id);
+}
+//全选
+function checkAll(name){
+    var el=$("#sms_list_content .check_left input:visible");
+    el.parents("tr").addClass("tr");
+    var len = el.length;
+
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = true;
+        }
+    }
+};
+//取消全选
+function clearAll(name){
+    var el=$("#sms_list_content .check_left input:visible");
+    el.parents("tr").removeClass("tr");
+    var len = el.length;
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = false;
+        }
+    }
+};
+function getMsgList() {
+    var ul=$("#batchbomb_content .content_parent .content_right");
+    var input=$("#is_forced");
+    var param={};
+    for(var i=0;i<ul.length;i++){
+        var li=$(ul[i]).find("ul li");
+        var type=$(ul[i]).find("input").attr("id");
+        var value="";
+        if($(ul[i]).find("input").attr("id")=="type"||$(ul[i]).find("input").attr("id")=="channel_name"){
+            value=$(ul[i]).find("input").attr("data-type");
+        }else {
+            value=$(ul[i]).find("input").val();
+        }
+        if(type=="type"||type=="channel_name"||type=="channel_account"||type=="password"||type=="channel_price"||type=="channel_sign"){
+            if(value==""){
+                switch(type)
+                {
+                    case "type":
+                        art.dialog({
+                            zIndex: 10004,
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"类型不能为空"
+                        });
+                        break;
+                    case "channel_name":
+                        art.dialog({
+                            zIndex: 10004,
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"通道名称不能为空"
+                        });
+                        break;
+                    case "channel_account":
+                        art.dialog({
+                            zIndex: 10004,
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"账号不能为空"
+                        });
+                        break;
+                    case "password":
+                        art.dialog({
+                            zIndex: 10004,
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"密码不能为空"
+                        });
+                        break;
+                    case "channel_price":
+                        art.dialog({
+                            zIndex: 10004,
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"单价不能为空"
+                        });
+                        break;
+                    case "channel_sign":
+                        art.dialog({
+                            zIndex: 10004,
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"签名不能为空"
+                        });
+                        break;
+                }
+                return;
+            }
+        }
+        param[type]=value;
+    }
+    if(input[0].checked==true){
+        param["is_forced"]="Y";
+    }
+    if(input[0].checked==false){
+        param["is_forced"]="N";
+    }
+    param["corp_code"]=$("#OWN_CORP").val();
+    var id=$("#batchbomb").attr("data-id");
+    if(id==""){
+        oc.postRequire("post","/msgChannelCfg/add","",param, function (data) {
+            if(data.code=="0"){
+                art.dialog({
+                    zIndex:"10004",
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:"保存成功"
+                });
+                selChannelByCorp();
+            }
+            if(data.code=="-1") {
+                art.dialog({
+                    zIndex: "10004",
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        })
+    }
+    if(id!==""){
+        param["id"]=id;
+        oc.postRequire("post","/msgChannelCfg/edit","",param, function (data) {
+            if(data.code=="0"){
+                art.dialog({
+                    zIndex:"10004",
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:"保存成功"
+                });
+                selChannelByCorp();
+            }
+            if(data.code=="-1"){
+                art.dialog({
+                    zIndex:"10004",
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:data.message
+                });
+            }
+        })
+    }
+    $("#batchbomb").hide();
+    whir.loading.remove("mask", 0.5);
+
+};
+function getmsgChannelCfg() {
+    oc.postRequire("post","/msgChannelCfg/getChannelsInfo","","", function (data) {
+        var list=JSON.parse(data.message);
+        var html=""
+        for(var i=0;i<list.info.length;i++){
+            html+="<div data-type="+list.info[i].channel+">"+list.info[i].channel_name+"</div>";
+        }
+        $("#channel_list").html(html);
+    })
+};
+function selChannelByCorp(){
+    var param={};
+    param["corp_code"]=$("#OWN_CORP").val();
+    oc.postRequire("post","/msgChannelCfg/selChannelByCorp","",param, function (data) {
+        var message=JSON.parse(data.message).list;
+        var list=JSON.parse(message);
+        var html="";
+        if(list.length>0){
+            for(var i=0;i<list.length;i++){
+                var type="";
+                if(list[i].type=="营销短信通道"){
+                    type="Marketing";
+                }
+                if(list[i].type=="生产短信通道"){
+                    type="Production";
+                }
+                if(list[i].is_forced=="Y"){
+                    html+='<div class="sms_content" data-id="'+list[i].id+'">\
+                        <div class="check_left">\
+                            <div class="checkbox">\
+                            <input  type="checkbox" value="" name="test" title="全选/取消" class="check" /><label></label>\
+                            </div>\
+                        </div>\
+                        <ul>\
+                            <li class="type">\
+                                <input type="text"  readonly value="'+list[i].type+'" bute-type="type" data-type="'+type+'">\
+                                <div class="select_list">\
+                                    <div data-type="Marketing">营销短信通道</div>\
+                                    <div data-type="Production">生产短信通道</div>\
+                                </div>\
+                            </li>\
+                            <li class="channel_name">\
+                                <input type="text" bute-type="channel_name" data-type="'+list[i].channel_name+'" value="'+list[i].ch_name+'" readonly placeholder="请选择...">\
+                                <div class="select_list">\
+                                </div>\
+                            </li>\
+                            <li class="channel_account">\
+                                <input type="text" bute-type="channel_account" value="'+list[i].channel_account+'" readonly>\
+                            </li>\
+                            <li class="passwored">\
+                                <input type="text" bute-type="password" value="'+list[i].password+'" readonly>\
+                            </li>\
+                            <li class="channel_price">\
+                                <input type="text" bute-type="channel_price" value="'+list[i].channel_price+'" readonly>\
+                            </li>\
+                            <li class="channel_sign">\
+                                <input type="text" bute-type="channel_sign" value="'+list[i].channel_sign+'" readonly>\
+                            </li>\
+                            <li class="channel_code">\
+                                <input type="text" bute-type="channel_code" value="'+list[i].channel_code+'" readonly>\
+                            </li>\
+                            <li class="channel_child">\
+                                <input type="text" bute-type="channel_child" value="'+list[i].channel_child+'" readonly>\
+                            </li>\
+                        </ul>\
+                        <div class="check_right">\
+                            <div class="checkbox1">\
+                                <input  type="checkbox" value="" name="test" checked="true" title="全选/取消" class="check" /><label></label>\
+                            </div>\
+                        </div>\
+                        </div>'
+                }else if(list[i].is_forced=="N"){
+                    html+='<div class="sms_content" data-id="'+list[i].id+'">\
+                                <div class="check_left">\
+                                    <div class="checkbox">\
+                                    <input  type="checkbox" value="" readonly name="test" title="全选/取消" class="check" /><label></label>\
+                                    </div>\
+                                </div>\
+                                <ul>\
+                                    <li class="type">\
+                                        <input type="text"  readonly value="'+list[i].type+'" bute-type="type" data-type="'+type+'">\
+                                        <div class="select_list">\
+                                            <div data-type="Marketing">营销短信通道</div>\
+                                            <div data-type="Production">生产短信通道</div>\
+                                        </div>\
+                                    </li>\
+                                    <li class="channel_name">\
+                                        <input type="text" readonly bute-type="channel_name" data-type="'+list[i].channel_name+'" value="'+list[i].ch_name+'" readonly placeholder="请选择...">\
+                                        <div class="select_list">\
+                                        </div>\
+                                    </li>\
+                                    <li class="channel_account">\
+                                        <input type="text" readonly bute-type="channel_account" value="'+list[i].channel_account+'">\
+                                    </li>\
+                                    <li class="passwored">\
+                                        <input type="text" bute-type="password" value="'+list[i].password+'" readonly>\
+                                    </li>\
+                                    <li class="channel_price">\
+                                        <input type="text" bute-type="channel_price" readonly value="'+list[i].channel_price+'">\
+                                    </li>\
+                                    <li class="channel_sign">\
+                                        <input type="text" bute-type="channel_sign" readonly value="'+list[i].channel_sign+'">\
+                                    </li>\
+                                    <li class="channel_code">\
+                                        <input type="text" bute-type="channel_code" readonly value="'+list[i].channel_code+'">\
+                                    </li>\
+                                    <li class="channel_child">\
+                                        <input type="text" bute-type="channel_child" readonly value="'+list[i].channel_child+'">\
+                                    </li>\
+                                </ul>\
+                                <div class="check_right">\
+                                    <div class="checkbox1">\
+                                        <input  type="checkbox" value="" name="test" title="全选/取消" class="check" /><label></label>\
+                                    </div>\
+                                </div>\
+                        </div>'
+                }
+            }
+        }
+        $("#sms_list_content").html(html);
+        getmsgChannelCfg();
+    })
+}
+//短信通道保存
+$("#batchbomb_que").click(function(){
+    getMsgList();
+})
+
+

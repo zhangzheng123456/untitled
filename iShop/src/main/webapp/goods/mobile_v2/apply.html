@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>线下报名</title>
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/apply.css">
+    <style>
+        .rotate{
+            -webkit-animation:play 3s linear infinite;
+            -moz-animation:play 3s linear infinite;
+            animation:play 3s linear infinite;
+        }
+        @-webkit-keyframes play{
+            0%  {
+                -webkit-transform:rotate(0deg);
+            }
+            100% {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+        @-moz-keyframes play{
+            0%  {
+                -webkit-transform:rotate(0deg);
+            }
+            100% {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+        @keyframes play{
+            0%  {
+                -webkit-transform:rotate(0deg);
+            }
+            100% {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #e06346">
+  <div class="bg">
+      <!--logo-->
+      <div class="logo">
+      </div>
+      <!--标题-->
+      <div class="title">
+          <span>报名标题</span>
+      </div>
+      <!--简介-->
+      <div class="describe">
+          报名简介报名简介报名简介报名简介报名简介报名简介
+      </div>
+      <!--输入手机号-->
+      <div class="import">
+          <input type="tel" placeholder="请输入您的手机号">
+      </div>
+      <!--手机验证码-->
+      <div class="yzm">
+          <input type="tel" style="width: 70%;vertical-align: middle" id="yzm" placeholder="请输入验证码"><span id="getCode">获取验证码</span>
+      </div>
+      <!--确认按钮-->
+      <div class="btn_box">
+          确认报名
+      </div>
+      <!--报名截止时间-->
+      <div class="time">
+         <span class="time_over">报名截止时间：201704017-11-11 00:00:00</span>
+      </div>
+  </div>
+  <div class="tips">
+      <div class="tip_box">
+          <div class="icon_err"></div>
+          <div class="err_txt"></div>
+      </div>
+  </div>
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/gqrequest.js?20161202"></script>
+  <script>
+      var oc=new ObjectControl();
+      var theRequest={};
+      var code="";
+      function geUrl(){
+          var url = decodeURIComponent(location.search); //获取url中"?"符后的字串
+          if (url.indexOf("?") != -1) {
+              var str = url.substr(1);
+              strs = str.split("&");
+              for (var i = 0; i < strs.length; i++) {
+                  theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+              }
+          }
+      }
+      function getMsg() {
+          var param={};
+          param.activity_code=theRequest.activity_code;
+         oc.postRequire("post","/vipActivity/detail/select",'',param,function(data){
+             if(data.code==0){
+                 var obj=JSON.parse(data.message).activityVip;
+                 $('.logo').css({'background':'url('+obj.apply_logo+') no-repeat center center','background-size':'cover'})
+                 $('.title span').html(obj.apply_title)
+                 $('.describe').html(obj.apply_desc)
+                 $('.icon_err').removeClass('rotate');
+                 $('.time_over').html('报名截止时间：'+obj.apply_endtime);
+             }else if(data.code==-1){
+                 alert(data.message);
+             };
+         });
+      }
+      //验证手机号格式
+      function confirmPhone(){
+          //验证是否为空
+          if($('.import input').val().trim()==''){
+              $('.tips').show();
+              $('.icon_err').removeClass('rotate');
+              $('.icon_err').html('<img src="image/icon_error_blank.png" width="100%"height="100%" alt="icon_error.png">');
+              $('.err_txt').html('手机号不能为空');
+              setTimeout(function () {
+                  $('.tips').hide();
+              },1000);
+              return !1;
+          }
+          //是否正确
+          var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+          if(!reg.test($('.import input').val().trim())){
+              $('.tips').show();
+              $('.icon_err').removeClass('rotate');
+              $('.icon_err').html('<img src="image/icon_error_blank.png" width="100%"height="100%" alt="icon_error.png">');
+              $('.err_txt').html('手机号格式不正确');
+              setTimeout(function () {
+                  $('.tips').hide();
+              },1000);
+              return !1;
+          }
+          return true;
+      }
+      //  验证 验证码格式
+      function confirmYzm(){
+          $('.tips').show();
+          $('.icon_err').html('<img src="image/icon_error_blank.png" width="100%" height="100%" alt="icon_error.png">');
+            if($("#yzm").val().trim()==""){
+                $('.err_txt').html('请输入验证码');
+                setTimeout(function () {
+                    $('.tips').hide();
+                },1000);
+                return !1
+            }
+            if(code==""){
+                $('.err_txt').html('请先获取验证码');
+                setTimeout(function () {
+                    $('.tips').hide();
+                },1000);
+                return !1;
+            }
+            if($("#yzm").val().trim()!=code){
+                $('.err_txt').html('验证码不正确');
+                setTimeout(function () {
+                    $('.tips').hide();
+                },1000);
+                return !1;
+            }
+          return true
+      }
+      //报名
+      function confirm() {
+          var param={};
+          param.activity_code=theRequest.activity_code;
+          param.phone=$('.import input').val().trim();
+//          oc.postRequire("post","/api/activityApply",'',param,function(data){
+//              if(data.code==0){
+//                  $('.tips').show();
+//                  $('.err_txt').html('报名成功')
+//                  setTimeout(function () {
+//                      $('.tips').hide();
+//                  },1000);
+//              }else if(data.code==-1){
+//                 alert(data.message);
+//              }
+//          })
+          $.ajax({
+              url: "/api/activityApply",
+              dataType: "json",
+              type: 'post',
+              data:JSON.stringify(param),
+              beforeSend:function () {
+                  $('.tips').show();
+                  $('.icon_err').html('<img src="image/icon_apply.png" width="100%"height="100%" alt="icon_error.png">');
+                  $('.icon_err').addClass('rotate');
+                  $('.err_txt').html('请稍等...')
+              },
+              success: function (data) {   //成功后回调
+                  if(data.code==0){
+                      $('.tips').show();
+                      $('.icon_err').removeClass('rotate');
+                      $('.icon_err').html('<img src="image/icon_ok_blank.png" width="100%"height="100%" alt="icon_error.png">');
+                      $('.err_txt').html(data.message);
+                      setTimeout(function () {
+                          $('.tips').hide();
+                      },1000);
+                  }else if(data.code==-1){
+                      $('.tips').show();
+                      $('.icon_err').removeClass('rotate');
+                      $('.icon_err').html('<img src="image/icon_error_blank.png" width="100%" height="100%" alt="icon_error.png">');
+                      $('.err_txt').html(data.message);
+                      setTimeout(function () {
+                          $('.tips').hide();
+                      },1000);
+                  }
+              },
+              error: function(e){    //失败后回调
+                  alert(e);
+              }
+          })
+
+      }
+      //获取验证码的方法
+      function getCode() {
+          var param = {};
+          var n=60;
+          $("#getCode").unbind("click");
+          $("#getCode").html(n+" s");
+          var timer=setInterval(function(){
+              n--;
+              $("#getCode").html(n+" s");
+              if(n<0){
+                  $("#getCode").html("获取验证码");
+                  $("#getCode").bind("click",function(){
+                      confirmPhone() && getCode()
+                  });
+                  clearInterval(timer);
+              }
+          },1000);
+          param.PHONENUMBER = $('.import input').val().trim();
+          param.activity_code=theRequest.activity_code;
+          oc.postRequire("post", "/authcode", '', param, function (data) {
+              code=data.message;
+          });
+      }
+      $(function () {
+          geUrl();
+          getMsg();
+          //点击验证手机号然后获取验证码
+          $("#getCode").bind("click",function(){
+              confirmPhone() && getCode()
+          });
+          $('.btn_box').click(function(){
+              confirmPhone() && confirmYzm() && confirm();
+          });
+      });
+  </script>
+</body>
+</html>

@@ -19,7 +19,7 @@ public interface SmsTemplateMapper {
     int updateByPrimaryKey(SmsTemplate smsTemplate) throws SQLException;
     SmsTemplate getSmsTemplateForId(@Param("corp_code") String corp_code, @Param("template_code") String template_code) throws SQLException;
 
-    List<SmsTemplate> selectBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<SmsTemplate> selectBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value,@Param("manager_corp_arr") String[] manager_corp_arr) throws SQLException;
 
     List<SmsTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("template_code") String template_code) throws SQLException;
 

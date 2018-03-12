@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试</title>
+	<style>
+		.click{
+			width:50px;
+			height:30px;
+		}
+		.down_load_file {
+		    position: relative;
+		    float: left;
+		    background: #6dc1c8;
+		    border-radius: 5px;
+		    width: 160px;
+		    height: 30px;
+		    color: #fff;
+		    cursor: pointer;
+		    text-decoration: none;
+		    text-align: center;
+		    line-height: 30px;
+		    margin-left: 30px;
+        }
+        .down_load_file input {
+		    position: absolute;
+		    right: -105px;
+		    top: 5px;
+		    opacity: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="down_load_file">
+		<div onclick="doAppWebRefresh();">测试</div>
+	</div>
+	<input type="file"id="photo">
+</body>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script src="js/js.js"></script>
+<script>
+function getWebOSType(){
+		var browser = navigator.userAgent;
+		var browser = navigator.userAgent;
+		var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端 
+		var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		if(isAndroid){
+			return "Android";
+		}else if (isiOS) {
+			return "iOS";
+		}else{
+			return "Unknown"
+		}
+	}
+	//获取iShop用户信息
+	function getAppUserInfo(){
+		var osType = getWebOSType();
+		var userInfo = null;
+		if(osType=="iOS"){
+			userInfo = NSReturnUserInfo();
+			alert(userInfo);
+		}else if(osType == "Android"){
+			userInfo = iShop.ReturnUserInfo();
+			alert(userInfo);
+		}
+	
+	}
+	function doAppWebRefresh(){
+		var param="你好";
+		var osType = getWebOSType();
+		if(osType=="iOS"){
+			window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+			// NSJumpToWebViewForWeb(param);
+		}else if(osType == "Android"){
+			iShop.jumpToWebViewForWeb(param);
+		}
+		
+	}
+
+
+</script>
+</html>

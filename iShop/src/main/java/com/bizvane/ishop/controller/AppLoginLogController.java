@@ -238,9 +238,9 @@
 ////        String errormessage = "数据异常，导出失败";
 ////        try {
 ////            String jsString = request.getParameter("param");
-////            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+////             JSONObject jsonObj = JSONObject.parseObject(jsString);
 ////            String message = jsonObj.get("message").toString();
-////            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+////             JSONObject jsonObject = JSONObject.parseObject(message);
 ////            //系统管理员(官方画面)
 ////            String corp_code = request.getSession().getAttribute("corp_code").toString();
 ////            String role_code = request.getSession().getAttribute("role_code").toString();

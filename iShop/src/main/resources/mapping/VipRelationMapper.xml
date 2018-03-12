@@ -3,16 +3,28 @@
 <mapper namespace="com.bizvane.ishop.dao.VIPRelationMapper">
 
 
-    <select id="selectEmpVip" resultType="com.bizvane.ishop.entity.VIPEmpRelation">
-       SELECT * FROM rel_vip_emp
-         WHERE open_id = #{open_id}
-         AND app_user_name = #{app_user_name}
-    </select>
-
     <select id="selectStoreVip" resultType="com.bizvane.ishop.entity.VIPStoreRelation">
         SELECT * FROM rel_vip_store
         WHERE open_id = #{open_id}
         AND app_user_name = #{app_user_name}
+    </select>
+
+    <delete id="deleteStoreVip">
+        DELETE FROM rel_vip_store
+        WHERE store_id = #{store_code}
+        AND app_user_name = #{app_user_name}
+    </delete>
+
+
+    <select id="selectVip" resultType="com.bizvane.ishop.entity.VIPStoreRelation">
+        SELECT * FROM rel_vip_store
+        WHERE 1 = 1
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  create_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  create_date &lt;= #{created_date_end}
+        </if>
     </select>
 
 </mapper>

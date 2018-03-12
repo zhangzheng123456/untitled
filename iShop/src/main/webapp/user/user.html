@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>员工管理之员工列表</title>
-	<link rel="stylesheet" href="../table/css/inner.css?201715">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
     <script src="/table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?201715"></script>
+    <script src="/js/loading.js?2017040170331"></script>
 </head>
 <body>
     <div class="content">
@@ -20,10 +20,11 @@
     		<div class="action">
     			<div class="action_l">
     				<ul id="jurisdiction">
+
     				</ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="员工编号/姓名/手机/所属企业/群组">
+                            <input type="text" class="input" id="search" placeholder="员工编号/姓名/手机/企业名称/群组">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -69,6 +70,7 @@
                     </div>
                     <div id="file_list_r">
                         <ul>
+
                         </ul>
                     </div>
                 </div>
@@ -106,6 +108,7 @@
                 </div>
                 <div class="inputs">
                     <ul>
+
                     </ul>
                 </div>
             </div>
@@ -178,6 +181,30 @@
         <div class="btn">
             <em class="cancel" id="cancel">取消</em>
             <em class="delete" id="delete">删除</em>
+        </div>
+    </div>
+    <div class="tk" id="batch">
+        <span class="icon-ishop_6-12" id="X1"></span>
+        <p><i class="icon-ishop_6-14"></i>是否批量离职?</p>
+        <div class="btn">
+            <em class="cancel" id="cancel1">取消</em>
+            <em class="delete" id="batch1">确认</em>
+        </div>
+    </div>
+    <div class="tk"  id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否确认导出二维码?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
+    <div class="tk" id="code_ma1">
+        <span class="icon-ishop_6-12" id="dao1"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q1">取消</em>
+            <em class="album_enter" id="enter1">确认</em>
         </div>
     </div>
     <div id="side_bar">
@@ -311,13 +338,26 @@
         </div>
         <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
+    <div class="batchbomb"  id="batchbomb">
+        <div class="x" id="close_batchbomb"><span class="icon-ishop_6-12"></span></div>
+        <div class="batchbomb_content">
+            <li>设置回访方式</li>
+            <li><div class="checkbox1"><input type="checkbox" checked="" id="checkbox1" value="手机" name="test" class="check"><label for="checkbox1" style="min-width: 16px;"></label></div><span class="p16" style="margin-left: 16px;">手机</span></li>
+            <li><div class="checkbox1"><input type="checkbox" checked="" id="checkbox2" value="短信" name="test" class="check"><label for="checkbox2" style="min-width: 16px;"></label></div><span class="p16" style="margin-left: 16px;">短信</span></li>
+            <li><div class="checkbox1"><input type="checkbox" checked="" id="checkbox3" value="微信" name="test" class="check"><label for="checkbox3" style="min-width: 16px;"></label></div><span class="p16" style="margin-left: 16px;">微信</span></li>
+        </div>
+        <div class="batchbomb_footer">
+            <div class="left" id="batchbomb_return">取消</div>
+            <div class="right" id="batchbomb_que">确定</div>
+        </div>
+    </div>
 </body>
-<script type="text/javascript" src="/js/insidePostRequire.js?201715"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
 <script type="text/javascript" src="/js/user/user.js?20161215"></script>
-<script type="text/javascript" src="/js/silide.js?201715"></script>
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
-<script type="text/javascript" src="/js/user/screen.js?201715"></script>
+<script type="text/javascript" src="/js/silide.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script type="text/javascript" src="/js/user/screen.js?2017040170331"></script>
 <script>
     $("#reload").click(function () {
         window.location.reload();

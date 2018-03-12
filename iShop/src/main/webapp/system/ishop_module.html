@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>系统管理之爱秀模块管理</title>
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+	<style>
+		#sxk .isActive_select2 .isActive_select_down li {
+				width: 44px;
+		}
+	</style>
+</head>
+<body>
+	<!-- <div id="navbar">
+
+    </div> -->
+    <div class="content">
+    	<div class="con_table" id="con_table">
+    		<div class="title">
+                <span>系统管理</span>
+                <span class="icon-ishop_8-03"></span>
+                <span>爱秀模块管理</span>
+    		</div>
+    		<div class="action">
+    			<div class="action_l">
+    				<ul id="jurisdiction">
+    				</ul>
+					<ul>
+						<li class="li">
+							<input type="text" class="input" id="search" placeholder="企业名称">
+							<i class="icon-ishop_3-05" id="d_search"></i>
+						</li>
+					</ul>
+    			</div>
+    			<div class="action_r">
+    				<ul>
+    					<!--<li id="filtrate">-->
+    						<!--<span class="icon-ishop_6-05"></span>-->
+    						<!--筛选-->
+    					<!--</li>-->
+    					<!--<li class="bg">-->
+    						<!--<span class="icon-ishop_6-06"></span>-->
+    						<!--配置-->
+    					<!--</li>-->
+    					<li class="bg">
+    						<span class="icon-ishop_6-07"></span>
+    						刷新
+    					</li>
+    					<li id="more">
+    						<span class="icon-ishop_6-08"></span>
+    						更多
+							<div class="more_down" id="more_down">
+								<!--<div id="leading_out">导出</div>-->
+							</div>
+    					</li>
+    				</ul>
+    			</div>
+    		</div>
+			<!-- 导出-->
+			<div class="file">
+				<div class="file_content">
+					<div id="download"></div>
+					<div  class="icon-ishop_6-12" id="file_close"></div>
+				</div>
+				<div id="file_list">
+					<div id="file_list_l">
+						<ul>
+
+						</ul>
+					</div>
+					<div id="file_list_z">
+						<div class="c_shift">
+							<div id="left_shift" class="shift" title="右移">></div>
+							<div id="left_shift_all" class="shift" title="右移全部">>></div>
+							<div id="right_shift" class="shift" title="左移"><</div>
+							<div id="right_shift_all" class="shift" title="左移全部"><<</div>
+						</div>
+					</div>
+					<div id="file_list_r">
+						<ul>
+						</ul>
+					</div>
+				</div>
+				<div class="file_btn">
+					<div class="file_submit" id="file_submit">提交</div>
+				</div>
+			</div>
+             <div class="sxk" id="sxk">
+                <div class="sbtn">
+                    <div class="empty" id="empty">
+                        <i class="icon-ishop_6-16"></i>清空筛选
+                    </div>
+					<span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
+                    <div class="r_btn">
+                        <div class="pack_up" id="pack_up">
+                            <i class="icon-ishop_6-18"></i>
+                            收起
+                        </div>
+                        <div class="find" id="find">
+                            <i class="icon-ishop_6-19"></i>
+                            查找
+                        </div>
+                    </div>
+                </div>
+                <div class="inputs">
+              <ul>
+				  <!--<li class="isActive_select">-->
+					  <!--<label>登录次数</label>-->
+					  <!--<input style='width: 66px' type='text' id='isactive' readonly>-->
+					  <!--<ul class='isActive_select_down'style='display:none;width:44px;left:69px'>-->
+							  <!--<li>>=</li><li><=</li><li>介于</li><li>全部</li>-->
+					  <!--</ul>-->
+				  <!--</li>-->
+			  </ul>
+                </div>
+            </div>
+    		<div class="table">
+    			<table id="table" cellpadding="0" cellspacing="0" width="100%">
+                 	<thead>
+                 		<tr class="th">
+                 			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                 			<th style="text-align: left;" id="tableOrder">序号</th>
+                 			<!--<th>登录平台</th>-->
+							<!--<th>姓名</th>-->
+							<!--<th>员工编号</th>-->
+                 			<!--<th>职务</th>-->
+							<!--<th>店铺编号</th>-->
+                 			<!--<th>店铺名称</th>-->
+							<!--<th>所属品牌</th>-->
+							<!--<th>所属企业</th>-->
+                            <!--<th>登录日期</th>-->
+							<!--<th>登录次数</th>-->
+							<!--<th>在职状态</th>-->
+							<!--<th width="50px;">可用</th>-->
+                 		</tr>
+                 	</thead>
+                    <tbody>
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">1</td>-->
+                            <!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    </tbody>
+    			</table>
+    		</div>
+    		<div class="foot">
+    			<ul>
+    				<li class="foot-jum">
+    					<span>跳转至</span>
+    					<input class="input-txt" value="" id="input-txt">
+    					<em>页</em>
+    				</li>
+    				<li class="foot-num" >
+    					<ul id="foot-num">
+							<li class="icon-ishop_4-01" style="color: #afafaf">
+							</li>
+							<li class="icon-ishop_4-02">
+							</li>
+    					</ul>
+    				</li>
+    				<li class="foot-sum">
+    					<div class="page_p">
+    						<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                            <ul class="liebiao" style="display:none;" id="liebiao">
+                                <li id="10">10行/页</li>
+                                <li id="30">30行/页</li>
+                                <li id="50">50行/页</li>
+                                <li id="100">100行/页</li>
+                            </ul>
+						    <span class="icon-ishop_8-02 icon"></span>
+    					</div>
+						<span class="zy">共 0 页</span>
+    				</li>
+    			</ul>
+    		</div>
+    	</div>
+    </div>
+    <div class="p" id="p"></div>
+    <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="delete" id="delete">删除</em>
+        </div>
+    </div>
+	<div class="tk" id="code_ma">
+		<span class="icon-ishop_6-12" id="dao"></span>
+		<p>是否下载文件?</p>
+		<div class="btn">
+			<em class="cancel" id="code_q">取消</em>
+			<em class="album_enter" id="enter">确认</em>
+		</div>
+	</div>
+	<div id="side_bar">
+		<div class="gotop">
+			<span class="icon-ishop_4-03"></span>
+		</div>
+		<div class="gobottom">
+			<span class="icon-ishop_4-04"></span>
+		</div>
+	</div>
+	<script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js?2017040170331"></script>
+    <script src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+	<script src="../js/system/ishop_module.js?2017040170331"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+	<script src="../js/silide.js?2017040170331"></script>
+	<script>
+//		$('#isactive').click(function(){
+//			console.log(this);
+//			$(this).nextAll('ul').toggle();
+//		})
+        $('.inputs').on('click','ul li.isActive_select2 ul li',function () {
+			console.log($(this));
+			$('#isactive').nextAll('input').remove();
+			$('#isactive').val($(this).text())
+			if($(this).text()=='介于'){
+				$(this).parent().before('<input>');
+				$(this).parent().before('<input >');
+			}else if($(this).text()=='全部'){
+				return
+			}else{
+				$(this).parent().before('<input >');
+			}
+			$('#isactive').nextAll('input').attr('style','background:#fff;width: 66px');
+			//验证input值
+			$('#isactive').nextAll('input').on('blur',function () {
+					var reg=/^[0-9]*$/g
+					if(!reg.test($(this).val())){
+						test_value=false;
+						frame();
+						$('.frame').html('请输入数字');
+					}else{
+						test_value=true;
+					}
+			});
+		});
+		$(".icon-ishop_6-07").parent().click(function () {
+			window.location.reload();
+		});
+		var timer=setInterval(function(){
+			$(window.parent.document).find("#navbar li dd[data-code='F0069']").parent().show();
+			$(window.parent.document).find("#navbar li dd[data-code='F0069']").find("span").addClass("icon-ishop_8-01");
+			$(window.parent.document).find("#navbar li dd[data-code='F0069']").find("a").css({color:"#6cc1c8"});
+			$(window.parent.document).find("#navbar li dd[data-code='F0069']").parent().siblings().addClass("h1");
+			$(window.parent.document).find("#navbar li dd[data-code='F0069']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+			if($(window.parent.document).find("#navbar li dd[data-code='F0069']").find("span").hasClass("icon-ishop_8-01")){
+				clearInterval(timer);
+			}
+		},0);
+	</script>
+</body>
+</html>

@@ -23,6 +23,12 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_task.CORP_CODE =#{item}
+            </foreach>
+        </if>
         <if test="role_ident !=null and role_ident!=''">
             and def_task.task_code in(SELECT rel_task_allocation.task_code FROM rel_task_allocation
             WHERE rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.user_code=#{user_code}
@@ -66,6 +72,12 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                def_task.CORP_CODE =#{item}
+            </foreach>
+        </if>
         <if test="role_ident !=null and role_ident!=''">
             AND def_task.task_code IN(SELECT rel_task_allocation.task_code FROM rel_task_allocation
             WHERE rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.user_code=#{user_code} )
@@ -106,11 +118,13 @@
          rel_task_allocation.id,
          rel_task_allocation.task_code,
          rel_task_allocation.corp_code,
-         def_corp.corp_name,
          rel_task_allocation.user_code,
+         rel_task_allocation.task_proof_image,
+         rel_task_allocation.task_proof_text,
+         rel_task_allocation.task_back,
          def_user.user_name,
          def_user.phone,
-         def_user.store_code,
+         rel_task_allocation.store_code,
          rel_task_allocation.task_status,
          rel_task_allocation.real_start_time,
          rel_task_allocation.real_end_time,
@@ -119,14 +133,79 @@
          rel_task_allocation.created_date,
          rel_task_allocation.creater,
          rel_task_allocation.isactive
-         FROM rel_task_allocation,def_corp,def_user
-        WHERE  rel_task_allocation.corp_code=def_corp.corp_code
-        AND def_user.user_code = rel_task_allocation.user_code
+         FROM rel_task_allocation,def_user
+        WHERE def_user.user_code = rel_task_allocation.user_code
         AND rel_task_allocation.corp_code = def_user.corp_code
         AND  rel_task_allocation.corp_code =#{corp_code}
         AND rel_task_allocation.task_code=#{task_code}
+        GROUP BY def_user.user_code
     </select>
 
+    <select id="selAllTaskAllocationByStore" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT
+        rel_task_allocation.id,
+        rel_task_allocation.task_code,
+        rel_task_allocation.corp_code,
+        rel_task_allocation.user_code,
+        rel_task_allocation.task_proof_image,
+        rel_task_allocation.task_proof_text,
+        rel_task_allocation.task_back,
+        def_user.user_name,
+        def_user.phone,
+        rel_task_allocation.store_code,
+        rel_task_allocation.task_status,
+        rel_task_allocation.real_start_time,
+        rel_task_allocation.real_end_time,
+        rel_task_allocation.modified_date,
+        rel_task_allocation.modifier,
+        rel_task_allocation.created_date,
+        rel_task_allocation.creater,
+        rel_task_allocation.isactive
+        FROM rel_task_allocation,def_user
+        WHERE def_user.user_code = rel_task_allocation.user_code
+        AND rel_task_allocation.corp_code = def_user.corp_code
+        AND  rel_task_allocation.corp_code =#{corp_code}
+        AND rel_task_allocation.task_code=#{task_code}
+        <if test="array!=null and array!=''">
+            AND rel_task_allocation.store_code IN
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY def_user.user_code
+    </select>
+    <select id="selAllTaskAllocationByUsers" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT   rel_task_allocation.id,
+        rel_task_allocation.task_code,
+        rel_task_allocation.corp_code,
+        def_corp.corp_name,
+        rel_task_allocation.task_proof_image,
+        rel_task_allocation.task_proof_text,
+        rel_task_allocation.task_back,
+        rel_task_allocation.user_code,
+        def_user.user_name,
+        rel_task_allocation.task_status,
+        rel_task_allocation.real_start_time,
+        rel_task_allocation.real_end_time,
+        rel_task_allocation.modified_date,
+        rel_task_allocation.modifier,
+        rel_task_allocation.created_date,
+        rel_task_allocation.creater,
+        rel_task_allocation.isactive
+        FROM rel_task_allocation,def_corp,def_user
+        WHERE  rel_task_allocation.corp_code=def_corp.corp_code
+        AND def_user.user_code = rel_task_allocation.user_code
+        AND rel_task_allocation.corp_code = def_user.corp_code
+        AND rel_task_allocation.corp_code =#{corp_code}
+        AND rel_task_allocation.task_code=#{task_code}
+        <if test="array!=null and array!=''">
+            AND rel_task_allocation.user_code IN
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY def_user.user_code
+    </select>
     <select id="selAllTaskAllocationByUser" resultType="com.bizvane.ishop.entity.TaskAllocation">
         SELECT   rel_task_allocation.id,
          rel_task_allocation.task_code,
@@ -146,8 +225,10 @@
         WHERE  rel_task_allocation.corp_code=def_corp.corp_code
         AND def_user.user_code = rel_task_allocation.user_code
         AND rel_task_allocation.corp_code = def_user.corp_code
-        AND rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
+        AND rel_task_allocation.corp_code =#{corp_code}
+        AND rel_task_allocation.task_code=#{task_code}
         AND rel_task_allocation.user_code=#{user_code}
+
     </select>
     <!--删除任务-->
     <delete id="delTaskById">
@@ -262,6 +343,9 @@
             <if test="user_code!=null">
                 user_code,
             </if>
+            <if test="store_code!=null">
+                store_code,
+            </if>
             <if test="task_status!=null">
                 task_status,
             </if>
@@ -305,6 +389,9 @@
             </if>
             <if test="user_code!=null">
                 #{user_code},
+            </if>
+            <if test="store_code!=null">
+                #{store_code},
             </if>
             <if test="task_status!=null">
                 #{task_status},
@@ -398,6 +485,9 @@
             <if test="user_code!=null and user_code!=''">
                 user_code= #{user_code},
             </if>
+            <if test="store_code!=null and store_code!=''">
+                store_code= #{store_code},
+            </if>
             <if test="task_status!=null and task_status!=''">
                 task_status = #{task_status},
             </if>
@@ -474,7 +564,8 @@
         def_task.target_start_time,
         def_task.target_end_time,
         def_task.modifier,
-        def_task.ISACTIVE
+        def_task.ISACTIVE,
+        def_task.task_status
         FROM def_task,def_corp,def_task_type
         WHERE def_task.corp_code = def_corp.corp_code
         AND def_task.task_type_code =def_task_type.task_type_code
@@ -508,4 +599,97 @@
     <delete id="delTaskByActivityCode">
          DELETE FROM def_task WHERE  corp_code =#{corp_code} AND activity_vip_code =#{activity_vip_code}
     </delete>
+
+
+    <!--获取店铺下员工任务数-->
+    <select id="selUserComTaskCount" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT count(*) as count,
+        du.user_code,
+        du.user_name,
+        du.phone
+        FROM rel_task_allocation AS rts ,def_user AS du
+        WHERE du.corp_code = rts.corp_code
+        AND du.user_code = rts.user_code
+        AND rts.corp_code = #{corp_code}
+        AND rts.store_code = #{store_code}
+        <if test="task_status!=null and task_status!=''">
+          AND rts.task_status = #{task_status}
+        </if>
+        GROUP BY du.user_code
+        ORDER BY du.id DESC
+    </select>
+
+
+    <!--通过一个活动获取它的所有任务，通过任务关联每个任务下的导购,一个导购可能对应多个任务-->
+    <select id="selectAllTaskByTaskCode" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT du.user_code,du.user_name
+        FROM rel_task_allocation rts,def_user du
+        WHERE
+        du.corp_code = rts.corp_code AND
+        du.user_code = rts.user_code
+        <if test="array!=null and array!=''">
+           AND rts.task_code IN
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY rts.user_code
+    </select>
+
+    <!--获取活动下店铺是否分配任务-->
+    <select id="selUserTask" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT *
+        FROM rel_task_allocation AS rts ,def_user AS du
+        WHERE du.corp_code = rts.corp_code
+        AND du.user_code = rts.user_code
+        AND rts.corp_code = #{corp_code}
+        AND rts.task_code IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND rts.user_code = #{user_code}
+        GROUP BY rts.user_code
+        ORDER BY rts.id DESC
+    </select>
+
+
+    <!--获取有任务的店铺-->
+    <select id="selTaskStore" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT rts.id,
+        rts.task_code
+        FROM rel_task_allocation AS rts ,def_store AS ds
+        WHERE ds.corp_code = rts.corp_code
+        AND ds.store_code = rts.store_code
+        AND rts.corp_code = #{corp_code}
+        AND rts.store_code IS NOT NULL
+        AND rts.store_code != ''
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            def_task.task_title LIKE concat ('%', #{search_value},'%')
+            or def_task_type.task_type_name LIKE concat ('%', #{search_value},'%')
+            OR def_task.task_description LIKE concat('%', #{search_value},'%')
+            or def_task.target_start_time LIKE concat('%', #{search_value},'%')
+            or def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            OR def_task.target_end_time LIKE concat('%', #{search_value},'%')
+            OR def_task.modifier LIKE concat('%', #{search_value},'%')
+            OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        GROUP BY rts.store_code
+    </select>
+
+    <!--获取店铺下任务数-->
+    <select id="selStoreComTaskCount" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT count(*) as count,
+        rts.store_code
+        FROM rel_task_allocation AS rts
+        WHERE rts.corp_code = #{corp_code}
+        AND rts.store_code = #{store_code}
+        <if test="task_status!=null and task_status!=''">
+            AND rts.task_status != #{task_status}
+        </if>
+        GROUP BY rts.task_code
+    </select>
+
 </mapper>

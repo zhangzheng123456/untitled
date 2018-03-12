@@ -44,6 +44,12 @@
         <if test="corp_code!=null and corp_code!=''">
             AND dmt.corp_code=#{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dmt.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value!=null and search_value!=''">
             AND
             (
@@ -234,6 +240,12 @@
         AND dmt.template_type=dstt.template_type_code
         <if test="corp_code!=null and corp_code!=''">
             AND dmt.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dmt.corp_code =#{item}
+            </foreach>
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">

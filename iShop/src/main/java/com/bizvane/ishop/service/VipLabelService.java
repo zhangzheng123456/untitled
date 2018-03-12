@@ -60,7 +60,7 @@ public interface VipLabelService {
      */
     PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws Exception;
 
-    PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String,String> map)throws Exception;
+    PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String,String> map,String[] brand)throws Exception;
 
     /**
      * 判断VIP标签名称是否公司内唯一
@@ -69,7 +69,7 @@ public interface VipLabelService {
      * @param tag_name  ： VIP标签名称
      * @return
      */
-    List<VipLabel> VipLabelNameExist(String corp_code, String tag_name) throws Exception;
+    List<VipLabel> VipLabelNameExist(String corp_code, String tag_name,String brand_code) throws Exception;
 
 
     VipLabel countLable(String corp_code, String label_id)throws Exception;
@@ -78,17 +78,29 @@ public interface VipLabelService {
 
     List<VipLabel> selectLabelByVip(String corp_code, String vip_code) throws Exception;
 
-    List<VipLabel> findHotViplabel(String corp_code)throws Exception;
+    List<VipLabel> findHotViplabel(String corp_code,String brand_list)throws Exception;
 
-    PageInfo<VipLabel> findViplabelByType(int page_number, int page_size,String corp_code,String label_type,String search_value)throws Exception;
+    PageInfo<VipLabel> findViplabelByType(int page_number, int page_size,String corp_code,String label_type,String search_value,String brand_code)throws Exception;
 
     List<RelViplabel> checkRelViplablel(String corp_code,String vip_code,String label_id)throws Exception;
 
     int addRelViplabel(RelViplabel relViplabel)throws Exception;
 
+    String addRelViplabel(String label_id, String corp_code, String vip_code, String store_code, String user_id) throws Exception;
+
     int delRelViplabel(String rid)throws Exception;
+
+    int delAllRelViplabel(String label_id) throws Exception;
 
     List<VipLabel> findViplabelID(String corp_code,String label_name)throws Exception;
 
     List<VipLabel> selectViplabelByName(String corp_code, String label_name,String isactive) throws Exception;
+
+    List<VipLabel> selectViplabelByName(String corp_code, String vips) throws Exception;
+
+     List<VipLabel> selectLabelByVipToHbase(String corp_code, String vip_code) throws Exception ;
+
+     String addRelViplabelToHbase(String label_id, String corp_code, String vip_code, String store_code, String user_id) throws Exception;
+
+     int checkRelViplablelToHbase(String corp_code, String vip_code, String label_id) throws Exception;
 }

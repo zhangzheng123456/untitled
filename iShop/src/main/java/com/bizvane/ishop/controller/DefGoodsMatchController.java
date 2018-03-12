@@ -41,7 +41,11 @@ public class DefGoodsMatchController {
             List<DefGoodsMatch> defGoodsMatches;
             if (role_code.equals(Common.ROLE_SYS)) {
                 defGoodsMatches = defGoodsMatchService.selectMatchGoods("");
-            } else {
+            } else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                defGoodsMatches = defGoodsMatchService.selectMatchGoods("",manager_corp);
+            }else {
                 defGoodsMatches = defGoodsMatchService.selectMatchGoods(corp_code);
             }
             result.put("list", JSON.toJSONString(defGoodsMatches));
@@ -74,7 +78,11 @@ public class DefGoodsMatchController {
             List<DefGoodsMatch> defGoodsMatches;
             if (role_code.equals(Common.ROLE_SYS)) {
                 defGoodsMatches = defGoodsMatchService.selMatchBySeach("",search_value);
-            } else {
+            } else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                defGoodsMatches = defGoodsMatchService.selMatchBySeach("",search_value,manager_corp);
+            }else {
                 defGoodsMatches = defGoodsMatchService.selMatchBySeach(corp_code,search_value);
             }
             result.put("list", JSON.toJSONString(defGoodsMatches));
@@ -187,6 +195,7 @@ public class DefGoodsMatchController {
             String goods_code = jsonObject.get("goods_code").toString();
             String goods_match_title = jsonObject.get("goods_match_title").toString();
             String goods_match_desc = jsonObject.get("goods_match_desc").toString();
+            String goods_match_display = jsonObject.get("match_display").toString();
             String isactive = jsonObject.get("isactive").toString();
             System.out.println("---------111isactive1111-------"+isactive);
             String[] split = goods_code.split(",");
@@ -205,6 +214,7 @@ public class DefGoodsMatchController {
                 }
                 defGoodsMatch.setGoods_match_code(goods_match_code);
                 defGoodsMatch.setGoods_match_title(goods_match_title);
+                defGoodsMatch.setMatch_display(goods_match_display);
                 defGoodsMatch.setGoods_match_desc(goods_match_desc);
                 defGoodsMatch.setGoods_code(split[i]);
                 Date date = new Date();
@@ -259,6 +269,7 @@ public class DefGoodsMatchController {
           //  String goods_match_code =sdf.format(new Date()) + Math.round(Math.random() * 9);
             String corp_code_json = jsonObject.get("corp_code").toString();
             String goods_match_code = jsonObject.get("goods_match_code").toString();
+            String goods_match_display = jsonObject.get("match_display").toString();
             String goods_match_title = jsonObject.get("goods_match_title").toString();
             String goods_match_desc = jsonObject.get("goods_match_desc").toString();
              int delCount=defGoodsMatchService.delMatchByCode(corp_code_json,goods_match_code);
@@ -277,8 +288,10 @@ public class DefGoodsMatchController {
                 for (int i = 0; i < split.length; i++) {
                     DefGoodsMatch defGoodsMatch = new DefGoodsMatch();
                     defGoodsMatch.setCorp_code(corp_code_json);
+                    defGoodsMatch.setCorp_code(corp_code_json);
                     defGoodsMatch.setGoods_match_code(goods_match_code);
                     defGoodsMatch.setGoods_match_title(goods_match_title);
+                    defGoodsMatch.setMatch_display(goods_match_display);
                     defGoodsMatch.setGoods_match_desc(goods_match_desc);
                     defGoodsMatch.setGoods_code(split[i]);
                     Date date = new Date();

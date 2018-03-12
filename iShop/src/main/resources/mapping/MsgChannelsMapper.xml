@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.MsgChannelsMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.MsgChannels" id="MsgChannels">
+        <id column="id" property="id"/>
+        <result column="channel" property="channel"/>
+        <result column="channel_name" property="channel_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="MsgChannels">
+        SELECT *
+        FROM def_sms_channels
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectChannels" resultMap="MsgChannels">
+        SELECT *
+        FROM def_sms_channels
+        <if test="search_value != null and search_value !=''">
+            WHERE
+            (def_sms_channels.channel_name LIKE concat('%',#{search_value},'%')
+            OR def_sms_channels.channel LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY def_sms_channels.id DESC
+    </select>
+
+    <select id="selectAllChannels" resultMap="MsgChannels">
+        SELECT *
+        FROM def_sms_channels
+        WHERE def_sms_channels.isactive="Y"
+       ORDER BY def_sms_channels.id DESC
+    </select>
+
+    <delete id="deleteByChannelId">
+        DELETE FROM
+        def_sms_channels
+        WHERE ID=#{id}
+    </delete>
+
+    <insert id="insertChannel" parameterType="com.bizvane.ishop.entity.MsgChannels">
+        INSERT INTO def_sms_channels
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channel!=null">
+                channel,
+            </if>
+            <if test="channel_name!=null">
+                channel_name,
+            </if>
+
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="channel!=null">
+                #{channel},
+            </if>
+            <if test="channel_name!=null">
+                #{channel_name},
+            </if>
+
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateChannel" parameterType="com.bizvane.ishop.entity.MsgChannels">
+        UPDATE def_sms_channels
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="channel!=null">
+                channel=#{channel},
+            </if>
+            <if test="channel_name!=null">
+                channel_name=#{channel_name},
+            </if>
+
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
+            </if>
+        </trim>
+        WHERE def_sms_channels.id=#{id};
+    </update>
+
+    <select id="selectChannelScreen" resultMap="MsgChannels">
+        SELECT
+        dcc.channel,
+        dcc.channel_name
+        FROM def_sms_channels dcc
+        WHERE
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+
+                <when test="entryValue!=''">
+                    dcc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+
+            </choose>
+        </foreach>
+        GROUP BY dcc.id
+        ORDER BY dcc.id DESC
+    </select>
+
+</mapper>

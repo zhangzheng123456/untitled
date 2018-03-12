@@ -7,14 +7,19 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <script src="../table/js/jquery.min.js"></script>
     <script src="../js/loading.js"></script>
+    <style>
+        .tk{
+            position: fixed;
+        }
+    </style>
 </head>
 <body>
 <div class="content">
     <div class="con_table" id="con_table">
         <div class="title">
-            <span>活动管理</span>
+            <span>会员营销</span>
             <i class="icon-ishop_8-03"></i>
-            <span>活动列表</span>
+            <span>会员活动</span>
         </div>
         <div class="action">
             <div class="action_l">
@@ -28,13 +33,17 @@
                 </ul>
                 <ul>
                     <li class="li">
-                        <input type="text" class="input" id="search" placeholder="活动标题/活动类别/所属企业">
+                        <input type="text" class="input" id="search" placeholder="活动标题/企业名称">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
             </div>
             <div class="action_r">
                 <ul>
+                    <li id="execute" style="display: none" class="bg" title='只允许操作未执行的活动'>
+                        <span class="icon-ishop_6-15"></span>
+                        执行
+                    </li>
                     <li id="filtrate">
                         <span class="icon-ishop_6-05"></span>
                         筛选
@@ -50,12 +59,9 @@
                     <li id="more">
                         <span class="icon-ishop_6-08"></span>
                         更多
-                        <!--<div class="more_down">-->
-                            <!--<div id="leading_out">导出</div>-->
-                            <!--<div id="guide_into">导入</div>-->
+                        <!--<div class="more_down" id="more_down">-->
                         <!--</div>-->
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -198,10 +204,18 @@
 <div class="p" id="p"></div>
 <div class="tk" id="tk">
     <span class="icon-ishop_6-12" id="X"></span>
-    <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+    <p><i class="icon-ishop_6-14" style="vertical-align: top"></i>是否确认删除数据?</p>
     <div class="btn">
         <em class="cancel" id="cancel">取消</em>
         <em class="delete" id="delete">删除</em>
+    </div>
+</div>
+<div class="tk" id="execute_pop">
+    <span class="icon-ishop_6-12" id="close_pop"></span>
+    <p><i class="icon-ishop_6-15" style="vertical-align: top;color: #6cc1c8"></i>是否执行活动?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel_execute">取消</em>
+        <em class="delete" style="background-color:#6cc1c8;" id="execute_sure">执行</em>
     </div>
 </div>
 <div id="side_bar">
@@ -215,7 +229,7 @@
 </body>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
 <script src="../js/laydate/laydate.js"></script>
-<script type="text/javascript" src="../js/activity/activity.js?20161215"></script>
+<script type="text/javascript" src="../js/activity/activity.js?20180122"></script>
 <script type="text/javascript">
     $(function () {
         $(window).scroll(function () {
@@ -234,18 +248,24 @@
             $('html,body').animate({'scrollTop': btm}, 500);
         });
         $(".icon-ishop_6-07").parent().click(function () {
-            window.location.reload();
+
+//            window.location.reload();
+            inx=1;
+            if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
+                filtrates(inx, pageSize);
+            }
         });
     });
-    var timer=setInterval(function(){
-        $(window.parent.document).find("#navbar li dd[data-code='F0032']").parent().show();
-        $(window.parent.document).find("#navbar li dd[data-code='F0032']").find("span").addClass("icon-ishop_8-01");
-        $(window.parent.document).find("#navbar li dd[data-code='F0032']").find("a").css({color:"#6cc1c8"});
-        $(window.parent.document).find("#navbar li dd[data-code='F0032']").parent().siblings().addClass("h1");
-        $(window.parent.document).find("#navbar li dd[data-code='F0032']").parent().siblings().find("span").addClass("icon-ishop_8-02");
-        if($(window.parent.document).find("#navbar li dd[data-code='F0032']").find("span").hasClass("icon-ishop_8-01")){
-            clearInterval(timer);
-        }
-    },0);
 </script>
 </html>

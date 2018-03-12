@@ -40,6 +40,18 @@ public class AppversionServiceImpl implements AppversionService {
     }
 
     @Override
+    public PageInfo<Appversion> selectAllAppversion1(int page_number, int page_size, String search_value) throws Exception {
+        PageHelper.startPage(page_number, page_size);
+        List<Appversion> appversions = appversionMapper.selectAllAppversionByPlatform(search_value);
+
+        for (Appversion appversion : appversions) {
+            appversion.setIsactive(CheckUtils.CheckIsactive(appversion.getIsactive()));
+        }
+        PageInfo<Appversion> page = new PageInfo<Appversion>(appversions);
+        return page;
+    }
+
+    @Override
     public PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);

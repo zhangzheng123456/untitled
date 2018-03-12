@@ -4,10 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class ExecuteSQLRequestParams  extends RequestParams {
 
-	public ExecuteSQLRequestParams(String corpcode) {
-		super(corpcode);
+	public ExecuteSQLRequestParams(List<String> drplist) {
+		super(drplist);
 	}
 
 	public class ExecuteSQLTrans extends BaseTrans{

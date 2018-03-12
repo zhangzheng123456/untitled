@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>新增微信模板</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <style>
+        .require{
+            color:#c26555!important;
+            margin-right: 14px;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>系统管理</span><i class="icon-ishop_8-03"></i><span id="back_wx">微信模板</span><i
+            class="icon-ishop_8-03"></i><label>编辑微信模板</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form style="margin-left:0" class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li id="corp_select"><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select></span></li>
+                </ul>
+            </div>
+            <!--公众号-->
+            <div class="drop_down item_2">
+                <span><label class="require">公众号*</label><input data-value="1" class="input_select" value="请选择公众号" data-app_id="" data-app_name="" data-app_user_name type="text" id="vipCode" placeholder="请选择公众号" readonly="" >
+                     <ul style="display: none;" id="vipPublic">
+                         <!--动态加载-->
+                     </ul>
+                </span>
+            </div>
+            <div class="drop_down item_2">
+                <span><label class="require">标题*</label><input data-value="1" class="input_select" value="" type="text" id="wx_title" placeholder="请选择标题" readonly="" >
+                     <ul style="display: none;" id="wx_title_select">
+                         <!--动态加载-->
+                     </ul>
+                </span>
+            </div>
+            <div>
+                <span class="t_parent" style="display: inline-block;height: 30px">
+                    <label class="require">行业*</label>
+                    <input type="text" id="wx_industry" maxlength="50" style="margin-left: -4px;"/><span class="holder_text"></span>
+                </span>
+            </div>
+            <div>
+                <span class="t_parent" style="display: inline-block;height: 30px">
+                    <label class="require">模板编号*</label>
+                    <input type="text" id="wx_template_id"  maxlength="50" style="margin-left: -4px;"/><span class="holder_text"></span>
+                </span>
+            </div>
+            <span style="display: inline-flex;width:100%;position:relative;margin-bottom: 20px">
+                <label style="height:70px;" class="require">详细内容*</label>
+                <span class="tempalte_area" style="height: 70px">
+                    <textarea style="height: 70px" id="wx_content" ></textarea>
+                </span>
+            </span>
+            <span style="display: inline-flex;width:100%;position:relative;">
+                <label style="height:70px;" class="require">内容示例*</label>
+                <span class="tempalte_area" style="height: 70px">
+                    <textarea style="height: 70px" id="wx_content_example" ></textarea>
+                </span>
+            </span>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="operadd_btn">
+            <ul>
+                <li class="edit_save" ><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="wx_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Dialog -->
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!-- 带搜索的下拉菜单 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<script src="../js/laydate/laydate.js?2017040170331"></script>
+<script src="../js/system/Wechat_templates_operate.js"></script>
+</body>
+</html>

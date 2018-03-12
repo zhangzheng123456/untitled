@@ -43,6 +43,7 @@
 }
 .power_d a{
 	display: block;
+	color: #fff;
 }
 .state{
 	display: inline-block;
@@ -55,30 +56,38 @@
 	cursor: pointer;
 }
 .year li,.month li{
-	width: 97px;
+	/*width: 97px;*/
 	height: 26px;
 	line-height: 26px;
 	padding-left: 5px;
 }
 .year li:hover,.month li:hover{
-	background: #6cc1c8;
+	background: #4a5f7c;
     color: #ffffff;
 }
 #week_p .year{
 	position:absolute;
-	left: 128px;
+	left: 123px;
 	top:32px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;
+	width: 97px;
+	height: 150px;
+	overflow-y: auto;
+	background: #f5f5f5;
 }
 #week_p .month{
 	position:absolute;
-	left: 232px;
+	left: 253px;
 	top:32px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;
+	width: 97px;
+	height: 150px;
+	overflow-y: auto;
+	background: #f5f5f5;
 }
 .er_code{
 	position: relative;
@@ -142,7 +151,7 @@
 	width: 420px;
 }
 .wx_app input{
-	width: 160px;
+	width: 110px;
 	margin: 10px 10px 10px 0px;
 }
 #WXID{
@@ -182,7 +191,7 @@
 	display:none;
 }
 .drop-down{
-	display: inline-block;
+	float: left;
 	width:  300px;
 	height: 300px;
 	background-color:#fff;
@@ -215,8 +224,10 @@
 .area_more{
 	width: 70px;
 	height: 30px;
+	position: absolute;
+	bottom: 10px;
+	right: 115px;
 	border-radius: 5px;
-	margin: 0 auto;
 	background-color: #6cc1c8;
 	color: #fff;
 	text-align: center;
@@ -225,6 +236,11 @@
 }
 .drop-down .drop_down_ul{
 	height: 200px;
+	overflow-y:auto;
+}
+.drop-down .drop_down_ul ul{
+	height: 170px;
+	padding-bottom: 5px;
 	overflow-y:auto;
 }
 .drop-down .search input{
@@ -267,6 +283,20 @@
 	z-index: 20;
 	cursor: pointer;
 }
+.q_list{
+	width: 50px;
+	height: 30px;
+	background-color: #6dc1c8;
+	border-radius: 5px;
+	color: #fff;
+	line-height: 30px;
+	text-align: center;
+	position: absolute;
+	bottom: 10px;
+	right: 60px;
+	z-index: 20;
+	cursor: pointer;
+}
 .xingming{
 	margin: 0 !important;
 	max-height:200px;
@@ -274,6 +304,7 @@
 }
 .xingming>p{
 	margin-bottom: 20px;
+	position: relative;
 }
 .good_imgs{
 	margin-bottom: 0!important;
@@ -359,7 +390,7 @@
 /*首页input框样式的变化*/
 /*******首页input框样式的变化******/
 .icon-text{
-	width:85px;
+	width:95px;
 	background-color: #434960 !important;
 	border:none !important;
 	margin-left: 12px;
@@ -383,12 +414,17 @@
 	overflow-y: auto;
 	background-color: #4a5f7c;
 	z-index: 278;
+	padding: 5px;
 	display: none;
 	border-radius: 5px;
 }
 .c_a_shoppe ul li{
+	width: 100%;
 	height: 30px;
 	line-height: 30px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 .c_a_shoppe ul li:hover{
 	background-color:#434960;
@@ -440,18 +476,20 @@ div.wx_app_new{
 	margin-top: 0px;
 	color:#888888
 }
-div.wx_app_new input:nth-child(3){
-	width: 50px;
+div.wx_app_new input:nth-child(4){
+	width: 40px;
 	text-indent: 0px;
 	padding:0;
 	background:#E8E8E8;
-	margin:10px 0 10px 0
+	margin: 0;
+	margin-top: 14px;
+	font-size: 12px;
 }
 div.wx_app_new p{
 	width: 29px;
 	height:30px;
 	cursor: pointer;
-	margin:10px 0 10px 0;
+	margin:14px 0 10px 0;
 	font-size:20px;
 	color:#c26555 ;
 	line-height: 30px;
@@ -528,6 +566,7 @@ div.wx_app_new p{
 	position: relative;
 }
 .aixiu_code{
+	z-index: 100002;
 	width: 150px;
 	position: absolute;
 	top: 66px;
@@ -555,15 +594,56 @@ div.wx_app_new p{
 }
 /******多选下拉框样式******/
 .Acc_dropdown li{
-	height: 30px !important;
-	line-height: 30px !important;
+	width: 100%;
+	height: 70px !important;
+	line-height: 70px !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	overflow: hidden;
+	position: relative;
+}
+.Acc_dropdown li div{
+	width: 170px;
+	position: absolute;
+	right: 0;
+	top:10px;
+	z-index: 6;
+}
+.Acc_dropdown li div img{
+	width:50px;
+	height: 50px;
+	vertical-align: top;
+	z-index: 5;
+	border: 1px solid #dddddd;
+}
+.Acc_dropdown li div input{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 80px;
+	height: 30px;
+	background-image: none;
+	opacity: 0;
+	z-index: 4;
+	cursor: pointer;
+}
+.Acc_dropdown li div span{
+	position: absolute;
+	width: 80px;
+	height: 26px;
+	line-height: 26px;
+	right: 10px;
+	top: 12px;
+	background-color: #6cc1c8;
+	z-index: 3;
+	text-align: center;
+	color: #fff;
+	text-indent: 0;
+	border-radius: 5px;
 }
 .Acc_dropdown li:hover{
-	background-color: #4a5f7c !important;
-	color: #FFFFFF !important;
+	background-color: #f5f5f5 !important;
+	color: #888 !important;
 }
 .Acc_dropdown p{
 	margin: 0 !important;
@@ -601,4 +681,12 @@ div.wx_app_new p{
 }
 .add_app_id span{
 	font-size: 20px;
+}
+.bm_search_shop{
+	width: 100%;
+	height: 30px;
+	text-indent: 5px;
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid #ddd;
 }

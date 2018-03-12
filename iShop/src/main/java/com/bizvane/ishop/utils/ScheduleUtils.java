@@ -3,9 +3,14 @@ package com.bizvane.ishop.utils;
 import com.bizvane.ishop.entity.ScheduleJob;
 import com.bizvane.ishop.exception.ScheduleException;
 import com.bizvane.ishop.quartz.AsyncJobFactory;
+import com.bizvane.ishop.service.imp.ScheduleExcuteServiceImpl;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Bizvane
@@ -45,7 +50,8 @@ public class ScheduleUtils {
             return (CronTrigger) scheduler.getTrigger(triggerKey);
         } catch (SchedulerException e) {
             LOG.error("获取定时任务CronTrigger出现异常", e);
-            throw new ScheduleException("获取定时任务CronTrigger出现异常");
+//            throw new ScheduleException("获取定时任务CronTrigger出现异常");
+            return null;
         }
     }
 
@@ -55,9 +61,10 @@ public class ScheduleUtils {
      * @param scheduler the scheduler
      * @param scheduleJob the schedule job
      */
-    public static void createScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) {
-        createScheduleJob(scheduler, scheduleJob.getJob_name(), scheduleJob.getJob_group(),
+    public static Date createScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) {
+        Date a = createScheduleJob(scheduler, scheduleJob.getJob_name(), scheduleJob.getJob_group(),
             scheduleJob.getCron_expression(), scheduleJob,scheduleJob.getFunc());
+        return a;
     }
 
     /**
@@ -69,7 +76,7 @@ public class ScheduleUtils {
      * @param cronExpression the cron expression
      * @param param the param
      */
-    public static void createScheduleJob(Scheduler scheduler, String jobName, String jobGroup,
+    public static Date createScheduleJob(Scheduler scheduler, String jobName, String jobGroup,
                                          String cronExpression, Object param,String func) {
 
         //构建job信息
@@ -88,13 +95,31 @@ public class ScheduleUtils {
 
         //放入参数，运行时的方法可以获取
         jobDetail.getJobDataMap().put("func", func);
-
         try {
-            scheduler.scheduleJob(jobDetail, trigger);
+            Date a = scheduler.scheduleJob(jobDetail, trigger);
+            return a;
         } catch (SchedulerException e) {
             LOG.error("创建定时任务失败", e);
-            throw new ScheduleException("创建定时任务失败");
+//            throw new ScheduleException("创建定时任务失败");
+            try {
+                ScheduleExcuteServiceImpl scheduleExcuteService = (ScheduleExcuteServiceImpl) SpringBeanFactoryUtils.getBean("ScheduleExcuteService");
+                ScheduleJob scheduleJob1 =  scheduleExcuteService.checkSchedule(jobName,jobGroup);
+                if (scheduleJob1 == null){
+                    LOG.info("================查询后没有这个定时任务");
+                }
+                Date a = scheduler.scheduleJob(jobDetail, trigger);
+                return a;
+            } catch (Exception e2) {
+                try {
+                    Date a =  scheduler.scheduleJob(jobDetail, trigger);
+                    return a;
+                }catch (Exception e3){
+
+                }
+
+            }
         }
+        return null;
     }
 
     /**
@@ -203,7 +228,20 @@ public class ScheduleUtils {
             }
         } catch (SchedulerException e) {
             LOG.error("更新定时任务失败", e);
-            throw new ScheduleException("更新定时任务失败");
+//            throw new ScheduleException("更新定时任务失败");
+
+            String cronExpression1 = TimeUtils.getCron(TimeUtils.getLastMin(new Date(),2));
+            CronScheduleBuilder scheduleBuilder1 = CronScheduleBuilder.cronSchedule(cronExpression1);
+            TriggerKey triggerKey = ScheduleUtils.getTriggerKey(jobName, jobGroup);
+            CronTrigger trigger1 = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(scheduleBuilder1).build();
+            try {
+//                if(!triggerState.name().equalsIgnoreCase("PAUSED")){
+                    //按新的trigger重新设置job执行
+                    scheduler.rescheduleJob(triggerKey, trigger1);
+//                }
+            } catch (SchedulerException e2) {
+
+            }
         }
     }
 
@@ -216,6 +254,11 @@ public class ScheduleUtils {
      */
     public static void deleteScheduleJob(Scheduler scheduler, String jobName, String jobGroup) {
         try {
+            TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
+
+            scheduler.pauseTrigger(triggerKey);// 停止触发器
+            scheduler.unscheduleJob(triggerKey);// 移除触发器
+
             scheduler.deleteJob(getJobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
             LOG.error("删除定时任务失败", e);

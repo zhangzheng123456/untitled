@@ -185,7 +185,6 @@ jQuery(document).ready(function () {
         key_val=JSON.parse(key_val);
         var funcCode=key_val.func_code;
         $.get("/detail?funcCode="+funcCode+"", function(data){
-            var data=JSON.parse(data);
             if(data.code=="0"){
                 var message=JSON.parse(data.message);
                 var action=message.actions;
@@ -413,4 +412,4 @@ $("#search_param").on('keyup', function(event){
     console.log(text);
     $(this).siblings('li').addClass('store_list_kuang_hide');
     $(this).siblings('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
-})
+});

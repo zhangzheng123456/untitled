@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品分析</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170105">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170105">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="../css/commodity.css?20170830">
+    <script src="../table/js/jquery.min.js"></script>
+    <style>
+        .goods_vip_info span{
+            vertical-align: middle;
+        }
+        #product_name,#sku_code{
+            display: inline-block;
+            margin-right: 10px;
+            max-width: 300px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+
+        .goods_vip_table{
+            margin-top: 35px;
+            position: relative;
+        }
+        .goods_vip_table_menu{
+            overflow: hidden;
+            position: absolute;
+            top:-25.5px;
+        }
+        .goods_vip_table_menu li{
+            float: left;
+            width: 50px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            box-sizing: content-box;
+            cursor: pointer;
+            color: #4a5f7c;
+        }
+        .goods_vip_table_menu li.active{
+            background-color: #41c7db;
+            color: #FFFFFF;
+        }
+        .goods_vip_table_content{
+            height: 300px;
+        }
+        .goods_vip_table_content>div{
+            height: 300px;
+        }
+        .goods_vip_title{
+            cursor: move;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>报表中心</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>商品分析</span>
+        </div>
+      <div class="select_content">
+          <div id="nav">
+            <div class="select_title">选择商品</div>
+            <div style="float: left;margin-left: 0" class="nav_down" id="chooseGoods">
+                <span>请选择商品</span>
+                <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_4"></span></div>
+            </div>
+            <div class="select_title">选择店铺</div>
+            <div style="float: left;" class="nav_down" id="chooseStore">
+                <span >请选择店铺</span>
+                <div class="nav_down_arrow"><span class="icon-ishop_8-02 nav_4"></span></div>
+            </div>
+            <div  class="nav_date">
+                <div style="display: none" id="time_show">
+                    <span id="time_start">加载中...</span>
+                    <span>至</span>
+                    <span id="time_end">加载中...</span>
+                </div>
+                <div class="select_title">时间范围</div>
+                <div class="nav_down">
+                    <span id="time"></span>
+                    <div class="nav_down_arrow"><span class="icon-ishop_8-02"></span></div>
+                    <div id="date">
+                        <div class="date_nav">
+                            <div  class="active" >周</div>
+                            <div  class="" >月</div>
+                            <div  class="" >年</div>
+                        </div>
+                        <div id="date_box">
+                            <div class="week_box" v-if="week">
+                                <div class="week_nav">
+                                    <div class="week_num">
+                                        <span class="icon-ishop_8-03 week_arrow_left"></span>
+                                        <b class="year_down"></b>
+                                        <span class="icon-ishop_8-03 week_arrow_right"></span>
+                                    </div>
+                                </div>
+                                <ul class="week_detail">
+                                </ul>
+                            </div>
+                            <div class="month_box" style="display: none">
+                                <div class="month_nav">
+                                    <div class="month_num">
+                                        <span class="icon-ishop_8-03 month_arrow_left"></span>
+                                        <b class="year_down"></b>
+                                        <span class="icon-ishop_8-03 month_arrow_right"></span>
+                                    </div>
+                                    <ul class="month_detail">
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="year_box" style="display: none">
+                                <ul class="year_detail" style="height: 180px">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="date_opt_checked">
+                            <label>
+                                <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check" id="checkboxTwoInput01"><label for="checkboxTwoInput01"></label></div>
+                                <span class="date_select_all" id="date_select_all">全选</span>
+                            </label>
+                            <span  class="date_sure_num" id="date_sure_num">已选1个</span>
+                            <span class="date_sure" id="date_sure">确定</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="select_opt">
+            <span id="clear_select">清空筛选</span>
+            <span id="to_select">筛选</span>
+        </div>
+      </div>
+        <div id="table_content">
+            <div class="table_content_nav" style="overflow: hidden;background-color: #FFFFFF;height: 40px;padding: 10px">
+                <div class="left"><span ></span><span style="vertical-align: middle">商品分析表</span></div>
+                <div class="right">
+                    <span class="export" id="export">导出</span>
+                </div>
+            </div>
+            <div class="table">
+                <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                    <tr class="th" style="background-color: rgb(232, 232, 232)">
+                        <!--<th width="50px;" style="text-align: left;">-->
+                            <!--<div class="checkbox"><input onclick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check" id="checkboxTwoInput0"><label for="checkboxTwoInput0"></label></div>-->
+                        <!--</th>-->
+                        <th style="text-align: center;" id="tableOrder">序号</th>
+                        <th>图片</th>
+                        <th>款号</th>
+                        <th>商品名称</th>
+                        <th>商品条码</th>
+                        <th>销售数量</th>
+                        <th>销售金额</th>
+                        <th>折扣</th>
+                        <th>会销数量</th>
+                        <th>会销金额</th>
+                        <th>会销折扣</th>
+                        <th>购买会员</th>
+                        <th>会员详情</th>
+                        <th>分组统计</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="foot">
+                <ul>
+                    <li class="foot-jum">
+                        <span>跳转至</span>
+                        <input class="input-txt" value="" id="input-txt">
+                        <em>页</em>
+                    </li>
+                    <li class="foot-num">
+                        <ul id="foot-num">
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="foot-sum">
+                        <div class="page_p">
+                            <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                            <ul class="liebiao" style="display:none;" id="liebiao">
+                                <li id="10">10行/页</li>
+                                <li id="30">30行/页</li>
+                                <li id="50">50行/页</li>
+                                <li id="100">100行/页</li>
+                            </ul>
+                            <span class="icon-ishop_8-02 icon"></span>
+                        </div>
+                        <span class="zy">共 0 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+     <div class="setUp_activity">
+         <div id="chooseShopperWrap" class="chooseShadow" >
+            <div class="chooseShopperWrap">
+                <div class="tabs_title"><span class="title_icon"></span><span>选择商品</span><i class="icon-ishop_6-12 closeWrap closeShopperWrap"></i></div>
+                <div class="chooseShopperHeader">
+                    <div class="chooseShopperCondition" id="chooseShopperCondition">
+                        <div><label>所属品牌</label><input value="全部" class="text_input checkbox_select_input input120px" data-code="" id="brandID" type="text" readonly="readonly"><ul id="brandCondition" class="activity_select shopperSelect" style="display: none;"><li data-code="4574" title="商帆3"><input type="checkbox">商帆3</li><li data-code="E0001" title="ECCO"><input type="checkbox">ECCO</li></ul></div>
+                        <div><label>商品名称</label><input class="text_input input120px" type="text" id="goodsName"></div>
+                        <div><label>季节</label><input value="全部" id="seasonInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" style="margin-right: 20px" data-code=""><ul style="right: 20px; display: none;" id="season" class="activity_select shopperSelect"><li title="*- Ankle Strap"><input type="checkbox">*- Ankle Strap</li><li title="*-2-strap"><input type="checkbox">*-2-strap</li><li title="*-3-strap"><input type="checkbox">*-3-strap</li><li title="*-Bifold wallet"><input type="checkbox">*-Bifold wallet</li><li title="*-Clip coin purse"><input type="checkbox">*-Clip coin purse</li><li title="*-Credit card holder"><input type="checkbox">*-Credit card holder</li><li title="*-ECCO Belt"><input type="checkbox">*-ECCO Belt</li><li title="*-Fancy Shopper"><input type="checkbox">*-Fancy Shopper</li><li title="*-Flamingo"><input type="checkbox">*-Flamingo</li><li title="*-IPad pouch"><input type="checkbox">*-IPad pouch</li><li title="*-IPhone Pouch"><input type="checkbox">*-IPhone Pouch</li><li title="*-Laptop Briefcase 17 Inch"><input type="checkbox">*-Laptop Briefcase 17 Inch</li><li title="*-Pouch"><input type="checkbox">*-Pouch</li><li title="*-Sling back"><input type="checkbox">*-Sling back</li><li title="*-Smart Phone Holder"><input type="checkbox">*-Smart Phone Holder</li><li title="*-Weekender"><input type="checkbox">*-Weekender</li><li title="*-iPad Case"><input type="checkbox">*-iPad Case</li><li title="T-Bar鞋-T-bar"><input type="checkbox">T-Bar鞋-T-bar</li><li title="T字鞋-T-bar"><input type="checkbox">T字鞋-T-bar</li><li title="一脚套-Slip on"><input type="checkbox">一脚套-Slip on</li><li title="三折钱夹-Trifold Wallet"><input type="checkbox">三折钱夹-Trifold Wallet</li><li title="中帮-Mid cut"><input type="checkbox">中帮-Mid cut</li><li title="中帮快粘贴-Mid cut quick fastener"><input type="checkbox">中帮快粘贴-Mid cut quick fastener</li><li title="中帮快速扣合-Mid cut quick fastener"><input type="checkbox">中帮快速扣合-Mid cut quick fastener</li><li title="中帮拉链-Mid cut zip"><input type="checkbox">中帮拉链-Mid cut zip</li><li title="中帮系带-Mid cut lace"><input type="checkbox">中帮系带-Mid cut lace</li><li title="乐福鞋-Loafer"><input type="checkbox">乐福鞋-Loafer</li><li title="人字拖-Thong"><input type="checkbox">人字拖-Thong</li><li title="休闲皮带-"><input type="checkbox">休闲皮带-</li><li title="休闲皮带-Belt casual modern"><input type="checkbox">休闲皮带-Belt casual modern</li><li title="休闲皮带-Casual Belt"><input type="checkbox">休闲皮带-Casual Belt</li><li title="低帮-Low cut"><input type="checkbox">低帮-Low cut</li><li title="低帮快粘贴-Low cut quick fastener"><input type="checkbox">低帮快粘贴-Low cut quick fastener</li><li title="低帮快速锁扣-Low cut quick fastener"><input type="checkbox">低帮快速锁扣-Low cut quick fastener</li><li title="低帮拉链-Low cut zip"><input type="checkbox">低帮拉链-Low cut zip</li><li title="低帮系带-Low cut lace"><input type="checkbox">低帮系带-Low cut lace</li><li title="低帮系带靴-Mid cut zip"><input type="checkbox">低帮系带靴-Mid cut zip</li><li title="公文包-"><input type="checkbox">公文包-</li><li title="公文包-Briefcase"><input type="checkbox">公文包-Briefcase</li><li title="凉鞋-Ankle Strap"><input type="checkbox">凉鞋-Ankle Strap</li><li title="凉鞋-Sandal"><input type="checkbox">凉鞋-Sandal</li><li title="化妆包-Cosmetic Pouch"><input type="checkbox">化妆包-Cosmetic Pouch</li><li title="双肩包-"><input type="checkbox">双肩包-</li><li title="名片夹-Businesscard holder"><input type="checkbox">名片夹-Businesscard holder</li><li title="后空凉鞋-Sling back"><input type="checkbox">后空凉鞋-Sling back</li><li title="多功能斜挎包-Versatile Crossbody"><input type="checkbox">多功能斜挎包-Versatile Crossbody</li><li title="多功能背包-Versatile Backpack"><input type="checkbox">多功能背包-Versatile Backpack</li><li title="大手提包-Overnighter"><input type="checkbox">大手提包-Overnighter</li><li title="大肩背包-Shopper"><input type="checkbox">大肩背包-Shopper</li><li title="女士皮带-"><input type="checkbox">女士皮带-</li><li title="女式皮带-"><input type="checkbox">女式皮带-</li><li title="女式皮带-Ladies Belt"><input type="checkbox">女式皮带-Ladies Belt</li><li title="小休闲包-Bodybag"><input type="checkbox">小休闲包-Bodybag</li><li title="小款拉链钱夹-"><input type="checkbox">小款拉链钱夹-</li><li title="小款斜挎包-"><input type="checkbox">小款斜挎包-</li><li title="小款水桶包-"><input type="checkbox">小款水桶包-</li><li title="小肩背包-Baguette Bag"><input type="checkbox">小肩背包-Baguette Bag</li><li title="快粘贴-Quick fastener"><input type="checkbox">快粘贴-Quick fastener</li><li title="快速锁扣-Speedlace"><input type="checkbox">快速锁扣-Speedlace</li><li title="手包-Clutch"><input type="checkbox">手包-Clutch</li><li title="手拿包-"><input type="checkbox">手拿包-</li><li title="手提包-"><input type="checkbox">手提包-</li><li title="手提包-Handbag"><input type="checkbox">手提包-Handbag</li><li title="手腕包-"><input type="checkbox">手腕包-</li><li title="手腕包-Clutch Wallet"><input type="checkbox">手腕包-Clutch Wallet</li><li title="托特包-"><input type="checkbox">托特包-</li><li title="托特包-Tote Shopper"><input type="checkbox">托特包-Tote Shopper</li><li title="托特包-Tote"><input type="checkbox">托特包-Tote</li><li title="护照夹-Passport Cover"><input type="checkbox">护照夹-Passport Cover</li><li title="拖鞋-Slide"><input type="checkbox">拖鞋-Slide</li><li title="斜挎包-"><input type="checkbox">斜挎包-</li><li title="斜挎包-Cross Body Bag"><input type="checkbox">斜挎包-Cross Body Bag</li><li title="斜挎包-Crossbody"><input type="checkbox">斜挎包-Crossbody</li><li title="旅行包-Overnighter"><input type="checkbox">旅行包-Overnighter</li><li title="旅行钱夹-Travel Wallet"><input type="checkbox">旅行钱夹-Travel Wallet</li><li title="正装皮带-"><input type="checkbox">正装皮带-</li><li title="正装皮带-Belt formal"><input type="checkbox">正装皮带-Belt formal</li><li title="正装皮带-Dressy Belt"><input type="checkbox">正装皮带-Dressy Belt</li><li title="水桶包-"><input type="checkbox">水桶包-</li><li title="水桶包-Drawstring Bag"><input type="checkbox">水桶包-Drawstring Bag</li><li title="法式钱夹-French Wallet"><input type="checkbox">法式钱夹-French Wallet</li><li title="浅口女鞋-Pump"><input type="checkbox">浅口女鞋-Pump</li><li title="渔夫款-Fisherman"><input type="checkbox">渔夫款-Fisherman</li><li title="玛丽珍鞋-Mary Jane"><input type="checkbox">玛丽珍鞋-Mary Jane</li><li title="电脑公文包-Laptop Briefcase 15 inch"><input type="checkbox">电脑公文包-Laptop Briefcase 15 inch</li><li title="电脑包-Laptop Bag"><input type="checkbox">电脑包-Laptop Bag</li><li title="男士皮带-"><input type="checkbox">男士皮带-</li><li title="男士皮带-Mens Belt"><input type="checkbox">男士皮带-Mens Belt</li><li title="男士钱夹礼盒-Gift Box Men"><input type="checkbox">男士钱夹礼盒-Gift Box Men</li><li title="礼盒-Gift Box"><input type="checkbox">礼盒-Gift Box</li><li title="系带-Lace"><input type="checkbox">系带-Lace</li><li title="系带鞋-Lace"><input type="checkbox">系带鞋-Lace</li><li title="经典皮带-Classic Belt"><input type="checkbox">经典皮带-Classic Belt</li><li title="经典钱夹-"><input type="checkbox">经典钱夹-</li><li title="经典钱夹-Classic Wallet"><input type="checkbox">经典钱夹-Classic Wallet</li><li title="翻盖钱夹-"><input type="checkbox">翻盖钱夹-</li><li title="翻盖钱夹-Flap Wallet"><input type="checkbox">翻盖钱夹-Flap Wallet</li><li title="肩背包-"><input type="checkbox">肩背包-</li><li title="肩背包-City Bag"><input type="checkbox">肩背包-City Bag</li><li title="肩背包-Hobo Bag"><input type="checkbox">肩背包-Hobo Bag</li><li title="肩背包-Sacbag"><input type="checkbox">肩背包-Sacbag</li><li title="肩背包-Shoulderbag"><input type="checkbox">肩背包-Shoulderbag</li><li title="背包-Versatile Backpack"><input type="checkbox">背包-Versatile Backpack</li><li title="芭蕾舞鞋-Ballerina"><input type="checkbox">芭蕾舞鞋-Ballerina</li><li title="莫卡辛款-Moccasin"><input type="checkbox">莫卡辛款-Moccasin</li><li title="莫卡辛鞋-Moccasin"><input type="checkbox">莫卡辛鞋-Moccasin</li><li title="蒙克鞋-Monk"><input type="checkbox">蒙克鞋-Monk</li><li title="购物包-"><input type="checkbox">购物包-</li><li title="运动包-Gym Bag"><input type="checkbox">运动包-Gym Bag</li><li title="运动皮带-Sporty Belt"><input type="checkbox">运动皮带-Sporty Belt</li><li title="通勤包-"><input type="checkbox">通勤包-</li><li title="通勤包-City Bag"><input type="checkbox">通勤包-City Bag</li><li title="邮差包-"><input type="checkbox">邮差包-</li><li title="邮差包-Messenger Bag"><input type="checkbox">邮差包-Messenger Bag</li><li title="酷感休闲皮带-Cool Casual Belt"><input type="checkbox">酷感休闲皮带-Cool Casual Belt</li><li title="钱夹-"><input type="checkbox">钱夹-</li><li title="钱夹-Money Clip Wallet"><input type="checkbox">钱夹-Money Clip Wallet</li><li title="钱夹-Wallet"><input type="checkbox">钱夹-Wallet</li><li title="长款拉链钱夹-"><input type="checkbox">长款拉链钱夹-</li><li title="长款拉链钱夹-Ziparound Wallet"><input type="checkbox">长款拉链钱夹-Ziparound Wallet</li><li title="长款钱夹-"><input type="checkbox">长款钱夹-</li><li title="长款钱夹-Continental Wallet"><input type="checkbox">长款钱夹-Continental Wallet</li><li title="马鞍包-"><input type="checkbox">马鞍包-</li><li title="高尔夫皮带-Golf Belt"><input type="checkbox">高尔夫皮带-Golf Belt</li><li title="高帮-High cut"><input type="checkbox">高帮-High cut</li><li title="高帮快粘贴-High cut quick fastener"><input type="checkbox">高帮快粘贴-High cut quick fastener</li><li title="高帮拉链-High cut zip"><input type="checkbox">高帮拉链-High cut zip</li><li title="高帮系带-High cut lace"><input type="checkbox">高帮系带-High cut lace</li><li title="高帮紧腿-High cut slim fit"><input type="checkbox">高帮紧腿-High cut slim fit</li><li title="高跟鞋-Pump"><input type="checkbox">高跟鞋-Pump</li><li title="鱼嘴-Peep toe"><input type="checkbox">鱼嘴-Peep toe</li></ul></div><br>
+                        <div><label>大类</label><input value="全部" id="bgTypeInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" data-code=""><ul id="typeBg" class="activity_select shopperSelect" style="display: none;"><li title="休闲-Casual"><input type="checkbox">休闲-Casual</li><li title="健身-Train"><input type="checkbox">健身-Train</li><li title="包袋-Bags"><input type="checkbox">包袋-Bags</li><li title="女童-Girls"><input type="checkbox">女童-Girls</li><li title="婴儿-Infants"><input type="checkbox">婴儿-Infants</li><li title="户外-Outdoor"><input type="checkbox">户外-Outdoor</li><li title="探索-Explore"><input type="checkbox">探索-Explore</li><li title="正装-Formal"><input type="checkbox">正装-Formal</li><li title="活力生活-Active Lifestyle"><input type="checkbox">活力生活-Active Lifestyle</li><li title="男童-Boys"><input type="checkbox">男童-Boys</li><li title="皮带-Belt"><input type="checkbox">皮带-Belt</li><li title="皮带-Belts"><input type="checkbox">皮带-Belts</li><li title="童鞋-Casual"><input type="checkbox">童鞋-Casual</li><li title="跑步-Run"><input type="checkbox">跑步-Run</li><li title="钱夹-Wallet"><input type="checkbox">钱夹-Wallet</li><li title="钱夹-Wallets"><input type="checkbox">钱夹-Wallets</li><li title="高尔夫-Golf"><input type="checkbox">高尔夫-Golf</li></ul></div>
+                        <div><label>中类</label><input value="全部" id="midTypeInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" data-code=""><ul id="typeMid" class="activity_select shopperSelect" style="display: none;"><li title="凉鞋-Sandals"><input type="checkbox">凉鞋-Sandals</li><li title="包袋-Bags"><input type="checkbox">包袋-Bags</li><li title="皮带-Belt"><input type="checkbox">皮带-Belt</li><li title="钱夹-Wallet"><input type="checkbox">钱夹-Wallet</li><li title="靴子-Boots"><input type="checkbox">靴子-Boots</li><li title="鞋-Shoes"><input type="checkbox">鞋-Shoes</li></ul></div>
+                        <div><label>小类</label><input value="全部" id="smTypeInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" style="margin-right: 20px" data-code=""><ul style="right: 20px; display: none;" id="typeSm" class="activity_select shopperSelect"><li title="配件-A&amp;A"><input type="checkbox">配件-A&amp;A</li><li title="鞋-SHOE"><input type="checkbox">鞋-SHOE</li></ul></div><br>
+                        <div><label>款号</label><input style="margin-bottom: 0px" class="text_input input120px" type="text" id="goodsCode"></div>
+                        <div><label>商品条码</label><input style="margin-bottom: 0px" class="text_input input120px" type="text" id="skuCode"></div>
+                    </div>
+                    <div style="margin-left: 255px;">
+                        <div class="souvenir_switch" style="float: left"><label style="width: 38px">排除</label><div id="chooseShopperSwitch"><em></em></div></div>
+                        <div class="resetSelectGoods" id="resetSelectGoods">重置条件</div>
+                        <span class="chooseShopperBtn" id="chooseShopEnter" data-id="CORP_ID:C10234">确定</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+        <!-- 拉取区域 -->
+        <div class="mask_screen">
+            <div id="screen_area" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选店铺群组</h4>
+                <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="area_search">
+                    <span class="icon-ishop_3-05" id="area_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加&nbsp;<span>0</span>&nbsp;个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_area">确定</div>
+        </div></div>
+        <!-- 拉取店铺 -->
+        <div class="mask_screen">
+            <div id="screen_shop" style="display: block" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选店铺</h4>
+                <div class="xuanzhong">
+                    <div class="xuanzhong_p">
+                        <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                        <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                    </div>
+                    <div class="xuanzhong_p">
+                        <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                                    data-areacode="">
+                        <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                    </div>
+                </div>
+                <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="store_search">
+                    <span class="icon-ishop_3-05" id="store_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加&nbsp;<span>0</span>&nbsp;个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_shop">确定</div>
+        </div>
+        </div>
+        <!-- 拉取品牌 -->
+        <div class="mask_screen">
+            <div id="screen_brand" class="screen_area">
+            <div class="screen_title">
+                <h4>筛选品牌</h4>
+                <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+                <div class="xian"></div>
+            </div>
+            <div class="input_s">
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" id="brand_search">
+                    <span class="icon-ishop_3-05" id="brand_search_f"></span>
+                </div>
+                <div class="s_center"></div>
+                <div class="s_pitch">
+                    已添加&nbsp;<span>0</span>&nbsp;个
+                </div>
+            </div>
+            <div class="screen_content">
+                <div class="screen_content_l">
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="screen_content_z">
+                    <div class="shift shift_right" title="右移">&gt;</div>
+                    <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                    <div class="shift shift_left" title="左移">&lt;</div>
+                    <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                </div>
+                <div class="screen_content_r">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="screen_que" id="screen_que_brand">确定</div>
+        </div>
+        </div>
+    </div>
+ <div class="file">
+        <div class="file_content">
+            <div id="download"></div>
+            <div  class="icon-ishop_6-12" id="file_close"></div>
+        </div>
+        <div id="file_list">
+            <div id="file_list_l">
+                <ul>
+                </ul>
+            </div>
+            <div id="file_list_z">
+                <div class="c_shift">
+                    <div id="left_shift" class="shift" title="右移">></div>
+                    <div id="left_shift_all" class="shift" title="右移全部">>></div>
+                    <div id="right_shift" class="shift" title="左移"><</div>
+                    <div id="right_shift_all" class="shift" title="左移全部"><<</div>
+                </div>
+            </div>
+            <div id="file_list_r">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <div class="file_btn">
+            <div class="file_submit" id="file_submit">提交</div>
+        </div>
+    </div>
+    <div class="export_list" id="export_list">
+        <!--<div><span class="icon-ishop_6-12"></span></div>-->
+        <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+        <div style="height: 220px;">
+            <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+            <div class="export_list_all" id="export_list_all">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <div class="hide_export">
+            <span id="hide_export" style="float: left">关闭</span>
+            <span id="to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+        </div>
+    </div>
+    <div class="tk" id="download_all" style="position: fixed">
+        <span class="icon-ishop_6-12" id="X_download"></span>
+        <p>请点击"确认",下载压缩文件</p>
+        <div class="btn">
+            <em class="cancel" id="cancel_download">取消</em>
+            <em class="album_enter" id="enter_download"><a>确认</a></em>
+        </div>
+    </div>
+    <div class="p" id="p"></div>
+    <div id="goods_vip" class="goods_vip">
+        <div id="goods_vip_content" class="goods_vip_content">
+            <p class="goods_vip_title"><span class="shu"></span><span>购买会员</span></p>
+            <div class="goods_vip_info">
+                <div><span>商品名称：</span><span id="product_name" style="margin-right: 10px"></span></div>
+                <div><span>款号：</span><span id="sku_code"></span></div>
+                <div style="float: right;"><span>购买会员数 </span><span style="color: #32b5c9" id="vips">0</span></div>
+            </div>
+            <div style="display: none" class="goods_vip_list_p" id="goods_vip_list_p">
+                <div class="goods_vip_list">
+                    <!--<div class="goods_vip_list_line">-->
+                        <!--<div class="goods_vip_list_line_title">-->
+                            <!--<span class="name">会员名:</span><span>赵伟</span>-->
+                            <!--<span class="name">手机号:</span><span>18014802011</span>-->
+                            <!--<span class="name">会员等级:</span><span>高级VIP</span>-->
+                            <!--<span class="name">会员卡号:</span><span>1231312312</span>-->
+                            <!--<div style="position: absolute;right: 30px;top: 0;"><span class="name">单数:</span><span>12</span></div>-->
+                            <!--<span class="icon-ishop_8-02" ></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="goods_vip_list_line_content">-->
+                        <!--<div class="goods_vip_list_line_content_title">-->
+                            <!--<span class="name">日期：</span><span>2015-21-21</span>-->
+                            <!--<span class="name">订单号：</span><span>23123123123</span>-->
+                            <!--<span class="name"></span><span>4件商品</span>-->
+                            <!--<span class="name"></span><span>20积分</span>-->
+                            <!--<div style="float: right"><span class="name">导购：</span><span>吴媛媛</span></div>-->
+                        <!--</div>-->
+                        <!--<div class="goods_vip_list_line_content_table">-->
+                            <!--<table>-->
+                                <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th>序号</th>-->
+                                    <!--<th>购买件数</th>-->
+                                    <!--<th>条码</th>-->
+                                    <!--<th>吊牌价</th>-->
+                                    <!--<th>折扣</th>-->
+                                    <!--<th>价格</th>-->
+                                <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbdoy>-->
+                                    <!--<tr>-->
+                                        <!--<td>1</td>-->
+                                        <!--<td>22</td>-->
+                                        <!--<td>dasdad</td>-->
+                                        <!--<td>112</td>-->
+                                        <!--<td>0.1</td>-->
+                                        <!--<td>222</td>-->
+                                    <!--</tr>-->
+                                <!--</tr>-->
+                                <!--</tbdoy>-->
+                            <!--</table>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div style="height: 200px;line-height: 200px;color: #888;text-align: center;display: none">
+                暂无数据
+            </div>
+            <div class="goods_vip_table" style="display: none">
+                <ul class="goods_vip_table_menu">
+                    <li class="active">性别</li>
+                    <li>年龄</li>
+                    <li>省份</li>
+                </ul>
+                <div class="goods_vip_table_content">
+                    <div id="chart_sex"></div>
+                    <div id="chart_age" style="display: none"></div>
+                    <div id="chart_province" style="display: none;"></div>
+                    <div style="height: 200px;line-height: 200px;color: #888;text-align: center;display: none">
+                        暂无数据
+                    </div>
+                </div>
+            </div>
+            <div class="goods_vip_foot">
+                    <span id="hide_goods_vip">返回</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/insidePostRequire.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script src="../echart/echarts.min.js"></script>
+<script src="../echart/china.js"></script>
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<script src="/js/silide.js?2017040170331"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script src="../js/vip/commodity.js?20170830"></script>
+<script>
+    $("#date_box ul").niceScroll({cursorborder:"0 none",cursorcolor:"#c5c5c5",cursoropacitymin:"0",boxzoom:false});
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").siblings().find("span").removeClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").siblings().find("a").css({color:"#FFF"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0070']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0070']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
+</body>
+</html>

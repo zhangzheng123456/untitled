@@ -4,11 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class QueryRequestParams  extends  RequestParams{
 
 
-    public QueryRequestParams(String corpcode) {
-        super(corpcode);
+    public QueryRequestParams(List<String> drplist) {
+        super(drplist);
     }
 
     public class QueryTrans extends  BaseTrans{

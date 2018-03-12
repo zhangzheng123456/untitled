@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>系统管理</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div id="wrapper">
+    </div> -->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="col-lg-12 pre_title"><span>系统管理</span>
+            <i class="icon-ishop_8-03"></i><label>编辑爱秀模块管理</label></div>
+            <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+                <form class="conpany_msg">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="standard" id="standard" style="display: block">
+                        <div class="standard_pice">板块管理</div>
+                        <div class="silider_parent">
+                            <div class="silider_heaader icons_heaader">
+                                <ul>
+                                    <li style="width: 25%;text-align: center">序号</li>
+                                    <li style="width: 25%;text-align: center">板块名称</li>
+                                    <li style="width: 25%;text-align: center">板块图标</li>
+                                    <li style="width: 25%;text-align: center">是否显示</li>
+                                </ul>
+                            </div>
+                            <div class="standard_pice_list icons_list" id="icons_list" style="max-height: 420px;height: 420px;">
+                                <ul>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="editor_detail_em col-lg-4  animated fadeInRight">
+                <div class="operedit_btn">
+                    <ul>
+                        <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    </ul>
+                </div>
+                 <form class="msg_detail">
+                    <div>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+                    </div>
+                    <div>
+                    <span><label>可用</label><em class="checkbox_isactive">
+                    <input type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
+                    </div>
+                </form>
+            </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../js/loading.js"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/system/ishop_module_operate.js?2017040170331"></script>
+</body>
+
+</html>

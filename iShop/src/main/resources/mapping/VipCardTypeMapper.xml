@@ -5,31 +5,23 @@
     <resultMap type="com.bizvane.ishop.entity.VipCardType" id="VipCardType">
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="vip_card_type_code" property="vip_card_type_code"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="vip_card_type_name" property="vip_card_type_name"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_type_code" property="vip_card_type_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_type_name" property="vip_card_type_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="degree" property="degree" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_group_code" property="store_group_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_card_type_id" property="vip_card_type_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllVipCardType" resultMap="VipCardType">
-        SELECT def_vip_card_type.id,
-        def_vip_card_type.corp_code,
-        def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name,
-        def_vip_card_type.degree,
-        def_corp.corp_name,
-        def_vip_card_type.created_date,
-        def_vip_card_type.modified_date,
-        def_vip_card_type.modifier,
-        def_vip_card_type.creater,
-        def_vip_card_type.isactive
+        SELECT def_vip_card_type.*,
+        def_corp.corp_name
         FROM def_vip_card_type,def_corp
         WHERE def_vip_card_type.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -63,7 +55,12 @@
             <if test="degree!=null">
                 degree,
             </if>
-
+            <if test="brand_code!=null">
+                brand_code,
+            </if>
+            <if test="store_group_code!=null">
+                store_group_code,
+            </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
@@ -79,6 +76,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="vip_card_type_id!=null">
+                vip_card_type_id,
+            </if>
 
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -92,9 +92,14 @@
             <if test="vip_card_type_name!=null">
                 #{vip_card_type_name},
             </if>
-
             <if test="degree!=null">
                 #{degree},
+            </if>
+            <if test="brand_code!=null">
+                #{brand_code},
+            </if>
+            <if test="store_group_code!=null">
+                #{store_group_code},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -111,15 +116,20 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="vip_card_type_id!=null">
+                #{vip_card_type_id},
+            </if>
         </trim>
     </insert>
 
     <update id="updateVipCardType" parameterType="com.bizvane.ishop.entity.VipCardType">
         UPDATE def_vip_card_type
         <trim prefix="SET" suffixOverrides=",">
-
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
+            </if>
+            <if test="vip_card_type_id!=null">
+                vip_card_type_id=#{vip_card_type_id},
             </if>
             <if test="vip_card_type_code!=null">
                 vip_card_type_code=#{vip_card_type_code},
@@ -129,6 +139,12 @@
             </if>
             <if test="degree!=null">
                 degree=#{degree},
+            </if>
+            <if test="brand_code!=null">
+                brand_code=#{brand_code},
+            </if>
+            <if test="store_group_code!=null">
+                store_group_code=#{store_group_code},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
@@ -154,24 +170,26 @@
         WHERE id=#{id};
     </delete>
 
-    <select id="selectVipCardTypeScreen" resultType="com.bizvane.ishop.entity.VipCardType">
-        SELECT def_vip_card_type.id,
-        def_vip_card_type.corp_code,
-        def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name,
-        def_vip_card_type.degree,
-        def_corp.corp_name,
-        def_vip_card_type.created_date,
-        def_vip_card_type.modified_date,
-        def_vip_card_type.modifier,
-        def_vip_card_type.creater,
-        def_vip_card_type.isactive
+    <select id="selectVipCardTypeScreen" resultMap="VipCardType">
+        SELECT def_vip_card_type.*,
+        def_corp.corp_name
         FROM def_vip_card_type,def_corp
         WHERE  def_vip_card_type.corp_code=def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_card_type.corp_code = #{corp_code}
         </if>
-
+        <if test="brand_array != null">
+            AND
+            <foreach collection="brand_array" index="index" item="item" open="(" separator="or" close=")">
+                def_vip_card_type.brand_code regexp #{item}
+            </foreach>
+        </if>
+        <if test="store_group_array != null">
+            AND
+            <foreach collection="store_group_array" index="index" item="item" open="(" separator="or" close=")">
+                def_vip_card_type.store_group_code regexp #{item}
+            </foreach>
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
@@ -191,34 +209,16 @@
     </select>
 
     <select id="selVipCardTypeById" resultType="com.bizvane.ishop.entity.VipCardType">
-         SELECT def_vip_card_type.id,
-        def_vip_card_type.corp_code,
-        def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name,
-        def_vip_card_type.degree,
-        def_corp.corp_name,
-        def_vip_card_type.created_date,
-        def_vip_card_type.modified_date,
-        def_vip_card_type.modifier,
-        def_vip_card_type.creater,
-        def_vip_card_type.isactive
+         SELECT def_vip_card_type.*,
+        def_corp.corp_name
         FROM def_vip_card_type,def_corp
         WHERE def_vip_card_type.corp_code=def_corp.corp_code
         AND def_vip_card_type.id =#{id}
     </select>
 
     <select id="selVipCardTypeByCode" resultType="com.bizvane.ishop.entity.VipCardType">
-         SELECT def_vip_card_type.id,
-        def_vip_card_type.corp_code,
-        def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name,
-        def_vip_card_type.degree,
-        def_corp.corp_name,
-        def_vip_card_type.created_date,
-        def_vip_card_type.modified_date,
-        def_vip_card_type.modifier,
-        def_vip_card_type.creater,
-        def_vip_card_type.isactive
+        SELECT def_vip_card_type.*,
+        def_corp.corp_name
         FROM def_vip_card_type,def_corp
         WHERE def_vip_card_type.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -229,17 +229,8 @@
     </select>
 
     <select id="selVipCardTypeByName" resultType="com.bizvane.ishop.entity.VipCardType">
-        SELECT def_vip_card_type.id,
-        def_vip_card_type.corp_code,
-        def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name,
-        def_vip_card_type.degree,
-        def_corp.corp_name,
-        def_vip_card_type.created_date,
-        def_vip_card_type.modified_date,
-        def_vip_card_type.modifier,
-        def_vip_card_type.creater,
-        def_vip_card_type.isactive
+        SELECT def_vip_card_type.*,
+        def_corp.corp_name
         FROM def_vip_card_type,def_corp
         WHERE def_vip_card_type.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -249,17 +240,64 @@
         AND def_vip_card_type.vip_card_type_name = #{vip_card_type_name}
     </select>
 
-    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.VipCardType">
-        SELECT def_vip_card_type.id,
-        def_vip_card_type.corp_code,
-        def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name,
-        def_vip_card_type.degree
+    <select id="selectByCorp" resultMap="VipCardType">
+        SELECT def_vip_card_type.*,
+        def_corp.corp_name
         FROM def_vip_card_type,def_corp
         WHERE def_vip_card_type.corp_code = def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND def_vip_card_type.corp_code=#{corp_code}
         </if>
         AND def_vip_card_type.isactive = #{isactive}
+        <if test="search_value != null and search_value !=''">
+            AND def_vip_card_type.vip_card_type_name LIKE concat('%', #{search_value},'%')
+        </if>
     </select>
+
+    <select id="selectByRole" resultMap="VipCardType">
+        SELECT def_vip_card_type.*,
+        def_corp.corp_name
+        FROM def_vip_card_type,def_corp
+        WHERE def_vip_card_type.corp_code = def_corp.corp_code
+        AND def_vip_card_type.corp_code=#{corp_code}
+        <if test="brand_array != null">
+            AND
+            <foreach collection="brand_array" index="index" item="item" open="(" separator="or" close=")">
+                def_vip_card_type.brand_code regexp #{item}
+            </foreach>
+        </if>
+        <if test="store_group_array != null">
+            AND
+            <foreach collection="store_group_array" index="index" item="item" open="(" separator="or" close=")">
+                def_vip_card_type.store_group_code regexp #{item}
+            </foreach>
+        </if>
+        AND def_vip_card_type.isactive = #{isactive}
+        <if test="search_value != null and search_value !=''">
+            AND def_vip_card_type.vip_card_type_name LIKE concat('%', #{search_value},'%')
+        </if>
+    </select>
+    
+    <select id="isExistByType" resultMap="VipCardType">
+        SELECT *
+        FROM def_vip_card_type
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+           AND corp_code=#{corp_code}
+        </if>
+
+        <if test="vip_card_type_id!=null and vip_card_type_id!=''">
+          AND   vip_card_type_id=#{vip_card_type_id}
+        </if>
+
+        <if test="vip_card_type_code!=null and vip_card_type_code!=''">
+            AND vip_card_type_code=#{vip_card_type_code}
+        </if>
+
+        <if test="vip_card_type_name!=null and vip_card_type_name!=''">
+            AND vip_card_type_name=#{vip_card_type_name}
+        </if>
+
+    </select>
+
 </mapper>

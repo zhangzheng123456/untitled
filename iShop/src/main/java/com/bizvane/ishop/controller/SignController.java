@@ -221,9 +221,9 @@
 ////            String corp_code = request.getSession().getAttribute("corp_code").toString();
 ////            String user_code = request.getSession().getAttribute("user_code").toString();
 ////            String jsString = request.getParameter("param");
-////            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+////             JSONObject jsonObj = JSONObject.parseObject(jsString);
 ////            String message = jsonObj.get("message").toString();
-////            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+////             JSONObject jsonObject = JSONObject.parseObject(message);
 ////            String search_value = jsonObject.get("searchValue").toString();
 ////            String screen = jsonObject.get("list").toString();
 ////            PageInfo<Sign> list = null;

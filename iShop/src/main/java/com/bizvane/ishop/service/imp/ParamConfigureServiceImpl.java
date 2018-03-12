@@ -1,13 +1,12 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.ParamConfigureMapper;
 import com.bizvane.ishop.entity.ParamConfigure;
 import com.bizvane.ishop.service.ParamConfigureService;
-import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +70,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
             if (param_type == null) {
                 result = "";
             } else if (param_type.equals("switch")) {
-                result = "开关";
+                    result = "开关";
             } else if (param_type.equals("list")) {
                 result = "选择列表";
             } else if (param_type.equals("custom")) {
@@ -97,7 +96,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
     @Override
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         String param_name = jsonObject.get("param_name").toString();
         String param_type = jsonObject.get("param_type").toString();
         String param_values = null;
@@ -136,7 +135,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
     public String update(String message, String user_id) throws Exception {
         String result = "";
         String param_values = null;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         int param_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String param_name = jsonObject.get("param_name").toString();

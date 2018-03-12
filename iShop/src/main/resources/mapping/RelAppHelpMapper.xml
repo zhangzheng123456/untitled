@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.RelAppHelpMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.RelAppHelp" id="RelAppHelp">
+        <id column="id" property="id"/>
+        <result column="rel_help_code" property="rel_help_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_help_code" property="app_help_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_help_title" property="app_help_title"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_help_content" property="app_help_content"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="RelAppHelp">
+        SELECT
+          rah.id,
+          rah.rel_help_code,
+          rah.app_help_code,
+          rah.app_help_title,
+          rah.app_help_content,
+          rah.modified_date,
+          rah.modifier,
+          rah.created_date,
+          rah.creater,
+          rah.isactive
+        FROM rel_app_help rah
+        WHERE rah.ID=#{id}
+    </select>
+
+    <select id="selectAllRelAppHelp" resultMap="RelAppHelp">
+        SELECT
+        rah.id,
+        rah.rel_help_code,
+        rah.app_help_code,
+        rah.app_help_title,
+        rah.app_help_content,
+        rah.modified_date,
+        rah.modifier,
+        dah.app_help_name,
+        rah.created_date,
+        rah.creater,
+        rah.isactive
+        FROM rel_app_help rah,def_app_help dah
+        WHERE rah.app_help_code=dah.app_help_code
+        <if test="search_value != null and search_value !=''">
+            AND (  dah.app_help_name LIKE concat('%',#{search_value},'%')
+            OR rah.app_help_title LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY rah.id DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM
+        rel_app_help
+        WHERE ID=#{id}
+    </delete>
+
+    <insert id="insertRelAppHelp" parameterType="com.bizvane.ishop.entity.RelAppHelp">
+        INSERT INTO rel_app_help
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="rel_help_code!=null">
+                rel_help_code,
+            </if>
+            <if test="app_help_code!=null">
+                app_help_code,
+            </if>
+            <if test="app_help_title!=null">
+                app_help_title,
+            </if>
+            <if test="app_help_content!=null">
+                app_help_content,
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+
+            <if test="rel_help_code!=null">
+                #{rel_help_code},
+            </if>
+            <if test="app_help_code!=null">
+                #{app_help_code},
+            </if>
+            <if test="app_help_title!=null">
+                #{app_help_title},
+            </if>
+            <if test="app_help_content!=null">
+                #{app_help_content},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateRelAppHelp" parameterType="com.bizvane.ishop.entity.RelAppHelp">
+        UPDATE rel_app_help
+        <trim prefix="SET" suffixOverrides=",">
+
+            <if test="rel_help_code!=null">
+                rel_help_code=#{rel_help_code},
+            </if>
+            <if test="app_help_code!=null">
+                app_help_code=#{app_help_code},
+            </if>
+            <if test="app_help_title!=null">
+                app_help_title=#{app_help_title},
+            </if>
+            <if test="app_help_content!=null">
+                app_help_content=#{app_help_content},
+            </if>
+
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectRelAppHelpScreen" resultMap="RelAppHelp">
+        SELECT
+        rah.id,
+        rah.rel_help_code,
+        rah.app_help_code,
+        rah.app_help_title,
+        rah.app_help_content,
+        dah.app_help_name,
+        rah.modified_date,
+        rah.modifier,
+        rah.created_date,
+        rah.creater,
+        rah.isactive
+        FROM rel_app_help rah,def_app_help dah
+        WHERE
+        dah.app_help_code=rah.app_help_code
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!='' and entryKey=='app_help_name'">
+                    dc.${entryKey} REGEXP ${entryValue}
+                </when>
+
+                <when test="entryValue!=''">
+                    rah.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By rah.id
+        ORDER BY rah.id DESC
+    </select>
+
+    <select id="selectByAppHelp" resultType="com.bizvane.ishop.entity.RelAppHelp">
+        SELECT
+        rah.id,
+        rah.rel_help_code,
+        rah.app_help_code,
+        rah.app_help_title,
+        rah.app_help_content,
+        rah.modified_date,
+        rah.modifier,
+        rah.created_date,
+        rah.creater,
+        rah.isactive
+        FROM rel_app_help rah
+        WHERE rah.isactive= #{isactive}
+        <if test="app_help_code!=null and app_help_code!=''">
+            AND rah.app_help_code= #{app_help_code}
+        </if>
+
+        <if test="app_help_title!=null and app_help_title!=''">
+            AND rah.app_help_title= #{app_help_title}
+        </if>
+
+    </select>
+
+    <select id="selectRelHelps" resultType="com.bizvane.ishop.entity.RelAppHelp">
+        SELECT
+        rah.id,
+        rah.rel_help_code,
+        rah.app_help_code,
+        rah.app_help_title,
+        rah.app_help_content,
+        rah.modified_date,
+        rah.modifier,
+        rah.created_date,
+        rah.creater,
+        rah.isactive
+        FROM rel_app_help rah
+        WHERE rah.isactive= #{isactive}
+    </select>
+
+    <select id="selectByAppHelpCode" resultType="com.bizvane.ishop.entity.RelAppHelp">
+    SELECT
+    rah.id,
+    rah.rel_help_code,
+    rah.app_help_code,
+    rah.app_help_title,
+   dah.app_help_name
+    FROM rel_app_help rah,def_app_help dah
+    WHERE  rah.app_help_code = dah.app_help_code
+    and rah.app_help_code=#{app_help_code}
+    ORDER by rah.id
+</select>
+
+</mapper>

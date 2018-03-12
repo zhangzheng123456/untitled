@@ -5,19 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
     <title>新增会员类型定义</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet?201715">
-    <link href="../css/animate.css?201715" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
-    <link href="../css/style.css?201715" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?201715">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?201715">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
-    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet?2017040170331">
+    <link href="../css/animate.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
     <style>
         body{
             margin-top:81px;
         }
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+        input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+        .tip{
+            text-align: center;
+            background-color: #6cc1c8;
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            border-radius: 50%;
+            font-size: 12px;
+            color: #fff;
+            position: absolute;
+            right: -25px;
+            top: 5px;
+            cursor: pointer;
+        }
+        .tipContent{
+            word-break: break-all;
+            display: none;
+            position: absolute;
+            left: 550px;
+            top: 25px;
+            width: 110px;
+            font-size: 12px;
+            background-color: #fff;
+            padding: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .tip:hover+.tipContent{
+            display: inline-block;
+        }
     </style>
+
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -34,8 +70,11 @@
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <span><label style="color:#c26655">会员类型编号*</label><input type="text" id="vip_type_code" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型编号不能为空！"></div></div></span>
+                    <div style="margin: 0">
+                        <span style="position: relative;display: inline-block"><label style="color:#c26655">会员类型ID*</label><input type="text" id="vip_type_id" verify="Empty" maxlength="20"/><span class="tip">!</span> <span class="tipContent">与线下保持一致</span><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型ID不能为空！"></div></div></span>
+                    </div>
+                    <div style="margin: 0">
+                        <span style="position: relative;display:inline-block;"><label style="color:#c26655">会员类型编号*</label><input type="text" id="vip_type_code" verify="Empty" maxlength="20"/><span class="tip">!</span> <span class="tipContent">与线下保持一致</span><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型编号不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label style="color:#c26655">会员类型名称*</label><input type="text" id="vip_type_name" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空！"></div></div></span>
@@ -56,6 +95,34 @@
                             </ul>
                         </span>
                     </div>
+                    <div>
+                        <div class="task_allot" style="margin-right:14px;display: inline-block; vertical-align:top;color: #c26655">所属品牌*</div>
+                        <div class="good_imgs" style="display: inline-block;width:430px">
+                            <div class="xingming" id="OWN_BRAND_All" style="max-height: 200px; overflow: hidden; outline: none;" tabindex="1">
+
+                            </div>
+                            <div>
+                                <div class="add_app_id" id="ADD_BRAND" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <div class="task_allot" style="margin-right:14px;display: inline-block; vertical-align:top;">店铺群组</div>
+                        <div class="good_imgs" style="display: inline-block;width:430px">
+                            <div class="xingming" id="OWN_AREA_All" style="max-height: 200px; overflow: hidden; outline: none;" tabindex="0">
+
+                            </div>
+                            <div id="test">
+                                <div class="add_app_id" id="ADD_AREA" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
@@ -72,20 +139,95 @@
                 </form>
             </div>
     </div>
+    <!--选取操作-->
+    <div id="screen_area" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选店铺群组</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!--选取品牌操作-->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索品牌" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script type="text/javascript" src="../js/moni_select.js?201715"></script>
-    <script src="../js/loading.js?201715"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <script src="../js/loading.js?2017040170331"></script>
    <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/vip/vip_card_type_operate.js?20161227"></script>
+    <script type="text/javascript" src="../js/vip/vip_card_type_operate.js?20180102"></script>
 </body>
 
 </html>

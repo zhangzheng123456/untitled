@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计分析</title>
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link href="../table/css/inner.css" rel="stylesheet">
+</head>
+<style>
+    .analyzeWrap{
+        padding: 10px 20px;
+        background: #fff;
+        color: #888;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+    .analyzeHeader{
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #ddd;
+        margin-bottom: 65px;
+    }
+    .analyzeHeader>div{
+        display: inline-block;
+        width: 50%;
+    }
+    .header_left>span{
+        display: inline-block;
+        width: 120px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: #587297;
+        cursor: pointer;
+        font-size: 13px;
+    }
+    .header_left .active{
+        background: #5f8bc8;
+        color: #fff;
+    }
+    .content .selectInput{
+        width: 130px;
+        height: 30px;
+        outline: none;
+        border: 1px solid #d7d7d7;
+        border-radius: 5px;
+        margin: 0 10px;
+        padding-left: 5px;
+        /*background: #fff url(../img/icon_list_down.png)no-repeat 97% center;*/
+        padding-right: 25px;
+        color: #888;
+        cursor: pointer
+    }
+    .analyzeContent{
+        position: relative;
+    }
+    .analyzeContent>span{
+        display: block;
+        text-align: center;
+        width: 50%;
+        margin: 0 auto;
+    }
+    .analyzeContent .survey_name{
+        color: #555;
+        font-size: 16px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    .analyzeContent .survey_desc{
+        text-align: left;
+        margin-bottom: 60px;
+    }
+    .survey_box{
+        width: 60%;
+        margin: 0 auto 40px auto;
+    }
+    .survey_box_header{
+        margin-bottom: 30px;
+    }
+    .survey_box_header span{
+        color: #555;
+        font-weight: 500;
+    }
+    .survey_box_header .section_title{
+        font-weight: 800;
+        font-size: 16px;
+    }
+    .survey_box_header .must_fill>span{
+        color: #888;
+        margin: 0 10px;
+    }
+    .survey_box>ul>li+li{
+        margin-top: 15px;
+    }
+    .progress{
+        display: inline-block;
+        width: 400px;
+        height: 10px;
+        background: #f0f0f0;
+        position: relative;
+        vertical-align: middle;
+        margin: 0 20px;
+    }
+    .progress>span{
+        display: inline-block;
+        width: 20%;
+        height: 10px;
+        position: absolute;
+        left: 0;
+        top:0;
+        background: #64cfdf;
+    }
+    .progress_per{
+        display: inline-block;
+        width: 50px;
+        margin-left: 25px;
+        color: #32b5c9;
+    }
+    .answer_amount{
+        margin: 0 5px;
+        color: #32b5c9;
+    }
+    .dialogBtn{
+        color: #5f8bc8;
+        margin-left: 20px;
+        cursor: pointer;
+    }
+    .dialogBtn i{
+        color: #5f8bc8;
+        position: relative;
+        top:1px;
+      }
+    .star_box li{
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+        display: inline-block;
+        background: url('../img/star.png')no-repeat;
+        background-size: 15px;
+        vertical-align: middle;
+    }
+    .star_box .star{
+        background: url('../img/star_S.png')no-repeat;
+        background-size: 15px;
+    }
+    .star_box{
+        display: inline-block;
+    }
+    th{
+        font-weight: normal;
+    }
+    table{
+        text-align: center;
+        color: #4a5f7c;
+    }
+    table tr{
+        height:30px;
+        line-height: 30px;
+    }
+    thead tr,.survey_table tbody tr:nth-child(even){
+        background: #efefef;
+    }
+    .analyzeContent .export_btn{
+        position: absolute;
+        right: 0;
+        top:0;
+        width: 80px;
+        height: 25px;
+        border-radius: 5px;
+        line-height: 25px;
+        text-align: center;
+        cursor: pointer;
+        background: #5f8bc8;
+        color: #fff;
+    }
+    .dialogWrap{
+        display: none;
+        position: fixed;
+        top:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+    }
+    .dialog{
+        width: 820px;
+        height: 490px;
+        padding: 20px 20px 10px 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        -webkit-transform: translate(-50%,-50%);
+        -moz-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+    }
+    .dialog_header i{
+        color: #5f8bc8;
+        margin-right: 5px;
+    }
+    .dialog_header span{
+        color: #4a5f7c;
+        font-size: 13px;
+    }
+    .dialog_btn{
+        display: inline-block;
+        width: 90px;
+        height: 30px;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        background: #5f8bc8;
+        color: #fff;
+        cursor: pointer;
+    }
+    .dialog_middle{
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        margin: 20px 0 10px 0;
+        font-size: 13px;
+    }
+    .dialogWrap .survey_table{
+        height: 300px;
+        margin-bottom: 35px;
+        overflow-y: auto;
+    }
+    .preview_wrap{
+        display: none;
+        margin-top: 80px;
+        position: absolute;
+        top:0;
+        left: 0;
+        right:0;
+        padding: 40px 0;
+        background: #e8e8e8;
+        z-index: 1000;
+    }
+    .preview_wrap:after{
+        content: ",";
+        height: 0;
+        visibility: hidden;
+        display: block;
+        clear: both;
+    }
+    .preview_content_wrap{
+        width: 700px;
+        margin: 0 auto;
+    }
+    .survey_view_web{
+        font-size: 13px;
+        color: #555;
+        width: 700px;
+        height: 1000px;
+        overflow-y: auto;
+        background: #fff;
+        margin-top: 15px;
+        padding: 80px 60px;
+    }
+    .preview_header_left{
+        display: inline-block;
+        width: 50%;
+        font-weight: 900;
+        font-size: 16px;
+    }
+    .preview_header_right{
+        display: inline-block;
+        width: 50%;
+        text-align: right;
+    }
+    .preview_header_right span{
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background: #fff;
+        display: inline-block;
+        border: 1px solid #ddd;
+        border-radius: 7px;
+        cursor: pointer;
+    }
+    .survey_title{
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    .survey_desc{
+        padding: 0 75px;
+        text-align: left;
+        color: #888;
+        margin-bottom: 100px;
+    }
+    .exercise_box{
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+    .must_fill{
+        color: #888;
+        font-weight: normal;
+        margin-right: 5px;
+    }
+    .exercise_box li{
+        padding-left: 30px;
+        font-weight: normal;
+    }
+    .exercise_box li + li{
+        margin-top: 10px;
+    }
+    .exercise_input{
+        width: 330px;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 10px;
+        border: 1px solid #ddd;
+        outline: none;
+        border-radius: 5px;
+    }
+    .exercise_box .grade_star{
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background: url('../img/star.png')no-repeat;
+        background-size: 20px;
+        padding: 0;
+    }
+    .preview_wrap .choose_star{
+        background: url('../img/star_S.png')no-repeat;
+        background-size: 20px;
+    }
+    .exercise_box>ul{
+        margin-top: 20px;
+    }
+    .preview_wrap input[type=checkbox], .preview_wrap input[type=radio]{
+        width: 30px;
+        visibility: hidden;
+        position: absolute;
+    }
+    .preview_wrap input[type=checkbox] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    .preview_wrap input[type=checkbox]:checked + label {
+        border: none;
+        background: url('../table/images/icon_checkbox_S.png') no-repeat center;
+        background-size: 20px;
+    }
+    .preview_wrap input[type=radio] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    .preview_wrap input[type=radio]:checked + label {
+        border: none;
+        background: url(../img/radio_checked.png) no-repeat center;
+        background-size: 20px;
+    }
+    .enterBtn{
+        display: inline-block;
+        background: #6cc1c8;
+        color: #fff;
+        height: 30px;
+        cursor: pointer;
+        margin-left: 20px;
+        text-align: center;
+        line-height: 30px;
+        width: 80px;
+        border-radius: 5px;
+    }
+    .survey_num{
+        display: inline-block;
+        width: 40px;
+        text-align: right;
+    }
+    .export_list{
+        display: none;
+        width: 370px;
+        height: 320px;
+        color:#4a5f7c;
+        border-radius:5px;
+        padding:20px;
+        box-sizing:border-box;
+        background-color: #FFFFFF;
+        position: fixed;
+        left: 50%;
+        top:50%;
+        -webkit-transform: translate(-50%,-50%);
+        -moz-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+        z-index: 788;
+        -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+        -moz-box-shadow: 0 0 10px rgba(0,0,0,0.35);
+        box-shadow: 0 0 10px rgba(0,0,0,0.335);
+    }
+    .export_list_tip{
+        font-size: 12px;margin: 10px 0 20px 0;line-height: 20px
+    }
+    .export_list_all{
+        height: 230px;max-height: 150px;overflow: hidden;overflow-y:auto;font-size: 12px;
+    }
+    .export_list_all li{
+        height: 20px;line-height: 20px;margin-bottom: 10px;
+    }
+    .export_list_all li span{
+        float: right;
+        display: inline-block;
+    }
+    .export_list_btn{
+        display: inline-block;
+        background-color: #41c7db;
+        border-radius: 3px;
+        width:50px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: #FFFFFF;
+        cursor: pointer
+    }
+    .hide_export{
+        text-align: center;
+        padding: 0 20px;
+    }
+    .hide_export span{
+        display: inline-block;
+        color:#FFFFFF;
+        cursor:pointer;
+        background-color:#c4c8d4;
+        width: 90px;
+        height: 26px;
+        line-height: 26px;
+        border-radius: 5px;
+        float: left;
+    }
+    .survey_option{
+        max-width: 120px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+<body>
+<div class="content">
+    <div class="con_table">
+        <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_regime">问卷调查</span><i class="icon-ishop_8-03"></i><label id="survey_label">统计分析</label></div>
+        <div class="analyzeWrap">
+            <div class="analyzeHeader">
+                <div class="header_left" id="head_nav"><span data-type="all" class="active">答案汇总</span><span data-type="single">答题人信息</span></div><div style="text-align: right">查询范围<input type="text" class="selectInput laydate-icon" id="start">至<input style="margin-right: 0" type="text" class="selectInput laydate-icon" id="survey_end"><span id="dateEnter" class="enterBtn">确定</span></div>
+            </div>
+            <div class="analyzeContent">
+                <span class="survey_name" id="survey_name"></span>
+                <span class="survey_desc" id="survey_desc"></span>
+                <div id="survey_boxWrap">
+                </div>
+            </div>
+            <div class="analyzeContent" style="display: none">
+                <span class="survey_name" id="survey_names"></span>
+                <span class="export_btn" id="export_person">导出</span>
+                <div id="table" class="survey_table" style="max-height: 600px;overflow-y: auto">
+                    <table cellpadding="0" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>会员姓名</th>
+                            <th>会员卡号</th>
+                            <th>会员手机号</th>
+                            <th>答题数</th>
+                            <th>提交时间</th>
+                            <th>问卷填写详情</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>吴徐敏</td>
+                                <td>C102333</td>
+                                <td>1388044444</td>
+                                <td>400</td>
+                                <td>2016/02/23 15:04:02</td>
+                                <td>是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialogWrap" id="dialogWrap">
+    <div class="dialog" id="dialog">
+        <div class="dialog_header"><i class="icon-ishop_6-28"></i><span>您对我们的意见【填空题】</span></div>
+        <div>
+            <div class="dialog_middle">
+                <!--<span style="display: inline-block;width:45%;color: #637ea4">回答数量<span>100</span>条</span><span style="display: inline-block;width:55%;text-align: right">查询范围<input type="text" class="selectInput">至<input style="margin-right: 0" type="text" class="selectInput"></span>-->
+                <span style="display: inline-block;width:45%;color: #637ea4">回答数量<span id="dialog_total">100</span>条</span>
+            </div>
+            <div>
+                <table  cellpadding="0" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th width="5%">序号</th>
+                        <th width="20%">会员姓名</th>
+                        <th width="20%">会员卡号</th>
+                        <th width="20%">会员手机号</th>
+                        <th width="35">回答内容</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="survey_table" id="survey_table">
+                <table  cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <span class="dialog_btn" id="exportBtn">导出</span>
+                <span class="dialog_btn" style="background: #c4c8d4;float: right" id="closeDialog">返回</span>
+            </div>
+        </div>
+    </div>
+    <div class="export_list" id="export_list">
+        <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+        <div style="height: 220px;">
+            <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+            <div class="export_list_all" id="export_list_all">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <div class="hide_export">
+            <span id="hide_export" style="float: left">关闭</span>
+            <span id="to_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+        </div>
+    </div>
+    <div class="tk" id="exportWrap" style="display: none;">
+        <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+        <div class="btn">
+            <em class="cancel download_close">返回</em>
+            <em class="album_enter" id="downloadBtn"><a>下载</a></em>
+        </div>
+    </div>
+</div>
+<div class="dialogWrap" id="exportPersonWrap">
+    <div class="export_list" id="vipexport_list" style="display: block">
+        <div class="select_title"> <i class="icon-ishop_6-28"></i> <span>下载多个文档</span></div>
+        <div style="height: 220px;">
+            <div class="export_list_tip">请先依次点击<span style="color: #41c7db">导出</span>按钮，待导出完成后再点击<span style="color: #41c7db">下载</span></div>
+            <div class="export_list_all" id="vipexport_list_all">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <div class="hide_export">
+            <span id="viphide_export" style="float: left">关闭</span>
+            <span id="vipto_zip" style="float: right;background-color: #637ea4">压缩ZIP</span>
+        </div>
+    </div>
+    <div class="tk" id="vipexportWrap">
+        <p style="height: 120px;line-height: 120px;">请点击下载导出文件</p>
+        <div class="btn">
+            <em class="cancel close_person_btn">返回</em>
+            <em class="album_enter"><a>下载</a></em>
+        </div>
+    </div>
+</div>
+<div class="preview_wrap" id="preview_wrap">
+    <div class="preview_content_wrap">
+        <div class="preview_header_left">问卷详情</div>
+        <div class="survey_view_web">
+            <div class="survey_title" id="preview_name">五一调查促销</div>
+            <div class="survey_desc" id="preview_desc">说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明</div>
+            <div id="survey_view_web">
+                <div class="exercise_box">
+                    <span class="exercise_index">1.</span><span class="must_fill">*必填</span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                    <ul>
+                        <li><input type="radio" id="radio_11" name="radio"><label
+                                for="radio_11"></label><span><span>选项</span></span></li>
+                        <li><input type="radio" id="radio_21" name="radio"><label
+                                for="radio_21"></label><span><span>选项</span></span></li>
+                        <li><input type="radio" id="radio_31" name="radio"><label
+                                for="radio_31"></label><span><span>选项</span></span></li>
+                    </ul>
+                </div>
+                <div class="exercise_box">
+                    <span class="exercise_index">2.</span><span class="must_fill">*必填</span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                    <ul>
+                        <li><input type="checkbox" id="check1"><label
+                                for="check1"></label><span><span>选项</span></span></li>
+                        <li><input type="checkbox" id="check2"><label
+                                for="check2"></label><span><span>选项</span></span></li>
+                        <li><input type="checkbox" id="check3"><label
+                                for="check3"></label><span><span>选项</span></span></li>
+                    </ul>
+                </div>
+                <div class="exercise_box">
+                    <span class="exercise_index">4.</span><span class="must_fill"></span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                    <ul>
+                        <li>
+                            <input type="text" class="exercise_input">
+                        </li>
+                    </ul>
+                </div>
+                <div class="exercise_box">
+                    <span>分段标题</span>
+                </div>
+                <div class="exercise_box">
+                    <span class="exercise_index">4.</span><span class="must_fill"></span><span>点击这里输入您的问题</span><span>【单选题】</span>
+                    <ul style="padding-left: 30px">
+                        <li class="grade_star"></li>
+                        <li class="grade_star"></li>
+                        <li class="grade_star"></li>
+                        <li class="grade_star"></li>
+                        <li class="grade_star"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script src="/js/loading.js?2017040170331"></script>
+<script type="text/javascript" src="/js/laydate/laydate.js"></script>
+<script>
+    var oc = new ObjectControl();
+    var survey = {
+        num:1,
+        answer_num:1,
+        next_page:false,
+        answer_next:false,
+        answer_name:"",
+        answer_check:"",
+        allData:"",//答题人总数
+        info:[],//答题人信息详情
+        template:[],//问卷
+        init:function () {
+            this.allEvent();
+            this.getDetails();
+        },
+        allEvent:function () {
+            //tab切换
+            $("#head_nav span").click(function () {
+                survey.num = 1;
+                var index = $(this).index();
+                $(this).addClass("active");
+                $(this).siblings("span").removeClass("active");
+                $(".analyzeContent").eq(index).show();
+                $(".analyzeContent").eq(index).siblings(".analyzeContent").hide();
+                survey.getDetails();
+            });
+            //回答列表滚动
+            $("#survey_table").unbind("scroll").bind("scroll",function(){
+                var offsetHeight = $(this).height(),
+                    scrollHeight = $(this)[0].scrollHeight,
+                    scrollTop = $(this)[0].scrollTop;
+                if(scrollTop + offsetHeight >= scrollHeight && scrollTop != 0){
+                    if(survey.answer_next){
+                        survey.answer_num++;
+                    }else{
+                        return
+                    }
+                    survey.getAnswer(survey.answer_name,survey.answer_check);
+                }
+            });
+            //答题人列表滚动
+            $("#table").unbind("scroll").bind("scroll",function(){
+                var offsetHeight = $(this).height(),
+                    scrollHeight = $(this)[0].scrollHeight,
+                    scrollTop = $(this)[0].scrollTop;
+                if(scrollTop + offsetHeight >= scrollHeight && scrollTop != 0){
+                    if(survey.next_page){
+                        survey.num++;
+                    }else{
+                        return
+                    }
+                    survey.getDetails();
+                }
+            });
+            //时间范围确定
+            $("#dateEnter").click(function () {
+                survey.num = 1;
+                survey.getDetails();
+            });
+            //查看会员弹窗
+            $("#survey_boxWrap").on("click",".openDialog",function () {
+                survey.answer_num = 1;
+                survey.answer_name = $(this).parents(".survey_box").find(".survey_single_name").text();
+                survey.answer_check = $(this).parents(".survey_box").find(".must_fill").text() == "" ? "false" : "true";
+                $("#dialog_total").text($(this).parents(".survey_box").find(".answer_amount").text());
+                $('#dialogWrap').show();
+                survey.getAnswer(survey.answer_name,survey.answer_check);
+            });
+            $("#closeDialog").click(function () {
+                $('#dialogWrap').hide();
+            });
+            //弹窗导出
+            $("#exportBtn").click(function () {
+                $("#dialog").hide();
+                var allData = $(this).parents("#dialog").find("#dialog_total").text();
+                var list_html="";
+                var allPage=Math.ceil(allData/2000);
+                $("#vipexport_list_all ul").html("");
+                for(var a=1;a<allPage+1;a++){
+                    var start_num=(a-1)*2000 + 1;
+                    var end_num="";
+                    if (allData < a*2000 ){
+                        end_num = allData
+                    }else{
+                        end_num = a*2000
+                    }
+                    list_html+= '<li>'
+                        +'<span style="float: left">导出('+start_num+'~'+end_num+')</span>'
+                        +'<span class="export_list_btn" data-page="'+a+'">导出</span>'
+                        +'<span style="margin-right:10px;" class="state"></span>'
+                        +'</li>'
+                }
+                $("#export_list_all ul").html(list_html);
+                $("#export_list").show();
+                $("#export_list_all").scrollTop(0);
+                $("#export_list_all .export_list_btn").click(function () {
+                    if($(this).hasClass("btn_active")){
+                        return
+                    }
+                    var self=$(this);
+                    var page=$(this).attr("data-page");
+                    var param = {};
+                    $(this).next().text("导出中...");
+                    $(this).addClass("btn_active");
+                    param["id"]=sessionStorage.getItem("id");
+                    param["page_num"]=page;
+                    param["page_size"]="2000";
+                    param["screen"]= {"start":$("#start").val(),"end":$("#survey_end").val()};
+                    param["type"]="input";
+                    param["check"]=survey.answer_check;
+                    param["name"]=survey.answer_name;
+                    oc.postRequire("post","/questionnaire/exportExeclAnswer",'',param,function (data) {
+                        if(data.code=="0"){
+                            var message=JSON.parse(data.message);
+                            var path=message.path;
+                            path=path.substring(1,path.length-1);
+                            self.attr("data-path",path);
+                            self.next().text("导出完成");
+                            self.html("<a href='/"+path+"' style='display: inline-block;width: 100%;height: 100%;color: #FFFFFF'>下载</a>");
+                            self.css("backgroundColor","#637ea4");
+                        }else if(data.code=="-1"){
+                            self.removeClass("btn_active");
+                            self.next().text("导出失败");
+                        }
+                    });
+                });
+            });
+            $("#hide_export").click(function () {
+                $("#export_list").hide();
+                $("#dialog").show();
+            });
+            $(".download_close").click(function () {
+                $("#exportWrap").hide();
+                $("#export_list").show();
+            });
+            $("#to_zip").click(function(){
+                var a=$("#export_list_all ul li a");
+                var URL="";
+                var param={};
+                if(a.length==0){
+                    frame();
+                    $('.frame').html("请先导出文件");
+                    return;
+                }
+                for(var i=a.length-1;i>=0;i--){
+                    if(i>0){
+                        URL+=$(a[i]).attr("href")+","
+                    }else{
+                        URL+=$(a[i]).attr("href");
+                    }
+                }
+                param.url=URL;
+                param.name="答题详情";
+                whir.loading.add("","0.5");
+                oc.postRequire("post","/vip/exportZip", "",param, function(data){
+                    if(data.code=="0"){
+                        var path=JSON.parse(data.message).path;
+                        path=path.substring(1,path.length-1);
+                        $("#exportWrap a").prop("href","/"+path);
+                        $("#p").css("zIndex","789");
+                        whir.loading.remove();
+                        $("#exportWrap").show();
+                    }
+                    if(data.code=="-1"){
+                        whir.loading.remove();
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "操作失败"
+                        });
+                    }
+                })
+            });
+            //答题人导出,关闭
+            $("#export_person").click(function () {
+                $("#exportPersonWrap").show();
+                var list_html="";
+                var allPage=Math.ceil(survey.allData/2000);
+                $("#vipexport_list_all ul").html("");
+                for(var a=1;a<allPage+1;a++){
+                    var start_num=(a-1)*2000 + 1;
+                    var end_num="";
+                    if (survey.allData < a*2000 ){
+                        end_num = survey.allData
+                    }else{
+                        end_num = a*2000
+                    }
+                    list_html+= '<li>'
+                        +'<span style="float: left">导出('+start_num+'~'+end_num+')</span>'
+                        +'<span class="export_list_btn" data-page="'+a+'">导出</span>'
+                        +'<span style="margin-right:10px;" class="state"></span>'
+                        +'</li>'
+                }
+                $("#vipexport_list_all ul").html(list_html);
+                $("#vipexport_list_all").scrollTop(0);
+                $("#vipexport_list_all .export_list_btn").click(function () {
+                    if($(this).hasClass("btn_active")){
+                        return;
+                    }
+                    var self=$(this);
+                    var page=$(this).attr("data-page");
+                    var param = {};
+                    $(this).next().text("导出中...");
+                    $(this).addClass("btn_active");
+                    param["id"]=sessionStorage.getItem("id");
+                    param["page_num"]=page;
+                    param["page_size"]="2000";
+                    param["screen"]= {"start":$("#start").val(),"end":$("#survey_end").val()};
+                    param["type"]="single";
+                    oc.postRequire("post","/questionnaire/exportExeclVipAnswer",'',param,function (data) {
+                        if(data.code=="0"){
+                            var message=JSON.parse(data.message);
+                            var path=message.path;
+                            path=path.substring(1,path.length-1);
+                            self.attr("data-path",path);
+                            self.next().text("导出完成");
+                            self.html("<a href='/"+path+"' style='display: inline-block;width: 100%;height: 100%;color: #FFFFFF'>下载</a>");
+                            self.css("backgroundColor","#637ea4");
+                        }else if(data.code=="-1"){
+                            self.removeClass("btn_active");
+                            self.next().text("导出失败");
+                        }
+                    });
+                });
+            });
+            $("#viphide_export").click(function () {
+                $("#exportPersonWrap").hide();
+            });
+            $(".close_person_btn").click(function () {
+                $("#vipexportWrap").hide();
+            });
+            $("#vipto_zip").click(function(){
+                var a=$("#vipexport_list_all ul li a");
+                var URL="";
+                var param={};
+                if(a.length==0){
+                    frame();
+                    $('.frame').html("请先导出文件");
+                    return;
+                }
+                for(var i=a.length-1;i>=0;i--){
+                    if(i>0){
+                        URL+=$(a[i]).attr("href")+","
+                    }else{
+                        URL+=$(a[i]).attr("href");
+                    }
+                }
+                param.url=URL;
+                param.name="答题人详情";
+                whir.loading.add("","0.5");
+                oc.postRequire("post","/vip/exportZip", "",param, function(data){
+                    if(data.code=="0"){
+                        var path=JSON.parse(data.message).path;
+                        path=path.substring(1,path.length-1);
+                        $("#vipexportWrap a").prop("href","/"+path);
+                        $("#p").css("zIndex","789");
+                        whir.loading.remove();
+                        $("#vipexportWrap").show();
+                    }
+                    if(data.code=="-1"){
+                        whir.loading.remove();
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "操作失败"
+                        });
+                    }
+                })
+            });
+            //答题人详情
+            $("#table").on("click","a",function () {
+                $("#preview_wrap").show();
+                var arr = survey.template;
+                var templte = '';
+                var k = $(this).parents("tr").index();
+                var info = survey.info[k];
+                var index = 1;
+                arr.map(function (item,i) {
+                    var type = item.type;
+                    var is_fill = item.check == 'true' ? "*必填" : '';
+                    var name = item.name;
+                    if(type == "radio" || type == "checkbox"){
+                        var li = '';
+                        var type_name = type == "radio" ? "【单选题】" : "【多选题】";
+                        if(type == 'radio'){
+                            item.options.map(function (items) {
+                                var check = info[i].value == items ? "checked='true'" : '';
+                                li += '<li><input '+check+' type="radio"><label></label><span><span>'+items+'</span></span></li>'
+                            });
+                        }else {
+                            item.options.map(function (items) {
+                                var check = '';
+                                var arr = info[i].value.split(",");
+                                for(var n=0;n<arr.length;n++){
+                                    arr[n]==items ? check = "checked='true'" : '';
+                                }
+                                li += '<li><input '+check+' type="checkbox"><label></label><span><span>'+items+'</span></span></li>'
+                            });
+                        }
+                        templte += '<div class="exercise_box">'
+                            + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>'+type_name+'</span><ul>'
+                            + li
+                            + '</ul></div>';
+                    }else if(type == "input"){
+                        templte += ' <div class="exercise_box">'
+                            + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>【填空题】</span><ul>'
+                            + '<li><input type="text" class="exercise_input" value="'+info[i].value+'" readonly></li></ul></div>';
+                    }else if(type == "grade"){
+                        var li =  '';
+                        for (var n = 0; n < 5 ; n++){
+                            if(info[i].value > n){
+                                li += '<li class="grade_star choose_star"></li>'
+                            }else {
+                                li += '<li class="grade_star"></li>'
+                            }
+                        }
+                        templte += '<div class="exercise_box">'
+                            + '<span class="exercise_index">'+index+'</span><span class="must_fill">'+is_fill+'</span><span>'+name+'</span><span>【评分题】</span><ul>'
+                            + '<ul style="padding-left: 30px">'+li+'</ul></div>';
+                    }else if(type == "title"){
+                        templte += '<div class="exercise_box"><span>'+name+'</span></div>';
+                    }
+                    type == "title" ? index = 1 : index++;
+                });
+                $("#survey_view_web").html(templte);
+            });
+            $("#preview_wrap").click(function (e) {
+                var e = e || window.event;
+                if($(e.target).is(".preview_wrap")){
+                    $("#preview_wrap").hide();
+                }
+            });
+            //返回问卷列表
+            $("#back_regime").click(function () {
+                $(window.parent.document).find('#iframepage').attr("src","/vip/survey.html");
+            });
+        },
+        getDetails:function () {
+            var param = {};
+            param.id = sessionStorage.getItem("id");
+            param.page_size = 20;
+            param.page_num = survey.num;
+            param.type = $("#head_nav .active").attr("data-type");
+            param.screen = {"start":$("#start").val(),"end":$("#survey_end").val()};
+            whir.loading.add("",0.5);
+            oc.postRequire("post","/questionnaire/qtNaireInfo","",param,function (data) {
+                if(data.code == 0){
+                    var msg = JSON.parse(data.message);
+                    var list = msg.list;
+                    var info = JSON.parse(msg.info);
+                    survey.allData = msg.all_count;
+                    survey.template = JSON.parse(info.template);
+                    $("#survey_name,#survey_names,#preview_name").text(info.title);
+                    $('#survey_desc,#preview_desc').html(info.illustrate.replace(/\n/g,'<br />'));
+                    if($("#head_nav .active").attr("data-type") == 'all'){
+                        var index = 1;
+                        var template = '';
+                        for(var i=0;i<list.length;i++){
+                            var type = list[i].type;
+                            var check = list[i].check == 'true' ? "<span>*必填</span>" : "";
+                            if(type == 'radio' || type == 'checkbox'){
+                                var typeName = type == 'radio' ? "【单选题】" : "【多选题】";
+                                var option = list[i].options;
+                                var li = '';
+                                for(var j=0;j<option.length;j++){
+                                    li += '<li><span class="survey_num">'+option[j].num+'次</span><span class="progress_per">'+option[j].rate+'</span><span class="progress"><span style="width: '+option[j].rate+'"></span></span><span class="survey_option" title="'+option[j].option+'">'+option[j].option+'</span></li>'
+                                }
+                                template += '<div class="survey_box">'
+                                    + '<div class="survey_box_header"><span class="survey_index">'+index+'.</span><span class="must_fill">'+check+'</span><span>'+list[i].name+'</span><span>'+typeName+'</span></div>'
+                                    + '<ul>'+li+'</ul></div>';
+                            }else if(type == 'input'){
+                                template += '<div class="survey_box">'
+                                    + '<div class="survey_box_header"><span class="survey_index">'+index+'.</span><span class="must_fill">'+check+'</span><span class="survey_single_name">'+list[i].name+'</span><span>【填空题】</span></div>'
+                                    + '<div>回答数<span class="answer_amount">'+list[i].size+'</span>条<span class="dialogBtn openDialog">查看<i class="icon-ishop_8-03"></i></span></div></div>'
+                            }else if(type == 'title'){
+                                template += '<div class="survey_box"><div class="survey_box_header"><span class="section_title">'+list[i].name+'</span></div></div>'
+                            }else if(type == 'grade'){
+                                var option = list[i].options;
+                                var uls = '<ul><li></li><li></li><li></li><li></li><li></li></ul>';
+                                var li = '';
+                                for(var j=option.length-1;j>-1;j--){
+                                    var ul = $(uls).clone();
+                                    ul.find("li:lt("+option[j].option+")").addClass("star");
+                                    ul = ul.html();
+                                    li += '<li><span class="survey_num">'+option[j].num+'次</span><span class="progress_per">'+option[j].rate+'</span><span class="progress"><span style="width: '+option[j].rate+'"></span></span><ul class="star_box">'+ul+'</ul></li>';
+                                }
+                                template += '<div class="survey_box">'
+                                    + '<div class="survey_box_header"><span class="survey_index">'+index+'.</span><span class="must_fill">'+check+'</span><span>'+list[i].name+'</span><span>【评分题】</span></div><ul>'+li+'</ul></div>';
+                            }
+                            type == 'title' ? index = 1 : index++;
+                        }
+                        $("#survey_boxWrap").html(template);
+                    }else {
+                        survey.info = [];
+                        msg.all_count > survey.num*20 ? survey.next_page = true : survey.next_page = false;
+                        var tr = '';
+                        if(list.length == 0){
+                            for(var k = 0;k<10;k++){
+                                k == 4 ? tr += '<tr><td colspan="7">暂无数据</td></tr>' : tr += '<tr><td colspan="7"></td></tr>';
+                            }
+                        }
+                        for(var i=0;i<list.length;i++){
+                            survey.info.push(list[i].info);
+                            var n = (survey.num-1)*20+i+1;
+                            tr +='<tr><td>'+n+'</td><td>'+list[i].vip_name+'</td><td>'+list[i].cardno+'</td><td>'+list[i].vip_phone+'</td><td>'+list[i].answer_num+'</td><td>'+list[i].modified_date+'</td><td><a style="color: #5f8bc8;">详情<i class="icon-ishop_8-03" style="color: #5f8bc8;"></i></a></td></tr>'
+                        }
+                        survey.num == 1 ? $("#table tbody").html(tr) : $("#table tbody").append(tr);
+                    }
+                }
+                whir.loading.remove();
+            });
+        },
+        getAnswer:function (name,check) {
+            var param = {};
+            param.id = sessionStorage.getItem("id");
+            param.page_size = 20;
+            param.page_num = survey.answer_num;
+            param.type = "input";
+            param.name = name;
+            param.check = check;
+            param.screen = {"start":$("#start").val(),"end":$("#survey_end").val()};
+            oc.postRequire("post","/questionnaire/qtNaireAnswer","",param,function (data) {
+                if(data.code == 0){
+                    var msg = JSON.parse(data.message);
+                    var list = msg.list;
+                    var tr = '';
+                    msg.all_count > survey.answer_num*20 ? survey.answer_next = true : survey.answer_next = false;
+                    if(list.length == 0){
+                        for(var k = 0;k<10;k++){
+                            k == 4 ? tr += '<tr><td colspan="5">暂无数据</td></tr>' : tr += '<tr><td colspan="5"></td></tr>';
+                        }
+                    }
+                    for(var i=0;i<list.length;i++){
+                        var n = (survey.answer_num-1)*20+i+1;
+                        tr += '<tr><td width="5%">'+n+'</td><td>'+list[i].vip_name+'</td><td  width="20%">'+list[i].cardno+'</td><td  width="20%">'+list[i].vip_phone+'</td><td  width="35%">'+list[i].info+'</td></tr>';
+                    }
+                    survey.answer_num == 1 ? $("#survey_table tbody").html(tr) : $("#survey_table tbody").append(tr);
+                }
+            });
+        }
+    }
+    $(function () {
+        survey.init();
+    });
+    //日期调用插件
+    var start = {
+        elem: '#start',
+        format: 'YYYY-MM-DD',
+        istime: false,
+        max: '2099-06-16 23:59:59', //最大日期
+        istoday: false,
+        fixed: false,
+        choose: function (datas) {
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            end.start = datas; //将结束日的初始值设定为开始日
+        }
+    };
+    var end = {
+        elem: '#survey_end',
+        format: 'YYYY-MM-DD',
+        istime: false,
+        max: '2099-06-16 23:59:59',
+        istoday: false,
+        fixed: false,
+        choose: function (datas) {
+            start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    laydate(start);
+    laydate(end);
+    //删除弹框
+    function frame(){
+        var def= $.Deferred();
+        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('.content').append('<div class="frame" style="position: fixed;left:'+left+'px;top:'+tp+'px;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+            def.resolve();
+        },2000);
+        return def;
+    }
+</script>
+</body>
+</html>

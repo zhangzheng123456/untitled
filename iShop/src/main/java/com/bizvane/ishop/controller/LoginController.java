@@ -2,13 +2,15 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.OssUtils;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
 import java.util.*;
 
 @Controller
@@ -43,6 +46,15 @@ public class LoginController {
     WeimobService weimobService;
     @Autowired
     AppversionService appversionService;
+    @Autowired
+    VipParamService vipParamService;
+    @Autowired
+    ParamConfigureService paramConfigureService;
+    @Autowired
+    CorpParamService corpParamService;
+    @Autowired
+    VipActivityService vipActivityService;
+
     private static final Logger log = Logger.getLogger(LoginController.class);
 
     String id;
@@ -78,12 +90,17 @@ public class LoginController {
     @RequestMapping(value = "/login")
     public String loginIndex(HttpServletRequest request,HttpServletResponse response) {
         try {
-            request.getSession().removeAttribute("user_id");
+            request.getSession().removeAttribute("user_code");
             request.getSession().removeAttribute("role_code");
             request.getSession().removeAttribute("group_code");
             request.getSession().removeAttribute("corp_code");
             request.getSession().removeAttribute("store_code");
-            request.getSession().removeAttribute("menu");
+            request.getSession().removeAttribute("area_code");
+            request.getSession().removeAttribute("brand_code");
+            request.getSession().removeAttribute("manager_corp");
+            request.getSession().removeAttribute("corp_code_cm");
+            request.getSession().removeAttribute("logout");
+
             return "login";
         } catch (Exception ex) {
             log.info(ex.getMessage());
@@ -94,12 +111,16 @@ public class LoginController {
     @RequestMapping(value = "/home/login")
     public String loginHome(HttpServletRequest request,HttpServletResponse response) {
         try {
-            request.getSession().removeAttribute("user_id");
+            request.getSession().removeAttribute("user_code");
             request.getSession().removeAttribute("role_code");
             request.getSession().removeAttribute("group_code");
             request.getSession().removeAttribute("corp_code");
             request.getSession().removeAttribute("store_code");
-            request.getSession().removeAttribute("menu");
+            request.getSession().removeAttribute("area_code");
+            request.getSession().removeAttribute("brand_code");
+            request.getSession().removeAttribute("manager_corp");
+            request.getSession().removeAttribute("corp_code_cm");
+            request.getSession().removeAttribute("logout");
             response.sendRedirect("/login.html");
 
             return "login";
@@ -112,13 +133,16 @@ public class LoginController {
     @RequestMapping(value = "/login_out")
     public String loginOut(HttpServletRequest request) {
         try {
-            request.getSession().removeAttribute("user_id");
+            request.getSession().removeAttribute("user_code");
             request.getSession().removeAttribute("role_code");
             request.getSession().removeAttribute("group_code");
             request.getSession().removeAttribute("corp_code");
             request.getSession().removeAttribute("store_code");
-            request.getSession().removeAttribute("menu");
-
+            request.getSession().removeAttribute("area_code");
+            request.getSession().removeAttribute("brand_code");
+            request.getSession().removeAttribute("manager_corp");
+            request.getSession().removeAttribute("corp_code_cm");
+            request.getSession().removeAttribute("logout");
             return "login";
         } catch (Exception ex) {
             log.info(ex.getMessage());
@@ -136,24 +160,25 @@ public class LoginController {
         try {
             String param = request.getParameter("param");
             log.info("json--authcode-------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String phone = jsonObject.get("PHONENUMBER").toString();
-            System.out.println(phone);
-            String msg = userService.getAuthCode(phone);
-            if (!msg.equals(Common.DATABEAN_CODE_ERROR))
-                userService.saveAuthCode(phone,msg,"web");
-            if (msg.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("fail");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage(msg);
+            String corp_code = "";
+            if (jsonObject.containsKey("activity_code")){
+                VipActivity activity = vipActivityService.getActivityByCode(jsonObject.getString("activity_code"));
+                corp_code = activity.getCorp_code();
             }
+            System.out.println(phone);
+            String msg = userService.getAuthCode(phone,corp_code);
+            if (corp_code.equals(""))
+                //验证码记录
+                userService.saveAuthCode(phone,msg,"web");
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(msg);
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -173,10 +198,10 @@ public class LoginController {
         try {
             String param = request.getParameter("param");
             log.info("json--authcode-------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String phone = jsonObject.get("phone").toString();
             String authcode = jsonObject.get("authcode").toString();
 
@@ -253,10 +278,10 @@ public class LoginController {
         try {
             String param = request.getParameter("param");
             log.info("json---------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String phone = jsonObject.get("phone").toString();
             String password = jsonObject.get("password").toString();
             log.info("phone:" + phone + " password:" + password);
@@ -271,17 +296,17 @@ public class LoginController {
             } else {
                 System.out.println(user_info);
                 //插入登录日志
-//                Date now = new Date();
-//                LoginLog log = new LoginLog();
-//                log.setPlatform("WEB");
-//                log.setPhone(phone);
-//                log.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//                log.setModified_date(Common.DATETIME_FORMAT.format(now));
-//                log.setModifier("root");
-//                log.setCreater("root");
-//                log.setIsactive(Common.IS_ACTIVE_Y);
-//
-//                loginLogService.insertLoginLog(log);
+                Date now = new Date();
+                LoginLog log = new LoginLog();
+                log.setPlatform("WEB");
+                log.setPhone(phone);
+                log.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                log.setModified_date(Common.DATETIME_FORMAT.format(now));
+                log.setModifier("root");
+                log.setCreater("root");
+                log.setIsactive(Common.IS_ACTIVE_Y);
+
+                loginLogService.insertLoginLog(log);
 
 
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -315,7 +340,7 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
-            User user = userService.selectUserById(Integer.parseInt(user_id));
+            User user = userService.selectUserById(user_id);
             menu = functionService.selectAllFunctions(corp_code,user_code, group_code, role_code);
             menus.put("menu", menu);
             menus.put("user_type", user_type);
@@ -338,6 +363,26 @@ public class LoginController {
             user.setVersion_id(version_id);
             userService.updateUser(user);
 
+            //是否显示【退出登录】（Y:显示，N:不显示）
+            String logout = "Y";
+            if (request.getSession().getAttribute("logout") != null && !request.getSession().getAttribute("logout").equals("")
+                    && request.getSession().getAttribute("logout").equals("N")){
+                logout = "N";
+            }
+            menus.put("logout", logout);
+
+
+            String home_logo = "";
+            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.HOME_LOGO, Common.IS_ACTIVE_Y);
+            if (param != null){
+                String id = String.valueOf(param.getId());
+                List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code, id, Common.IS_ACTIVE_Y);
+                if (corpParams.size() > 0)
+                    home_logo = corpParams.get(0).getParam_value();
+            }
+            menus.put("home_logo", home_logo);
+
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
@@ -345,7 +390,7 @@ public class LoginController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
@@ -365,18 +410,27 @@ public class LoginController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String param = request.getParameter("param");
             log.info("json---------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String function_code = jsonObject.get("funcCode").toString();
             //获取动作权限
             List<Map<String,String>> actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             //获取列表显示字段权限
             List<Map<String,String>> columns = functionService.selectColumnByFun(corp_code, user_code, group_code, role_code, function_code);
 
+//            String HIDE_BASIC_SCREEN = "N";
+//            List<CorpParam> corpParams = corpParamService.selectParamByName(corp_code,CommonValue.HIDE_BASIC_SCREEN);
+//            if (corpParams.size() > 0){
+//                HIDE_BASIC_SCREEN = corpParams.get(0).getParam_value();
+//            }
+//            Map<String,String> action = new HashMap<String, String>();
+//            action.put("HIDE_BASIC_SCREEN", HIDE_BASIC_SCREEN);
+//            actions.add(action);
             menus.put("actions", actions);
             menus.put("columns", columns);
+            menus.put("role_code",role_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
@@ -392,7 +446,7 @@ public class LoginController {
     /**
      * 获取详细画面权限
      */
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/detail", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String detailAction(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -405,14 +459,21 @@ public class LoginController {
             String function_code = request.getParameter("funcCode");
             List<Map<String,String>> actions_detail = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, "D" + function_code);
 
+            //获取详情页动作权限
             List<Map<String,String>> actions_fun = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             for (int i = 0; i < actions_fun.size(); i++) {
                 Map<String,String> act = actions_fun.get(i);
-                if (act.get("act_name").equals("edit")) {
+                if (act.get("act_name").equals("edit") || act.get("act_name").equals("cancelVip")) {
                     actions_detail.add(act);
                 }
             }
+
+            //获取详情可编辑字段
+            List<Map<String,String>> columns = functionService.selectRWByFun(corp_code, user_code, group_code, role_code, function_code);
+
             menus.put("actions", actions_detail);
+            menus.put("columns", columns);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
@@ -440,6 +501,7 @@ public class LoginController {
 
             JSONArray cols = new JSONArray();
             String function_code = request.getParameter("funcCode");
+            //获取可筛选列表
             List<TableManager> col = tableManagerService.selByCode(function_code);
 
             //获取列表显示字段权限
@@ -451,6 +513,8 @@ public class LoginController {
                 String show_name = table.getShow_name();
                 String type = table.getFilter_type();
 
+
+                //过滤，不显示列，筛选条件不显示
                 for (int j = 0; j < columns.size(); j++) {
                     if (col_name.equals(columns.get(j).get("column_name"))){
                         JSONObject obj = new JSONObject();
@@ -492,6 +556,32 @@ public class LoginController {
                         cols.add(obj);
                         break;
                     }else if (function_code.equals("F0005") && col_name.equals("brand_name")){
+                        JSONObject obj = new JSONObject();
+                        obj.put("col_name",col_name);
+                        obj.put("show_name",show_name);
+                        obj.put("type",type);
+                        obj.put("value","");
+                        cols.add(obj);
+                        break;
+                    }else if (function_code.equals("F0012") && col_name.equals("store_name")){
+                        JSONObject obj = new JSONObject();
+                        obj.put("col_name",col_name);
+                        obj.put("show_name",show_name);
+                        obj.put("type",type);
+                        obj.put("value","");
+                        cols.add(obj);
+                        break;
+                    }else if (function_code.equals("F0005") && col_name.equals("user_back")){
+                        JSONObject obj = new JSONObject();
+                        obj.put("col_name",col_name);
+                        obj.put("show_name",show_name);
+                        obj.put("type",type);
+                        String value1 = table.getFilter_value();
+                        obj.put("value", JSONArray.parseArray(value1));
+                        cols.add(obj);
+                        break;
+                    }else if ( (function_code.equals("F0064") || function_code.equals("F0065")) &&
+                            (col_name.equals("start_time") || col_name.equals("end_time"))){
                         JSONObject obj = new JSONObject();
                         obj.put("col_name",col_name);
                         obj.put("show_name",show_name);
@@ -552,13 +642,39 @@ public class LoginController {
     @ResponseBody
     public String selAllByCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String function_code = jsonObject.get("function_code").toString();
+
+            //会员分组的导出列表与会员档案的导出列表保持一致
+            if(function_code.equals("F0040")){
+                function_code="F0010";
+            }
             List<TableManager> tableManagers = tableManagerService.selAllByCode(function_code);
+            if (function_code.equals("F0010")) {
+                if (role_code.equals(Common.ROLE_SYS))
+                    corp_code = "C10000";
+                List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
+                List<VipParam> list = new ArrayList<VipParam>();
+                for (int i = 0; i < vipParams.size(); i++) {
+                    VipParam vipParam = vipParams.get(i);
+                    String type = vipParams.get(i).getParam_type();
+                    if (!type.equals("rule"))
+                        list.add(vipParam);
+                }
+                for (int i = 0; i < list.size(); i++) {
+                    TableManager manager = new TableManager();
+                    manager.setColumn_name(list.get(i).getParam_name());
+                    manager.setShow_name(list.get(i).getParam_desc());
+                    manager.setFunction_code("F0010");
+                    tableManagers.add(manager);
+                }
+            }
             com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
             result.put("tableManagers", JSON.toJSONString(tableManagers));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -581,11 +697,11 @@ public class LoginController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             List<Location> locations;
-            if (jsonObject.has("higher_level_code") && !jsonObject.get("higher_level_code").equals("")){
+            if (jsonObject.containsKey("higher_level_code") && !jsonObject.get("higher_level_code").equals("")){
                 String higher_level_code = jsonObject.get("higher_level_code").toString();
                 locations = locationService.selectByHigherLevelCode(higher_level_code);
             }else {
@@ -602,4 +718,99 @@ public class LoginController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 查出下载文件
+     */
+    @RequestMapping(value = "/excel/getOutputExcel", method = RequestMethod.GET)
+    @ResponseBody
+    public String getOutputExcel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String path = request.getSession().getServletContext().getRealPath("lupload");
+        String path_api = request.getSession().getServletContext().getRealPath("api");
+
+        OssUtils ossUtils = new OssUtils();
+        try {
+            ArrayList<String> aa = OutExeclHelper.findFiles(path,path_api,corp_code+user_code);
+
+            ArrayList<String> bb = ossUtils.listObjects("/"+corp_code+"/"+user_code);
+
+            aa.addAll(bb);
+
+            Collections.sort(aa, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    String[] o1s = o1.split("_");
+                    String[] o2s = o2.split("_");
+                    long diff = Long.parseLong(o1s[o1s.length-1].replace(".xls","").replace(".zip","")) - Long.parseLong(o2s[o2s.length-1].replace(".xls","").replace(".zip",""));
+                    if (diff > 0)
+                        return 1;
+                    else if (diff == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+
+            ArrayList<String> list1 = new ArrayList<String>();
+
+            String replace = "http://products-image.oss-cn-hangzhou.aliyuncs.com/exportExcel/"+corp_code+"/"+user_code+"/";
+            JSONArray array = new JSONArray();
+            for (int i = 0; i < aa.size(); i++) {
+                String url = aa.get(i);
+
+                String[] urls = url.split("_");
+                JSONObject object = new JSONObject();
+                object.put("url",url);
+                if (url.startsWith("http://products-image.oss-cn-hangzhou.aliyuncs.com")){
+                    object.put("file_type","oss");
+                }else {
+                    object.put("file_type","");
+                }
+                object.put("file_name",url.replace(replace,""));
+                object.put("time",urls[urls.length-1].replace(".zip","").replace(".xls",""));
+
+                array.add(object);
+                list1.add(aa.get(i));
+            }
+
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(JSON.toJSONString(array));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/user/getCmCorpBySession", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCmBySession(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = String.valueOf(jsonObject.get("corp_code"));
+            request.getSession().setAttribute("corp_code_cm",corp_code);
+            request.getSession().setAttribute("corp_code",corp_code);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("成功");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage("失败");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
 }

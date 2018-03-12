@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>编辑帮助文章</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <!--富文本编辑-->
+    <!--<link href="font_editor/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+    <!--<link href="font_editor/css/froala_editor.min.css" rel="stylesheet" type="text/css">-->
+    <script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.config.js?2017040170331"></script>
+    <script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js?2017040170331"> </script>
+    <script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js?2017040170331"> </script>
+    <script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js?2017040170331"></script>
+    <script src="../js/loading.js?2017040170331"></script>.
+    <style>
+        #page-wrapper {
+            width:100%;
+        }
+        body{
+            margin-top:81px;
+        }
+        #edit div,#edit_show div{margin-bottom: 0px;}
+        #edit,#edit_show{ margin-left: 120px;width: 420px; margin-top: -20px;}
+    </style>
+</head>
+<body style="    margin-right: 200px">
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="col-lg-12 pre_title"><span>系统管理</span><i class="icon-ishop_8-03"></i><span id="back_goods_fab">帮助文章</span><i class="icon-ishop_8-03"></i><label>编辑帮助文章</label></div>
+            <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+                <form class="conpany_msg" style="margin-left:0px">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">板块名称*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span><label style="color:#c26555;">文章标题*</label><input type="text" id="app_help_title" verify="Empty" maxlength="20"/><div style="padding-left:125px" class="hint"><div  hintinfo="文章标题不能为空！"></div></div></span>
+                    </div>
+                    <!--富文本编辑-->
+                    <div>
+                        <label>文章内容</label>
+                        <section >
+                            <div id='edit'>
+                                <script id="editor" type="text/plain" style="width:420px;height:400px;"></script>
+                            </div>
+                        </section>
+                    </div>
+                </form>
+            </div>
+            <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+                <div class="fabadd_oper_btn">
+                    <ul>
+                        <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    </ul>
+                </div>
+                <form class="msg_detail">
+                    <div>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                    </div>
+                </form>
+            </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <!-- Custom and plugin javascript -->
+     <!-- moni select -->
+    <script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/system/help_article_operate.js?2017040170331"></script>
+    <!-- 日期选择器 -->
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <!--富文本编辑器-->
+    <script type="text/javascript">
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor');
+        var ue_show = UE.getEditor('editor_show');
+    </script>
+</body>
+
+</html>

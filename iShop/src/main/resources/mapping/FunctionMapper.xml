@@ -14,12 +14,13 @@
     <select id="selectAllFun" resultType="com.bizvane.ishop.entity.Function">
         SELECT *
         FROM def_function WHERE function_code IN (
-        SELECT function_code FROM def_privilege
-        WHERE (master_code = #{user_code}
-        OR master_code = #{role_code}
-        OR master_code = #{group_code})
-        AND enable = 'Y'
-        AND isactive = 'Y')
+        SELECT dp.function_code FROM def_privilege  AS dp,def_action AS da
+        WHERE dp.function_code = da.function_code
+        AND da.action_name = 'show'
+        AND (dp.master_code = #{user_code} OR dp.master_code = #{role_code} OR dp.master_code = #{group_code})
+        AND dp.enable = 'Y'
+        AND dp.isactive = 'Y'
+        GROUP BY dp.function_code )
         AND isactive = 'Y'
         AND show_order IS NOT NULL
         AND show_order != ''
@@ -172,5 +173,20 @@
             </if>
         </trim>
     </insert>
+
+    <select id="selectPrivilegeByAct" resultMap="privilege">
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.master_code LIKE concat('%',#{search_value},'%')
+        AND p.isactive = 'Y'
+        AND a.action_name = #{action_name}
+        AND a.function_code = #{function_code}
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        ORDER BY b.show_order
+    </select>
 
 </mapper>

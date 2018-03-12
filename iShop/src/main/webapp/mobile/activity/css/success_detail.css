@@ -1,0 +1,37 @@
+html {
+  background-color: #ffffff; }
+
+body {
+  position: relative; }
+
+.online_details {
+  padding: 0.3125rem 0.625rem 50px 0.625rem; }
+  .online_details .item_line {
+    overflow: hidden;
+    margin: 0.15625rem; }
+  .online_details .item_line span {
+    word-break: break-all;
+    float: left;
+    width: 75%; }
+  .online_details .item_line span:first-child {
+    width: 25%; }
+
+.spline_no_text:before {
+  content: "";
+  height: 20px;
+  width: 100%;
+  border-top: 1px solid #ededed;
+  display: block;
+  margin: 10px 0; }
+
+.enroll_data {
+  margin: 0.3125rem 0.15625rem;
+  padding: 0.46875rem;
+  background-color: #ddd;
+  border-radius: 0.15625rem;
+  min-height: 6.25rem; }
+  .enroll_data .data-line {
+    margin: 0.15625rem 0;
+    word-break: break-all; }
+
+/*# sourceMappingURL=success_detail.css.map */

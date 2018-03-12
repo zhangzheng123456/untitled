@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
@@ -66,12 +64,13 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageindex,pageSize,funcCode,value) {
+function setPage(container, count, pageindex,pageSize,funcCode,value,total) {
     //count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
               //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -123,21 +122,21 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
             }
             inx--;
             dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            setPage(container, count, inx,pageSize,funcCode,value,total);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
                 dian(inx);
-                setPage(container, count, inx,pageSize,funcCode,value);
+                setPage(container, count, inx,pageSize,funcCode,value,total);
                 return false;
             }
         }
@@ -147,7 +146,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             }
             inx++;
             dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            setPage(container, count, inx,pageSize,funcCode,value,total);
             return false;
         }
     }()
@@ -337,10 +336,11 @@ function GET(){
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
+                var total=list.total;
                 var list=list.list;
                 superaddition(list,inx);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,total);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
@@ -425,7 +425,6 @@ function jumpBianse(){
         $("#p").show();
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
 //鼠标按下时触发的收索
@@ -458,6 +457,7 @@ function POST(){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
+            var total=list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -469,7 +469,7 @@ function POST(){
                 superaddition(list,inx);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

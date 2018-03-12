@@ -26,9 +26,15 @@ public interface ValidateCodeService {
 
     PageInfo<ValidateCode> selectValidateCodeByCorp(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
+    PageInfo<ValidateCode> selectValidateCodeByCorp(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception;
+
+
     PageInfo<ValidateCode> selectAllScreen(int page_number, int page_size, Map<String,String> map)throws Exception;
 
     PageInfo<ValidateCode> selectByCorpScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
+
+    PageInfo<ValidateCode> selectByCorpScreen(int page_number, int page_size, String corp_code, Map<String, String> map,String manager_corp) throws Exception;
+
 
     ValidateCode selectByPhone(String phone,String validate_code) throws Exception;
 }

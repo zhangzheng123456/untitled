@@ -76,6 +76,12 @@
         <if test="corp_code!=null and corp_code!=''">
             AND dum.corp_code=#{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dum.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="user_code!=null and user_code!=''">
             AND dum.message_sender=#{user_code}
         </if>
@@ -306,6 +312,12 @@
         AND dum.message_type = mt.type_code
         <if test="corp_code!=null and corp_code!=''">
             AND dum.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                dum.corp_code =#{item}
+            </foreach>
         </if>
         <if test="user_code!=null and user_code!=''">
             AND dum.message_sender=#{user_code}

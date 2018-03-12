@@ -40,6 +40,8 @@ public class Goods {
     private String brand_code;
     //企业编号
     private String corp_code;
+    //商品年份
+    private String goods_year;
 
     private Brand brand;
     private Corp corp;
@@ -47,6 +49,51 @@ public class Goods {
     private String brand_name;
     private List<DefGoodsMatch> matchgoods;
     private String match_goods;
+    private String num_sales;
+    private String num_stocks;
+    private String standard;
+    private String goods_source;
+
+
+    public String getGoods_year() {
+        return goods_year;
+    }
+
+    public void setGoods_year(String goods_year) {
+        this.goods_year = goods_year;
+    }
+
+    public String getGoods_source() {
+        return goods_source;
+    }
+
+    public void setGoods_source(String goods_source) {
+        this.goods_source = goods_source;
+    }
+
+    public String getStandard() {
+        return standard;
+    }
+
+    public void setStandard(String standard) {
+        this.standard = standard;
+    }
+
+    public String getNum_sales() {
+        return num_sales;
+    }
+
+    public void setNum_sales(String num_sales) {
+        this.num_sales = num_sales;
+    }
+
+    public String getNum_stocks() {
+        return num_stocks;
+    }
+
+    public void setNum_stocks(String num_stocks) {
+        this.num_stocks = num_stocks;
+    }
 
     public String getMatch_goods() {
         return match_goods;

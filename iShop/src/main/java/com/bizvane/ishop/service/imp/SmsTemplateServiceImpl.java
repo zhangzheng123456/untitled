@@ -83,7 +83,22 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     @Override
     public PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         PageHelper.startPage(page_number, page_size);
-        List<SmsTemplate> list = this.smsTemplateMapper.selectBySearch(corp_code, search_value);
+        List<SmsTemplate> list = this.smsTemplateMapper.selectBySearch(corp_code, search_value,null);
+        for (SmsTemplate smsTemplate:list) {
+            smsTemplate.setIsactive(CheckUtils.CheckIsactive(smsTemplate.getIsactive()));
+        }
+        PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value,String manager_corp) throws Exception{
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        PageHelper.startPage(page_number, page_size);
+        List<SmsTemplate> list = this.smsTemplateMapper.selectBySearch(corp_code, search_value,manager_corp_arr);
         for (SmsTemplate smsTemplate:list) {
             smsTemplate.setIsactive(CheckUtils.CheckIsactive(smsTemplate.getIsactive()));
         }
@@ -130,6 +145,26 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         return page;
     }
 
+    @Override
+    public PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String corp_code, Map<String, String> map,String manager_corp) throws Exception{
+        String[] manager_corp_arr = null;
+        if (!manager_corp.equals("")) {
+            manager_corp_arr = manager_corp.split(",");
+        }
+        List<SmsTemplate> smsTemplates;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("manager_corp_arr", manager_corp_arr);
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        smsTemplates = smsTemplateMapper.selectAllSmsTemplateScreen(params);
+        for (SmsTemplate smsTemplate:smsTemplates) {
+            smsTemplate.setIsactive(CheckUtils.CheckIsactive(smsTemplate.getIsactive()));
+        }
+        PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(smsTemplates);
+        return page;
+    }
 //    @Override
 //    public List<TemplateType> getTypes() {
 //        List<TemplateType> list = this.smsTemplateMapper.getTypes();

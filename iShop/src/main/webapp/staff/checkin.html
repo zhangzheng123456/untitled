@@ -3,14 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>签到管理</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20170105">
-    <link rel="stylesheet" href="../css/font_style.css?20170105">
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa">
         //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"
         //v1.4版本及以前版本的引用方式：src="http://api.map.baidu.com/api?v=1.4&key=您的密钥&callback=initialize"
     </script>
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20170105"></script>
+    <script src="/js/loading.js?2017040170331"></script>
     <style>
         .table tr td:nth-child(12) span{
             overflow: visible;!important;
@@ -37,7 +37,7 @@
                     </ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="员工编号/员工名称/所属企业">
+                            <input type="text" class="input" id="search" placeholder="员工编号/员工名称/企业名称">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -62,7 +62,7 @@
                             <div class="more_down" id="more_down">
                                 <!--<div id="leading_out">导出</div>-->
                             </div>
-                        </li>   
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="inputs">
-                    <ul>     
+                    <ul>
                     </ul>
                     <!-- <li>
                        <label>公司名称</label>
@@ -147,7 +147,7 @@
 							<!--<th style="width: 50px;">状态</th>-->
                  		</tr>
                  	</thead>
-                    <tbody>														
+                    <tbody>
                     </tbody>
     			</table>
     		</div>
@@ -192,6 +192,14 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
+    <div class="tk" id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
     <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -201,15 +209,15 @@
         </div>
     </div>
 </body>
-<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js?20170105"></script>
-<script src="../js/staff/checkin.js?20170105"></script>
-<script src="../js/silide.js?20170105"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js?2017040170331"></script>
+<script src="../js/staff/checkin.js?2017040170331"></script>
+<script src="../js/silide.js?2017040170331"></script>
 <script type="text/javascript">
         $(function(){
             $(window).scroll(function(){
                 if($(window).scrollTop()>100){
-                    $("#side_bar .gotop").fadeIn(); 
+                    $("#side_bar .gotop").fadeIn();
                 }
                 else{
                     $("#side-bar .gotop").hide();

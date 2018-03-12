@@ -4,32 +4,46 @@
         <div class="setUp_activity_details" id="activity_basic">
             <div>
                 <ul>
-                    <li style="margin-right: 35px;"><label style="color:#c26555;">所属企业*</label><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select></span></li>
+                    <li style="margin-right: 35px;"><label style="color:#c26555;">所属企业*</label><span class="corp_select"><select id="OWN_CORP" style="display:none"></select></span></li>
                     <li style="margin-right:10px"><label style="color:#c26555;">活动时间*</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_start',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})"></li>
                     <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_end',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})"></li>
                 </ul>
             </div>
             <div>
-                <ul class="activity_details_left">
-                    <li style="margin-right: 35px;"><label style="color:#c26555;">活动标题*</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text" maxlength="50" autocomplete=off></li>
-                    <li>
-                        <label style="color:#c26555;">活动类别*</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly">
-                        <ul class="activity_select" id="activityType_select">
-                            <li data-id="recruit">招募活动</li>
-                            <li data-id="sales">促销活动</li>
-                            <li data-id="h5">网页活动</li>
-                            <li data-id="coupon">优惠券活动</li>
-                            <li data-id="invite">线下报名活动</li>
-                            <li data-id="festival">节日活动</li>
-                        </ul>
-                    </li>
-                    <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" id="activity_describe" placeholder="请输入活动简介" name="活动简述" maxlength="300"></textarea></li>
+                <div class="activity_details_left">
+                    <ul>
+                        <li><label style="color:#c26555;">活动标题*</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text" maxlength="50" autocomplete=off></li>
+                        <li>
+                            <label style="color:#c26555;">活动类别*</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly">
+                            <ul class="activity_select" id="activityType_select">
+                                <li data-id="recruit">招募活动</li>
+                                <li data-id="sales">促销活动</li>
+                                <li data-id="h5">网页活动</li>
+                                <li data-id="coupon">优惠券活动</li>
+                                <li data-id="invite">线下报名活动</li>
+                                <li data-id="festival">节日活动</li>
+                                <li data-id="register">邀请注册</li>
+                                <li data-id="online_apply">线上报名活动</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <label style="color:#c26555;padding-left: 13px">公众号*</label><input class="text_input select_input" data-id="" id="wechat_input" type="text" placeholder="请选择公众号" readonly="readonly">
+                            <ul class="activity_select" id="wechat">
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" id="activity_describe" placeholder="请输入活动简介(时间,地点,场次)" name="活动简述" maxlength="300"></textarea></li>
+                    </ul>
                    <!--  <li>
                         <li style="margin-right: 35px;"><label>活动链接</label><input placeholder="请输入活动链接" id="activity_link" class="text_input" type="text"></li>
                     </li> -->
-                </ul>
+                </div>
                 <ul class="activity_details_right">
-                    <li class="shop_amount_wrap"><p>参与门店数</p><p class="shop_amount" id="shop_amount">0</p><span class="choose_shop" id="choose_shop">选择参与门店</span></li>
+                    <!--<p class="shop_amount" id="shop_amount">0</p>-->
+                    <!--<li class="shop_amount_wrap"><ul id="vipBtnWrap"><li id="chooseVipBtn">筛选会员</li></ul><span class="chooseVipBtn" id="chooseVips">参与会员</span><span id="lookVipCondition" class="lookCondition">查看已选<i style="position: static" class="icon-ishop_8-03"></i></span></li>-->
+                    <li class="shop_amount_wrap"><ul id="vipBtnWrap"><li id="chooseVipBtn">筛选会员</li><li id="exportVipBtn">导入</li></ul><span class="chooseVipBtn" id="chooseVips">参与会员</span><span id="lookVipCondition" class="lookCondition">查看已选<i style="position: static" class="icon-ishop_8-03"></i></span></li>
+                    <li class="shop_amount_wrap"><span class="choose_shop" id="chooseBtn">选择参与范围</span><span id="lookStoreCondition" class="lookCondition">查看已选<i style="position: static" class="icon-ishop_8-03"></i></span></li>
                 </ul>
             </div>
         </div>
@@ -38,81 +52,176 @@
         <div class="tabs_title"><span class="title_icon"></span><span>活动设置</span></div>
         <div class="setUp_activity_details" id="setUp_activityType" style="padding-left: 0">
             <div id="recruit_activity" style="display: none;width: 80%">
-                <li class="extend_url"><label>推广链接</label><input id="recruit_url" placeholder="请输入推广链接" class="text_input url_input" type="text"></li>
-                <ul class="operate_ul">
+                <!--<div class="extend_url"><label>活动推广</label><span style="width: 80px" class="chooseVipBtn spreadBtn">设置</span></div>-->
+                <li class="extend_url"><label>推广链接</label><input id="recruit_url" placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></li>
+                <ul class="operate_ul" style="margin-left: 30px">
                     <li>
                         <ul>
-                            <li><label style="color:#c26555;">招募级别*</label><input class="text_input select_input" data-code="" type="text" readonly="readonly">
+                            <li style="margin-right: 30px"><label style="color:#c26555;">招募级别*</label><input class="text_input select_input" data-code="" type="text">
                                 <ul class="activity_select vipCardType"></ul>
                             </li>
                             <li><label style="color:#c26555;">招募金额*</label><input placeholder="请输入招募最低消费额" class="text_input number_input" type="text"></li>
-                            <li><span class="add_recruit">+</span><span class="remove_recruit">-</span></li>
+                            <li><span class="add_recruit icon-ishop_6-01"></span><span class="remove_recruit icon-ishop_6-02"></span></li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div id="sales_activity" style="display: none">
-                <li class="extend_url"><label>推广链接</label><input id="sales_url" placeholder="请输入推广链接" class="text_input url_input" type="text"></li>
+                <li class="extend_url"><label>推广链接</label><input id="sales_url" placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></li>
                 <ul>
                     <li><label style="color:#c26555;">设置促销编号*</label><input placeholder="请输入促销编号" class="text_input" maxlength="50" type="text"></li>
                 </ul>
             </div>
             <div id="h5_activity" style="display: none">
                 <ul>
-                    <li><label style="color:#c26555;">网页活动页面*</label><input placeholder="请输入页面链接" class="text_input" maxlength="50" type="text"></li>
+                    <li><label style="color:#c26555;">网页活动页面*</label><input placeholder="链接以http://或https://开头" class="text_input" maxlength="50" type="text"></li>
                 </ul>
             </div>
             <div id="coupon_activity" style="display: none">
-                <li class="extend_url"><label>推广链接</label><input id="coupon_url" placeholder="请输入推广链接" class="text_input url_input" type="text"></li>
+                <li class="extend_url"><label>推广链接</label><input id="coupon_url" placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></li>
                 <ul class="coupon_title" id="coupon_title">
-                    <li class="coupon_active" data-id="batch">批量发卷</li>
+                    <li class="coupon_active" data-id="batch">批量发券</li>
                     <li data-id="card">开卡送券</li>
                     <li data-id="anniversary">纪念日发券</li>
+                    <li data-id="consume">消费后送券</li>
                 </ul>
                 <div class="choose_coupon">
-                    <ul class="operate_ul">
-                        <li>
-                            <ul>
-                                <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly">
-                                    <ul class="activity_select coupon_activity"></ul>
-                                </li>
-                                <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div style="display: none">
-                    <div class="coupon_btn"><span id="coupon_btn">添加</span></div>
-                    <div class="coupon_details_wrap">
-                        <ul>
-                            <li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" data-code="" type="text" placeholder="请选择卡类型" readonly="readonly">
-                                <ul class="activity_select vipCardType"></ul>
-                            </li>
-                        </ul>
+                    <div class="consumeCheckWrap"><label>批量赠送</label><div class="checkbox1">
+                        <span><input type="checkbox" checked="checked" class="check pointCheck" id="batchPointCheck"><label for="batchPointCheck"></label>积分</span><span><input type="checkbox" checked="checked" class="check couponCheck" id="batchCouponCheck"><label for="batchCouponCheck"></label>优惠券</span>
+                        <!--<span><input type="checkbox"  class="check" id="batchGiftCheck"><label for="batchGiftCheck"></label>礼品</span>-->
+                    </div></div>
+                    <div class="presentPoint_wrap"><label style="color:#c26555;">赠送积分*</label><input class="input130px text_input numberInput" id="batchPointInput" type="text"></div>
+                    <div class="presentCoupon_wrap">
                         <ul class="operate_ul">
                             <li>
                                 <ul>
-                                    <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly">
+                                    <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text">
                                         <ul class="activity_select coupon_activity"></ul>
                                     </li>
-                                    <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                    <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
                                 </ul>
                             </li>
                         </ul>
-                        <i class="icon-ishop_6-12 coupon_details_close"></i>
+                        <div class="batch_num"><label></label><input type="text" class="input130px text_input bath_num_input" id="batch_num_input" placeholder="请输入批次号"></div>
+                    </div>
+                    <div class="presentGift_wrap" style="display: none">
+                        <ul class="operate_ul">
+                            <li>
+                                <ul>
+                                    <li><label style="color:#c26555;">选择礼品*</label><input class="text_input select_input" data-code="" placeholder="请选择礼品" type="text" readonly="readonly">
+                                        <ul class="activity_select"></ul>
+                                    </li>
+                                    <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="choose_coupon" style="display: none">
-                    <ul class="operate_ul">
-                        <li>
-                            <ul>
-                                <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly">
-                                    <ul class="activity_select coupon_activity"></ul>
-                                </li>
-                                <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
-                            </ul>
-                        </li>
-                    </ul>
+                <div id="cardCouponWrap" style="display: none">
+                    <div class="coupon_btn"><span id="coupon_btn">添加</span></div>
+                    <div id="cardContentWrap">
+                        <div class="coupon_details_wrap">
+                            <div class="cardTypeWrap">
+                                <ul>
+                                    <li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" data-code="" type="text" placeholder="请选择卡类型">
+                                        <ul class="activity_select vipCardType"></ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="consumeCheckWrap"><label>开卡赠送</label><div class="checkbox1">
+                                <span><input type="checkbox" checked="checked" class="check pointCheck" id="cardPointCheck"><label for="cardPointCheck"></label>积分</span><span><input type="checkbox" checked="checked" class="check couponCheck" id="cardCouponCheck"><label for="cardCouponCheck"></label>优惠券</span>
+                            </div></div>
+                            <div class="presentPoint_wrap"><label style="color:#c26555;">赠送积分*</label><input class="input130px text_input numberInput cardPointInput" type="text"></div>
+                            <div class="presentCoupon_wrap">
+                                <ul class="operate_ul">
+                                    <li>
+                                        <ul>
+                                            <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text">
+                                                <ul class="activity_select coupon_activity"></ul>
+                                            </li>
+                                            <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <div class="batch_num"><label></label><input type="text" class="input130px text_input bath_num_input" placeholder="请输入批次号"></div>
+                            </div>
+                            <i class="icon-ishop_6-12 coupon_details_close"></i>
+                        </div>
+                    </div>
+                </div>
+                <div id="souvenirCouponWrap" class="choose_coupon" style="display: none;width: 100%">
+                    <div class="coupon_btn"><span id="souvenirBtn">添加</span></div>
+                    <div id="souvenirContentWrap">
+                        <div class="coupon_details_wrap">
+                            <div class="cardTypeWrap">
+                                <ul>
+                                    <li><label style="color:#c26555;">纪念日类型*</label><input placeholder="请选择纪念日类型" class="text_input select_input" data-code="" type="text" readonly="readonly">
+                                        <ul class="activity_select souvenir_type"></ul>
+                                    </li>
+                                    <li style="margin-left: 10px"><label style="color:#c26555;">执行时间*</label><input class="text_input select_input"  placeholder="选择发券日期范围" type="text" readonly="readonly">
+                                        <ul class="activity_select">
+                                           <li>当日</li>
+                                           <li>当月</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="consumeCheckWrap"><label>开卡赠送</label><div class="checkbox1">
+                                <span><input type="checkbox" checked="checked" class="check pointCheck" id="souvenirPointCheck"><label for="souvenirPointCheck"></label>积分</span><span><input type="checkbox" checked="checked" class="check couponCheck" id="souvenirCouponCheck"><label for="souvenirCouponCheck"></label>优惠券</span>
+                            </div></div>
+                            <div class="presentPoint_wrap"><label style="color:#c26555;">赠送积分*</label><input class="input130px text_input numberInput cardPointInput" type="text"></div>
+                            <div class="presentCoupon_wrap">
+                                <ul class="operate_ul">
+                                    <li>
+                                        <ul>
+                                            <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text">
+                                                <ul class="activity_select coupon_activity"></ul>
+                                            </li>
+                                            <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <div class="batch_num"><label></label><input type="text" class="input130px text_input bath_num_input" placeholder="请输入批次号"></div>
+                            </div>
+                            <i class="icon-ishop_6-12 coupon_details_close"></i>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: none" id="consumePostCoupon">
+                    <div class="coupon_btn"><label>会员参与总数</label><input id="attendVipTotal" class="input50px numberInput" type="text">次<span id="sendCouponBtn">添加</span></div>
+                    <div id="consumeCouponWrap">
+                        <div class="coupon_details_wrap">
+                            <div class="ConsumerHeader">
+                                <span class="levels"><label style="color:#c26555;">优先级*</label><input class="text_input select_input" type="text" readonly="readonly"><ul class="activity_select levelSelect"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li></ul></span>
+                                <div><label>&emsp;&emsp;商品</label><span class="consumeBtn" data-id="">选择商品</span><span class="lookCondition">查看条件<i class="icon-ishop_8-03"></i></span></div>
+                                <!--<div><label>消费条件</label><span class="consumeBtn" data-id="">商品</span>已选 <span class="chooseGoodsCount">0</span> 件</div>-->
+                                <div><input class="input50px numberInput" type="text"><label>≤ 整单金额(元) <</label><input class="input50px numberInput" type="text"><br /><input class="input50px numberInput" type="text"><label>≤ 购买件数(件) <</label><input class="input50px numberInput" type="text"></div>
+                                <div><input class="input50px numberInput discount_num_input" type="text"><label>≤ 消费折扣(折:0-10) <</label><input class="input50px numberInput discount_num_input" type="text"><br /><label>会员参与次数</label><input class="input130px numberInput" type="text">次</div>
+                            </div>
+                            <div class="ConsumerFooter">
+                                <div class="consumeCheckWrap"><label>消费后赠送</label><div class="checkbox1">
+                                    <span><input type="checkbox" checked="checked" class="check pointCheck" id="pointCheck"><label for="pointCheck"></label>积分</span><span><input type="checkbox" checked="checked" class="check couponCheck" id="couponCheck"><label for="couponCheck"></label>优惠券</span>
+                                </div></div>
+                                <div>
+                                    <div class="presentPoint_wrap"><label style="color:#c26555;">赠送积分*</label><input class="input130px text_input numberInput" type="text"></div>
+                                    <div class="presentCoupon_wrap">
+                                        <ul class="operate_ul">
+                                            <li>
+                                                <ul>
+                                                    <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text">
+                                                        <ul class="activity_select coupon_activity"></ul>
+                                                    </li>
+                                                    <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <div class="batch_num"><label></label><input type="text" class="input130px text_input bath_num_input" placeholder="请输入批次号"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <i class="icon-ishop_6-12 coupon_details_close"></i>
+                        </div>
+                    </div>
                 </div>
                 <div class="switch sheswitch">
                     <span class="switch_text">优惠券已开启</span>
@@ -123,37 +232,235 @@
             </div>
             <div class="offline_activity" id="invite_activity" style="display: none">
                 <div class="url_offline">
-                    <span id="url_mould">自定义页面</span><span id="invite_span">标准模版</span>
+                    <span id="url_mould" class="invite_btn_background">自定义页面</span><span id="invite_span">标准模版</span>
                 </div>
-                <li class="extend_url" id="extend_url"><label style="color:#c26555;">推广链接*</label><input id="invite_url" placeholder="请输入推广链接" class="text_input url_input" type="text"></li>
+                <li class="extend_url" id="extend_url"><label style="color:#c26555;">推广链接*</label><input id="invite_url" placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></li>
                 <div id="invite_wrap" style="display: none">
                     <div class="offline_left_wrap">
                         <ul>
                             <li><label style="color:#c26555;">报名标题*</label><input placeholder="请输入标题" id="invite_title" class="text_input" type="text" maxlength="50"></li>
-                            <li><label style="color:#c26555;">报名截止时间*</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#offline_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></li>
+                            <li><label style="color:#c26555;">报名截止时间*</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#offline_end',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:change_offline_end})"></li>
                             <li style="display: inline-flex"><label>报名简介</label><textarea id="invite_summary" placeholder="请输入报名简介"  type="text" maxlength="300"></textarea></li>
                             <li><label style="color:#c26555;">报名成功提示*</label><input placeholder="请输入报名成功提示" id="invite_message" class="text_input" type="text" maxlength="20"></li>
-                            <li class="upload_logo"><label>logo图片</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
+                            <li class="upload_logo"><label style="color:#c26555;">logo图片*</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
+                            <li><label style="width: 91px">允许非会员参加</label><div class="checkbox1"><input checked="true" type="checkbox" name="test" class="check" id="allow_vipAttend_btn"><label for="allow_vipAttend_btn"></label></div></li>
                         </ul>
                     </div>
-                    <div class="offline_right_wrap">
-                        <span id="create_code">生成活动二维码</span>
-                    </div>
+                    <!--<div class="offline_right_wrap" id="qrcode">-->
+                        <!--<span id="create_code">生成活动二维码</span>-->
+                    <!--</div>-->
                 </div>
             </div>
             <div class="holiday_activity" id="festival_activity" style="display: none">
-                <li class="extend_url"><label>推广链接</label><input id="festival_url" placeholder="请输入推广链接" class="text_input url_input" type="text"></li>
+                <li class="extend_url"><label>推广链接</label><input id="festival_url" placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></li>
                 <ul>
                     <li><label style="color:#c26555;">节日时间范围*</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
                     <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
                 </ul>
             </div>
+            <div class="register" id="register" style="display: none">
+                <li class="extend_url"><label>推广链接</label><input placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></li>
+                <div class="coupon_btn"><span id="register_btn">添加</span></div>
+                <div id="registerContentWrap">
+                    <div class="coupon_details_wrap">
+                        <div class="coupon_details_wrap_header">计划1</div>
+                        <div>
+                            <label style="color:#c26555;">人数区间*</label><input class="input50px numberInput text_input" type="text">~<input class="input50px numberInput text_input" type="text">人<label class="marginLeft100">每邀请</label><input class="input50px numberInput text_input" type="text">人
+                        </div>
+                        <div>
+                            <div class="coupon_details_wrap_left">
+                                <label>赠送</label>
+                            </div>
+                            <div class="coupon_details_wrap_right">
+                                <div class="giftWrap">
+                                    <div>
+                                        <div class="consumeCheckWrap"><div class="checkbox1">
+                                            <span><input type="checkbox" checked="checked" class="check pointCheck" id="registerPointCheck"><label for="registerPointCheck"></label>积分</span><span><input type="checkbox" checked="checked" class="check couponCheck" id="registerCouponCheck"><label for="registerCouponCheck"></label>优惠券</span>
+                                        </div></div>
+                                        <div class="presentPoint_wrap"><label style="color:#c26555;">赠送积分*</label><input class="input130px text_input numberInput cardPointInput" type="text"></div>
+                                        <div class="presentCoupon_wrap">
+                                            <ul class="operate_ul">
+                                                <li>
+                                                    <ul>
+                                                        <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text">
+                                                            <ul class="activity_select coupon_activity"></ul>
+                                                        </li>
+                                                        <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <div class="batch_num"><label></label><input type="text" class="input130px text_input bath_num_input" placeholder="请输入批次号"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="icon-ishop_6-12 coupon_details_close"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="online_activity" style="display: none">
+                <div class="extend_url"><label>推广链接</label><input id="online_url" placeholder="链接以http://或https://开头" class="text_input url_input" type="text"></div>
+                <div class="coupon_details_wrap">
+                    <div class="coupon_details_wrap_header">活动基本设置</div>
+                    <div style="height: 43px">
+                        <ul>
+                            <li><label style="color:#c26555;">允许退订*</label><input id="td_allow" class="text_input select_input" value="是" type="text" readonly="readonly">
+                                <ul class="activity_select td_allow">
+                                    <li>是</li><li>否</li>
+                                </ul>
+                            </li>
+                            <li style="margin-left: 10px"><label style="color:#c26555;">退订截止*</label><input id="unsubscribe_date" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#unsubscribe_date',min:laydate.now(0, 'YYYY/MM/DD hh:mm:ss'),max: '2099-12-31',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <label style="color:#c26555;">奖励发放*</label><div class="radio_group" id="present_time">
+                            <span><input type="radio" checked="checked" name="radio" id="timelyCheck"><label for="timelyCheck"></label>即时</span><span><input type="radio" name="radio" id="setTimeCheck"><label for="setTimeCheck"></label>定时</span>
+                        </div><input style="display: none" id="distribute_reward_date" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#distribute_reward_date',min:laydate.now(0, 'YYYY/MM/DD hh:mm:ss'),max: '2099-12-31',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                    </div>
+                </div>
+                <div class="coupon_details_wrap">
+                    <div class="coupon_details_wrap_header">活动项目</div>
+                    <div style="height: 43px">
+                        <ul>
+                            <li>
+                                <label style="color:#c26555;">项目类型*</label><input id="online_item_type" value="商品" class="text_input select_input" type="text" readonly="readonly">
+                                <ul class="activity_select online_itemType_select">
+                                    <li>商品</li><li>自定义项目</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div>
+                            <label style="color:#c26555;">项目*</label>
+                            <span style="float: right"><i class="icon-ishop_6-01 itemBtn" id="online_item_add"></i><i class="icon-ishop_6-02 itemBtn" id="online_item_remove"></i></span>
+                        </div>
+                        <div class="online_item_wrap" id="shopper_item">
+                            <div id="online_shop_wrap">
+                               <dl>
+                                   <dt><input type="checkbox" id="itemCheckHeads"><label for="itemCheckHeads"></label></dt><dt>项目名称</dt><dt>人数上限</dt><dt>报名费用</dt><dt>项目图片</dt>
+                               </dl>
+                                <dl>
+                                    <dt><input type="checkbox" id="itemCheckHeadfirst"><label for="itemCheckHeadfirst"></label></dt><dt><input class="text_input select_input online_choose_shopper" type="text" placeholder="请选择商品" readonly></dt><dt><input type="text" class="text_input number_input"></dt><dt>
+                                    <span><input value="积分" class="text_input select_input" type="text" readonly="readonly"><ul class="activity_select item_present_select"><li>积分</li><li>金额(元)</li><li>金额或积分</li></ul></span><span><input class="text_input number_input" type="text"><span class="unit">积分</span></span></dt><dt><span><span class="chooseVipBtn">上传文件</span><input type="file"  accept="image/*"></span><a>预览<i class="icon-ishop_8-03"></i></a></dt>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="online_item_wrap" id="custom_item" style="display: none">
+                            <div id="online_item_wrap">
+                                <dl>
+                                    <dt><input type="checkbox" id="itemCheckHead"><label for="itemCheckHead"></label></dt><dt>项目名称</dt><dt>人数上限</dt><dt>报名费用</dt><dt>项目图片</dt>
+                                </dl>
+                                <dl>
+                                    <dt><input type="checkbox" id="itemCheckHeadsfirst"><label for="itemCheckHeadsfirst"></label></dt><dt><input type="text" class="text_input" maxlength="200"></dt><dt><input type="text" class="text_input number_input"></dt><dt>
+                                    <span><input value="积分" class="text_input select_input" type="text" readonly="readonly"><ul class="activity_select item_present_select"><li>积分</li><li>金额(元)</li><li>金额或积分</li></ul></span><span><input class="text_input number_input" type="text"><span class="unit">积分</span></span></dt><dt><span><span class="chooseVipBtn">上传文件</span><input type="file"  accept="image/*"></span><a>预览<i class="icon-ishop_8-03"></i></a></dt>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="coupon_details_wrap">
+                    <div class="coupon_details_wrap_header">免责协议</div>
+                    <div>
+                        <label style="color:#c26555;">是否启用*</label>
+                        <div class="radio_group">
+                            <span><input type="radio" checked="checked" name="enable" id="useCheck"><label for="useCheck"></label>启用</span><span><input type="radio" name="enable" id="noUseCheck"><label for="noUseCheck"></label>不启用</span>
+                        </div>
+                        <div class="reliefWrap">
+                            <span><span class="chooseVipBtn">上传文件</span><input type="file" accept="text/plain" id="reliefBtn"></span><a id="reliefPreview" target="_blank" href="javascript:void(0)">预览<i class="icon-ishop_8-03"></i></a><span style="color:#c26555;margin-left: 10px">*支持.txt格式</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="coupon_details_wrap" id="apply_condition">
+                    <div class="coupon_details_wrap_header">报名资料</div>
+                    <div>
+                        <ul class="operate_ul">
+                            <li>
+                                <ul>
+                                    <li>
+                                        <label style="color:#c26555;">字段名称*</label><input class="text_input select_input"  placeholder="请选择" type="text" readonly="readonly">
+                                        <ul class="activity_select">
+                                        </ul>
+                                    </li>
+                                    <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="coupon_details_wrap">
+                    <div class="coupon_details_wrap_header">活动赠送</div>
+                    <div class="giftWrap">
+                        <div>
+                            <div class="consumeCheckWrap"><div class="checkbox1">
+                                <span><input type="checkbox" checked="checked" class="check pointCheck" id="onlinePointCheck"><label for="onlinePointCheck"></label>积分</span><span><input type="checkbox" checked="checked" class="check couponCheck" id="onlineCouponCheck"><label for="onlineCouponCheck"></label>优惠券</span>
+                            </div></div>
+                            <div class="presentPoint_wrap"><label style="color:#c26555;">赠送积分*</label><input id="online_point" class="input130px text_input numberInput" type="text"></div>
+                            <div class="presentCoupon_wrap">
+                                <ul class="operate_ul" id="online_coupon">
+                                    <li>
+                                        <ul>
+                                            <li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" placeholder="请选择优惠券" type="text" readonly="readonly">
+                                                <ul class="activity_select coupon_activity"></ul>
+                                            </li>
+                                            <li><span class="add_btn icon-ishop_6-01"></span><span class="remove_btn icon-ishop_6-02"></span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <div class="batch_num"><label></label><input type="text" id="online_batch_num" class="input130px text_input bath_num_input" placeholder="请输入批次号"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <div class="chooseShadow" id="activitySpreadWrap">
+        <div class="activitySpreadWrap">
+            <div class="tabs_title"><span class="title_icon"></span><span>推广设置</span></div>
+            <div class="activitySpreadContent">
+                <div class="SpreadWay"><label>推送方式</label><input type="text" value="推广模版" class="text_input select_input" readonly>
+                    <ul class="activity_select SpreadWaySelect">
+                        <li>自定义链接</li>
+                        <li>推广模版</li>
+                    </ul>
+                </div>
+                <div class="SpreadWayDetail">
+                    <div id="SpreadTitle"><label>推送标题</label><input type="text" class="text_input" placeholder="请输入标题"></div>
+                    <div id="SpreadUrl"><label>页面链接</label><input type="text" class="text_input" placeholder="请输入链接"></div>
+                    <div id="SpreadImg"><label>封面图片</label><span class="activitySpreadImg icon-ishop_6-01"><input class="file_input" type="file"></span></div>
+                </div>
+            </div>
+            <div class="activitySpreadfooter">
+                <div class="chooseVipBtn activitySpreadClose chooseShopperBtn">取消</div>
+                <div class="chooseVipBtn activitySpreadSave">保存</div>
+            </div>
+        </div>
+    </div>
+    <div class="screen_wrapper" id="screen_wrapper" style="position: fixed;top: 55%">
+        <div class="screen_head">筛选范围<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+        <div>
+            <div class="contion" id="contion">
+                <div>
+                    <div class="contion_input"><label>所属品牌</label><input value="全部" id="brand_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="shop_brand"></span></div>
+                    <div class="contion_input"><label>店铺群组</label><input value="全部" id="area_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="shop_area"></span></div>
+                    <div class="contion_input"><label>所属店铺</label><input value="全部" id="shop_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="choose_shop"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="ensure"><span id="screen_activity_btn">确定</span></div>
     </div>
     <!-- 拉取区域 -->
     <div id="screen_area" class="screen_area">
         <div class="screen_title">
-            <h4>筛选区域</h4>
+            <h4>筛选店铺群组</h4>
             <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
@@ -164,7 +471,7 @@
             </div>
             <div class="s_center"></div>
             <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
+                已添加<span>0</span>/<span>0</span>个
             </div>
         </div>
         <div class="screen_content">
@@ -190,17 +497,17 @@
     <div id="screen_shop" class="screen_area">
         <div class="screen_title">
             <h4>筛选店铺</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="" readonly="readonly">
-                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
-                                              data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                </div>
-            </div>
+            <!--<div class="xuanzhong">-->
+                <!--<div class="xuanzhong_p">-->
+                    <!--<label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="" readonly="readonly">-->
+                    <!--<span class="icon_r icon-ishop_8-03" id="shop_brand"></span>-->
+                <!--</div>-->
+                <!--<div class="xuanzhong_p">-->
+                    <!--<label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"-->
+                                              <!--data-areacode="">-->
+                    <!--<span class="icon_r icon-ishop_8-03" id="shop_area"></span>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
@@ -211,7 +518,7 @@
             </div>
             <div class="s_center"></div>
             <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
+                已添加<span>0</span>/<span>0</span>个
             </div>
         </div>
         <div class="screen_content">
@@ -248,7 +555,7 @@
             </div>
             <div class="s_center"></div>
             <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
+                已添加<span>0</span>/<span>0</span>个
             </div>
         </div>
         <div class="screen_content">
@@ -271,11 +578,410 @@
         </div>
         <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
+    <!-- 拉取导购  -->
+    <div id="screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                              data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺群组</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                                data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加<span>0</span>/<span>0</span>个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
+    </div>
+    <!-- 拉取分组  -->
+    <div id="screen_group" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="screen_close" id="vip_screen_close_group"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="task_group_search">
+                <span class="icon-ishop_3-05" id="task_group_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加<span>0</span>/<span>0</span>个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="task_screen_que_group">确定</div>
+    </div>
+    <!-- 会员筛选弹框 -->
+    <div class="screen_wrapper" id="screen_vipWrapper" style="position: fixed">
+        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_vipWrapper_close"></i></div>
+        <div id="simple_filter">
+            <div class="filter_condition" id="simple_filter_condition">
+                <ul>
+                    <li><a href="####">按生日</a></li>
+                    <li><a href="####" class="condition_active">按导购</a></li>
+                    <li><a href="####">按纪念日</a></li>
+                    <li><a href="####">按消费次数</a></li>
+                    <li><a href="####">按消费金额</a></li>
+                    <li><a href="####">按可用积分</a></li>
+                    <li><a href="####">关注官微</a></li>
+                </ul>
+            </div>
+            <div class="contion" id="simple_contion">
+                <div class="contion_input" style="display: none"><label>生日</label><input data-kye="1" id="simple_birth_starts" class="short_input_date laydate-icon" readonly><label class="jian">~</label><input id="simple_birth_ends" class="short_input_date laydate-icon" readonly></div>
+                <div class="contion_input"><label>所属导购</label><input data-kye="15" class="screen_staff_num input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03 screen_staffl"></span></div>
+                <div id="memorial_day" style="display: none">
+                    <!--<div class="contion_input"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>-->
+                </div>
+                <!--<div class="contion_input" style="display: none"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>-->
+                <!--<div class="contion_input" style="display: none"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>-->
+                <div class="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_3" readonly><ul class="sex_select" id="consume_select_basic_3">
+                        <li data-date="3">最近3个月</li>
+                        <li data-date="6">最近6个月</li>
+                        <li data-date="9">最近9个月</li>
+                        <li data-date="12">最近12个月</li>
+                        <li data-date="15">最近15个月</li>
+                        <li data-date="18">最近18个月</li>
+                        <li data-date="21">最近21个月</li>
+                        <li data-date="24">最近24个月</li>
+                    </ul></div>
+                    <div class="contion_input"><label>消费次数</label><input data-kye="3" id="consume_time_start" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input id="consume_time_end" class="short_input_date"><span>次</span></div>
+                </div>
+                <div class="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_4" readonly><ul class="sex_select" id="consume_select_basic_4">
+                        <li data-date="3">最近3个月</li>
+                        <li data-date="6">最近6个月</li>
+                        <li data-date="9">最近9个月</li>
+                        <li data-date="12">最近12个月</li>
+                        <li data-date="15">最近15个月</li>
+                        <li data-date="18">最近18个月</li>
+                        <li data-date="21">最近21个月</li>
+                        <li data-date="24">最近24个月</li>
+                    </ul></div>
+                    <div class="contion_input"><label>消费金额</label><input data-kye="4" id="consume_money_start" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input id="consume_money_end" class="short_input_date"><span>元</span></div>
+                </div>
+                <div class="contion_input" style="display: none"><label>可用积分</label><input data-kye="5" id="point_start" class="short_input_date" type="text"><label class="jian">~</label><input id="point_end" class="short_input_date" type="text"></div>
+                <div class="contion_input" style="display: none"><label>关注官微</label><input data-kye="18" class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+                    <li>已关注</li>
+                    <li>未关注</li>
+                    <li>全部</li>
+                </ul></div>
+            </div>
+            <!--<div class="ensure"><span>确定</span></div>-->
+            <a href="####" id="more_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">高级筛选</a>
+        </div>
+        <div style="display: none" id="senior_filter">
+            <div class="filter_condition" id="filter_condition">
+                <ul>
+                    <li style="width: 16.66%"><a href="####" class="condition_active">基本属性</a></li>
+                    <li style="width: 16.66%"><a href="####">会员属性</a></li>
+                    <li style="width: 16.66%"><a href="####">消费属性</a></li>
+                    <li style="width: 16.66%"><a href="####">所属关系</a></li>
+                    <li style="width: 16.66%"><a href="####">会员分组</a></li>
+                    <li style="width: 16.66%"><a href="####">拓展资料</a></li>
+                </ul>
+            </div>
+            <div class="contion" id="contions">
+                <div id="basic_message">
+                    <div class="contion_input"><label>姓名</label><input data-kye="7" class="input" type="text"></div>
+                    <div class="contion_input">
+                        <label>性别</label><input data-kye="8" class="select" type="text" value="全部" readonly="readonly" id="sex">
+                        <ul class="sex_select" id="sex_select">
+                            <li>男</li>
+                            <li>女</li>
+                            <li>全部</li>
+                        </ul>
+                    </div>
+                    <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input_date" id="age_l"><label class="jian">~</label><input
+                            class="short_input_date" id="age_r"></div>
+                    <div class="contion_input"><label>生日</label><input data-kye="1" id="birth_starts" class="short_input_date laydate-icon" readonly><label class="jian">~</label><input id="birth_ends" class="short_input_date laydate-icon" readonly></div>
+                    <div class="contion_input"><label>手机号</label><input data-kye="10" class="input" type="text"></div>
+                </div>
+                <div id="vip_attribute" style="display: none">
+                    <div class="contion_input"><label>卡号</label><input data-kye="11" class="input" type="text"></div>
+                    <div class="contion_input"><label>卡类型</label><input data-kye="12" class="select" data-code="" type="text" id="vip_card_type" value="全部" readonly><ul class="sex_select" id="card_type_select"></ul></div>
+                    <div class="contion_input"><label>开卡日期</label><input data-kye="13" id="activate_card_starts" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_ends" class="short_input_date laydate-icon" type="text" readonly/></div>
+                    <div class="contion_input"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                    <div class="contion_input"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="state" type="text" readonly><ul class="sex_select" id="state_select">
+                        <li>已冻结</li>
+                        <li>未冻结</li>
+                        <li>全部</li>
+                    </ul></div>
+                    <div class="contion_input"><label>关注官微</label><input data-kye="18" class="select" value="全部" id="govWx" type="text" readonly><ul class="sex_select" id="govWx_select">
+                        <li>已关注</li>
+                        <li>未关注</li>
+                        <li>全部</li>
+                    </ul></div>
+                </div>
+                <div id="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date" readonly><ul class="sex_select" id="consume_select">
+                        <li data-date="3">最近3个月</li>
+                        <li data-date="6">最近6个月</li>
+                        <li data-date="9">最近9个月</li>
+                        <li data-date="12">最近12个月</li>
+                        <li data-date="15">最近15个月</li>
+                        <li data-date="18">最近18个月</li>
+                        <li data-date="21">最近21个月</li>
+                        <li data-date="24">最近24个月</li>
+                    </ul></div>
+                    <div class="contion_input"><label>消费次数</label><input data-kye="3" id="consume_time_before" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input id="consume_time_after" class="short_input_date"><span>次</span></div>
+                    <div class="contion_input"><label>消费总额</label><input data-kye="4" id="consume_money_before" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input id="consume_money_after" class="short_input_date"><span>元</span></div>
+                </div>
+                <div id="relation" style="display: none">
+                    <div class="contion_input"><label>所属品牌</label><input data-kye="brand_code" id="screen_brand_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                    <div class="contion_input"><label>店铺群组</label><input data-kye="area_code" id="screen_area_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+                    <div class="contion_input"><label>所属店铺</label><input data-kye="14" id="screen_shop_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+                    <div class="contion_input"><label>所属导购</label><input data-kye="15" class="screen_staff_num input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03 screen_staffl"></span></div>
+                </div>
+                <div id="vip_group" style="display: none">
+                    <div class="contion_input">
+                        <label>分组</label><input data-kye="16" id="filter_group" class="input" type="text" data-code="" readonly="readonly"><span
+                            class="icon_r icon-ishop_8-03" id="vipTask_group_icon"></span>
+                    </div>
+                </div>
+                <div id="expend_attribute" style="display: none"></div>
+                <div id="ticket" style="display: none">
+                    <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
+                    <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
+                </div>
+            </div>
+            <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
+        </div>
+        <a id="vipTask_empty_filter" href="####" style="position: absolute;left: 25px;bottom: 30px;text-decoration: underline;color: #888">清空筛选</a>
+        <div class="ensure"><span id="vip_screen_vip_que">确定</span></div>
+    </div>
     <div id="p" class="p"></div>
+    <div id="chooseShopperWrap" class="chooseShadow">
+        <div class="chooseShopperWrap">
+            <div class="tabs_title"><span class="title_icon"></span><span>选择商品</span><i class="icon-ishop_6-12 closeWrap closeShopperWrap"></span></i></div>
+            <div class="chooseShopperHeader">
+                <div class="chooseShopperCondition" id="chooseShopperCondition">
+                    <div><label>所属品牌</label><input value="全部" class="text_input checkbox_select_input input120px" data-code="" id="brandID" type="text" readonly="readonly"><ul id="brandCondition" class="activity_select shopperSelect"></ul></div>
+                    <div><label>商品名称</label><input class="text_input input120px" type="text" id="goodsName"></div>
+                    <div><label>季节</label><input value="全部" id="seasonInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" style="margin-right: 20px"><ul style="right: 20px"  class="activity_select shopperSelect season"></ul></div><br/>
+                    <div><label>大类</label><input value="全部" id="bgTypeInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly"><ul class="activity_select shopperSelect typeBg"></ul></div>
+                    <div><label>中类</label><input value="全部" id="midTypeInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly"><ul class="activity_select shopperSelect typeMid"></ul></div>
+                    <div><label>小类</label><input value="全部" id="smTypeInput" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" style="margin-right: 20px"><ul style="right: 20px" class="activity_select shopperSelect typeSm"></ul></div><br/>
+                    <div><label>款号</label><input style="margin-bottom: 0px" class="text_input input120px" type="text" id="goodsCode"></div>
+                    <div><label>商品条码</label><input style="margin-bottom: 0px" class="text_input input120px" type="text" id="skuCode"></div>
+                </div>
+                <div>
+                    <div class="souvenir_switch"><label style="width: 38px">排除</label><div id="chooseShopperSwitch"><em></em></div></div>
+                    <!--<span class="chooseShopperBtn" id="chooseShopperBtn">查询</span>-->
+                    <span class="chooseShopperBtn" id="chooseShopEnter">确定</span>
+                </div>
+            </div>
+            <div class="chooseShopperContent">
+                <div class="chooseShopperTable">
+                    <table id="goodsHead" cellpadding="0" cellspacing="0" width="100%">
+                        <thead>
+                        <tr class="th" style="height: 30px">
+                            <th width="30px" id="tableOrder">序号</th>
+                            <th width="80px">图片</th>
+                            <th width="100px">商品名称</th>
+                            <th width="125px">款号</th>
+                            <th width="125px">条码</th>
+                            <th>价格</th>
+                            <th>季节</th>
+                            <th>大类</th>
+                            <th>中类</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="goodsList">
+                        <table id="chooseShopperTable" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="chooseShopperFooter">已选 <span class="chooseTotal" id="chooseCount">0</span>/<span id="goodsCount">0</span>-->
+                <!--<span><input type="radio" name="ck1" class="check" id="ck_11"><label for="ck_11" class="radio_b"></label><label>仅显示已选</label></span>-->
+                <!--&lt;!&ndash;<span><input type="radio" name="ck1" class="check" id="ck_22"><label for="ck_22" class="radio_b"></label><label>仅显示未选</label></span>&ndash;&gt;-->
+                <!--<span><input type="radio" checked="true" name="ck1" class="check" id="ck_33"><label for="ck_33" class="radio_b"></label><label>显示全部</label></span>-->
+                <!--&lt;!&ndash;<span class="chooseShopperBtn" id="chooseAllGoods" style="background: #5f8bc8">添加全部</span>&ndash;&gt;-->
+                <!--<span id="chooseBtnWrap" style="float: right"><span class="chooseShopperBtn closeShopperWrap" style="background: #dfdfe8">取消</span><span class="chooseShopperBtn" id="choosePartGoods">添加选中</span></span>-->
+                <!--<span id="deleteBtnWrap" style="float: right;display: none"><span class="chooseShopperBtn closeShopperWrap" style="background: #dfdfe8">取消</span><span class="chooseShopperBtn" id="deleteAllGoods" style="background: #c26555">删除选中</span></span>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="chooseShadow" id="choosedConditionWrap">
+        <div class="conditionBox">
+            <div class="tabs_title"><span class="title_icon"></span><span>商品选择条件</span></div>
+            <div class="choosedContent">
+                <!--<div><span class="conditionName">品牌</span><span>moco</span></div>-->
+                <!--<div><span class="conditionName">大类</span><span>等多,杜萨的年纪,多撒点</span></div>-->
+            </div>
+            <div style="text-align: center">
+                <div class="chooseShopperBtn" style="background: #dfdfe8;display: inline-block" id="closeChoosedWrap">
+                    关闭
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chooseShadow" id="vipConditionWrap">
+        <div class="conditionBox">
+            <div class="tabs_title"><span class="title_icon"></span><span>会员筛选条件</span></div>
+            <div class="choosedContent">
+            </div>
+            <div style="text-align: center">
+                <div class="chooseShopperBtn" style="background: #dfdfe8;display: inline-block" id="closeVipConditionWrap">
+                    关闭
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chooseShadow" id="storeConditionWrap">
+        <div class="conditionBox">
+            <div class="tabs_title"><span class="title_icon"></span><span>范围选择条件</span></div>
+            <div class="choosedContent">
+            </div>
+            <div style="text-align: center">
+                <div class="chooseShopperBtn" style="background: #dfdfe8;display: inline-block" id="closeStoreConditionWrap">
+                    关闭
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="onlineChooseShopper" class="chooseShadow">
+        <div class="chooseShopperWrap">
+            <div class="tabs_title"><span class="title_icon"></span><span>选择商品</span><i class="icon-ishop_6-12 closeWrap closeShopperWrap"></span></i></div>
+            <div class="chooseShopperHeader">
+                <div class="chooseShopperCondition" id="onlineShopperCondition">
+                    <div><label>所属品牌</label><input id="item_brand" value="全部" class="text_input checkbox_select_input input120px" data-code="" type="text" readonly="readonly"><ul id="onlineBrandWrap" class="activity_select shopperSelect"></ul></div>
+                    <div><label>商品名称</label><input id="item_shopName" class="text_input input120px" type="text"></div>
+                    <div><label>季节</label><input id="item_season" value="全部" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" style="margin-right: 20px"><ul style="right: 20px" class="activity_select shopperSelect season"></ul></div><br/>
+                    <div><label>大类</label><input id="item_typeB" value="全部" class="text_input checkbox_select_input input120px" type="text" readonly="readonly"><ul class="activity_select shopperSelect typeBg"></ul></div>
+                    <div><label>中类</label><input id="item_typeM" value="全部" class="text_input checkbox_select_input input120px" type="text" readonly="readonly"><ul class="activity_select shopperSelect typeMid"></ul></div>
+                    <div><label>小类</label><input id="item_typeS" value="全部" class="text_input checkbox_select_input input120px" type="text" readonly="readonly" style="margin-right: 20px"><ul style="right: 20px" class="activity_select shopperSelect typeSm"></ul></div><br/>
+                    <div><label>款号</label><input id="item_shopCode" style="margin-bottom: 0px" class="text_input input120px" type="text"></div>
+                    <div><label>商品条码</label><input id="item_skuCode" style="margin-bottom: 0px" class="text_input input120px" type="text"></div>
+                </div>
+                <div style="margin-top: 35px">
+                    <span class="chooseShopperBtn" id="chooseShopperBtn"><i class="icon-ishop_3-05 icon_search"></i>查询</span>
+                </div>
+            </div>
+            <div class="chooseShopperContent">
+                <div class="chooseShopperTable">
+                    <table cellpadding="0" cellspacing="0" width="100%">
+                        <thead>
+                        <tr class="th" style="height: 30px">
+                            <th width="30px"></th>
+                            <th width="30px">序号</th>
+                            <th width="80px">图片</th>
+                            <th width="100px">商品名称</th>
+                            <th width="125px">款号</th>
+                            <th width="125px">条码</th>
+                            <th>价格</th>
+                            <th>季节</th>
+                            <th>大类</th>
+                            <th>中类</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="goodsList" id="onlineGood">
+                        <table cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="chooseShopperFooter">
+                <span style="float: right"><span class="chooseShopperBtn closeShopperWrap" style="background: #dfdfe8;display: inline-block">取消</span><span class="chooseShopperBtn" id="onlineChooseShop" style="display: inline-block">确定</span></span>
+            </div>
+        </div>
+    </div>
+    <div class="chooseShadow" id="exportVipWrap">
+        <div class="into_frame">
+            <span class="icon-ishop_6-12" id="closeExportVipWrap"></span>
+            <div class="into_text">请先下载模板，然后按模板提示规则填入数据并导入文件</div>
+            <div class="into_frame_c">
+                <div class="down_load"><a>下载模板</a></div>
+                <div class="down_load_file">
+                    <label>导入文件</label>
+                    <input type="file">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chooseShadow" id="reliefView">
+        <div class="chooseShopperWrap">
+            <textarea style="width: 100%;height: 100%;outline: none" readonly></textarea>
+        </div>
+    </div>
 </div>
 <script>
     function checkStart(data){
         $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
+        $("#offline_end").attr("onclick","laydate({elem:'#offline_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:change_offline_end})");
     }
     function checkEnd(data){
         $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
@@ -286,5 +992,34 @@
     function holidayEnd(data) {
         $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
     }
+    function change_offline_end(e){
+        if($("#activity_start").val()==""){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "请先设置活动开始时间"
+            });
+            $("#offline_end").val("");
+            return;
+        }
+
+    }
+    $(".closeShopperWrap").click(function () {
+        $("#chooseShopperTable tbody").empty();
+        $(this).parents(".chooseShadow").hide();
+    });
+    $("#online_activity").on("change","#itemCheckHead,#itemCheckHeads",function () {//线上活动项目全选/取消
+        if($(this).prop("checked")){
+            $(this).parents("dl").siblings("dl").find("input[type=checkbox]").prop("checked",true);
+        }else {
+            $(this).parents("dl").siblings("dl").find("input[type=checkbox]").prop("checked",false);
+        }
+    });
+    $("#closeExportVipWrap").click(function () {//关闭导入会员弹窗
+        $("#exportVipWrap").hide();
+    });
 </script>
-<script type="text/javascript" src="../js/vip/set_up_activity.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script src="../js/vip_screen.js?20170828"></script>
+<script type="text/javascript" src="../js/vip/set_up_activity.js?20180301"></script>

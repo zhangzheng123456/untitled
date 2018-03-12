@@ -3,19 +3,16 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.entity.SmsTemplateType;
 import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.SmsTemplateTypeService;
-import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,48 +35,6 @@ public class SmsTemplateTypeController {
     @Autowired
     private BaseService baseService;
     String id;
-
-    /**
-     * 列表
-     *
-     * @param request
-     * @return
-     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String smsTemplateTypeList(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String jsString = request.getParameter("param");
-//            logger.info("json---------------" + jsString);
-//            JSONObject jsonObj = new JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String corp_code = request.getSession().getAttribute("corp_code").toString();
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            String role_code = request.getSession().getAttribute("role_code").toString();
-//            PageInfo<SmsTemplateType> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                //系统管理员
-//                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, "", "");
-//            } else {
-//                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, corp_code, "");
-//
-//            }
-//            JSONObject result = new JSONObject();
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage() + ex.toString());
-//            logger.info(ex.getMessage() + ex.toString());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
 
     /**
@@ -99,10 +52,10 @@ public class SmsTemplateTypeController {
             JSONObject result = new JSONObject();
             String jsString = request.getParameter("param");
             logger.info("json-select-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
             data = JSON.toJSONString(smsTemplateTypeService.getSmsTemplateTypeById(Integer.parseInt(id)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -130,7 +83,7 @@ public class SmsTemplateTypeController {
             String jsString = request.getParameter("param");
             logger.info("json--vipGroup add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
@@ -195,7 +148,7 @@ public class SmsTemplateTypeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json------updateSmsTemplateType---------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = smsTemplateTypeService.update(message, user_id);
@@ -255,10 +208,10 @@ public class SmsTemplateTypeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--------deleteVipGroup-------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String smsTemplateTypeId = jsonObject.get("id").toString();
             String[] ids = smsTemplateTypeId.split(",");
             String msg = null;
@@ -333,9 +286,9 @@ public class SmsTemplateTypeController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String template_type_code = jsonObject.get("template_type_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeByCode(corp_code, template_type_code, Common.IS_ACTIVE_Y);
@@ -373,9 +326,9 @@ public class SmsTemplateTypeController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+             JSONObject jsonObject = JSONObject.parseObject(message);
             String template_type_name = jsonObject.get("template_type_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeByName(corp_code, template_type_name, Common.IS_ACTIVE_Y);
@@ -412,10 +365,10 @@ public class SmsTemplateTypeController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -427,6 +380,14 @@ public class SmsTemplateTypeController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, "", search_value);
+            }else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, corp_code, search_value);
+
+                //  list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, "", search_value,manager_corp);
             } else {
                 list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, corp_code, search_value);
             }
@@ -458,10 +419,10 @@ public class SmsTemplateTypeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
@@ -471,9 +432,16 @@ public class SmsTemplateTypeController {
             JSONObject result = new JSONObject();
             PageInfo<SmsTemplateType> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, "", map);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, "","", map);
+            } else if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, corp_code,"" ,map);
+                //   list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, "", map,manager_corp);
             } else {
-                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, corp_code, map);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, corp_code,"", map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -498,10 +466,10 @@ public class SmsTemplateTypeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
 
             JSONObject params = new JSONObject();

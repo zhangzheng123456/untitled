@@ -19,9 +19,7 @@
 
     <select id="selectByUserApp" resultType="com.bizvane.ishop.entity.UserQrcode">
         SELECT
-        ruq.id,
-        ruq.qrcode,
-        ruq.app_id,
+        ruq.*,
         rcw.app_name
         FROM rel_user_qrcode ruq ,rel_corp_wechat rcw
         WHERE  ruq.corp_code = rcw.corp_code

@@ -28,6 +28,8 @@ public interface GoodsService {
      */
     int insert(Goods goods) throws Exception;
 
+    int updateExecl(Goods goods) throws Exception;
+
     int insertGoods(Goods goods,String match_goods) throws Exception;
     /**
      * 更新企业信息，通过编号区分
@@ -55,6 +57,9 @@ public interface GoodsService {
      */
     PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value, String[] brand_code)throws Exception;
 
+    PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value, String[] brand_code,String manager_corp)throws Exception;
+
+
     PageInfo<Goods> selectAllGoodsByBrand(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception;
 
     PageInfo<Goods> selectBySearchForApp(int page_number, int page_size, String corp_code,String goods_quarter,String goods_wave,
@@ -63,6 +68,8 @@ public interface GoodsService {
     PageInfo<Goods> matchGoodsList(int page_number, int page_size,String corp_code, String search_value,String goods_code,String brand_code) throws Exception;
 
     PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map,String[] brand_code)throws Exception;
+
+    PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map,String[] brand_code,String manager_corp)throws Exception;
 
     /**
      * 通过商品编号，获取商品信息

@@ -93,23 +93,45 @@ jQuery(function(){
 		jQuery('#input').val("");
 		jQuery('.allShops').empty();
 		getSearchList(rowno);
+		var osType = getWebOSType();
+		if(osType == "Android"){
+			if($(window).scrollTop()>0){
+				iShop.jumpToWebViewForScroll("N");
+			}else {
+				iShop.jumpToWebViewForScroll("Y");
+			}
+		}
 	})
 	$("#reset").click(function(){
 		$(".screen_content .list li").attr("class","");
 	})
 	//页面加载循环
 	function superaddition(list){
+		console.log(list);
 		for (var i = 0; i < list.length; i++){
 			var goods_image="";
+			var standard="";
+			if(list[i].standard!==""){
+				standard=JSON.parse(list[i].standard).product_detail[0].PRICE_SUG;
+			}
 	        if(list[i].goods_image.indexOf("http")!==-1){
-	            goods_image=list[i].goods_image;
+				if(list[i].goods_image.indexOf("products-image.oss-cn-hangzhou.aliyuncs.com")!==-1){
+					goods_image=list[i].goods_image+"@100h_100w_1e_1c";
+				}else {
+					goods_image=list[i].goods_image;
+				}
 	        }
 	        if(list[i].goods_image.indexOf("http")==-1){
 	            goods_image="image/goods_default_image.png";
 	        }
 	        var price="";
 	        if(list[i].goods_price==""){
-	        	price="暂无";
+				if(standard==""){
+					price="0";
+				}
+	        	if(standard!==""){
+					price=standard;
+				}
 	        }
 	        if(list[i].goods_price!==""){
 	        	price=list[i].goods_price;
@@ -118,7 +140,7 @@ jQuery(function(){
 			+ goods_image
 			+ '"></div><div class="shop-t"><h1>' 
 			+ list[i].goods_name + '</h1><p>货号:' 
-			+ list[i].goods_code + '</p><p class="pice">价格:<span>￥' 
+			+ list[i].goods_code + '</p><p>销量:'+list[i].num_sales+'<span style="margin-left: 15px;">库存:'+list[i].num_stocks+'</span></p><p class="pice">价格:<span>￥'
 			+ price + '</span></p></div></a></div>');
 		}
 		sessionStorage.removeItem("return_jump");
@@ -129,8 +151,9 @@ jQuery(function(){
 		param["rowno"]=a;
 		param["corp_code"]=corp_code;
 		param["user_id"]=user_id;
+		$("#loading").show();
 		oc.postRequire("post","/api/fab/","0",param,function(data){
-			console.log(data);
+			$("#loading").hide();
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var hasNextPage=list.hasNextPage;
@@ -152,24 +175,24 @@ jQuery(function(){
 		})
 	}
 	getList(rowno);
-	//input输入框里面
-	$('#input').bind('input propertychange', function() {
-	    var thatFun=arguments.callee;
-        var that=this;
-        $(this).unbind("input propertychange",thatFun);
-		value=$('#input').val().replace(/\s+/g,"");
-		if(value==""){
-			jQuery('.allShops').empty();
-			jQuery(".more").hide();
-			getList(rowno);
-		}
-		setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
-	});
+	// //input输入框里面
+	// $('#input').bind('input propertychange', function() {
+	//     var thatFun=arguments.callee;
+     //    var that=this;
+     //    $(this).unbind("input propertychange",thatFun);
+	// 	value=$('#input').val().replace(/\s+/g,"");
+	// 	if(value==""){
+	// 		jQuery('.allShops').empty();
+	// 		jQuery(".more").hide();
+	// 		getList(rowno);
+	// 	}
+	// 	setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
+	// });
 	$("#input").keydown(function() {
 	    var event=window.event||arguments[0];
 	    if(event.keyCode == 13){
 	    	value=$('#input').val().trim();
-	    	if(value!==""){
+	    	// if(value!==""){
 	    		$(".screen_content .list li").attr("class","");
 				param["search_value"]=value;
 				param["brand_code"]="";
@@ -177,7 +200,7 @@ jQuery(function(){
 				param["goods_wave"]="";
 				jQuery('.allShops').empty();
 				getSearchList(rowno);
-	    	}
+	    	// }
 	    }
     });
 	//搜索加载list
@@ -187,7 +210,9 @@ jQuery(function(){
 		param["user_id"]=user_id;
 		$("#kong_img").hide();
 		$(".more").hide();
+		$("#loading").show();
 		oc.postRequire("post","/api/fab/search","0",param,function(data){
+			$("#loading").hide();
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var hasNextPage=list.hasNextPage;
@@ -218,19 +243,44 @@ jQuery(function(){
         }
     	
     })
+	$("#screen").click(function(){
+		console.log(123123);
+		$("#guide").animate({right:'0'},300);
+		$("#cover").show();
+		$("html").addClass("sift-move");
+		$("body").addClass("sift-move");
+		var osType = getWebOSType();
+		if(osType == "Android"){
+			iShop.jumpToWebViewForScroll("N");
+		}
+	});
+	$("#cover").click(function(){
+		$("#guide").animate({right:"-"+$("#guide").width()+"px"},300);
+		$("#cover").hide();
+		$("html").removeClass("sift-move");
+		$("body").removeClass("sift-move");
+		var osType = getWebOSType();
+		if(osType == "Android"){
+			if($(window).scrollTop()>0){
+				iShop.jumpToWebViewForScroll("N");
+			}else {
+				iShop.jumpToWebViewForScroll("Y");
+			}
+		}
+	})
     $(".allShops").on("click",".shop",function(e){
     	var host=window.location.host;
     	var id=$(this).attr("data-id");
  		var param={};
  		param["type"]="FAB";
- 		param["url"]="http://"+host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"&type=app";
+ 		param["url"]="http://"+host+"/goods/mobile_v2/goods.html?corp_code="+corp_code+"&id="+id+"&type=app&user_id="+user_id+"";
  		param["title"]=$(this).find(".shop-t h1").html();
     	doAppWebRefresh(param);
 	})
 	//获取手机系统
 	function getWebOSType(){
 		var browser = navigator.userAgent;
-		var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端 
+		var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端
 		var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 		if(isAndroid){
 			return "Android";
@@ -258,7 +308,6 @@ jQuery(function(){
 		if(osType=="iOS"){
 			try{
                 window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
-                
             } catch(err){
                 NSJumpToWebViewForWeb(param);
             }
@@ -268,11 +317,20 @@ jQuery(function(){
 	}
 });
 function doAppWebHeaderRefresh(param){
-	alert(param);
 	if(param=="headerRefresh"){
 		$(".header_line").css({"position":"absolute"});
 	}else{
 		$(".header_line").css({"position":"fixed"});
 	}
 }
+$(window).scroll(function(){
+	var osType = getWebOSType();
+	if(osType == "Android"){
+		if($(this).scrollTop()>0){
+			iShop.jumpToWebViewForScroll("N");
+		}else {
+			iShop.jumpToWebViewForScroll("Y");
+		}
+	}
+})
 

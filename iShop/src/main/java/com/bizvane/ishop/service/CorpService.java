@@ -26,6 +26,9 @@ public interface CorpService {
 
     PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws Exception;
 
+    PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value,String manager_corp) throws Exception;
+
+
     List<Corp> selectAllCorp() throws Exception;
 
     String getCorpByCorpName(String corp_name,String isactive) throws Exception;
@@ -50,7 +53,9 @@ public interface CorpService {
 
     CorpWechat getCorpByAppUserName(String app_user_name)  throws Exception;
 
-    CorpWechat getCorpByAppId(String app_id)  throws Exception;
+    CorpWechat getCorpByApp(String app_id)  throws Exception;
+
+    CorpWechat getCorpByAppId(String corp_code,String app_id)  throws Exception;
 
     List<CorpWechat> getWByCorp(String corp_code) throws Exception;
 

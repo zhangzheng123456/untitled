@@ -197,6 +197,12 @@
         <if test="corp_code !=null and corp_code!=''">
             AND ua.corp_code=#{corp_code}
         </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                ua.corp_code =#{item}
+            </foreach>
+        </if>
         <if test="search_value!=null and search_value!=''">
             AND
             (u.user_name like concat('%',#{search_value},'%')
@@ -313,9 +319,10 @@
         AND ua.user_code = u.user_code
         AND ua.corp_code=#{corp_code}
         AND ua.user_code=#{user_code}
-        AND ua.user_target=#{user_target}
-        AND ua.target_type=#{target_type}
+          AND ua.store_code=#{store_code}
         AND ua.target_time=#{target_time}
+        AND ua.isactive=#{isactive}
+
 
     </select>
 
@@ -361,6 +368,12 @@
 
         <if test="corp_code!=null and corp_code!=''">
             AND ua.corp_code=#{corp_code}
+        </if>
+        <if test="manager_corp_arr!=null">
+            AND
+            <foreach collection="manager_corp_arr" index="index" item="item" open="(" separator="or" close=")">
+                ua.corp_code =#{item}
+            </foreach>
         </if>
         <if test="role_code!=null and role_code!=''">
             AND g.role_code &lt; #{role_code}

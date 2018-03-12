@@ -18,10 +18,20 @@ public class DefGoodsMatch {
     private String created_date;
     //创建者
     private String creater;
+    //创建者
+    private String match_display;
     //是否可用
     private String isactive;
     private String goods_image;
     private String dgmid;
+
+    public String getMatch_display() {
+        return match_display;
+    }
+
+    public void setMatch_display(String match_display) {
+        this.match_display = match_display;
+    }
 
     public String getDgmid() {
         return dgmid;

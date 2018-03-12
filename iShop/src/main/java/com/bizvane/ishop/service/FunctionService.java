@@ -2,10 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.Function;
-import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.Privilege;
-import com.bizvane.ishop.entity.TableManager;
-import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +32,8 @@ public interface FunctionService {
 
     List<Map<String,String>> selectColumnByFun(String corp_code, String user_code, String group_code, String role_code, String function_code) throws Exception;
 
+    List<Map<String,String>> selectRWByFun(String corp_code, String user_code, String group_code, String role_code, String function_code) throws Exception;
+
     JSONArray selectLoginPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) throws Exception;
 
     JSONArray selectPrivilegeStatus(String user_code,String group_code,String role_code,String live_status,String die_status,JSONArray privilege_array) throws Exception;
@@ -43,5 +42,9 @@ public interface FunctionService {
 
     List<Privilege> selectColPrivilegeByUser(String function_code,String master_code) throws Exception;
 
-    int updateColPrivilegeByUser(String id,String function_code,String chart_order,String corp_code,String user_code) throws Exception;
+    int updateColPrivilegeByUser(String function_code,String chart_order,String corp_code,String user_code) throws Exception;
+
+    List<Privilege> selectPrivilegeByAct(String search_value,String action_name,String function_code) throws Exception;
+
+    List<Privilege> selectMasterCodeByFunctionName(String function_name,String action_name) throws Exception;
 }

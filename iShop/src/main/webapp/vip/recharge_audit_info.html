@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
     <title>审核详情</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
@@ -62,15 +63,15 @@
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i><span id="backCheck">审核管理</span><i class="icon-ishop_8-03"></i><label>审核详情</label></div>
+        <div class="col-lg-12 pre_title">会员运营<i class="icon-ishop_8-03"></i><span id="backCheck">审核管理</span><i class="icon-ishop_8-03"></i><label>审核详情</label></div>
         <div class="col-lg-12">
             <hr class="hr">
             <div class="operedit_btn">
                 <ul style="overflow: hidden">
                     <li class="performance" id="auditSuccess" style="background-color: #41c7db;display: none"><i class="icon-ishop_6-20"></i>通过审核</li>
-                    <li class="performance" id="keep" style="background-color: #6dc1c8;display: none;margin-right:-180px "><i class="icon-ishop_6-04"></i>保存</li>
+                    <li class="performance" id="keep" style="background-color: #6dc1c8;display: none; "><i class="icon-ishop_6-04"></i>保存</li>
                     <!--<li style="background-color: #c4c8d4;display: none" id="auditError"><i class="icon-ishop_6-04"></i>拒绝</li>-->
-                    <li style="background: #4a5f7c;margin-left: 200px" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    <li style="background: #4a5f7c;" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
                 </ul>
             </div>
         </div>
@@ -89,7 +90,8 @@
                 <div id="source_no"><span><label>退款来源单号</label><input type="text"></span></div>
                 <div id="tag_price"><span><label>折合吊牌金额</label><input type="text"></span></div>
                 <div id="pay_price"><span><label>实付金额</label><input type="text"></span></div>
-                <div id="active_content"><span><label>活动内容</label><input type="text"></span></div>
+                <div id="discount"><span><label>充值折扣</label><input type="text"></span></div>
+                <div id="active_content"><span><label>关联活动</label><input type="text"></span></div>
                 <div id="remark"><span><label>备注</label><input type="text"></span></div>
             </form>
         </div>
@@ -110,18 +112,34 @@
                 <div id="modified_date">
                     <span><label>修改时间</label><input type="text" id="modify_time" readonly=""></span>
                 </div>
-
+                <div id="modified_pep">
+                    <span><label>修改人</label><input type="text" id="modified_man" readonly=""></span>
+                </div>
+                <div id="created_pep">
+                    <span><label>创建人</label><input type="text" id="created_man" readonly=""></span>
+                </div>
+                <div>
+                    <span style="margin-bottom: 5px;"><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active" style="background-image: url('../img/icon_radio_S_U.png')"></label></em></span>
+                </div>
 
             </form>
+        </div>
+        <div class="tk" id="tk" style="z-index: 10002;position: fixed;height: auto">
+            <span class="icon-ishop_6-12" id="addVipX"></span>
+            <div id="msg" style="text-align: left;padding: 0 10px 0 16px;overflow-x:hidden;overflow-y:auto;max-height: 110px;margin:20px 0;"></div>
+            <div class="btn" style="margin-bottom: 10px;">
+                <em class="album_enter" id="addVipEnter" style="margin: 0">确认</em>
+            </div>
         </div>
     </div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<script src="/js/loading.js?2017040170331"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-<script type="text/javascript" src="../js/vip/recharge_audit_info.js"> </script>
+<script type="text/javascript" src="../js/vip/recharge_audit_info.js?201704019"> </script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>
 </html>

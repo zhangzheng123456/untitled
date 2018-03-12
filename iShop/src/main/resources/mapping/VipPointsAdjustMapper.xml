@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipPointsAdjustMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipPointsAdjust" id="VipPointsAdjust">
+        <id column="id" property="id"/>
+        <result column="bill_name" property="bill_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_code" property="bill_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="adjust_time" property="adjust_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_state" property="bill_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_type" property="bill_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="bill_voucher" property="bill_voucher" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remarks" property="remarks" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+
+    <select id="selectPointsAdjustByNameAndId" resultMap="VipPointsAdjust">
+        SELECT * FROM def_vip_points_adjust
+        WHERE 1=1
+        <if test="bill_name != null and bill_name!=''">
+            AND bill_name=#{bill_name}
+        </if>
+
+        <if test="corp_code != null and corp_code!=''">
+            AND corp_code=#{corp_code}
+        </if>
+
+        <if test="isactive != null and isactive!=''">
+            AND isactive=#{isactive}
+        </if>
+
+    </select>
+
+    <select id="selectPointsAdjustById" resultMap="VipPointsAdjust">
+        SELECT *
+        FROM def_vip_points_adjust
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectPointsAdjustByBillCode" resultMap="VipPointsAdjust">
+        SELECT *
+        FROM def_vip_points_adjust
+        WHERE bill_code=#{bill_code}
+    </select>
+
+
+    <select id="selectPointsAdjustAll" resultMap="VipPointsAdjust">
+        SELECT
+        vpa.id,
+        vpa.bill_name,
+        vpa.bill_code,
+        vpa.adjust_time,
+        vpa.bill_state,
+        vpa.bill_type,
+        vpa.bill_voucher,
+        vpa.corp_code,
+        vpa.remarks,
+        vpa.isactive,
+        vpa.modified_date,
+        vpa.modifier,
+        vpa.creater,
+        vpa.created_date,
+        cc.CORP_NAME
+        FROM
+        def_vip_points_adjust vpa, DEF_CORP cc
+        WHERE vpa.corp_code=cc.CORP_CODE
+        <if test="corp_code != null and corp_code !=''">
+        AND vpa.corp_code = #{corp_code}
+    </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (vpa.bill_code LIKE concat('%',#{search_value},'%')
+            OR vpa.bill_name LIKE concat('%',#{search_value},'%')
+            OR cc.CORP_NAME LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY vpa.id DESC
+    </select>
+
+    <delete id="deletePointsAdjustById">
+        DELETE FROM
+        def_vip_points_adjust
+        WHERE id=#{id}
+    </delete>
+
+    <insert id="insertPointsAdjust" parameterType="com.bizvane.ishop.entity.VipPointsAdjust">
+        INSERT INTO def_vip_points_adjust
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bill_name!=null and bill_name!=''">
+                bill_name,
+            </if>
+            <if test="bill_code!=null and bill_code!=''">
+                bill_code,
+            </if>
+            <if test="adjust_time!=null and adjust_time!=''">
+                adjust_time,
+            </if>
+            <if test="bill_state!=null and bill_state!=''">
+                bill_state,
+            </if>
+            <if test="bill_type!=null and bill_type!=''">
+                bill_type,
+            </if>
+            <if test="bill_voucher!=null and bill_voucher!=''">
+                bill_voucher,
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code,
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                remarks,
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive,
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                modified_date,
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier,
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater,
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                created_date,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="bill_name!=null and bill_name!=''">
+                #{bill_name},
+            </if>
+            <if test="bill_code!=null and bill_code!=''">
+                #{bill_code},
+            </if>
+            <if test="adjust_time!=null and adjust_time!=''">
+                #{adjust_time},
+            </if>
+            <if test="bill_state!=null and bill_state!=''">
+                #{bill_state},
+            </if>
+            <if test="bill_type!=null and bill_type!=''">
+                #{bill_type},
+            </if>
+            <if test="bill_voucher!=null and bill_voucher!=''">
+                #{bill_voucher},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                #{corp_code},
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                #{remarks},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                #{isactive},
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                #{modifier},
+            </if>
+            <if test="creater!=null and creater!=''">
+                #{creater},
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                #{created_date},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePointsAdjust" parameterType="com.bizvane.ishop.entity.VipPointsAdjust">
+        UPDATE def_vip_points_adjust
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bill_name!=null">
+                bill_name=#{bill_name},
+            </if>
+            <if test="bill_code!=null">
+                bill_code=#{bill_code},
+            </if>
+            <if test="adjust_time!=null">
+                adjust_time=#{adjust_time},
+            </if>
+            <if test="bill_state!=null">
+                bill_state=#{bill_state},
+            </if>
+            <if test="bill_type!=null">
+                bill_type=#{bill_type},
+            </if>
+            <if test="bill_voucher!=null">
+                bill_voucher=#{bill_voucher},
+            </if>
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="remarks!=null">
+                remarks=#{remarks},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="created_date!=null ">
+                created_date=#{created_date},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectVipPointsAdjustAllScreen" resultMap="VipPointsAdjust">
+        SELECT vpa.*,
+        cc.corp_name
+        FROM def_vip_points_adjust vpa, def_corp cc
+        WHERE vpa.corp_code = cc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND vpa.corp_code=#{corp_code}
+        </if>
+        <if test="adjust_time_start!=null and adjust_time_start!=''">
+            AND  vpa.adjust_time &gt;= #{adjust_time_start}
+        </if>
+        <if test="adjust_time_end!=null and adjust_time_end!=''">
+            AND  vpa.adjust_time &lt;= #{adjust_time_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!=''">
+                    vpa.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By vpa.id
+        ORDER BY vpa.id DESC
+    </select>
+
+
+
+    <!--修改任务状态-->
+    <update id="updateBillState" parameterType="com.bizvane.ishop.entity.VipPointsAdjust">
+        UPDATE def_vip_points_adjust
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bill_state!=null and bill_state!=''">
+                bill_state=#{bill_state},
+            </if>
+            <if test="bill_voucher!=null and bill_voucher!=''">
+                bill_voucher=#{bill_voucher},
+            </if>
+            <if test="adjust_time!=null and adjust_time!=''">
+                adjust_time=#{adjust_time},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+</mapper>

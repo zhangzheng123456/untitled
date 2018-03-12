@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除的默认的第一页;
 var pageSize=10;//默认传的每页多少行
@@ -26,7 +24,7 @@ var fixHelper = function(e, ui)     {
 };
 //模拟select每页
 $(function(){
-        $("#page_row").click(function(){
+        $("#page_row,.page_p .icon-ishop_8-02").click(function(){
             if("block" == $("#liebiao").css("display")){
                 hideLi();
             }else{
@@ -78,7 +76,11 @@ $("#pack_up").click(function(){//点击收回 取消下拉框
 $("#empty").click(function(){
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
-        input[i].value="";
+        if($(input[i]).parent().hasClass("isActive_select")){
+            input[i].value="全部";
+        }else{
+            input[i].value="";
+        }
         $(input[i]).attr("data-code","");
     }
     value="";
@@ -92,12 +94,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize) {
+function setPage(container, count, pageindex,pageSize,funcCode,total) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -149,7 +152,7 @@ function setPage(container, count, pageindex,pageSize) {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -200,11 +203,12 @@ function superaddition(data,num){//页面加载循环
         var i;
         for(i=0;i<10;i++){
             $(".table tbody").append("<tr></tr>");
-            for(var j=0;j<len;j++){
-                $($(".table tbody tr")[i]).append("<td></td>");
+            if(i==4){
+                $($(".table tbody tr")[i]).append("<td colspan='"+len+"'>暂无内容</td>");
+            }else {
+                $($(".table tbody tr")[i]).append("<td colspan='"+len+"'></td>");
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     var paramType="";
     for (var i = 0; i < data.length; i++) {
@@ -218,7 +222,10 @@ function superaddition(data,num){//页面加载循环
             paramType="自定义";
         }
         if(data[i].param_type=="select"){
-            paramType="选择列表";
+            paramType="单选";
+        }
+        if(data[i].param_type=="check"){
+            paramType="多选框";
         }
         if(data[i].param_type=="date"){
             paramType="时间";
@@ -271,7 +278,6 @@ function jurisdiction(actions){
 }
 function InitialState(){
     if(return_jump!==null){
-        console.log(return_jump);
         inx=return_jump.inx;
         pageSize=return_jump.pageSize;
         value=return_jump.value;
@@ -325,6 +331,7 @@ function qjia(){
         crud();
         InitialState();
         tableTh();
+        getfilter();
     })
 }
 function tableTh(){ //table  的表头
@@ -351,16 +358,16 @@ function GET(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             list=list.list;
             superaddition(list,pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
             $(".table tbody").sortable({helper:fixHelper,axis: 'y' ,delay: 200,cursor:"move",opacity: 0.6 , update: function(event, ui) {
                 var len=$("#table tbody tr");
                 var params=[];
                 for(var i=0;i<len.length;i++){
                     if(inx>=2){
-                        console.log(inx);
                         a=i+(inx-1)*pageSize;
                         var id=$(len[i]).attr("id");
                         var list={
@@ -384,9 +391,8 @@ function GET(a,b){
                 }
                 var param={};
                 param['param']=params;
-                console.log(params);
                 oc.postRequire("post","/vipparam/updateShowOrder","0",param,function(data) {
-                    console.log(data.message);
+                    //console.log(data.message);
                 });
             } });
             $( ".table tbody" ).disableSelection();
@@ -399,10 +405,11 @@ function GET(a,b){
 function crud() {
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_paramadd.html");
-    })
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_paramadd.html?t="+ $.now());
+    });
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
+        memory();
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
             var id=$(tr).attr("id");
@@ -437,10 +444,17 @@ function crud() {
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
+}
+//跳转编辑记录数据
+function memory(){
+    sessionStorage.setItem("memoryName",$('#param_desc').val());
+    sessionStorage.setItem("memoryType",$('#param_type').val());
+    sessionStorage.setItem("memoryValue",$('#param_values').val());
+    sessionStorage.setItem("memoryCorpName",$('#corp_name').val());
+    sessionStorage.setItem("memoryRemark",$('#remark').val());
+    sessionStorage.setItem("memoryIsactive",$('#isactive').val());
 }
 //加载完成以后页面进行的操作
 function jumpBianse(){
@@ -450,6 +464,7 @@ function jumpBianse(){
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
+        memory();
         var id=$(this).attr("id");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
@@ -464,7 +479,7 @@ function jumpBianse(){
         if(id == "" || id == undefined){
             return ;
         }else{
-            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_paramedit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_paramedit.html?t="+ $.now());
         }
     })
     //点击tr input是选择状态  tr增加class属性
@@ -472,7 +487,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -537,6 +551,7 @@ function POST(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -556,7 +571,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -585,9 +600,7 @@ $("#delete").click(function(){
         }else{
             ID+=r;
         }
-        console.log(ID);
     }
-
     var params={};
     params["id"]=ID;
     oc.postRequire("post","/vipparam/delete","0",params,function(data){
@@ -683,7 +696,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -760,54 +772,56 @@ $('#file_close').click(function(){
     $('.file').hide();
     $('#file_submit').show();
     $('#download').hide();
-})
-//筛选按钮
-oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
-    if(data.code=="0"){
-        var message=JSON.parse(data.message);
-        var filter=message.filter;
-        $("#sxk .inputs ul").empty();
-        var li="";
-        for(var i=0;i<filter.length;i++){
-            if(filter[i].type=="text"){
-                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
-            }else if(filter[i].type=="select"){
-                var msg=filter[i].value;
-                console.log(msg);
-                var ul="<ul class='isActive_select_down'>";
-                for(var j=0;j<msg.length;j++){
-                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
-                }
-                ul+="</ul>";
-                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
-            }
-
-        }
-        $("#sxk .inputs ul").html(li);
-        if(filtrate!==""){
-            $(".sxk").slideDown();
-            for(var i=0;i<list.length;i++){
-                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
-                    $("#"+list[i].screen_key).val(list[i].screen_value);
-                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
-                    var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
-                    $("#"+list[i].screen_key).val(svalue);
-                }
-            }
-        }
-        filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
-                if(filtrate==""){
-                    $(".table tbody").sortable('enable');
-                }
-            }
-        })
-    }
 });
+function getfilter(){
+    //筛选按钮
+    oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var filter=message.filter;
+            $("#sxk .inputs ul").empty();
+            var li="";
+            for(var i=0;i<filter.length;i++){
+                if(filter[i].type=="text"){
+                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                }else if(filter[i].type=="select"){
+                    var msg=filter[i].value;
+                    var ul="<ul class='isActive_select_down'>";
+                    for(var j=0;j<msg.length;j++){
+                        ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                    }
+                    ul+="</ul>";
+                    li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+                }
+
+            }
+            $("#sxk .inputs ul").html(li);
+            if(filtrate!==""){
+                $(".sxk").slideDown();
+                for(var i=0;i<list.length;i++){
+                    if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
+                        $("#"+list[i].screen_key).val(list[i].screen_value);
+                    }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+                        var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
+                        $("#"+list[i].screen_key).val(svalue);
+                        $("#"+list[i].screen_key).attr("data-code",list[i].screen_value)
+                    }
+                }
+            }
+            filtrateDown();
+            //筛选的keydow事件
+            $('#sxk .inputs input').keydown(function(){
+                var event=window.event||arguments[0];
+                if(event.keyCode == 13){
+                    getInputValue();
+                    if(filtrate==""){
+                        $(".table tbody").sortable('enable');
+                    }
+                }
+            })
+        }
+    });
+}
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
@@ -883,6 +897,7 @@ function filtrates(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -895,7 +910,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -946,9 +961,58 @@ $(function(){
 });
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
-    window.location.reload();
-})
+    //window.location.reload();
+    inx=1;
+    if (value == "" && filtrate == "") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
+        $("#search").val("");
+        GET(inx, pageSize);
+    } else if (value !== "") {
+        param["pageSize"] = pageSize;
+        POST(inx, pageSize);
+    } else if (filtrate !== "") {
+        _param["pageSize"] = pageSize;
+        filtrates(inx, pageSize);
+    }
+});
+//获取？后缀
+function GetRequest() {
+    var url = decodeURI(location.search); //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+}
+window.onload = function () {
+    //默认全部
+    //var val = GetRequest().back;
+    //if(val==1){
+    //    setTimeout(function(){
+    //        //$('#filtrate').click();
+    //        $('#param_desc').val(sessionStorage.getItem('memoryName'));
+    //        $('#param_type').val(sessionStorage.getItem('memoryType'));
+    //        $('#param_values').val(sessionStorage.getItem('memoryValue'));
+    //        $('#corp_name').val(sessionStorage.getItem('memoryCorpName'));
+    //        $('#remark').val(sessionStorage.getItem('memoryRemark'));
+    //        $('#isactive').val(sessionStorage.getItem('memoryIsactive'));
+    //    },600);
+    //}else{
+    //    setTimeout(function(){
+    //        $('.isActive_select_down li').each(function () {
+    //            if($(this).text()=='全部'){
+    //                $(this).click();
+    //            }
+    //        });
+    //    },600);
+    //}
 
-
+}
 
 

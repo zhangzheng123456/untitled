@@ -4,13 +4,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * 此类GetObject Submit UnSubmit 通用
  */
 public class GetOrSubOrUnSubRequestParams extends RequestParams{
 
-	public GetOrSubOrUnSubRequestParams(String corpcode) {
-		super(corpcode);
+	public GetOrSubOrUnSubRequestParams(List<String> drplist) {
+		super(drplist);
 	}
 
 	public class GetObjectTran extends BaseTrans{

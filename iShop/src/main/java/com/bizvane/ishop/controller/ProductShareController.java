@@ -3,17 +3,17 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.*;
 import org.apache.log4j.Logger;
-import com.bizvane.ishop.bean.DataBean;
-import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Created by nanji on 2016/9/9.
@@ -111,10 +109,10 @@ public class ProductShareController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -127,10 +125,17 @@ public class ProductShareController {
 
             DBCursor dbCursor = null;
             // 读取数据
+            if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+            }
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                result.put("total",dbCursor1.count());
 
             } else {
                 BasicDBList value = new BasicDBList();
@@ -139,7 +144,7 @@ public class ProductShareController {
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
-
+                result.put("total",dbCursor2.count());
                 pages = MongoUtils.getPages(dbCursor2,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
             }
@@ -189,12 +194,17 @@ public class ProductShareController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_production_share);
 
-
+            if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+            }
             DBCursor dbCursor = null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
-
+                result.put("total",dbCursor1.count());
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
             } else {
@@ -204,7 +214,7 @@ public class ProductShareController {
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
-
+                result.put("total",dbCursor1.count());
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
             }
@@ -234,9 +244,9 @@ public class ProductShareController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
@@ -246,7 +256,12 @@ public class ProductShareController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_production_share);
             DBObject sort_obj = new BasicDBObject("time", -1);
-
+            if(role_code.equals(Common.ROLE_CM)){
+                String manager_corp = request.getSession().getAttribute("manager_corp").toString();
+                System.out.println("manager_corp=====>"+manager_corp);
+                corp_code = WebUtils.getCorpCodeByCm(manager_corp, request.getSession().getAttribute("corp_code_cm"));
+                System.out.println("getCorpCodeByCm=====>"+corp_code);
+            }
             if (screen.equals("")) {
                 String[] column_names = new String[]{"product_image","product_url","product_title","corp_name","operator_id","time"};
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
@@ -290,7 +305,7 @@ public class ProductShareController {
                 int i = 9 / 0;
             }
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request,"");
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

@@ -3,13 +3,16 @@
  */
 var oc = new ObjectControl();
 cache={
-     user_code:''
+    user_code:'',
+    No:''
 }
 //充值弹窗
 $('#toTopUp').click(function(){
-    $('#topUp').css('display','block');
-    $('#refund').css('display','none');
-    $('.warp').css('display','block');
+    val = $('#topUp .searchable-select-holder').text();
+    if(val==""){topUpShop(sessionStorage.getItem("corp_code"))};//充值店仓列表
+    $('#topUp').show();
+    $('#refund').hide();
+    $('.warp').show();
     $('#execution li').eq(0).click();
     $('#topUpShopSelcet li').eq(0).click();
     $('#topUpPeopleSelect li').eq(0).click();
@@ -24,72 +27,62 @@ $('#toTopUp').click(function(){
 });
 //退款弹窗
 $('#toRefund').unbind('click').bind('click',(function(){
-    $('#refund').css('display','block');
-    $('#topUp').css('display','none');
-    $('.warp').css('display','block');
-    //refunBalanceShow();//默认余额退款
+    val = $('#refund .searchable-select-holder').text();
+    if(val==''){topUpShop(sessionStorage.getItem("corp_code"))}; //充值店仓列表
+    $('#refund').show();
+    $('#topUp').hide();
+    $('.warp').show();
     $('#refunType li').eq(1).click();
     $('#refunShopSelcet li').eq(0).click();
     $("body").css({overflow:"hidden"});
 }));
 //充值记录弹窗
 $('#toRecord').click(function(){
-    $('#topUp').css('display','none');
-    $('#record').css('display','block');
-});
-//返回充值弹窗
-$('#toReturn').click(function () {
-    $('#record').css('display','none');
-    $('#topUp').css('display','block');
+    getPayRecord();
+    $('#topUp').hide();
+    $('#record').show();
+    $('.warp').show();
+    $("body").css({overflow:"hidden"});
 });
 // 关闭
 $('#screen_close_shop').click(function () {
-    $('#topUp').css('display','none');
-    $('.warp').css('display','none');
+    $('#topUp').hide();
+    $('.warp').hide();
     $("body").css({overflow:"auto"});
 });
 $('#refundClose').click(function () {
-    $('#refund').css('display','none');
-    $('.warp').css('display','none');
+    $('#refund').hide();
+    $('.warp').hide();
     $("body").css({overflow:"auto"});
 });
 $('#record .screen_close').click(function () {
-    $('#record').css('display','none');
-    $('#topUp').css('display','block');
-    $('.warp').css('display','block');
+    $('#record').hide();
+    $('.warp').hide();
+    $("body").css({overflow:"auto"});
 });
-//$('.warp').click(function () {
-//    $('#topUp').css('display','none');
-//    $('#refund').css('display','none');
-//    $('.warp').css('display','none');
-//});
-//单据编号
-//var mydate = new Date();
-//var str = "" + mydate.getFullYear() + "";
-//str += (mydate.getMonth()+1) + "";
-//str += mydate.getDate() + "";
-//str += mydate.getHours() + "";
-//str += mydate.getMinutes() + "";
-//str += mydate.getSeconds() + "";
-//$('#topUpNum').val(str);
-//$('#refundNum').val(str);
 //单据日期
 var mydate = new Date();
+var month = mydate.getMonth()+1;
+var date = mydate.getDate();
+//var hours = mydate.getHours();
+//var minutes = mydate.getMinutes();
+//var seconds = mydate.getSeconds();
 var str = "" + mydate.getFullYear() + "-";
-str += (mydate.getMonth()+1) + "-";
-str += mydate.getDate() + " ";
-str += mydate.getHours() + ":";
-str += mydate.getMinutes() + ":";
-str += mydate.getSeconds() + "";
+str +=  (month>9?month:'0'+month )+ "-";
+str +=  (date>9?date:'0'+date )+ " ";
+//str +=  (hours>9?hours:'0'+hours )+ ":";
+//str +=  (minutes>9?minutes:'0'+minutes )+ ":";
+//str +=  (seconds>9?seconds:'0'+seconds )+ "";
 $('#chooseDate').val(str);
 $('#refundDate').val(str);
-console.log(str)
 var chooseDate = {
     elem: '#chooseDate',
-    format: 'YYYY-MM-DD hh:mm:ss',
+    format: 'YYYY-MM-DD',
+    //format: 'YYYY-MM-DD hh:mm:ss',
     istime: true,
     min: laydate.now(),
-    max: '2099-06-16 23:59:59',
+    max: '2099-06-16',
+    //max: '2099-06-16 23:59:59',
     istoday: false,
     choose: function (datas) {
         start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -97,10 +90,12 @@ var chooseDate = {
 };
 var refundDate = {
     elem: '#refundDate',
-    format: 'YYYY-MM-DD hh:mm:ss',
+    format: 'YYYY-MM-DD',
+    //format: 'YYYY-MM-DD hh:mm:ss',
     istime: true,
     min: laydate.now(),
-    max: '2099-06-16 23:59:59',
+    max: '2099-06-16',
+    //max: '2099-06-16 23:59:59',
     istoday: false,
     choose: function (datas) {
         start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -108,14 +103,42 @@ var refundDate = {
 };
 laydate(chooseDate);
 laydate(refundDate);
+//阻止冒泡
+//得到事件
+function getEvent(){
+    if(window.event){return window.event;}
+    func=getEvent.caller;
+    while(func!=null){
+        var arg0=func.arguments[0];
+        if(arg0){
+            if((arg0.constructor==Event || arg0.constructor ==MouseEvent
+                || arg0.constructor==KeyboardEvent)
+                ||(typeof(arg0)=="object" && arg0.preventDefault
+                && arg0.stopPropagation)){
+                return arg0;
+            }
+        }
+        func=func.caller;
+    }
+    return null;
+}
+function cancelBubble()
+{
+    var e=getEvent();
+    if(window.event){
+        //e.returnValue=false;//阻止自身行为
+        e.cancelBubble=true;//阻止冒泡
+    }else if(e.preventDefault){
+        //e.preventDefault();//阻止自身行为
+        e.stopPropagation();//阻止冒泡
+    }
+}
 //充值类型
 $('#execution_input').click(function () {
-    event.stopPropagation();
-    $('#topUpShopSelcet').css('display','none');
-    $('#topUpPeopleSelect').css('display','none');
+    cancelBubble();
+    $('body').click();
     $('#execution').toggle();
 });
-
 //下拉选择
 $("#execution li").click(function () {
     var val = $(this).html();
@@ -125,8 +148,8 @@ $("#execution li").click(function () {
 });
 //退款类型
 $('#refunTypeInput').click(function () {
-    event.stopPropagation();
-    $('#refunShopSelcet').css('display','none');
+    cancelBubble();
+    $('body').click();
     $('#refunType').toggle();
 })
 //下拉选择
@@ -189,19 +212,21 @@ function topUpShop(a) {
                 }
             })
         } else if (data.code == "-1") {
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
+            //art.dialog({
+            //    time: 1,
+            //    lock: true,
+            //    cancel: false,
+            //    content: data.message
+            //});
+            $("#editTk").show();
+            $("#tkWarp").show();
+            $("#msg").html(data.message);
         }
         whir.loading.remove();//移除加载框
     })
 }
 //经办人
 function topUpPeople(store_code,type){
-    whir.loading.add("",0.5);
     var param={};
     param["store_code"]=store_code;
     param["corp_code"]=sessionStorage.getItem("corp_code");
@@ -236,18 +261,11 @@ function topUpPeople(store_code,type){
                 $("#refundPeople").html(html);
                 $("#refundPeople").searchableSelect();
             };
-            // topUpPeopleShow(msg);
-            // $('#topUpPeopleSelect li').each(function () {
-            //     var val = $(this).text();
-            //     if(val == ''){
-            //         $(this).remove();
-            //         console.log('删除');
-            //     }
-            // });
         }else if(date.code=="-1"){
-            alert(date.message);
+            $("#editTk").show();
+            $("#tkWarp").show();
+            $("#msg").html(data.message);
         }
-        whir.loading.remove();//移除加载框
     })
 }
 $('#topUpPeople').click(function(){
@@ -256,7 +274,6 @@ $('#topUpPeople').click(function(){
     $('#refunShopSelcet').css('display','none');
     $('#topUpPeopleSelect').toggle();
 });
-
 //下拉选择
 function topUpPeopleClick(dom){
     var val =$(dom).text();
@@ -280,19 +297,23 @@ $('#topUpMoneyReality').focus(function () {
         var topUpMoney = $('#topUpMoney').val().trim();
         if(topUpMoneyReality ==''){
             $('#topUpMoneyReality').parent().find('.hint').css('display','block');
+            $('#topUpMoneyDiscount').val('');
+            $('#topUpMoneyDiscount').attr('placeholder','由系统自动生成');
         }else{
             $('#topUpMoneyReality').parent().find('.hint').css('display','none');
         }
         if(topUpMoney ==''){
             $('#topUpMoney').parent().find('.hint').css('display','block');
+            $('#topUpMoneyDiscount').val('');
+            $('#topUpMoneyDiscount').attr('placeholder','由系统自动生成');
         }else{
             $('#topUpMoney').parent().find('.hint').css('display','none');
         }
         if(topUpMoneyReality!=''&&topUpMoney!='' ){
             $('#topUpMoneyReality').parent().find('.hint').css('display','none');
             $('#topUpMoney').parent().find('.hint').css('display','none');
-            topUpMoneyDiscount = topUpMoneyReality/topUpMoney;
-            $('#topUpMoneyDiscount').val(topUpMoneyDiscount);
+            topUpMoneyDiscount = (topUpMoneyReality/topUpMoney).toFixed(2);
+                $('#topUpMoneyDiscount').val(topUpMoneyDiscount);
         }
     },1000);
 });
@@ -303,9 +324,21 @@ function refunTopUpShow(){
     $('#refundReality').parent('span').parent('div').css('display','block');
     $('#refundMoneyDiscount').parent('span').parent('div').css('display','block');
     $('#refundBalance').parent('span').parent('div').css('display','none');
-    $('#refunTopUpFrom').blur(function () {
-        var val = $('#refunTopUpFrom').val();
-        if(val != ''){
+}
+$("#activityContent").blur(function(){
+    var val=$(this).val().trim();
+    if(val!=""){
+        $('#activityContent').parent().find('.hint').css('display','none');
+    }
+})
+$('#refunTopUpFrom').blur(function () {
+    var type = $('#refunTypeInput').val();
+    var val = $('#refunTopUpFrom').val();
+    //判断输入的单据号是否与上次相同
+    if(cache.No ==''||cache.No!=val){
+        cache.No = val;
+        if(val != ''&& type =='按充值单退款'){
+            console.log('调用接口' + type);
             var param = {};
             param["billNo"] = $('#refunTopUpFrom').val();//单据编号
             param["type"] = 'billNo';//退款类型
@@ -321,20 +354,22 @@ function refunTopUpShow(){
                     $('#refundReality').val(pay_price);
                     $('#refundMoneyDiscount').val(refundMoneyDiscount);
                 } else if (data.code == "-1") {
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: data.message
-                    });
+                    //art.dialog({
+                    //    time: 1,
+                    //    lock: true,
+                    //    cancel: false,
+                    //    content: data.message
+                    //});
+                    $("#editTk").show();
+                    $("#tkWarp").show();
+                    $("#msg").html(data.message);
                 }
             });
         }else{
             console.log('单号不能为空！');
         }
-    });
-
-}
+    }
+});
 // <!--若选择余额退款：-->（调接口/vip/checkBillNo 传退款类型，vip_id,corp_code）
 function refunBalanceShow(){
     $('#refunTopUp').css('display','none');
@@ -348,15 +383,22 @@ function refunBalanceShow(){
     oc.postRequire("post", " /vip/checkBillNo", "", param, function (data) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
-            var balance = msg.balance;
-            $('#refundBalance').val(balance);
+            if(msg!=''){
+                var balance = msg.balance;
+                $('#refundBalance').val(balance);
+            }else{
+                $('#refundBalance').val('0');
+            }
         } else if (data.code == "-1") {
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
+            //art.dialog({
+            //    time: 1,
+            //    lock: true,
+            //    cancel: false,
+            //    content: data.message
+            //});
+            $("#editTk").show();
+            $("#tkWarp").show();
+            $("#msg").html(data.message);
         }
     });
 }
@@ -374,25 +416,22 @@ $('#toSave').click(function(){
     var topUpMoney = $('#topUpMoney').val(); //吊牌金额
     var topUpMoneyReality = $('#topUpMoneyReality').val(); //实付金额
     var topUpMoneyDiscount = $('#topUpMoneyDiscount').val();//折扣
-    var topUpNote = $('#topUpNote').val();//备注
-    //if(topType == ''|| topUpShop == '' || topUpPeople == '' ) {
-    //    art.dialog({
-    //        time: 1,
-    //        lock: true,
-    //        cancel: false,
-    //        content: "充值类型、充值店仓、经办人不能为空"
-    //    });
-    //}else
-     if(topUpMoney == '' || topUpMoneyReality=='' ) {
+    var topUpNote = $('#topUpNote').val().trim();//备注
+    var activityContent = $('#activityContent').val().trim();//关联活动
+    if(topUpMoney == '' || topUpMoneyReality=='' ) {
         $(".topUp_main").scrollTop($(".topUp_main")[0].scrollHeight);
-        art.dialog({
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "折合吊牌金额、实付金额不能为空"
-        });
+         $("#editTk").show();
+         $("#tkWarp").show();
+         $("#msg").html('折合吊牌金额、实付金额不能为空');
         $('#topUpMoneyReality').parent().find('.hint').css('display','block');
         $('#topUpMoney').parent().find('.hint').css('display','block');
+
+    }else if(activityContent==""){
+        $(".topUp_main").scrollTop($(".topUp_main")[0].scrollHeight);
+        $("#editTk").show();
+        $("#tkWarp").show();
+        $("#msg").html('关联活动不能为空');
+        $('#activityContent').parent().find('.hint').css('display','block');
     }else{
          if(topType == '直接充值'){
              pay_type =1;
@@ -405,6 +444,7 @@ $('#toSave').click(function(){
          param["vip_name"] = $('#vip_name').text();//会员名称
          param["card_no"] = topUpCard;//会员卡号
          param["remark"] = topUpNote;//备注
+         param["activity_content"] = activityContent;//关联活动
          param["store_name"] = topUpShop;//充值店铺
          param["store_code"] = store_code;//充值编号
          param["date"] = topData;//单据日期
@@ -421,34 +461,27 @@ $('#toSave').click(function(){
             if (data.code == "0") {
                 $('#topUp').css('display','none');
                 $('.warp').css('display','none');
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "保存成功"
-                });
+                $("body").css({overflow:"auto"});
+                $("#editTk").show();
+                $("#tkWarp").show();
+                $("#msg").html('保存成功');
                 return ;
             } else if (data.code == "-1") {
-                art.dialog({
-                    time: 2.2,
-                    lock: true,
-                    cancel: false,
-                    content: data.message
-                });
+                $("#editTk").show();
+                $("#tkWarp").show();
+                $("#msg").html(data.message);
             }
         });
     }
-
 })
 //退款保存
 function toSave(){
     var refunTypeInput = $('#refunTypeInput').val();
-    console.log(refunTypeInput);
     var param = {};
     param["store_name"] = $('#OWN_CORP_refund').find("option:selected").text();//充值店铺名称
     param["store_code"] = $('#OWN_CORP_refund').val();//充值店铺编号
-    param["user_code"] = $('#refundPeople').find("option:selected").text();//经办人
-    param["user_name"] = $('#refundPeople').val();//经办人code
+    param["user_code"] = $('#refundPeople').val();//经办人code
+    param["user_name"] = $('#refundPeople').find("option:selected").text();//经办人
     param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
     param["vip_id"] = sessionStorage.getItem("id");//会员编号
     param["vip_name"] = $('#vip_name').text();//会员名称
@@ -467,24 +500,21 @@ function toSave(){
                 if (data.code == "0") {
                     $('#refund').css('display','none');
                     $('.warp').css('display','none');
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: "保存成功"
-                    });
+                    $("body").css({overflow:"auto"});
+                    $("#editTk").show();
+                    $("#tkWarp").show();
+                    $("#msg").html('保存成功');
                     return ;
                 } else if (data.code == "-1") {
-                    alert(data.message);
+                    $("#editTk").show();
+                    $("#tkWarp").show();
+                    $("#msg").html(data.message);
                 }
             });
         }else{
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: "请输入来源单号"
-            });
+            $("#editTk").show();
+            $("#tkWarp").show();
+            $("#msg").html('请输入来源单号');
             return ;
         }
     }
@@ -494,27 +524,31 @@ function toSave(){
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
                 $('#refund').css('display','none');
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "保存成功"
-                });
+                $('.warp').css('display','none');
+                $("body").css({overflow:"auto"});
+                $("#editTk").show();
+                $("#tkWarp").show();
+                $("#msg").html('保存成功');
                 return ;
             } else if (data.code == "-1") {
-                alert(data.message);
+                //alert(data.message);
+                $("#editTk").show();
+                $("#tkWarp").show();
+                $("#msg").html(data.message);
             }
         });
     }
 }
 //取消
 $('#toFalse').click(function(){
-    $('#topUp').css('display','none');
-    $('.warp').css('display','none');
+    $('#topUp').hide();
+    $('.warp').hide();
+    $("body").css({overflow:"auto"});
 });
 function toFalse(){
-    $('#refund').css('display','none');
-    $('.warp').css('display','none');
+    $('#refund').hide();
+    $('.warp').hide();
+    $("body").css({overflow:"auto"});
 }
 //移动窗体
 var mouseX, mouseY;
@@ -558,31 +592,7 @@ function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
-//充值记录数据加载
-function getRecord(){
-    var length = 100;
-    //长度大于10
-    if(length>10){
-        for(i=0;i<10;i++){
-            var record_num = '010101001'
-            var record_type = 'Y'
-            var record_money = '100'
-            var record_balance = '100'
-            recordVal(record_num,record_type,record_money,record_balance);
-    }
-        $('#toAddMore').css('display','block');
-    }else if(length<=10){
-        for(i=0;i<10;i++){
-            var record_num = '010101001'
-            var record_type = 'Y'
-            var record_money = '100'
-            var record_balance = '100'
-            recordVal(record_num,record_type,record_money,record_balance);
-        }
-        $('#toAddMore').css('display','none');
-    }
-}
-function  recordVal(record_num,record_type,record_money,record_balance){
+function recordVal(record_num,record_type,record_money,record_balance){
     var tempHTML = '<li onclick="showDetail()"><span class="record_num">${record_num}</span><span class="record_type">${record_type}</span><span class="record_money">${record_money}</span><span class="record_balance">${record_balance}</span></li>';
     var html = '';
     var nowHTML1 = tempHTML;
@@ -595,21 +605,15 @@ function  recordVal(record_num,record_type,record_money,record_balance){
 }
 //点击查看详细
 function showDetail(){
-    art.dialog({
-        time: 1,
-        lock: true,
-        cancel: false,
-        content: "还没有详细"
-    });
+    $("#editTk").show();
+    $("#tkWarp").show();
+    $("#msg").html('暂无详细');
 }
 //加载更多
 $('#toAddMore').click(function () {
-    art.dialog({
-        time: 1,
-        lock: true,
-        cancel: false,
-        content: "加载更多..."
-    });
+    $("#editTk").show();
+    $("#tkWarp").show();
+    $("#msg").html('功能暂未开放');
 })
 //选择日期点击，影藏其他下拉框
 $('#chooseDate').click(function () {
@@ -631,53 +635,141 @@ function getPayRecord(){
             var html="";
             if(list.length>0){
                 for(var i=0;i<list.length;i++){
-                    html+="<li><span class='record_num'>"+list[i].bill_no
-                    +"</span><span class='record_type'>"+list[i].recharge_type+
-                    "</span><span class='record_money'>"+list[i].tag_price
-                    +"</span><span class='record_money'>"+list[i].pay_price
-                    +"</span><span class='record_money'>"+list[i].bill_date+"</span></li>"
+                    html+="<li><span class='record_num'title='"+list[i].bill_no+"'>"+list[i].bill_no
+                        +"</span><span class='record_type'title='"+list[i].recharge_type+"'>"+list[i].recharge_type+
+                        "</span><span class='record_money'title='"+list[i].tag_price+"'>"+list[i].tag_price
+                        +"</span><span class='record_money'title='"+list[i].pay_price+"'>"+list[i].pay_price
+                        +"</span><span class='record_money' title='"+list[i].modified_date+"'>"+list[i].modified_date+"</span></li>"
                 }
                 $("#record_body").html(html);
             }else if(list.length==0){
                 $("#record_body").html("<li style='line-height: 300px;text-align: center; border-bottom:0px;'>暂无充值记录</li>");
             }
         }else if(data.code=="-1"){
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
+            $("#editTk").show();
+            $("#tkWarp").show();
+            $("#msg").html(data.message);
         }
         
     })
 }
-//来源单号失去焦点或区金额和折扣
-$("#refunTopUpFrom").blur(function(){
-    console.log(123123);
-})
-//遮罩层
-window.onload = function(){
+//点击清除提示弹窗
+function clearOut(){
+    $('.aui_outer').parent().click(function () {
+        $('.aui_outer').parent().css('display','none');
+        $('.ascrail2006-hr').next().remove();
+    });
+}
+$("#editEnter,#editX").click(function(){
+    $("#editTk").hide();
+    $("#tkWarp").hide();
+    $("#msg").html("");
+    whir.loading.remove("mask")
+});
+//优惠券
+$('.coupon_nav li').click(function () {
+    $('.coupon_nav li').css('background-color','white');
+    $(this).css('background-color','#e4e4ea');
+    var val = $(this).text();
+    var type = '';
+    whir.loading.add("",0.5);
+    $(".coupon_main").empty();
+    if(val == '已使用'){
+        type='IS_VERIFYED';
+        getCoupon(type)
+    }else if(val == '未使用'){
+        type='CAN_USE';
+        getCoupon(type)
+    }else if(val == '已过期'){
+        type='IS_EXPIRED';
+        getCoupon(type)
+    }
+});
+//优惠券-调用接口
+function getCoupon(type){
+    var param={};
+    param["corp_code"]=sessionStorage.getItem("corp_code");
+    param["app_id"]= sessionStorage.getItem("app_id");
+    param["open_id"]=sessionStorage.getItem("open_id");
+    param["vip_id"]=sessionStorage.getItem("id");
+    param["phone"]=$('.all_list #vip_phone_edit').val();
+    param["type"]=type;
+    oc.postRequire("post","/vip/coupon","",param,function(data){
+        if(data.code == '0'){
+            var message = JSON.parse(data.message);
+            couponVal(message);
+        }else if(date.code=="-1"){
+            //alert(date.message);
+            $("#editTk").show();
+            $("#tkWarp").show();
+            $("#msg").html(data.message);
+        }
+    })
+}
+function formatCouponDate (date){
+    var y=date.substring(0,4);
+    var m=date.substring(4,6);
+    var d=date.substring(6,8);
+    return y+"-"+m+"-"+d
+}
+//优惠券-页面展现
+function couponVal(message){
+    $("#couponList").html("共0张");
+    if(message == ''){
+        var html = '<p class="coupon_main_temp">暂无优惠券</p>';
+        $('.coupon_nav').css('height','40');
+        //$('.coupon_nav').css('border-bottom','1px dashed #d4d8e1');
+        $(".coupon_main").html(html);
+        whir.loading.remove();//移除加载框
+        return;
+    }
+    var couponList = message.couponList;
+    $("#coupon_num").html("共"+couponList.length+"张");
+    if(couponList.length != 0){
+        var tempHTML = '<li id="${no}"><div class="coupon_main_l"> <span>${num}</span>${type} <p>${couponName}</p><p>使用期限 ${startTime} 至 ${endTime}</p> </div> <div class="coupon_main_r" style="width: 770px"> <p>${textTitle}</p></div> </li>';
+        var html = '';
+        for(i=0;i<couponList.length;i++){
+            var nowHTML = tempHTML;
+            if(couponList[i].quan_type==1){
+                nowHTML = nowHTML.replace("${type}","元");
+                nowHTML = nowHTML.replace("${num}",couponList[i].price);
+            }else if(couponList[i].quan_type==2){
+                nowHTML = nowHTML.replace("${type}","折");
+                nowHTML = nowHTML.replace("${num}",couponList[i].discount);
+            }
+            nowHTML = nowHTML.replace("${no}",  couponList[i].no);
+            nowHTML = nowHTML.replace("${couponName}",  couponList[i].name);
+            nowHTML = nowHTML.replace("${startTime}", formatCouponDate(couponList[i].start_time));
+            nowHTML = nowHTML.replace("${endTime}",  formatCouponDate(couponList[i].end_time));
+            nowHTML = nowHTML.replace("${textTitle}",  couponList[i].description);
+            //nowHTML = nowHTML.replace("${textText}",  couponList[i].tips);
+            html += nowHTML;
+        }
+        //$('.coupon_nav').css('height','0');
+        //$('.coupon_nav').css('border-bottom','none');
+    }else{
+        var html = '<p class="coupon_main_temp">暂无优惠券</p>';
+        $('.coupon_nav').css('height','40');
+        $('.coupon_nav').css('border-bottom','1px dashed #d4d8e1');
+    }
+    $(".coupon_main").html(html);
+    whir.loading.remove();//移除加载框
+}
+$(window).ready(function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
-    topUpShop(sessionStorage.getItem("corp_code"));    //充值弹窗充值店仓列表
-    // refundShop(sessionStorage.getItem("corp_code"))    //充值弹窗退款店仓列表
-    getRecord();  //充值记录数据加载
-    getPayRecord();
     setInterval(function () {
-        $('.laydate_box').css('position','fixed');
+        $('#topUp .laydate_box').css('position','fixed');
+        $('#refund .laydate_box').css('position','fixed');
         var val = $('.laydate_box').css('display');
         if(val == 'block'){
             $('.topUp_main').scroll(function () {
-                $('.laydate_box').css('display','none');
+                $('.laydate_box').hide();
             })
         }else if(val =='none'){
             $('#chooseDate').click(function () {
                 $('.laydate_box').toggle();
             })
         }
-        //删除多余显示
-        // $('#topUp').find('.searchable-select').eq(1).remove();
-        // $('#refund').find('.searchable-select').eq(1).remove();
     },500);
     $('body').click(function () {
         $('#execution').hide();
@@ -688,4 +780,4 @@ window.onload = function(){
         $('#refunShopSelcet').hide();
     });
 
-}
+});

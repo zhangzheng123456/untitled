@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>集团管理员主页</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20170926">
+    <link rel="stylesheet" href="../css/liandong_select.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/message_list.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <script type="text/javascript" src="../js/laydate/laydate.dev.js"></script>
+    <style>
+        .tbody_scroll table{width: 100%}
+        .searchable-select {
+            min-width: 100%;
+            min-height:40px;
+            line-height: 40px;
+        }
+        .searchable-select-holder{
+            min-height:40px;
+            line-height: 40px;
+            background: #434960 url(../img/icon_list_down.png) no-repeat 96% 50%;
+        }
+        .searchable-select-dropdown{
+            width: 280px;
+            top:40px;
+            z-index: 10000;
+        }
+        .navbar li.search_box .searchable-select-dropdown .searchable-select-input{
+            width: 270px;
+            height: 30px;
+            line-height: 30px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding-left: 5px;
+            outline: none;
+            border-radius: 3px;
+        }
+        .navbar li.search_box .searchable-select-dropdown .searchable-select-input:focus{
+            border-color: #ccc !important;
+        }
+        .navbar li.search_box .searchable-select-dropdown  .searchable-select-item{
+            min-height: 30px!important;
+            line-height: 30px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)">
+                        </a>
+                        <div class="home_logo_box">
+                            <img id="home_logo" src="../img/img_BIZVANE_logo.png">
+                        </div>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">
+                            <a href="javascript:void(0)" title="返回首页">
+                             <div class="glyph fs1">
+                                <div class="clearfix bshadow0 pbs">
+                                    <span class="icon-ishop_3-01">
+                                    </span>
+                                </div>
+                            </div>
+                            </a></span>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="javascript:void(0)">
+                                <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-09" id="download">
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="javascript:void(0)">
+                                 <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-02" id="message_btn">
+                                        </span>
+                                          <span class="label label-primary" id="unreadNum"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown" id="aixiu_code">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="javascript:void(0)">
+                                 <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-03">
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="aixiu_code">
+                                <i></i>
+                                <img src="../img/aixiu_code.png" alt="" />
+                            </div>
+                        </li>
+                        <!--<li>-->
+                            <!--<a href="javascript:void(0)">-->
+                                <!--<div class="glyph fs1">-->
+                                    <!--<div class="clearfix bshadow0 pbs">-->
+                                        <!--<span class="icon-ishop_3-04">-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <li class="search_box" style="text-align: left;">
+                            <form role="search" class="navbar-form-custom">
+                                <div class="form-group">
+                                    <select id="corp_list" class="corp_list">
+                                    </select>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+            </nav>
+        </div>
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu" style="background: #434960;min-height:700px;">
+                    <li class="nav-header">
+
+                        <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="" />
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                    <strong class="font-bold"><label style="color: #97a4b6;margin-left:5px;"></label></strong>
+                                    </span>
+                                <span class="text-muted text-xs block"> <b class="caret"></b></span>
+                            </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <div class="person_menu">
+                                    <div>
+                                        <a href="/navigation_bar.html?url=personal_data.html">
+                                            <span class="icon-ishop_3-06"></span>
+                                            我的账号
+                                        </a> <i></i>
+                                    </div>
+                                    <div id="return">
+                                        <a href="/login.html">
+                                            <span class="icon-ishop_3-07"></span>
+                                            退出登录
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="#">
+                                            <span class="icon-ishop_3-08"></span>
+                                            帮助手册
+                                        </a>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            菜单
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins mask">
+                            <div class="ibox-content_per mask">
+                                <label class="c_a_shoppe"><em id="corp"></em></label>
+                                <div class="check_select">
+                                    <div class="select_1 reg_testdate" >
+                                        <span class="choose item" style="width:70px;display: inline-block">
+                                            <div class="title" style="width:70px;" id="gm_achv_prev">按日查看</div>
+                                            <ul class="select_Date" id="gm_achv">
+                                                <li>按日查看</li>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                            </ul>
+                                        </span>
+                                        <span>
+                                            <input type="text" id="date0" class="icon-text">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="performance">
+                                    <ul>
+                                        <li class="total_num">
+                                            <div class="t_num" id="amt_trade"></div>
+                                            <div class="ranking">业绩总额（元）</div>
+                                        </li>
+                                        <li class="yield_rate">
+                                            <span class="chart" id="area_ranking" data-percent="0">
+                                                <span class="percent"></span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="item_list_1">
+                                    <ul>
+                                        <li>
+                                            <div><span>销售件数</span></div>
+                                            <div class="item_1" id="num_sales"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>成交笔数</span></div>
+                                            <div class="item_1" id="num_trade"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>客单价</span></div>
+                                            <div class="item_1" id="all_price"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>件单价</span></div>
+                                            <div class="item_1" id="amount_price"></div>
+                                        </li>
+                                        </ul>
+                                        <ul>
+                                            <li>
+                                                <div><span>连带率</span></div>
+                                                <div class="item_1" id="relate_rate"></div>
+                                            </li>
+                                            <li>
+                                                <div><span>平均折扣</span></div>
+                                                <div class="item_1" id="discount"></div>
+                                            </li>
+                                            <li>
+                                                <div><span>新增会员</span></div>
+                                                <div class="item_1" id="num_nvip"></div>
+                                            </li>
+                                            <li>
+                                                <div><span>会销占比</span></div>
+                                                <div class="item_1" id="vip_amt_rate"></div>
+                                            </li>
+                                        </ul>
+                                </div>
+                            </div>
+                            <div class="zhezhaocen" id="achv_mask">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="customer_add_cart mask">
+                            <div class="cart_tab">
+                                <ul>
+                                    <!-- <li class="select"><label>业绩趋势</label></li>
+                                    <li><label>能力分析</label></li> -->
+                                </ul>
+                            </div>
+                            <div class="check_chart">
+                                <div class="select_2 reg_testdate"  >
+                                    <span class="choose item" style="width:70px">
+                                        <div class="title" style="width:70px" id="chart_prev" date-type="W">按周查看</div>
+                                        <ul class="select_Date" id="chart">
+                                            <li date-type="W">按周查看</li>
+                                            <li date-type="M">按月查看</li>
+                                            <!--<li date-type="Y">按年查看</li>-->
+                                        </ul>
+                                    </span>
+                                    <span>
+                                        <input type="text" id="date1" class="icon-text">
+                                    </span>
+                                </div>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px" id="yeJiToTal"></label>元</span>
+                            </div>
+                            <div class="charts_holder">
+                                <canvas id="canvas_circle" width="800"height="550">
+                                    <p>Your browserdoes not support the canvas element!</p>
+                                </canvas>
+                                <span id="tip_note" style="display:none" >
+                                    <label></label>
+                                    <s class="top border css-border-arrow"></s>
+                                </span>
+                            </div>
+                            <div class="radar_holder" style="display:none;position: absolute;top:0px">
+                                <canvas id="canvas" height="290" width="227" ></canvas>
+                                <canvas id="canvas2" height="290" width="227"></canvas>
+                                <canvas id="canvas3" height="290" width="227"></canvas>
+                            </div>
+                            <div class="zhezhaocen" id="chart_mask" style="z-index: 200;">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                   <div class="col-lg-4">
+                       <div class="ibox float-e-margins mask">
+                            <div class="ibox-list_daogou_paihang">
+                                <div class="item_title">
+                                    <label>区域排行</label>
+                                    <!--<span><img src="../img/icon_hp_more.png" alt="更多" /></span>-->
+                                    <!--<span><img src="../img/icon_search_small.png" alt="搜索"/></span>-->
+                                </div>
+                                <div class="item_total">
+                                    <span>区域总数<label id="area_total"></label></span>
+                                </div>
+                                <div class="check_chart">
+                                    <div class="select_3 reg_testdate">
+                                        <span class="choose item" style="width:70px">
+                                            <div class="title" style="width:70px" id="area_prev">按日查看</div>
+                                            <ul id="area" class="select_Date">
+                                                <li>按日查看</li>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                                <li>按年查看</li>
+                                            </ul>
+                                        </span>
+                                        <span>
+                                            <input type="text" id="date2" class="icon-text">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list_titles_daogou_paihang" id="area_list">
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr>
+                                           <th>排名</th>
+                                           <th>区域</th>
+                                           <th>业绩</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div class="tbody_scroll">
+                                    <table>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="zhezhaocen" id="area_mask">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                    <div class="col-lg-4">
+                       <div class="ibox float-e-margins mask">
+                            <div class="ibox-list_daogou_paihang">
+                                <div class="item_title">
+                                    <label>店铺排行</label>
+                                    <!--<span><img src="../img/icon_hp_more.png" alt="更多" /></span>-->
+                                    <!--<span><img src="../img/icon_search_small.png" alt="搜索"/></span>-->
+                                </div>
+                                <div class="item_total">
+                                    <span>店铺总数<label id="store_total"></label></span>
+                                </div>
+                                <div class="check_chart">
+                                    <div class="select_4 reg_testdate" >
+                                        <span class="choose item" style="width:70px">
+                                            <div class="title" style="width:70px" id="store_prev">按日查看</div>
+                                            <ul class="select_Date" id="store">
+                                                <li>按日查看</li>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                                <li>按年查看</li>
+                                            </ul>
+                                        </span>
+                                        <span>
+                                            <input type="text" id="date3" class="icon-text">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list_titles_daogou_paihang" id="store_list">
+                                <table style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>店铺</th>
+                                        <th>业绩</th>
+                                        <th>折扣</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <div class="tbody_scroll">
+                                    <table>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="zhezhaocen" id="store_mask">
+                                <div class="zhe_img">
+                                    加载中
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="wearther-list">
+                                <label class="list_title">天气预报</label>
+                            </div>
+                            <div class="wearther_content">
+                                <ul class="tree_W">
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+        <div class="update_tip">
+            <span class="icon-ishop_6-12 tip_close" id="tip_close"></span>
+            <div class="tip_list">
+                <ul>
+                </ul>
+            </div>
+            <div class="tip_enter" id="tip_enter">
+                我知道啦
+            </div>
+        </div>
+        <!-- <p style="font-size: 20px;position: absolute;top: 500px;left: 50%;">仪表盘尚未开放，敬请期待哦！</p> -->
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/loading.js?2017040170331"></script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+     <!-- ajax -->
+     <script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+    <script type="text/javascript" src="../js/home/home.js?20180102"></script>
+     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
+     <!-- 雷达图 -->
+    <script type="text/javascript" src="../js/ability-Chart.js?2017040170331"></script>
+     <!-- 模拟联动 -->
+    <script type="text/javascript" src="../js/liandong_select.js?2017040170331"></script>
+
+    <!-- Custom and plugin javascript -->
+    <!-- <script src="../js/hplus.js?v=2.2.0"></script> -->
+    <!-- 汉字转拼音 -->
+    <script type="text/javascript" src="../js/onvertToPinyin.js?2017040170331"></script>
+    <!-- piechart -->
+    <script type="text/javascript" src="../js/easypiechart.js?2017040170331"></script>
+    <!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
+    <script type="text/javascript" src="../js/home/home_cm.js?20171207"></script>
+    <!-- 业绩看板 -->
+    <script type="text/javascript">
+//        var perArr = [0,34,31,37,35,39,40];//顶点
+//        var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
+//        window.onresize=function(){
+//            init(perArr,dateArr);
+//        }
+//        window.onload = init(perArr,dateArr);
+    </script>
+    <script>
+        $(document).ready(function () {
+            //调用天气预报数据
+            $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(_result) {
+                if (remote_ip_info.ret == '1') {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+encodeURI(remote_ip_info.city),
+                        data: "",
+                        success: function(msg){
+                            var w_type=JSON.parse(msg)["data"]["forecast"];
+                            var w_date=["今天","明天","后天"];
+                            for(var i=0;i<w_type.length-2;i++){
+                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^-(0-9)]/ig, "")+"～"+w_type[i].high.replace(/[^-(0-9)]/ig, "")+'℃</div> </li><li class="w_img"><img src="/home/weather_img/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+//                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="http://php.weather.sina.com.cn/images/yb3/78_78/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        //雷达图
+        var radarChartData = {
+            labels : ["成交笔数","客单价","新增会员","平均折扣","连带率","销售件数"],
+            labels2 : ["4","￥5279","5","0.9","1.75","7"],
+            title:["销售能力"],
+            datasets : [
+                {
+                    fillColor : "rgba(255,255,220,.5)",
+                    strokeColor : "rgba(255,255,255,.1)",
+                    pointColor : "rgba(220,220,220,.1)",
+                    pointStrokeColor : "#fff",
+                    data : [70,55,58,61,81,55]
+                }
+            ]
+        }
+        var radarChartData2 = {
+            label:["","VIP","新VIP","新VIP"],
+            labels : ["新入会员","首单均价","销售额","销售占比"],
+            labels2 : ["3","2712","6516","0.25"],
+            title:["发展会员"],
+            datasets : [
+                {
+                    fillColor : "rgba(255,255,220,.5)",
+                    strokeColor : "rgba(255,255,255,.1)",
+                    pointColor : "rgba(220,220,220,.1)",
+                    pointStrokeColor : "#fff",
+                    data : [70,50,80,60]
+                }
+            ]
+        }
+        var radarChartData3 = {
+            label:["VIP消费","VIP消费","VIP生日","VIP","VIP","VIP"],
+            labels : ["金额占比","件数占比","回头率","销售金额","销售金额","消费件数"],
+            labels2 : ["4","￥5279","0","0.9","1.75","7"],
+            title:['维护会员'],
+            datasets : [
+                {
+                    fillColor : "rgba(255,255,220,.5)",
+                    strokeColor : "rgba(255,255,255,.1)",
+                    pointColor : "rgba(220,220,220,.1)",
+                    pointStrokeColor : "#fff",
+                    data :  [68,68,78,68,81,55]
+                }
+            ]
+        }
+        var myRadar= new Chart(document.getElementById("canvas").getContext("2d")).Radar(radarChartData,{scaleShowLabels : false, pointLabelFontSize : 10});
+        var myRadar2 = new Chart(document.getElementById("canvas2").getContext("2d")).Radar(radarChartData2,{scaleShowLabels : false, pointLabelFontSize : 10});
+        var myRadar3 = new Chart(document.getElementById("canvas3").getContext("2d")).Radar(radarChartData3,{scaleShowLabels : false, pointLabelFontSize : 10});
+    </script>
+</body>
+
+</html>

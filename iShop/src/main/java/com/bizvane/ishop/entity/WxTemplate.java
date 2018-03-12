@@ -1,9 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import com.alibaba.fastjson.JSONObject;
-
-import java.util.List;
-
 /**
  * Created by Administrator on 2016/5/19.
  */
@@ -15,6 +11,8 @@ public class WxTemplate {
     private String template_id;
     //模板名称
     private String template_name;
+    //模板内容(处理后的)
+    private String template_content;
     //微信公众号app_id
     private String app_id;
     //微信公众号app_name
@@ -31,8 +29,39 @@ public class WxTemplate {
     private String creater;
     //是否可用
     private String isactive;
+    //行业
+    private String industry;
+    //内容示例
+    private  String content_example;
 
     private String corp_name;
+    //模板内容
+    private  String template_content_data;
+
+    public String getTemplate_content_data() {
+        return template_content_data;
+    }
+
+    public void setTemplate_content_data(String template_content_data) {
+        this.template_content_data = template_content_data;
+    }
+
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    public String getContent_example() {
+        return content_example;
+    }
+
+    public void setContent_example(String content_example) {
+        this.content_example = content_example;
+    }
 
     public int getId() {
         return id;
@@ -64,6 +93,14 @@ public class WxTemplate {
 
     public void setTemplate_name(String template_name) {
         this.template_name = template_name;
+    }
+
+    public String getTemplate_content() {
+        return template_content;
+    }
+
+    public void setTemplate_content(String template_content) {
+        this.template_content = template_content;
     }
 
     public String getApp_id() {

@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
@@ -18,7 +16,7 @@ var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 //模仿selectF
 $(function(){
-        $("#page_row").click(function(){
+        $("#page_row,.page_p .icon-ishop_8-02").click(function(){
             if("block" == $("#liebiao").css("display")){
                 hideLi();
             }else{
@@ -70,8 +68,12 @@ $("#pack_up").click(function(){//点击收回 取消下拉框
 $("#empty").click(function(){
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
-        input[i].value="";
         $(input[i]).attr("data-code","");
+        if($(input[i]).parent().attr("class")=="isActive_select"){
+            input[i].value="全部";
+        }else {
+            input[i].value="";
+        }
     }
     value="";
     filtrate="";
@@ -83,12 +85,13 @@ $("#empty").click(function(){
     param["searchValue"]="";
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize,funcCode){
+function setPage(container, count, pageindex,pageSize,funcCode,total){
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
+    var total=total;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -140,7 +143,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
+        $(".foot-sum .zy").html("共 "+count+"页,"+total+'条记录');
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
@@ -192,11 +195,12 @@ function superaddition(data,num){//页面加载循环
         var i;
         for(i=0;i<10;i++){
             $(".table tbody").append("<tr></tr>");
-            for(var j=0;j<len;j++){
-                $($(".table tbody tr")[i]).append("<td></td>");
+            if(i==4){
+                $($(".table tbody tr")[i]).append("<td colspan='"+len+"'>暂无内容</td>");
+            }else {
+                $($(".table tbody tr")[i]).append("<td colspan='"+len+"'></td>");
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
         var TD="";
@@ -205,13 +209,15 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        if(data[i].activity_state=="0"){
-            data[i].activity_state="未执行";
-        }else if(data[i].activity_state=="1"){
-            data[i].activity_state="执行中";
-        }else if(data[i].activity_state=="2"){
-            data[i].activity_state="已结束";
-        }
+        // if(data[i].activity_state=="0"){
+        //     data[i].activity_state="未执行";
+        // }else if(data[i].activity_state=="0.5"){
+        //     data[i].activity_state="执行未生效";
+        // }else if(data[i].activity_state=="1"){
+        //     data[i].activity_state="执行已生效";
+        // }else if(data[i].activity_state=="2"){
+        //     data[i].activity_state="已结束";
+        // }
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
@@ -234,7 +240,7 @@ function superaddition(data,num){//页面加载循环
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
-};
+}
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
@@ -245,12 +251,13 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }else if(actions[i].act_name=="execute"){
+            $("#execute").show();
         }
     }
 }
 function InitialState(){
     if(return_jump!==null){
-        console.log(return_jump);
         inx=return_jump.inx;
         pageSize=return_jump.pageSize;
         value=return_jump.value;
@@ -304,7 +311,118 @@ function qjia(){
         operate();
         InitialState();
         tableTh();
-    })
+        getColumn();
+    });
+    //oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+    //    if(data.code=="0"){
+    //        var message=JSON.parse(data.message);
+    //        var filter=message.filter;
+    //        $("#sxk .inputs ul").empty();
+    //        var li="";
+    //        for(var i=0;i<filter.length;i++){
+    //            if(filter[i].type=="text"){
+    //                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+    //            }else if(filter[i].type=="select"){
+    //                var msg=filter[i].value;
+    //                var ul="<ul class='isActive_select_down'>";
+    //                for(var j=0;j<msg.length;j++){
+    //                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+    //                }
+    //                ul+="</ul>";
+    //                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input value='全部' type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+    //            }else if(filter[i].type=="date"){
+    //                li+="<li class='created_date' id='"
+    //                    +filter[i].col_name
+    //                    +"'><label>"
+    //                    +filter[i].show_name
+    //                    +"</label>"
+    //                    +"<input type='text' id='start"+i+"' class='time_data laydate-icon' onClick=\"laydate({elem: '#start"+i+"',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})\">"
+    //                    +"<label class='tm20'>至</label>"
+    //                    +"<input type='text' id='end"+i+"' style='margin-left:0;' class='time_data laydate-icon' onClick=\"laydate({elem: '#end"+i+"',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})\">"
+    //                    +"</li>";
+    //            }
+    //
+    //        }
+    //        $("#sxk .inputs ul").html(li);
+    //        console.log(filtrate)
+    //        if(filtrate!==""){
+    //            $(".sxk").slideDown();
+    //            var value = "";
+    //            for(var i=0;i<list.length;i++){
+    //                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
+    //                    $("#"+list[i].screen_key).val(list[i].screen_value);
+    //                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+    //                    value=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
+    //                    $("#"+list[i].screen_key).val(value);
+    //                }
+    //            }
+    //        }
+    //        filtrateDown();
+    //        //筛选的keydow事件
+    //        $('#sxk .inputs input').keydown(function(){
+    //            var event=window.event||arguments[0];
+    //            if(event.keyCode == 13){
+    //                getInputValue();
+    //            }
+    //        })
+    //    }
+    //});
+}
+function getColumn(){
+    oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var filter=message.filter;
+            $("#sxk .inputs ul").empty();
+            var li="";
+            for(var i=0;i<filter.length;i++){
+                if(filter[i].type=="text"){
+                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                }else if(filter[i].type=="select"){
+                    var msg=filter[i].value;
+                    var ul="<ul class='isActive_select_down'>";
+                    for(var j=0;j<msg.length;j++){
+                        ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                    }
+                    ul+="</ul>";
+                    li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input value='全部' type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+                }else if(filter[i].type=="date"){
+                    li+="<li class='created_date' id='"
+                        +filter[i].col_name
+                        +"'><label>"
+                        +filter[i].show_name
+                        +"</label>"
+                        +"<input type='text' id='start"+i+"' class='time_data laydate-icon' onClick=\"laydate({elem: '#start"+i+"',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})\">"
+                        +"<label class='tm20'>至</label>"
+                        +"<input type='text' id='end"+i+"' style='margin-left:0;' class='time_data laydate-icon' onClick=\"laydate({elem: '#end"+i+"',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})\">"
+                        +"</li>";
+                }
+
+            }
+            $("#sxk .inputs ul").html(li);
+            if(filtrate!==""){
+                $(".sxk").slideDown();
+                var value = "";
+                for(var i=0;i<list.length;i++){
+                    if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
+                        $("#"+list[i].screen_key).val(list[i].screen_value);
+                    }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+                        value=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
+                        $("#"+list[i].screen_key).val(value);
+                        $("#"+list[i].screen_key).attr("data-code",value=="全部"?"":list[i].screen_value);
+                    }
+                }
+            }
+            filtrateDown();
+            //筛选的keydow事件
+            $('#sxk .inputs input').keydown(function(){
+                var event=window.event||arguments[0];
+                if(event.keyCode == 13){
+                    getInputValue();
+                }
+            })
+        }
+    });
 }
 function tableTh(){ //table  的表头
     var TH="";
@@ -319,29 +437,42 @@ function operate() {
     $('#add').click(function(){
         //$(window.parent.document).find('#iframepage').attr("src","/activity/activity_add.html");
         sessionStorage.removeItem("activity_code");
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html?t="+ $.now());
     });
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
-            var state = $(tr).children("td:nth-child(5)").text();
-            var id=$(tr).attr("id");
+            var state = "";
+            var activity_code=$(tr).attr("data-activity-code");
+            var corp_code=$(tr).attr("data-corp");
             var return_jump={};//定义一个对象
             return_jump["inx"]=inx;//跳转到第几页
             return_jump["value"]=value;//搜索的值;
             return_jump["filtrate"]=filtrate;//筛选的值
             return_jump["param"]=JSON.stringify(param);//搜索定义的值
-            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+            return_jump["_param"]=JSON.stringify(_param);//筛选定义的值
             return_jump["list"]=list;//筛选的请求的list;
             return_jump["pageSize"]=pageSize;//每页多少行
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-            sessionStorage.setItem("id",id);
-            if(state == "未执行"){
-                $(window.parent.document).find('#iframepage').attr("src","activity/activity_edit.html");
-            }else if(state == "执行中"){
-                $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
-            }
+            sessionStorage.setItem("corp_code",corp_code);
+            sessionStorage.setItem("activity_code",activity_code);
+            var _params = {};
+            _params["activity_code"] = activity_code;
+            var _command = "/vipActivity/select";
+            whir.loading.add("",0.5);
+            oc.postRequire("post", _command, "", _params, function (data) {
+                var message=JSON.parse(data.message);
+                var activityVip=JSON.parse(message.activityVip);
+                state=activityVip.activity_state;
+                if(state !== "已结束" && state !== '执行已生效' && state !== '执行未生效'){ //未执行
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html?t="+ $.now());
+                }else if(state == "执行已生效" || state == "执行未生效"){ //执行
+                    $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html?t="+ $.now());
+                }else if(state=="已结束"){// 已结束
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_statistics.html?t="+ $.now());
+                }
+            });
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -362,18 +493,42 @@ function operate() {
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     });
+    //执行
+    $("#execute").click(function(){
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+       for(var i=0;i<tr.length;i++){
+           if($(tr[i]).attr("data-state")!="未执行"){
+               frame();
+               $('.frame').html("只允许操作未执行的活动");
+               return;
+           }
+       }
+        $("#p").show();
+        $("#execute_pop").show();
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+    })
 }
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     //oc.postRequire("get","/activity/list?pageNumber="+a+"&pageSize="+b
     //    +"&funcCode="+funcCode+"","","",function(data){
-    $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
-    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
+    var lay=$(".laydate-icon");
+    for(var a=0;a<lay.length;a++){
+        var id=$(lay[a]).attr("id");
+        $("#"+id).attr("onclick","laydate({elem:'#"+id+"',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+    }
+    //$("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+    //$("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
     oc.postRequire("post","/vipActivity/search","0",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
@@ -381,10 +536,11 @@ function GET(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             superaddition(list,pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -401,7 +557,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -433,16 +588,17 @@ function jumpBianse(){
         var _params = {};
         _params["activity_code"] = activity_code;
         var _command = "/vipActivity/select";
+        whir.loading.add("",0.5);
         oc.postRequire("post", _command, "", _params, function (data) {
             var message=JSON.parse(data.message);
             var activityVip=JSON.parse(message.activityVip);
             state=activityVip.activity_state;
             if(state == "0"){ //未执行
-                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
-            }else if(state == "1"){ //执行
-                $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
+                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html?t="+ $.now());
+            }else if(state == "1" || state == "0.5"){ //执行
+                $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html?t="+ $.now());
             }else if(state=="2"){// 已结束
-                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_statistics.html");
+                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_statistics.html?t="+ $.now());
             }
         });
     });
@@ -473,14 +629,20 @@ $("#d_search").click(function(){
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
-    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
+    var lay=$(".laydate-icon");
+    for(var a=0;a<lay.length;a++){
+        var id=$(lay[a]).attr("id");
+        $("#"+id).attr("onclick","laydate({elem:'#"+id+"',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+    }
+    //$("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+    //$("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
     oc.postRequire("post","/vipActivity/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -500,22 +662,21 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }
     })
 }
-console.log(left);
 //弹框关闭
-$("#X").click(function(){
+$("#X,#cancel").click(function(){
     $("#p").hide();
     $("#tk").hide();
 });
 //取消关闭
-$("#cancel").click(function(){
+$("#cancel_execute,#close_pop").click(function(){
     $("#p").hide();
-    $("#tk").hide();
+    $("#execute_pop").hide();
 });
 //弹框删除关闭
 $("#delete").click(function(){
@@ -532,7 +693,6 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(params);
     oc.postRequire("post","/vipActivity/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
@@ -550,6 +710,49 @@ $("#delete").click(function(){
             }else if(filtrate!==""){
                 frame();
                 $('.frame').html('删除成功');
+                _param["pageNumber"]=pageNumber;
+                filtrates(pageNumber,pageSize);
+            }
+            var thinput=$("thead input")[0];
+            thinput.checked =false;
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
+        }
+    })
+});
+//执行完成关闭
+$("#execute_sure").click(function(){
+    $("#p").hide();
+    $("#execute_pop").hide();
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    for(var i=tr.length-1,code="";i>=0;i--){
+        var r=$(tr[i]).attr("data-activity-code");
+        if(i>0){
+            code+=r+",";
+        }else{
+            code+=r;
+        }
+    }
+    var params={};
+    params["activity_code"]=code;
+    oc.postRequire("post","/vipActivity/execute","0",params,function(data){
+        if(data.code=="0"){
+            if(value==""&&filtrate==""){
+                frame();
+                $('.frame').html('执行成功');
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
+                GET(pageNumber,pageSize);
+            }else if(value!==""){
+                frame();
+                $('.frame').html('执行成功');
+                param["pageNumber"]=pageNumber;
+                POST(pageNumber,pageSize);
+            }else if(filtrate!==""){
+                frame();
+                $('.frame').html('执行成功');
                 _param["pageNumber"]=pageNumber;
                 filtrates(pageNumber,pageSize);
             }
@@ -717,7 +920,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/area/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -733,7 +935,6 @@ function UpladFile() {
             if (xhr.status === 200) {
                 doResult(xhr.responseText);
             } else {
-                console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
                 whir.loading.remove();//移除加载框
             }
@@ -759,65 +960,16 @@ function UpladFile() {
     $(".into_frame").hide();
 }
 //筛选按钮
-oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
-    if(data.code=="0"){
-        var message=JSON.parse(data.message);
-        var filter=message.filter;
-        $("#sxk .inputs ul").empty();
-        var li="";
-        for(var i=0;i<filter.length;i++){
-            if(filter[i].type=="text"){
-                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
-            }else if(filter[i].type=="select"){
-                var msg=filter[i].value;
-                console.log(msg);
-                var ul="<ul class='isActive_select_down'>";
-                for(var j=0;j<msg.length;j++){
-                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
-                }
-                ul+="</ul>";
-                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
-            }else if(filter[i].type=="date"){
-                li+="<li class='created_date' id='"
-                    +filter[i].col_name
-                    +"'><label>"
-                    +filter[i].show_name
-                    +"</label>"
-                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})\">"
-                    +"<label class='tm20'>至</label>"
-                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})\">"
-                    +"</li>";
-            }
-
-        }
-        $("#sxk .inputs ul").html(li);
-        if(filtrate!==""){
-            $(".sxk").slideDown();
-            for(var i=0;i<list.length;i++){
-                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
-                    $("#"+list[i].screen_key).val(list[i].screen_value);
-                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
-                    var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
-                    $("#"+list[i].screen_key).val(svalue);
-                }
-            }
-        }
-        filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
-            }
-        })
-    }
-});
 function checkStart(data){
-    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
-};
+    var self=(this.elem);
+    var end=self.substring(self.length-1);
+    $("#end"+end).attr("onclick","laydate({elem:'#end"+end+"',min:'"+data+"',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+}
 function checkEnd(data){
-    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
-};
+    var self=(this.elem);
+    var start=self.substring(self.length-1);
+    $("#start"+start).attr("onclick","laydate({elem:'#start"+start+"',min:'1900-01-01 00:00:00',max: '"+data+"',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
+}
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
@@ -845,7 +997,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
     getInputValue();
-})
+});
 function getInputValue(){
     var input=$('#sxk .inputs>ul>li');
     inx=1;
@@ -860,8 +1012,8 @@ function getInputValue(){
         if($(input[i]).attr("class")=="isActive_select"){
             screen_value=$(input[i]).find("input").attr("data-code");
         }else if($(input[i]).attr("class")=="created_date"){
-            var start=$('#start').val();
-            var end=$('#end').val();
+            var start=$(input[i]).find("input").eq(0).val();
+            var end=$(input[i]).find("input").eq(1).val();
             screen_key=$(input[i]).attr("id");
             screen_value={"start":start,"end":end};
         }else{
@@ -877,7 +1029,7 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
+    filtrates(inx,pageSize);
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){
@@ -893,6 +1045,7 @@ function filtrates(a,b){
             var list=JSON.parse(message.list);
             cout=list.pages;
             var pageNum = list.pageNum;
+            var total = list.total;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -905,7 +1058,8 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+            filtrate="sucess";
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode,total);
         }else if(data.code=="-1"){
             alert(data.message);
         }

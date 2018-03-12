@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>区域管理</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20161216">
-    <link rel="stylesheet" href="../css/font_style.css?20161216">
+	<title>店铺群组</title>
+	<link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
 	<script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js"></script>
 </head>
@@ -12,7 +12,7 @@
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
-    			<span>区域管理</span>
+    			<span>店铺群组</span>
     		</div>
     		<div class="action">
                 <div class="action_l">
@@ -20,7 +20,7 @@
                     </ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="区域编号/区域名称/所属企业">
+                            <input type="text" class="input" id="search" placeholder="店铺群组编号/店铺群组名称/企业名称">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -47,7 +47,7 @@
                                 <!--<div id="guide_into">导入</div>-->
                             </div>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="inputs">
-                    <ul>     
+                    <ul>
                     </ul>
                     <!-- <li>
                        <label>公司名称</label>
@@ -201,6 +201,14 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
+    <div class="tk" id="code_ma">
+        <span class="icon-ishop_6-12" id="dao"></span>
+        <p>是否下载文件?</p>
+        <div class="btn">
+            <em class="cancel" id="code_q">取消</em>
+            <em class="album_enter" id="enter">确认</em>
+        </div>
+    </div>
     <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -210,9 +218,9 @@
         </div>
     </div>
 </body>
-    <script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
-    <script src="/js/area/area.js?20161215"></script>
-    <script src="/js/silide.js?20161116"></script>
+    <script type="text/javascript" src="/js/insidePostRequire.js?2017040170331"></script>
+    <script src="/js/area/area.js?2017040170331"></script>
+    <script src="/js/silide.js?2017040170331"></script>
     <script type="text/javascript">
         $(function(){
             $(".icon-ishop_6-07").parent().click(function () {

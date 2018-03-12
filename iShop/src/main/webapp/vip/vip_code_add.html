@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>渠道二维码-新增</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet?2017040170331">
+    <link href="../css/animate.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?2017040170331">
+    <link href="../css/style.css?2017040170331" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?2017040170331">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?2017040170331">
+    <link rel="stylesheet" href="../table/css/inner.css?2017040170331">
+    <style>
+        body{
+            margin-top:81px;
+        }
+        #vipPublic>li,#vipType>li,#vipTime>li{
+            height: 30px;
+            line-height: 30px;
+        }
+        .searchable-select-holder{
+            margin-left: -3px;
+            width: 419px;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>会员运营</span><i class="icon-ishop_8-03"></i><span id="back_regime">渠道二维码</span><i class="icon-ishop_8-03"></i><label>新增渠道二维码</label></div>
+    <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg">
+            <div class="the_listTitle">
+           <span>
+               <label class="red" style="color:#c26655">所属企业*</label><!--<input type="text" verify="Empty" maxlength="200"/>-->
+                   <span class="corp_select" style="width: 412px">
+                       <select id="OWN_CORP" style="display: inline-flex"></select>
+                   </span>
+                <!--<div class="hint"><div hintinfo="所属企业不能为空！" class="error_tips">所属企业不能为空！</div></div>-->
+            </span>
+            </div>
+            <div><span><label style="color:#c26655">二维码名称*</label><input type="text" id="vipCodeName" verify="Empty" maxlength="32"/><div style="padding-left:80px" class="hint"><div  hintinfo="二维码名称不能为空！"></div></div></span></div>
+            <!--所属企业-->
+            <div class="drop_down item_2">
+
+                <span><label style="color:#c26655">公众号*</label><input data-value="1" class="input_select" value="请选择公众号" type="text" id="vipCode" placeholder="" readonly="">
+
+                            <ul style="display: none;" id="vipPublic">
+                               <!--动态加载-->
+                            </ul>
+                        </span>
+            </div>
+            <div class="drop_down item_2">
+                        <span><label style="color:#c26655">类型*</label><input data-value="1" class="input_select" value="请选择类型" id="vipCodeType" type="text" placeholder="" readonly="">
+                            <ul style="display: none;" id="vipType">
+                                <li data-value="1">材料类</li>
+                                <li data-value="2">印刷类</li>
+                                <li data-value="3">礼品类</li>
+                            </ul>
+                        </span>
+            </div>
+            <div class="drop_down item_2">
+                        <span><label style="color:#c26655">有效期限*</label><input data-value="1" class="input_select" value="请选择时效"  id="vipCodeDate" type="text" placeholder="" readonly="">
+                            <ul style="display: none;"id="vipTime">
+                                <li data-value="三天">永久有效</li>
+                                <li data-value="一周">30天有效</li>
+                            </ul>
+                        </span>
+            </div>
+            <div><span><label>备注</label><input type="text" verify="Empty" maxlength="200" id="vipCodeNote"/></span></div>
+            <!--<div><span><label>二维码</label></span>-->
+                <!--<img src="../img/aixiu_code.png" alt="" style="width: 120px;height: 120px;vertical-align: top;display: none"/>-->
+                <!--<button style="">显示</button>-->
+            <!--</div>-->
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+        <div class="areaadd_oper_btn">
+            <ul>
+                <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/moni_select.js?2017040170331"></script>
+<script src="../js/loading.js?2017040170331"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?2017040170331"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?2017040170331"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
+<!-- error tips -->
+<script type="text/javascript" src="../js/vip/vip_code_add.js"></script>
+</body>
+
+</html>
