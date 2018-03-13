@@ -46,6 +46,26 @@ public class VipTask {
 
     private  String bill_status;//单据状态
 
+    private  String select_scope;//选择类型
+
+    private  String cardno_num;//导入的会员卡的数量
+
+    public String getCardno_num() {
+        return cardno_num;
+    }
+
+    public void setCardno_num(String cardno_num) {
+        this.cardno_num = cardno_num;
+    }
+
+    public String getSelect_scope() {
+        return select_scope;
+    }
+
+    public void setSelect_scope(String select_scope) {
+        this.select_scope = select_scope;
+    }
+
     public String getBill_status() {
         return bill_status;
     }
