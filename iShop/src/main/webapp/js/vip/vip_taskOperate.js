@@ -2125,14 +2125,71 @@ $(function () {
         }
     });
     $("#allVips").click(function () {
-        $("#conditionWrap").hide();
+        $("#conditionWrap,#exportWrap").hide();
         $("#giftWrapHead").find("input[type=button]").removeAttr("id");
         // $("#giftWrapHead").find("input[type=button]").css("background","#ccc");
     });
+    $("#exportVips").click(function () {
+        $("#conditionWrap").hide();
+        $("#exportWrap").show();
+        $("#giftWrapHead").find("input[type=button]").removeAttr("id");
+    });
     $("#chooseVips").click(function () {
         $("#conditionWrap").show();
+        $("#exportWrap").hide();
         $("#giftWrapHead").find("input[type=button]").attr("id","task_filtrate");
         // $("#giftWrapHead").find("input[type=button]").css("background","#6cc1c8");
+    });
+    $("#exportVipBtn").change(function () {//会员导入
+        whir.loading.add("",0.5);//加载等待框
+        var fileObj = document.getElementById("exportVipBtn").files[0];
+        var FileController = "/vipActivity/excludeMultipart"; //接收上传文件的后台地址
+        var form = new FormData();
+        form.append("file", fileObj); // 文件对象
+        form.append("type", "vip_task"); // 文件对象
+        form.append("corp_code", $("#OWN_CORP").val()); // 文件对象
+        // XMLHttpRequest 对象
+        var xhr = null;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    doResult(xhr.responseText);
+                } else {
+                    $('#exportVipBtn').val("");
+                }
+            }
+        }
+        function doResult(data) {
+            var data=JSON.parse(data);
+            whir.loading.remove();
+            if(data.code=="0"){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "导入成功"
+                });
+                $("#exportVipBtn").attr("data-src",data.message);
+            }else if(data.code=="-1"){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+            $('#exportVipBtn').val("");
+        }
+        xhr.open("post", FileController, true);
+        xhr.send(form);
+    });
+    $("#exportVipsBtn").click(function () {
+
     });
     $("#page-wrapper").on("click",".add_btn",function () {//加号事件(优惠券，完善资料条件)
         var clone = $(this).parent().parent().clone();

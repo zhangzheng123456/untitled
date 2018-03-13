@@ -101,6 +101,29 @@
             top: 8px;
             padding: 0;
         }
+        .conpany_msg .conditionWrap input[type=button]{
+            width: 90px;
+            background: #6cc1c8;
+        }
+        .conditionWrap input[type=file]{
+            display: inline-block;
+            width: 90px;
+            height: 30px;
+            opacity: 0;
+            top: 10px;
+            left: 0;
+            position: absolute;
+            z-index: 2;
+        }
+        .conditionWrap a{
+            width: 90px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 5px;
+            color: #fff;
+            background: #6cc1c8;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -134,15 +157,21 @@
             <div>
                 <label style="color:#c26555;vertical-align: top">目标会员*</label><div class="change_wrap">
                 <div class="giftWrapHead" id="giftWrapHead">
-                    <span class="checkbox_isactive"><input type="radio"  name="test" class="check" id="allVips"><label for="allVips"></label></span><span style="margin-right: 40px">所有会员</span>
+                    <span class="checkbox_isactive"><input type="radio"  name="test" class="check" id="allVips"><label for="allVips"></label></span><span style="margin-right: 5px">所有会员</span>
+                    <span class="checkbox_isactive"><input type="radio"  name="test" class="check" id="exportVips"><label for="exportVips"></label></span><span style="margin-right: 5px">导入导出</span>
                     <span class="checkbox_isactive"><input checked="true" type="radio"  name="test" class="check" id="chooseVips"><label for="chooseVips"></label></span>筛选会员
                     <span class="addConditionWrap"><input  value="添加筛选条件" id="task_filtrate" type="button"/><i class="icon-ishop_8-03"></i></span>
                 </div>
                 <div class="conditionWrap" id="conditionWrap">
                     <div style="text-align: center">暂无条件</div>
-                    <!--<div><label>生日</label><input type="text" class="input130" readonly>~<input class="input130" type="text" readonly><i class="icon-ishop_6-12 removeContidion"></i></div>-->
-                    <!--<div><label>所属导购</label><input type="text" class="input288" readonly><i class="icon-ishop_6-12 removeContidion"></i></div>-->
-                    <!--<div><label>消费次数</label><input type="text" class="input80" readonly><input class="input80" type="text" readonly>~<input class="input80" type="text" readonly><i class="icon-ishop_6-12 removeContidion"></i></div>-->
+                </div>
+                <div class="conditionWrap" id="exportWrap" style="display: none;">
+                    <div style="width:262px;border-right: 2px solid #fff;display: inline-block;text-align: center">
+                        <a href="/ExeclFormwork/importVipByCardno.xls">下载模版</a><div style="display:inline-block;margin-left: 20px;"><input  value="导入文件" type="button"/><input type="file" id="exportVipBtn"></div>
+                    </div>
+                    <div style="width: 134px;display: inline-block;text-align: center">
+                        <input  value="导出文件" type="button" id="exportVipsBtn"/>
+                    </div>
                 </div>
             </div>
             </div>
@@ -241,6 +270,14 @@
     </div>
 </div>
 <div class="p" id="p"></div>
+<div class="tk" id="code_ma">
+    <span class="icon-ishop_6-12" id="dao"></span>
+    <p>是否下载文件?</p>
+    <div class="btn">
+        <em class="cancel" id="code_q">取消</em>
+        <em class="album_enter" id="enter"><a>下载文件</a></em>
+    </div>
+</div>
 <div class="tk" id="examineWrap">
     <span class="icon-ishop_6-12 closeEndTaskWrap"></span>
     <p>请核对任务内容,确认无误后请提交</p>
@@ -4240,7 +4277,7 @@
 <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
 <!--<script src="../js/vip_screen.js?20170829"></script>-->
-<script src="../js/vip/vip_taskOperate.js?20180202"></script>
+<script src="../js/vip/vip_taskOperate.js?20180313"></script>
 <script src="../js/vip/select_independent.js?t=20180202"></script>
 <script>
     var task_start = {
