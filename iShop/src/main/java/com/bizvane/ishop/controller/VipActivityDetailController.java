@@ -674,7 +674,7 @@ public class VipActivityDetailController {
                 if (dbObjects.hasNext()){
                     DBObject updatedValue = new BasicDBObject();
                     String status = dbObjects.next().get("status") != null && !dbObjects.next().get("status").equals("") ?dbObjects.next().get("status").toString():"0";
-                    if (!status.equals("1")){
+//                    if (!status.equals("1")){
                         updatedValue.put("status", status);
                         updatedValue.put("apply_info", schedule);
                         updatedValue.put("vipActivity", WebUtils.bean2JSONObject(vipActivity));
@@ -684,7 +684,7 @@ public class VipActivityDetailController {
                         updatedValue.put("pay_type", pay_type);
                         DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                         cursor.update(updateCondition, updateSetValue);
-                    }
+//                    }
                 }else {
                     BasicDBObject dbObject = new BasicDBObject();
                     dbObject.put("_id", app_id + "_" + activity_code + item_id + "_" + open_id);
@@ -711,6 +711,11 @@ public class VipActivityDetailController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(url);
+            }else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("会员信息有误，请稍后再试");
+                return dataBean.getJsonStr();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -862,26 +867,37 @@ public class VipActivityDetailController {
                         }
                         System.out.println("==========发送模板"+Common.DATETIME_FORMAT.format(new Date()));
 
-                        DBObject updateCondition = new BasicDBObject();
-                        updateCondition.put("app_id", app_id );
-                        updateCondition.put("activity_code", activity_code);
-                        updateCondition.put("open_id", open_id);
-                        DBObject updatedValue = new BasicDBObject();
-                        updatedValue.put("status", "1");
-                        updatedValue.put("is_send_notice", is_send_notice);
-                        updatedValue.put("order_id", order_id);
-                        updatedValue.put("pay_time", pay_time);
-                        updatedValue.put("pay_result", pay_result);
-                        updatedValue.put("vip", vip_info);
-                        updatedValue.put("modified_date", Common.DATETIME_FORMAT.format(new Date()));
-                        DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
-                        cursor.update(updateCondition, updateSetValue);
+                        BasicDBObject findObject = new BasicDBObject();
+                        findObject.put("app_id", app_id );
+                        findObject.put("activity_code", activity_code);
+                        findObject.put("open_id", open_id);
+                        DBCursor cursor1 = cursor.find(findObject);
+                        if (cursor1.hasNext()){
+                            DBObject updateCondition = new BasicDBObject();
+                            updateCondition.put("app_id", app_id );
+                            updateCondition.put("activity_code", activity_code);
+                            updateCondition.put("open_id", open_id);
+                            DBObject updatedValue = new BasicDBObject();
+                            updatedValue.put("status", "1");
+                            updatedValue.put("is_send_notice", is_send_notice);
+                            updatedValue.put("order_id", order_id);
+                            updatedValue.put("pay_time", pay_time);
+                            updatedValue.put("pay_result", pay_result);
+                            updatedValue.put("vip", vip_info);
+                            updatedValue.put("modified_date", Common.DATETIME_FORMAT.format(new Date()));
+                            DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                            cursor.update(updateCondition, updateSetValue);
 
-                        System.out.println("==========结束"+Common.DATETIME_FORMAT.format(new Date()));
+                            System.out.println("==========结束"+Common.DATETIME_FORMAT.format(new Date()));
 
-                        dataBean.setId(id);
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                        dataBean.setMessage("报名成功");
+                            dataBean.setId(id);
+                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                            dataBean.setMessage("报名成功");
+                        }else {
+                            dataBean.setId(id);
+                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                            dataBean.setMessage("请先填写报名资料");
+                        }
                     }else {
                         DBObject updateCondition = new BasicDBObject();
                         updateCondition.put("app_id", app_id );
