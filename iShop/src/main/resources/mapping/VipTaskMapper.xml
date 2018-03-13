@@ -31,6 +31,8 @@
         <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="batch_no" property="batch_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="bill_status" property="bill_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="select_scope" property="select_scope" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="cardno_num" property="cardno_num" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectById" resultMap="VipTask">
@@ -171,6 +173,12 @@
             <if test="bill_status!=null">
                 bill_status,
             </if>
+            <if test="select_scope!=null">
+                select_scope,
+            </if>
+            <if test="cardno_num!=null">
+                cardno_num,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -250,6 +258,12 @@
             </if>
             <if test="bill_status!=null">
                 #{bill_status},
+            </if>
+            <if test="select_scope!=null">
+                #{select_scope},
+            </if>
+            <if test="cardno_num!=null">
+                #{cardno_num},
             </if>
         </trim>
     </insert>
@@ -334,6 +348,12 @@
             </if>
             <if test="bill_status!=null">
                 bill_status=#{bill_status},
+            </if>
+            <if test="select_scope!=null">
+                select_scope=#{select_scope},
+            </if>
+            <if test="cardno_num!=null">
+                cardno_num=#{cardno_num},
             </if>
         </trim>
         WHERE id=#{id};

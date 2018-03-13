@@ -1438,6 +1438,9 @@ public class VipActivityController {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int rows = rs.getRows();//得到所有的行
+
+            System.out.println("行数........"+rows);
+
             if (rows < 4) {
                 result = "：请从模板第4行开始插入正确数据";
                 if(targetFile.exists()){
@@ -1445,6 +1448,7 @@ public class VipActivityController {
                 }
                 int i = 5 / 0;
             }
+
             if (rows > 100005) {
                 result = "：数据量过大，导入失败";
                 if(targetFile.exists()){
@@ -1486,13 +1490,17 @@ public class VipActivityController {
             basicDBObject.put("modified_date",Common.DATETIME_FORMAT.format(date));
             basicDBObject.put("oss_path",oss_path);
             cursor.insert(basicDBObject);
-            result=_id;//返回时间戳
-            dataBean.setMessage(result);
+
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("file_id",_id);
+            jsonObject.put("cardno_num",cardList.size());
+
+            dataBean.setMessage(jsonObject.toString());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
         }catch (Exception e){
             e.printStackTrace();
-            dataBean.setMessage(e.getMessage());
+            dataBean.setMessage(result);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
         }finally {

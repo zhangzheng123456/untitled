@@ -277,9 +277,12 @@ public class VipTaskController {
             vipTask2.setCreater(user_code);
             vipTask2.setIsactive(jsonObject.get("isactive").toString());
 
-            JSONArray array = JSONArray.parseArray(vipTask2.getTarget_vips());
-            array = vipGroupService.vipScreen2Array(array,corpCode,role_code,brand_code,area_code,store_code,user_code);
-            vipTask2.setTarget_vips_(JSON.toJSONString(array));
+            //转换vip
+            if(vipTask2.getSelect_scope().equals("condition_vip")){
+                JSONArray array = JSONArray.parseArray(vipTask2.getTarget_vips());
+                array = vipGroupService.vipScreen2Array(array,corpCode,role_code,brand_code,area_code,store_code,user_code);
+                vipTask2.setTarget_vips_(JSON.toJSONString(array));
+            }
 
             String flag = vipTaskService.inserVipTask(vipTask2,user_code,group_code,role_code);
             if (!flag.equals(Common.DATABEAN_CODE_SUCCESS)){
@@ -374,9 +377,13 @@ public class VipTaskController {
             String task_code = vipTask1.getTask_code();
             vipTask1=WebUtils.JSON2Bean(jsonObject,VipTask.class);
             vipTask1.setTask_code(task_code);
-            JSONArray array = JSONArray.parseArray(vipTask1.getTarget_vips());
-            array = vipGroupService.vipScreen2Array(array,vipTask1.getCorp_code(),role_code,brand_code,area_code,store_code,user_code);
-            vipTask1.setTarget_vips_(JSON.toJSONString(array));
+
+            if(vipTask1.getSelect_scope().equals("condition_vip")){
+                JSONArray array = JSONArray.parseArray(vipTask1.getTarget_vips());
+                array = vipGroupService.vipScreen2Array(array,vipTask1.getCorp_code(),role_code,brand_code,area_code,store_code,user_code);
+                vipTask1.setTarget_vips_(JSON.toJSONString(array));
+            }
+
             vipTask1.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
             vipTask1.setModifier(user_code);
             String flag = vipTaskService.updateVipTask(vipTask1,user_code,group_code,role_code);
@@ -605,6 +612,7 @@ public class VipTaskController {
         DataBean dataBean=new DataBean();
         MongoTemplate mongoTemplate = mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_task_schedule);
+        DBCollection  batch_import_vip=mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
         try{
             String jsString=request.getParameter("param").toString();
             JSONObject jsonObject1= JSON.parseObject(jsString);
@@ -654,8 +662,10 @@ public class VipTaskController {
                 String task_type = list.get(i).getTask_type();
                 String a = list.get(i).getTarget_vips_();
                 String status = list.get(i).getTask_status();
+                String target_vip=list.get(i).getTarget_vips();
+                String select_scope=list.get(i).getSelect_scope();
 
-                if (a != null && !a.equals("") && !a.equals("[]")){
+                if (a != null && !a.equals("") && !a.equals("[]")&&select_scope.equals("condition_vip")){
                     array = JSONArray.parseArray(a);
                     array.add(object);
                     DataBox dataBox = iceInterfaceService.vipScreenMethod2("1", "3", corp_code,JSON.toJSONString(array),"","");
@@ -672,7 +682,30 @@ public class VipTaskController {
                             flag = 1;
                         }
                     }
-                }else {
+                }else if(select_scope.equals("input_file")){
+                   DBObject dbObject= batch_import_vip.findOne(new BasicDBObject("_id",target_vip));
+                   String cardInfo=dbObject.get("cardInfo").toString();
+                   JSONArray jsonArray=JSON.parseArray(cardInfo);
+                   int size=jsonArray.size();
+                    if (size > 0){
+                        List<String> list1=new ArrayList<String>();
+                        for (int j = 0; j < size; j++) {
+                            JSONObject jsonObject2=jsonArray.getJSONObject(j);
+                            String cardno=jsonObject2.getString("cardno");
+                            list1.add(cardno);
+                        }
+                        if(list1.contains(card_no)){
+                            DataBox dataBox =  iceInterfaceService.getVipByOpenId(corp_code,open_id,"");
+                            JSONArray vip_array = JSONArray.parseArray(dataBox.data.get("message").value);
+                            if (vip_array.size() > 0)
+                                vip_info = vip_array.getJSONObject(0);
+                            new_list.add(list.get(i));
+                            if (status.equals("1") && (task_type.equals("consume_count") || task_type.equals("consume_money") || task_type.equals("ticket_sales"))){
+                                flag = 1;
+                            }
+                        }
+                    }
+                } else {
                     DataBox dataBox =  iceInterfaceService.getVipByOpenId(corp_code,open_id,"");
                     JSONArray vip_array = JSONArray.parseArray(dataBox.data.get("message").value);
                     if (vip_array.size() > 0)

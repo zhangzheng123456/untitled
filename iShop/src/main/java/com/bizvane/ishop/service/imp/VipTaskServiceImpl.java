@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
@@ -179,6 +180,8 @@ public class VipTaskServiceImpl implements VipTaskService {
 
     @Override
     public String inserVipTask(VipTask vipTask,String user_code,String group_code,String role_code) throws Exception {
+        MongoTemplate mongoTemplate = mongodbClient.getMongoTemplate();
+        DBCollection  batch_import_vip=mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
         String result = Common.DATABEAN_CODE_SUCCESS;
         String end_time=vipTask.getEnd_time();
         String start_time = vipTask.getStart_time();
@@ -196,6 +199,15 @@ public class VipTaskServiceImpl implements VipTaskService {
             String message=JSONObject.parseObject(dataBox.data.get("message").value).getString("message");
             vipTask.setTarget_vips_condition(message);
         }
+        //插入导入的会员数
+        if(vipTask.getSelect_scope().equals("input_file")){
+            DBObject dbObject= batch_import_vip.findOne(new BasicDBObject("_id",vipTask.getTarget_vips()));
+            String cardInfo=dbObject.get("cardInfo").toString();
+            JSONArray jsonArray= JSON.parseArray(cardInfo);
+            int size=jsonArray.size();
+            vipTask.setCardno_num(String.valueOf(size));
+        }
+
         vipTaskMapper.inserVipTask(vipTask);
         Date now = new Date();
         String is_send_notice = vipTask.getIs_send_notice();
@@ -233,6 +245,9 @@ public class VipTaskServiceImpl implements VipTaskService {
 
     @Override
     public String updateVipTask(VipTask vipTask,String user_code,String group_code,String role_code) throws Exception {
+        MongoTemplate mongoTemplate = mongodbClient.getMongoTemplate();
+        DBCollection  batch_import_vip=mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
+
         String result = Common.DATABEAN_CODE_SUCCESS;
         String end_time=vipTask.getEnd_time();
 
@@ -249,6 +264,15 @@ public class VipTaskServiceImpl implements VipTaskService {
         Date now = new Date();
         vipTask.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipTask.setModifier(user_code);
+
+        if(vipTask.getSelect_scope().equals("input_file")){
+            DBObject dbObject= batch_import_vip.findOne(new BasicDBObject("_id",vipTask.getTarget_vips()));
+            String cardInfo=dbObject.get("cardInfo").toString();
+            JSONArray jsonArray= JSON.parseArray(cardInfo);
+            int size=jsonArray.size();
+            vipTask.setCardno_num(String.valueOf(size));
+        }
+
         vipTaskMapper.updateVipTask(vipTask);
 
         String is_send_notice = vipTask.getIs_send_notice();
