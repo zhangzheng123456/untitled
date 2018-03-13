@@ -917,6 +917,8 @@ var task = {
                if(msg.select_scope == 'input_file'){
                    $("#exportVips").trigger("click");
                    $("#exportVipBtn").attr('data-src',msg.target_vips);
+                   $("#exportCount").show();
+                   $("#exportCount").text("导入会员数:"+msg.cardno_num);
                }else {
                    _param.screen = JSON.parse(msg.target_vips);
                    if( _param.screen.length == 0){
