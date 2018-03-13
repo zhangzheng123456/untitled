@@ -175,6 +175,7 @@
                 </div>
             </div>
             </div>
+            <div style="padding-left: 120px;margin: -10px 0 10px 0;display:none" id="exportCount">导入会员数:1000</div>
             <div class="drop_down">
                 <label style="color:#c26555;">任务类型*</label><input id="taskType" type="text" data-type="share_counts" value="分享次数" readonly/><ul>
                 <!--<li data-type="share_goods">分享商品</li>-->
@@ -270,11 +271,11 @@
     </div>
 </div>
 <div class="p" id="p"></div>
-<div class="tk" id="code_ma">
-    <span class="icon-ishop_6-12" id="dao"></span>
+<div class="tk" id="downloadWrap" style="z-index:10001">
+    <span class="icon-ishop_6-12 closeWrap"></span>
     <p>是否下载文件?</p>
     <div class="btn">
-        <em class="cancel" id="code_q">取消</em>
+        <em class="cancel closeWrap">取消</em>
         <em class="album_enter" id="enter"><a>下载文件</a></em>
     </div>
 </div>
@@ -4277,7 +4278,7 @@
 <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?2017040170331"></script>
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?2017040170331"></script>
 <!--<script src="../js/vip_screen.js?20170829"></script>-->
-<script src="../js/vip/vip_taskOperate.js?20180313"></script>
+<script src="../js/vip/vip_taskOperate.js?20180314"></script>
 <script src="../js/vip/select_independent.js?t=20180202"></script>
 <script>
     var task_start = {

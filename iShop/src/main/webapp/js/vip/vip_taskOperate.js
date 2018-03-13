@@ -767,7 +767,7 @@ var task = {
         var type =  $("#taskType").attr("data-type");
         var advance_show = $("#is_advance_show").prop("checked") ? "Y" : "N";//提前显示
         _param.screen ? "" : _param.screen = [];
-        $("#allVips")[0].checked == true?"":target_vips = _param.screen;//所有会员和筛选会员传值
+        $("#allVips")[0].checked == true ? "":$("#exportVips")[0].checked == true ? target_vips = $("#exportVipBtn").attr("data-src") :target_vips = _param.screen;//所有会员和筛选会员传值
         $("#is_active")[0].checked == false ? check = "N" : check = "Y";//是否可用
         wx_check = $("#is_wx_tips")[0].checked == false ? "N" : "Y";//是否可用
         $("#pointWrap").css("display") == "none" ? point ="" : point = $("#pointWrap input").val();//取积分的值
@@ -829,6 +829,7 @@ var task = {
         param.start_time = $("#startTime").val().trim();
         param.end_time = $("#endTime").val().trim();
         param.task_type = type;
+        param.select_scope = $("#exportVips").prop("checked") ? "input_file" : "condition_vip";
         param.target_vips = target_vips;
         param.task_condition = task_condition;
         param.present_coupon = present_coupon;
@@ -913,19 +914,24 @@ var task = {
                msg.isactive == "Y" ? $("#is_active").prop("checked",true) : $("#is_active").prop("checked",false);
                msg.is_send_notice == "Y" ? $("#is_wx_tips").prop("checked",true) : $("#is_wx_tips").prop("checked",false);
                msg.is_advance_show == "Y" ? $("#is_advance_show").prop("checked",true) : $("#is_advance_show").prop("checked",false);
-               _param.screen = JSON.parse(msg.target_vips);
-               if( _param.screen.length == 0){
-                   $("#allVips").trigger("click");
+               if(msg.select_scope == 'input_file'){
+                   $("#exportVips").trigger("click");
+                   $("#exportVipBtn").attr('data-src',msg.target_vips);
                }else {
-                   var screen =  _param.screen;
-                   var html = "";
-                   if(screen.length >0){
-                       showSelect_edit(screen,msg.target_vip_type);
+                   _param.screen = JSON.parse(msg.target_vips);
+                   if( _param.screen.length == 0){
+                       $("#allVips").trigger("click");
                    }else {
-                       html = '<div style="text-align: center">暂无条件</div>';
+                       var screen =  _param.screen;
+                       var html = "";
+                       if(screen.length >0){
+                           showSelect_edit(screen,msg.target_vip_type);
+                       }else {
+                           html = '<div style="text-align: center">暂无条件</div>';
+                       }
+                       $("#conditionWrap").html(html);
+                       $("#chooseVips").trigger("click");
                    }
-                   $("#conditionWrap").html(html);
-                   $("#chooseVips").trigger("click");
                }
                if(coupons.length != 0){
                    for(var i=0;i<coupons.length;i++){
@@ -2105,6 +2111,15 @@ $(function () {
             });
             return ;
         }
+        if($("#exportVips").prop("checked") == true && $("#exportVipBtn").attr("data-src") == undefined){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content:"请导入文件"
+            });
+            return ;
+        }
         task.addTask();
     });
     $(".drop_down").click(function (e) {
@@ -2174,7 +2189,9 @@ $(function () {
                     cancel: false,
                     content: "导入成功"
                 });
-                $("#exportVipBtn").attr("data-src",data.message);
+                $("#exportVipBtn").attr("data-src",JSON.parse(data.message).file_id);
+                $("#exportCount").show();
+                $("#exportCount").text("导入会员数:"+JSON.parse(data.message).cardno_num);
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
@@ -2189,7 +2206,35 @@ $(function () {
         xhr.send(form);
     });
     $("#exportVipsBtn").click(function () {
-
+        var id = $("#exportVipBtn").attr("data-src");
+        if(id == undefined || id == ""){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "无文件可导出"
+            });
+            return
+        }
+        var param = {"id":id};
+        oc.postRequire("post","/vipActivity/fileOutExecl","",param,function (data) {
+            if(data.code == 0){
+                var msg = JSON.parse(data.message).path;
+                $("#enter a").attr("href",msg);
+                $("#downloadWrap").show();
+                whir.loading.add("mask",0.5);
+            }else {
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        });
+    });
+    $(".closeWrap").click(function () {
+        $(this).parents(".tk").hide();
     });
     $("#page-wrapper").on("click",".add_btn",function () {//加号事件(优惠券，完善资料条件)
         var clone = $(this).parent().parent().clone();
