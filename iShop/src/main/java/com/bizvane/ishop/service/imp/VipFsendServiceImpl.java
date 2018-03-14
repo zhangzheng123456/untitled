@@ -837,9 +837,16 @@ public class VipFsendServiceImpl implements VipFsendService {
                 } else {
                     //参数
                     String text = textReplace(content,obj);
-                    iceInterfaceService.sendSmsV3(corp_code,text,phone,user_code,"群发消息",vip_id);
+                    DataBox dataBox1=iceInterfaceService.sendSmsV3(corp_code,text,phone,user_code,"群发消息",vip_id);
+                    String send_status="";
+                    if(dataBox1.status.toString().equals("SUCCESS")){
+                        send_status="Y";
+                    }else{
+                        send_status="N";
+                    }
+                    String errmsg=dataBox1.msg;
                     //记录【发送】
-                    insertMongoDB(corp_code, user_code, "", "", vip_id, vip_name, cardno, phone, sms_code, "", content, message_id, "Y","");
+                    insertMongoDB(corp_code, user_code, "", "", vip_id, vip_name, cardno, phone, sms_code, "", content, message_id, send_status,errmsg);
                 }
             }
 
@@ -876,9 +883,16 @@ public class VipFsendServiceImpl implements VipFsendService {
                 } else {
                     //参数
                     String text = textReplace(content,obj);
-                    iceInterfaceService.sendSmsV3(corp_code,text,phone,user_code,"群发消息",vip_id);
+                    DataBox dataBox1=iceInterfaceService.sendSmsV3(corp_code,text,phone,user_code,"群发消息",vip_id);
+                    String send_status="";
+                    if(dataBox1.status.toString().equals("SUCCESS")){
+                        send_status="Y";
+                    }else{
+                        send_status="N";
+                    }
+                    String errmsg=dataBox1.msg;
                     //记录【发送】
-                    insertMongoDB(corp_code, user_code, "", "", vip_id, vip_name, cardno, phone, sms_code, "", content, message_id, "Y","");
+                    insertMongoDB(corp_code, user_code, "", "", vip_id, vip_name, cardno, phone, sms_code, "", content, message_id, send_status,errmsg);
                 }
             }
         }

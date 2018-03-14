@@ -259,7 +259,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
             vipActivityDetail.setApply_condition(apply_condition);
 
             //转换为txt
-            if(StringUtils.isNotBlank(apply_agreement)&&!apply_agreement.contains("encodingBizvane")) {
+            if(StringUtils.isNotBlank(apply_agreement)&&apply_agreement.contains("encodingBizvane")) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
                 WebConnection webConnection = new WebConnection();
