@@ -53,6 +53,16 @@ public class VipFsend {
 
     private String select_type;
 
+    private  String cardno_num;
+
+    public String getCardno_num() {
+        return cardno_num;
+    }
+
+    public void setCardno_num(String cardno_num) {
+        this.cardno_num = cardno_num;
+    }
+
     public int getFail_count() {
         return fail_count;
     }

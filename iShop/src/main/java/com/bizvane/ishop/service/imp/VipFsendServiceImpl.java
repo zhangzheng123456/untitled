@@ -67,6 +67,9 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     IceInterfaceAPIService iceInterfaceAPIService;
 
+    @Autowired
+    MongoDBClient mongoDBClient;
+
 
 
     private static HttpClient httpClient = new HttpClient();
@@ -127,6 +130,17 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     public int updateVipFsendByCode(VipFsend vipFsend) throws Exception {
+        MongoTemplate mongoTemplate=this.mongoDBClient.getMongoTemplate();
+        DBCollection cursor=mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
+        if(vipFsend.getSend_scope().equals("input_file")){
+            BasicDBObject basicDBObject=new BasicDBObject();
+            basicDBObject.put("_id",vipFsend.getSms_vips());
+            DBObject dbObject=cursor.findOne(basicDBObject);
+            String info=dbObject.get("cardInfo").toString();
+            JSONArray jsonArray=JSON.parseArray(info);
+            vipFsend.setCardno_num(String.valueOf(jsonArray.size()));
+        }
+
         return vipFsendMapper.updateVipFsendByCode(vipFsend);
     }
 
@@ -186,7 +200,10 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     @Override
-    public String insert(VipFsend vipFsend, String user_code,String group_code,String role_code) throws Exception {
+    public String insert(VipFsend vipFsend, String user_code, String group_code, String role_code) throws Exception {
+        MongoTemplate mongoTemplate=this.mongoDBClient.getMongoTemplate();
+        DBCollection cursor=mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
+
         Date now = new Date();
         //群发消息的发送类型
         String corp_code = vipFsend.getCorp_code();
@@ -203,6 +220,15 @@ public class VipFsendServiceImpl implements VipFsendService {
         if (vipFsend.getApp_id() == null)
             vipFsend.setApp_id("");
 
+        if(vipFsend.getSend_scope().equals("input_file")){
+            BasicDBObject basicDBObject=new BasicDBObject();
+            basicDBObject.put("_id",vipFsend.getSms_vips());
+            DBObject dbObject=cursor.findOne(basicDBObject);
+            String info=dbObject.get("cardInfo").toString();
+            JSONArray jsonArray=JSON.parseArray(info);
+            vipFsend.setCardno_num(String.valueOf(jsonArray.size()));
+        }
+
         insertSend(vipFsend,user_code,group_code,role_code);
 
         int id = getVipFsendInfoByCode(corp_code,sms_code).getId();
@@ -210,7 +236,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
 
-    public String checkVipFsend(VipFsend vipFsend,String user_code) throws Exception{
+    public String checkVipFsend(VipFsend vipFsend, String user_code) throws Exception{
         String corp_code = vipFsend.getCorp_code();
         String sms_code = vipFsend.getSms_code();
 
@@ -257,7 +283,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     @Transactional
-    public String sendMessage(VipFsend vipFsend, String user_code) throws Exception {
+    public String sendMessage(final VipFsend vipFsend, String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
 
         final VipFsend vipFsend1 = vipFsend;
@@ -271,6 +297,10 @@ public class VipFsendServiceImpl implements VipFsendService {
         if (send_type.equals("sms")) {
             sendSMS(corp_code, vipFsend1, user_code1);
         } else {
+            //微信群发 文件导入
+            MongoTemplate mongoTemplate=this.mongodbClient.getMongoTemplate();
+            final DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
+
             ExecutorService executorService = Executors.newFixedThreadPool(5);
             executorService.execute(new Runnable() {
                 public void run() {
@@ -304,7 +334,7 @@ public class VipFsendServiceImpl implements VipFsendService {
 
                                     screen = JSONArray.parseArray(sms_vips_);
                                     JSONObject open_id_obj = new JSONObject();
-                                    open_id_obj.put("key",Common.VIP_SCREEN_OPENID_KEY);
+                                    open_id_obj.put("key", Common.VIP_SCREEN_OPENID_KEY);
                                     open_id_obj.put("type","text");
                                     open_id_obj.put("value","Y");
                                     screen.add(open_id_obj);
@@ -453,7 +483,47 @@ public class VipFsendServiceImpl implements VipFsendService {
                                 }
                             }else if(send_scope.equals("input_file")){
                                 //微信群发 导入文件
+                                BasicDBObject basicDBObject=new BasicDBObject();
+                                basicDBObject.put("_id",vipFsend.getSms_vips());
+                                DBObject dbObject=cursor.findOne(basicDBObject);
+                                String cardInfo=dbObject.get("cardInfo").toString();
+                                DataBox dataBox=iceInterfaceAPIService.getVipByCardInfo(cardInfo,corp_code);
+                                String message1 = dataBox.data.get("message").value;
+                                String all_vip=JSON.parseObject(message1).getString("all_vip_list");
+                                JSONArray jsonArray=JSON.parseArray(all_vip);
+                                for (int i = 0; i < jsonArray.size(); i++) {
+                                    if (redisClient.get("VipFsend Status"+corp_code+sms_code) != null && redisClient.get("VipFsend Status"+corp_code+sms_code).toString().equals("N")){
+                                        break;
+                                    }
+                                    try{
+                                        JSONObject vip_info = jsonArray.getJSONObject(i);
+                                        String vip_id = vip_info.getString("vip_id");
+                                        String vip_name = vip_info.getString("vip_name");
+                                        String open_id = vip_info.getString("open_id");
+                                        String phone = vip_info.getString("vip_phone");
+                                        String cardno = vip_info.getString("cardno");
 
+                                        JSONObject content_obj = JSONObject.parseObject(content);
+                                        String url = content_obj.getString("url");
+                                        JSONObject template_content = new JSONObject();
+                                        for (String key:content_obj.keySet()){
+                                            String value = content_obj.getString(key);
+                                            template_content.put(key,textReplace(value,vip_info));
+                                        }
+                                        String message_id = corp_code + vip_id + System.currentTimeMillis();
+                                        String result = wxTemplateService.sendTemplateMsg(app_id,open_id,template_id,template_content,url);
+                                        JSONObject info = JSONObject.parseObject(result);
+                                        String errcode = info.getString("errcode");
+                                        String errmsg = info.getString("errmsg");
+                                        if ("0".equals(errcode)) {
+                                            insertMongoDB(corp_code, user_code1, template_id, open_id, vip_id, vip_name, cardno, phone, sms_code, app_id, template_content.toString(), message_id, "Y",errmsg);
+                                        } else {
+                                            insertMongoDB(corp_code, user_code1, template_id, open_id, vip_id, vip_name, cardno, phone, sms_code, app_id, template_content.toString(), message_id, "N",errmsg);
+                                        }
+                                    }catch (Exception e){
+                                        iceInterfaceService.sendSmsV2("C20000","群发消息异常"+e.getMessage(),"15251891037","10000","群发消息异常");
+                                    }
+                                }
                             } else {
                                 JSONArray new_array = new JSONArray();
                                 JSONArray array = getSendVips(vipFsend1, user_code1);
@@ -549,14 +619,14 @@ public class VipFsendServiceImpl implements VipFsendService {
             String[] group_codes = vip_group_code.split(",");
             for (int i = 0; i < group_codes.length; i++) {
                 DataBox dataBox;
-                VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,group_codes[i],Common.IS_ACTIVE_Y);
+                VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,group_codes[i], Common.IS_ACTIVE_Y);
                 String group_type = vipGroup.getGroup_type();
                 if (group_type.equals("define")){
                     String condition = vipGroup.getGroup_condition();
                     JSONObject condition_obj = JSONObject.parseObject(condition);
 
                     JSONObject open_id = new JSONObject();
-                    open_id.put("key",Common.VIP_SCREEN_OPENID_KEY);
+                    open_id.put("key", Common.VIP_SCREEN_OPENID_KEY);
                     open_id.put("type","text");
                     open_id.put("value","Y");
 
@@ -575,7 +645,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     condition_array = vipGroupService.vipScreen2ArrayNew(condition_array,corp_code,role_code, brand_code, area_code, store_code,user_code1);
 
                     JSONObject open_id = new JSONObject();
-                    open_id.put("key",Common.VIP_SCREEN_OPENID_KEY);
+                    open_id.put("key", Common.VIP_SCREEN_OPENID_KEY);
                     open_id.put("type","text");
                     open_id.put("value","Y");
                     condition_array.add(open_id);
@@ -643,7 +713,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             }
         } else if (send_scope.equals("vip_group") && !sms_vips.equals("")) {
             DataBox dataBox;
-            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,sms_vips,Common.IS_ACTIVE_Y);
+            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,sms_vips, Common.IS_ACTIVE_Y);
             String group_type = vipGroup.getGroup_type();
             if (group_type.equals("define")){
                 String condition = vipGroup.getGroup_condition();
@@ -687,7 +757,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         return count;
     }
 
-    public void sendSMS(String corp_code,VipFsend vipFsend,String user_code) throws Exception{
+    public void sendSMS(String corp_code, VipFsend vipFsend, String user_code) throws Exception{
         String sms_code = vipFsend.getSms_code();
         String send_scope = vipFsend.getSend_scope();
         String content = vipFsend.getContent();
@@ -973,7 +1043,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         vipFsendMapper.insertFsend(vipFsend);
         return 1;
     }
-    public int insertSend(VipFsend vipFsend,String user_code,String group_code,String role_code) throws Exception {
+    public int insertSend(VipFsend vipFsend, String user_code, String group_code, String role_code) throws Exception {
         vipFsendMapper.insertFsend(vipFsend);
         String corp_code = vipFsend.getCorp_code();
 
@@ -994,7 +1064,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String master_code = acts.get(i).getMaster_code();
                 master_code = master_code.replace(corp_code,"");
                 if (master_code.startsWith("U")){
-                    User user = userService.selectUserByCode(corp_code,master_code.substring(1,master_code.length()),Common.IS_ACTIVE_Y);
+                    User user = userService.selectUserByCode(corp_code,master_code.substring(1,master_code.length()), Common.IS_ACTIVE_Y);
                     logger.info("==============check SMS user："+master_code.substring(1,master_code.length()));
                     if (user != null){
                         phones.add(user.getPhone());
@@ -1056,7 +1126,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     //活动调用群发
-    public String sendSmsActivity(final VipFsend vipFsend,final String user_code,final String activity_code) throws Exception {
+    public String sendSmsActivity(final VipFsend vipFsend, final String user_code, final String activity_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         String send_type = vipFsend.getSend_type();
         final String corp_code = vipFsend.getCorp_code();
@@ -1090,7 +1160,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                             VipActivity vipActivity = vipActivityService.getActivityByCode(activity_code);
                             if (vipActivity != null){
 
-                                List<WxTemplate> wxTemplates = wxTemplateService.selectTempByAppId(app_id,"",Common.TEMPLATE_NAME_1);
+                                List<WxTemplate> wxTemplates = wxTemplateService.selectTempByAppId(app_id,"", Common.TEMPLATE_NAME_1);
 
                                 String template_id = wxTemplates.get(0).getTemplate_id();
                                 String app_user_name = corpService.getCorpByAppId(corp_code,app_id).getApp_user_name();
@@ -1103,7 +1173,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                                     if (sms_vips != null && !sms_vips.equals("")){
                                         screen = JSONArray.parseArray(sms_vips);
                                         JSONObject open_id = new JSONObject();
-                                        open_id.put("key",Common.VIP_SCREEN_OPENID_KEY);
+                                        open_id.put("key", Common.VIP_SCREEN_OPENID_KEY);
                                         open_id.put("type","text");
                                         open_id.put("value","Y");
                                         screen.add(open_id);
@@ -1359,7 +1429,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         logger.info("=========getVipFsendByMessage"+dbCursor.count());
         int count=dbCursor.count();
         int pages = MongoUtils.getPages(dbCursor, page_size);
-        DBCursor dbCursor1=MongoUtils.sortAndPage(dbCursor,page_num,page_size,"message_date",-1);
+        DBCursor dbCursor1= MongoUtils.sortAndPage(dbCursor,page_num,page_size,"message_date",-1);
         List list= MongoUtils.dbCursorToList(dbCursor1);
 
 

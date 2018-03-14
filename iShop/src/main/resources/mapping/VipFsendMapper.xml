@@ -23,6 +23,7 @@
         <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" />
         <result column="select_type" property="select_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="cardno_num" property="cardno_num" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -127,6 +128,9 @@
             <if test="select_type!=null">
                 select_type,
             </if>
+            <if test="cardno_num!=null">
+                cardno_num,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="sms_code!=null">
@@ -186,6 +190,9 @@
             <if test="select_type!=null">
                 #{select_type},
             </if>
+            <if test="cardno_num!=null">
+                #{cardno_num},
+            </if>
         </trim>
     </insert>
 
@@ -225,6 +232,9 @@
             <if test="select_type!=null">
                 select_type=#{select_type},
             </if>
+            <if test="cardno_num!=null">
+                cardno_num=#{cardno_num},
+            </if>
         </trim>
         WHERE ID = #{id};
     </update>
@@ -261,6 +271,9 @@
             </if>
             <if test="template_name!=null">
                 template_name=#{template_name},
+            </if>
+            <if test="cardno_num!=null">
+                cardno_num=#{cardno_num},
             </if>
         </trim>
         WHERE sms_code = #{sms_code};
