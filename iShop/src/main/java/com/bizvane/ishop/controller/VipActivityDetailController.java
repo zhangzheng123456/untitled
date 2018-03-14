@@ -673,7 +673,8 @@ public class VipActivityDetailController {
                 DBCursor dbObjects = cursor.find(updateCondition);
                 if (dbObjects.hasNext()){
                     DBObject updatedValue = new BasicDBObject();
-                    String status = dbObjects.next().get("status") != null && !dbObjects.next().get("status").equals("") ?dbObjects.next().get("status").toString():"0";
+                    DBObject dbObject=dbObjects.next();
+                    String status = dbObject.get("status") != null && !dbObject.get("status").equals("") ?dbObject.get("status").toString():"0";
 //                    if (!status.equals("1")){
                         updatedValue.put("status", status);
                         updatedValue.put("apply_info", schedule);
@@ -822,6 +823,8 @@ public class VipActivityDetailController {
             String order_id = jsonObject.getString("order_id");
             String pay_result = jsonObject.getString("pay_result");
             String pay_time = jsonObject.getString("pay_time");
+
+            System.out.println(".......pay_result........."+pay_result);
 
             DataBox dataBox = iceInterfaceService.getVipByOpenId(corp_code, open_id, "");
             JSONArray vip_array = JSONArray.parseArray(dataBox.data.get("message").value);
