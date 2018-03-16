@@ -827,9 +827,15 @@ public class VipActivityDetailController {
             System.out.println(".......pay_result........."+pay_result);
 
             DataBox dataBox = iceInterfaceService.getVipByOpenId(corp_code, open_id, "");
+
+
             JSONArray vip_array = JSONArray.parseArray(dataBox.data.get("message").value);
+
+            System.out.println("=========================会员=============="+vip_array.toString());
+
             if (vip_array.size() > 0){
-                System.out.println("==========得到会员信息"+Common.DATETIME_FORMAT.format(new Date()));
+
+                System.out.println("=================获取会员==============");
 
                 JSONObject vip_info = vip_array.getJSONObject(0);
 //                String vip_id = vip_info.getString("vip_id");
