@@ -1220,7 +1220,7 @@ public class QrCodeController {
                     basicDBList.add(new BasicDBObject("vip.vip_phone",new BasicDBObject("$regex",vip_phone)));
                 }
                 if(StringUtils.isNotBlank(user_name)){
-                    basicDBList.add(new BasicDBObject("vip.user_name",new BasicDBObject("$regex",user_name)));
+                    basicDBList.add(new BasicDBObject("user.user_name",new BasicDBObject("$regex",user_name)));
                 }
                 if(StringUtils.isNotBlank(store_name)){
                     basicDBList.add(new BasicDBObject("vip.store_name",new BasicDBObject("$regex",store_name)));
