@@ -688,7 +688,7 @@ public class VipActivityDetailController {
 //                    }
                 }else {
                     BasicDBObject dbObject = new BasicDBObject();
-                    dbObject.put("_id", app_id + "_" + activity_code + item_id + "_" + open_id);
+//                    dbObject.put("_id", app_id + "_" + activity_code + item_id + "_" + open_id);
                     dbObject.put("corp_code", corp_code);
                     dbObject.put("app_id", app_id);
                     dbObject.put("activity_code", activity_code);
