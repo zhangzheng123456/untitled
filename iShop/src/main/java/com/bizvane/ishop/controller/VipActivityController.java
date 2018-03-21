@@ -15,6 +15,7 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.DataBox;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.mongodb.BasicDBObject;
@@ -77,6 +78,8 @@ public class VipActivityController {
     CorpService corpService;
     @Autowired
     MongoDBClient mongodbClient;
+    @Autowired
+    ActivityService activityService;
 
     private static final Logger logger = Logger.getLogger(VipActivityController.class);
 
@@ -1601,7 +1604,78 @@ public class VipActivityController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value="/exportExcel",method=RequestMethod.POST)
+    @ResponseBody
+    public String exportExcel(HttpServletRequest request,HttpServletResponse response){
 
+        System.out.println("导出excel");
+        DataBean dataBean=new DataBean();
+        String errormessage="数据异常，导出失败";
+        String role_code=request.getSession().getAttribute("role_code").toString();
+        String corp_code=request.getSession().getAttribute("corp_code").toString();
+        String jsonStr=request.getParameter("param");
+        JSONObject jsonobj=JSON.parseObject(jsonStr);
+        String message=jsonobj.get("message").toString();
+        JSONObject jsonobject=JSON.parseObject(message);
+        String search_value=jsonobject.get("searchValue").toString();
+        String screen=jsonobject.get("list").toString();
+        PageInfo<VipActivity> activy=null;
+        if(!role_code.equals(Common.ROLE_SYS)) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage("无导出权限");
+            return dataBean.getJsonStr();
+        }
+        if (screen.equals("")) {
+            activy=activityService.selectAllActivity(1,900,search_value);
+        } else {
+            Map<String, String> map = WebUtils.Json2Map(jsonobject);
+            if (role_code.equals(Common.ROLE_SYS)) {
+                try {
+                    activy = activityService.selectAllCorpScreen(1, 900, "", "", map);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    activy = activityService.selectAllCorpScreen(1, 900, corp_code, "", map);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        List<VipActivity> vipacts=activy.getList();
+        ObjectMapper objmapper=new ObjectMapper();
+        objmapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        String json = null;
+        try {
+            json = objmapper.writeValueAsString(vipacts);
+            if(vipacts.size()>=Common.EXPORTEXECLCOUNT){
+                errormessage="数据量过大";
+                int i=9/0;
+            }
+
+            LinkedHashMap<String,String>  hashmap=WebUtils.Json2ShowName(jsonobject);
+            String pathname = OutExeclHelper.OutExecl(json, vipacts, hashmap, response, request,"活动列表");
+            JSONObject result = new JSONObject();
+            System.out.println(pathname+"-------------");
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (JsonProcessingException e) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
 
 
 }
