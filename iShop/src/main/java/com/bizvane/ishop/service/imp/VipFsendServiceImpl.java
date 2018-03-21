@@ -985,7 +985,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection collection = mongoTemplate.getCollection(CommonValue.table_vip_batchsend_message);
         DBObject saveData = new BasicDBObject();
-        saveData.put("_id", message_id);
+//        saveData.put("_id", message_id);
         saveData.put("message_target", "1");
         saveData.put("corp_code", corp_code);
         saveData.put("open_id", openid);
