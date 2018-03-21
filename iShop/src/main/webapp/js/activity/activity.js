@@ -253,8 +253,7 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="execute"){
             $("#execute").show();
-        }
-        else if(actions[i].act_name=="output"){
+        }else if(actions[i].act_name=="output"){
             $("#more_down").append("<div id='leading_out'>导出</div>");
         }
     }
@@ -332,13 +331,15 @@ $("#file_submit").click(function(){
             //导出关闭按钮
             $('#file_close').click(function(){
                 $('.file').hide();
-            })
-            $('#download').click(function(){
+            });
+            $("#dao,#code_q").click(function () {
+                $('.file').show();
+                $("#code_ma").hide();
+            });
+            $('#enter').click(function(){
                 $("#p").hide();
                 $('.file').hide();
-                $('#file_submit').show();
-                $('#download').hide();
-            })
+            });
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -931,56 +932,6 @@ function bianse(){
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
 
-//导出提交的
-$("#file_submit").click(function(){
-    var li=$("#file_list_r input[type='checkbox']").parents("li");
-    var param={};
-    var tablemanager=[];
-    if(li.length=="0"){
-        frame();
-        $('.frame').html('请把要导出的列移到右边');
-        return;
-    }
-    for(var i=0;i<li.length;i++){
-        var r=$(li[i]).attr("data-name");
-        var z=$(li[i]).children("span").html();
-        var param1={"column_name":r,"show_name":z};
-        tablemanager.push(param1);
-    }
-    tablemanager.reverse();
-    param["tablemanager"]=tablemanager;
-    param["searchValue"]=value;
-    if(filtrate==""){
-        param["list"]="";
-    }else if(filtrate!==""){
-        param["list"]=list;
-    }
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/exportExecl","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var path=message.path;
-            var path=path.substring(1,path.length-1);
-            $('#download').html("<a href='/"+path+"'>下载文件</a>");
-            $('#download').addClass("download");
-            $('#file_submit').hide();
-            $('#download').show();
-            //导出关闭按钮
-            $('#file_close').click(function(){
-                $('.file').hide();
-            })
-            $('#download').click(function(){
-                $("#p").hide();
-                $('.file').hide();
-                $('#file_submit').show();
-                $('#download').hide();
-            })
-        }else if(data.code=="-1"){
-            alert(data.message);
-        }
-        whir.loading.remove();//移除加载框
-    })
-})
 //导出关闭按钮
 $('#file_close').click(function(){
     $("#p").hide();

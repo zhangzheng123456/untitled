@@ -2074,7 +2074,13 @@ var activity = {
         param["app_id"] = $("#wechat_input").attr("data-id");
         param["app_name"] = $("#wechat_input").val();
         _param.screen ? "" : _param.screen = [];
-        param["screen"] = _param;
+        if($("#exportFileBtn").attr("data-src") != '' && $("#exportFileBtn").attr("data-src") != undefined){
+            param["screen"] = _param;
+            param['select_scope'] = 'condition_vip';
+        }else {
+            param["screen"] = $("#exportFileBtn").attr("data-src");
+            param['select_scope'] = 'input_file';
+        }
         whir.loading.add("", 0.5);
         oc.postRequire("post", "/vipActivity/add", "0", param, function (data) {
             if (data.code == 0) {
@@ -2404,6 +2410,7 @@ var activity = {
             var activity_store_code = run_scope.store_code;
             var brand_code = run_scope.brand_code;
             var area_code = run_scope.area_code;
+            // list.select_scope == 'input_file' ?
             list.bill_status == "1" ? activity.edit_flag = true : false;
             list.bill_status == "1" ? $("#tabs>div:nth-of-type(2)").attr("data-state","true") : $("#tabs>div:nth-of-type(2)").attr("data-state","false");
             if (area_code.length == 0) {
@@ -3643,6 +3650,7 @@ var activity = {
             $("#lookVipCondition").attr("data-code", JSON.stringify(screen));
             $("#screen_vipWrapper").hide();
             $("#p").hide();
+            $("#exportFileBtn").attr("data-src","");
             // $("#vipTask_empty_filter").trigger("click");
         });
         $("#lookVipCondition").click(function () {
