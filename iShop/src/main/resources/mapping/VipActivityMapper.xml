@@ -33,11 +33,322 @@
         <result column="target_vips_import" property="target_vips_import" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="qrcode" property="qrcode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="qrcode_content" property="qrcode_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="runscope_branecode" property="runscope_branecode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="runscope_areacode" property="runscope_areacode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="runscope_storecode" property="runscope_storecode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
     </resultMap>
 
+    <!--筛选查询selectAllCorpScreen-->
+    <select id="selectAllCorpScreen" resultMap="Activity">
+        select
+
+        def_vip_activity.activity_theme,
+        def_vip_activity.run_mode,
+        def_vip_activity.activity_state,
+        def_vip_activity.start_time,
+        def_vip_activity.end_time,
+        def_vip_activity.creater,
+        def_vip_activity.created_date,
+        def_vip_activity.run_scope,
+
+        def_corp.CORP_NAME,
+
+        def_vip_activity_detail_consume.coupon_type as coupon_type,
+        def_vip_activity_detail_consume.send_points as send_points
+
+        from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+        left join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
+        where  1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND def_vip_activity.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND def_vip_activity.creater = #{user_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND def_vip_activity.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND def_vip_activity.created_date &lt;= #{created_date_end}
+        </if>
+        <if test="start_time_start!=null and start_time_start!=''">
+            AND def_vip_activity.start_time &gt;= #{start_time_start}
+        </if>
+        <if test="start_time_end!=null and start_time_end!=''">
+            AND def_vip_activity.start_time &lt;= #{start_time_end}
+        </if>
+        <if test="end_time_start!=null and end_time_start!=''">
+            AND def_vip_activity.end_time &gt;= #{end_time_start}
+        </if>
+        <if test="end_time_end!=null and end_time_end!=''">
+            AND def_vip_activity.end_time &lt;= #{end_time_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='3'.toString()">
+                    ( def_vip_activity.bill_status = '0' OR  def_vip_activity.bill_status = '' OR def_vip_activity.bill_status IS  NULL )
+                    AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='4'.toString()">
+                    def_vip_activity.bill_status = '1'  AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='5'.toString()">
+                    def_vip_activity.bill_status = '2'  AND def_vip_activity.activity_state = '0'
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue!='3'.toString()  and entryValue!='4'.toString() and entryValue!='5'.toString()">
+                    def_vip_activity.${entryKey} = ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    def_vip_activity.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+
+
+        union ALL
+        select
+
+        def_vip_activity.activity_theme,
+        def_vip_activity.run_mode,
+        def_vip_activity.activity_state,
+        def_vip_activity.start_time,
+        def_vip_activity.end_time,
+        def_vip_activity.creater,
+        def_vip_activity.created_date,
+        def_vip_activity.run_scope,
+
+        def_corp.CORP_NAME,
+
+        def_vip_activity_detail.coupon_type as coupon_type,
+        def_vip_activity_detail.present_point as send_points
+
+        from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        where 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND def_vip_activity.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND def_vip_activity.creater = #{user_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND def_vip_activity.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND def_vip_activity.created_date &lt;= #{created_date_end}
+        </if>
+        <if test="start_time_start!=null and start_time_start!=''">
+            AND def_vip_activity.start_time &gt;= #{start_time_start}
+        </if>
+        <if test="start_time_end!=null and start_time_end!=''">
+            AND def_vip_activity.start_time &lt;= #{start_time_end}
+        </if>
+        <if test="end_time_start!=null and end_time_start!=''">
+            AND def_vip_activity.end_time &gt;= #{end_time_start}
+        </if>
+        <if test="end_time_end!=null and end_time_end!=''">
+            AND def_vip_activity.end_time &lt;= #{end_time_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='3'.toString()">
+                    ( def_vip_activity.bill_status = '0' OR  def_vip_activity.bill_status = '' OR def_vip_activity.bill_status IS  NULL )
+                    AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='4'.toString()">
+                    def_vip_activity.bill_status = '1'  AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='5'.toString()">
+                    def_vip_activity.bill_status = '2'  AND def_vip_activity.activity_state = '0'
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue!='3'.toString()  and entryValue!='4'.toString() and entryValue!='5'.toString()">
+                    def_vip_activity.${entryKey} = ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    def_vip_activity.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+
+
+        union ALL
+        select
+
+        def_vip_activity.activity_theme,
+        def_vip_activity.run_mode,
+        def_vip_activity.activity_state,
+        def_vip_activity.start_time,
+        def_vip_activity.end_time,
+        def_vip_activity.creater,
+        def_vip_activity.created_date,
+        def_vip_activity.run_scope,
+
+        def_corp.CORP_NAME,
+
+        def_vip_activity_detail_anniversary.coupon_type as coupon_type,
+        def_vip_activity_detail_anniversary.send_points as send_points
+
+        from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+
+        left join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
+        where 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND def_vip_activity.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND def_vip_activity.creater = #{user_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND def_vip_activity.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND def_vip_activity.created_date &lt;= #{created_date_end}
+        </if>
+        <if test="start_time_start!=null and start_time_start!=''">
+            AND def_vip_activity.start_time &gt;= #{start_time_start}
+        </if>
+        <if test="start_time_end!=null and start_time_end!=''">
+            AND def_vip_activity.start_time &lt;= #{start_time_end}
+        </if>
+        <if test="end_time_start!=null and end_time_start!=''">
+            AND def_vip_activity.end_time &gt;= #{end_time_start}
+        </if>
+        <if test="end_time_end!=null and end_time_end!=''">
+            AND def_vip_activity.end_time &lt;= #{end_time_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='3'.toString()">
+                    ( def_vip_activity.bill_status = '0' OR  def_vip_activity.bill_status = '' OR def_vip_activity.bill_status IS  NULL )
+                    AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='4'.toString()">
+                    def_vip_activity.bill_status = '1'  AND def_vip_activity.activity_state = '0'
+                </when>
+
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue=='5'.toString()">
+                    def_vip_activity.bill_status = '2'  AND def_vip_activity.activity_state = '0'
+                </when>
+                <when test="entryValue!='' and entryKey=='activity_state' and entryValue!='3'.toString()  and entryValue!='4'.toString() and entryValue!='5'.toString()">
+                    def_vip_activity.${entryKey} = ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    def_vip_activity.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+
+    </select>
+    <!--查询需要导出excel数据-->
+    <select id="exploreExcel" resultMap="Activity">
+        select
+
+        def_vip_activity.activity_theme,
+        def_vip_activity.run_mode,
+        def_vip_activity.activity_state,
+        def_vip_activity.start_time,
+        def_vip_activity.end_time,
+        def_vip_activity.creater,
+        def_vip_activity.created_date,
+        def_vip_activity.run_scope,
+
+        def_corp.CORP_NAME,
+
+        def_vip_activity_detail_consume.coupon_type as coupon_type,
+        def_vip_activity_detail_consume.send_points as send_points
+
+        from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+        left join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
+        where  1=1
+        <if test="search_value!=null and search_value!=''">
+            and  activity_theme like CONCAT('%',#{search_value},'%')
+            or   def_corp.CORP_CODE like CONCAT('%',#{search_value},'%')
+        </if>
+
+        UNION  ALL
+        select
+
+        def_vip_activity.activity_theme,
+        def_vip_activity.run_mode,
+        def_vip_activity.activity_state,
+        def_vip_activity.start_time,
+        def_vip_activity.end_time,
+        def_vip_activity.creater,
+        def_vip_activity.created_date,
+        def_vip_activity.run_scope,
+
+        def_corp.CORP_NAME,
+
+        def_vip_activity_detail.coupon_type as coupon_type,
+        def_vip_activity_detail.present_point as send_points
+
+        from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        where 1=1
+        <if test="search_value!=null and search_value!=''">
+            and  activity_theme like CONCAT('%',#{search_value},'%')
+            or   def_corp.CORP_CODE like CONCAT('%',#{search_value},'%')
+        </if>
+
+        UNION  ALL
+        select
+
+        def_vip_activity.activity_theme,
+        def_vip_activity.run_mode,
+        def_vip_activity.activity_state,
+        def_vip_activity.start_time,
+        def_vip_activity.end_time,
+        def_vip_activity.creater,
+        def_vip_activity.created_date,
+        def_vip_activity.run_scope,
+
+        def_corp.CORP_NAME,
+
+        def_vip_activity_detail_anniversary.coupon_type as coupon_type,
+        def_vip_activity_detail_anniversary.send_points as send_points
+
+        from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+
+        left join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
+     where 1=1
+        <if test="search_value!=null and search_value!=''">
+            and  activity_theme like CONCAT('%',#{search_value},'%')
+            or   def_corp.CORP_CODE like CONCAT('%',#{search_value},'%')
+        </if>
+    </select>
+
     <select id="selectAllActivity" resultMap="Activity">
-        SELECT def_vip_activity.*,
-        def_corp.corp_name
+        SELECT def_vip_activity.*
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code = def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
