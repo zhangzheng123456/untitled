@@ -91,6 +91,16 @@ public class VipActivity {
 
 
 
+    private  String select_scope;
+
+    public String getSelect_scope() {
+        return select_scope;
+    }
+
+    public void setSelect_scope(String select_scope) {
+        this.select_scope = select_scope;
+    }
+
     public String getQrcode() {
         return qrcode;
     }
