@@ -39,6 +39,7 @@
         <result column="runscope_storecode" property="runscope_storecode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <!--筛选查询selectAllCorpScreen-->
@@ -347,7 +348,7 @@
     </select>
 
     <select id="selectAllActivity" resultMap="Activity">
-        SELECT def_vip_activity.*
+        SELECT def_vip_activity.*,def_corp.corp_name
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code = def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
