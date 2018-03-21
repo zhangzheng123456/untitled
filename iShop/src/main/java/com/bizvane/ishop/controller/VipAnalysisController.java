@@ -50,7 +50,6 @@ public class VipAnalysisController {
     private static final Logger logger = Logger.getLogger(VipAnalysisController.class);
 
     String id;
-
     //会员列表
     @RequestMapping(value = "/allVip", method = RequestMethod.POST)
     @ResponseBody
