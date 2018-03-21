@@ -831,18 +831,15 @@ public class VipActivityDetailController {
 
             JSONArray vip_array = JSONArray.parseArray(dataBox.data.get("message").value);
 
-            System.out.println("=========================会员=============="+vip_array.toString());
+            System.out.println("=========================会员=======corp_code"+corp_code+"==open_id"+open_id+"====="+vip_array.toString());
 
             if (vip_array.size() > 0){
-
-                System.out.println("=================获取会员==============");
-
                 JSONObject vip_info = vip_array.getJSONObject(0);
 //                String vip_id = vip_info.getString("vip_id");
 
                 VipActivity vipActivity = vipActivityService.getActivityByCode(activity_code);
                 VipActivityDetailApply activityDetailApply = vipActivityDetailService.selectActivityApplyById(item_id);
-                if (activityDetailApply != null) {
+//                if (activityDetailApply != null) {
                     String is_send_notice = "N";
 
                     if (pay_result.equals("Y")){
@@ -903,9 +900,27 @@ public class VipActivityDetailController {
                             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                             dataBean.setMessage("报名成功");
                         }else {
-                            dataBean.setId(id);
-                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                            dataBean.setMessage("请先填写报名资料");
+                            BasicDBObject dbObject = new BasicDBObject();
+                            dbObject.put("corp_code", corp_code);
+                            dbObject.put("app_id", app_id);
+                            dbObject.put("activity_code", activity_code);
+                            dbObject.put("item_id", item_id+"");
+                            dbObject.put("open_id", open_id);
+                            dbObject.put("apply_info", "");
+                            dbObject.put("vipActivity", WebUtils.bean2JSONObject(vipActivity));
+                            dbObject.put("apply_item", WebUtils.bean2JSONObject(activityDetailApply));
+                            dbObject.put("vip", vip_info);
+                            dbObject.put("created_date", Common.DATETIME_FORMAT.format(new Date()));
+                            dbObject.put("pay_type", "");
+
+                            dbObject.put("status", "1");
+                            dbObject.put("is_send_notice", is_send_notice);
+                            dbObject.put("order_id", order_id);
+                            dbObject.put("pay_time", pay_time);
+                            dbObject.put("pay_result", pay_result);
+                            dbObject.put("vip", vip_info);
+                            dbObject.put("modified_date", Common.DATETIME_FORMAT.format(new Date()));
+                            cursor.save(dbObject);
                         }
                     }else {
                         DBObject updateCondition = new BasicDBObject();
@@ -925,11 +940,11 @@ public class VipActivityDetailController {
                         dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                         dataBean.setMessage("报名失败");
                     }
-                }else {
-                    dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setMessage("项目不存在");
-                }
+//                }else {
+//                    dataBean.setId(id);
+//                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                    dataBean.setMessage("项目不存在");
+//                }
             }else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
