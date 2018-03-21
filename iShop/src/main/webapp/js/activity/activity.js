@@ -254,8 +254,97 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="execute"){
             $("#execute").show();
         }
+        else if(actions[i].act_name=="output"){
+            $("#more_down").append("<div id='leading_out'>导出</div>");
+        }
     }
 }
+//导出拉出list
+$("#more_down").off().on("click","#leading_out",function(){
+    var l=$(window).width();
+    var h=$(document.body).height();
+    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
+    $(".file").css("position","fixed");
+    $("#p").show();
+    $("#p").css({"width":+l+"px","height":+h+"px"});
+    $('.file').show();
+    $(".into_frame").hide();
+    var param={};
+    param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/list/getCols","0",param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var message=JSON.parse(message.tableManagers);
+            var html="";
+            for(var i=0;i<message.length;i++){
+                html+="<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>";
+            }
+            $("#file_list_l ul").html(html);
+            bianse();
+            $("#file_list_r ul").empty();
+            whir.loading.remove();//移除加载框
+        }else if(data.code=="-1"){
+            alert(data.message);
+            whir.loading.remove();//移除加载框
+        }
+    })
+})
+//导出提交的
+$("#file_submit").click(function(){
+    var li=$("#file_list_r input[type='checkbox']").parents("li");
+    var param={};
+    var tablemanager=[];
+    if(li.length=="0"){
+        frame();
+        $('.frame').html('请把要导出的列移到右边');
+        return;
+    }
+    for(var i=0;i<li.length;i++){
+        var r=$(li[i]).attr("data-name");
+        var z=$(li[i]).children("span").html();
+        var param1={"column_name":r,"show_name":z};
+        tablemanager.push(param1);
+    }
+    tablemanager.reverse();
+    param["tablemanager"]=tablemanager;
+    param["searchValue"]=value;
+    if(filtrate==""){
+        param["list"]="";
+    }else if(filtrate!==""){
+        param["list"]=list;
+    }
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/vipActivity/exportExcel","0",param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var path=message.path;
+            var path=path.substring(1,path.length-1);
+            // $('#download').html("<a href='/"+path+"'>下载文件</a>");
+            // $('#download').addClass("download");
+            $("#enter").html("<a href='/"+path+"'>下载文件</a>");
+            $(".file").hide();
+            $("#code_ma").show();
+            // $('#file_submit').hide();
+            $('#download').show();
+            //导出关闭按钮
+            $('#file_close').click(function(){
+                $('.file').hide();
+            })
+            $('#download').click(function(){
+                $("#p").hide();
+                $('.file').hide();
+                $('#file_submit').show();
+                $('#download').hide();
+            })
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();//移除加载框
+    })
+})
 function InitialState(){
     if(return_jump!==null){
         inx=return_jump.inx;
