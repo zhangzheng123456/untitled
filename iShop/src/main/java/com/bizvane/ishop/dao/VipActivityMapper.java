@@ -28,14 +28,19 @@ public interface VipActivityMapper {
     VipActivity selActivityByCodeAndName(@Param("activity_code") String activity_code)throws SQLException;
 
 
-    int updActiveCodeByType(@Param("line_code") String line_code,@Param("line_value") String line_value,@Param("corp_code") String corp_code,@Param("activity_code") String activity_code)throws Exception;
+    int updActiveCodeByType(@Param("line_code") String line_code, @Param("line_value") String line_value, @Param("corp_code") String corp_code, @Param("activity_code") String activity_code)throws Exception;
 
-    VipActivity selActivityByTheme( @Param("corp_code")String corp_code,@Param("activity_theme")String activity_theme)throws SQLException;
+    VipActivity selActivityByTheme(@Param("corp_code") String corp_code, @Param("activity_theme") String activity_theme)throws SQLException;
 
-    List<VipActivity> getVipActivityByAppid(@Param("app_id")String app_id,@Param("activity_state")String activity_state,@Param("run_mode")String run_mode)throws Exception;
+    List<VipActivity> getVipActivityByAppid(@Param("app_id") String app_id, @Param("activity_state") String activity_state, @Param("run_mode") String run_mode)throws Exception;
 
-    List<VipActivity> getVipActivityByCorpCode(@Param("corp_code")String corp_code,@Param("activity_state")String activity_state,@Param("run_mode")String run_mode)throws Exception;
+    List<VipActivity> getVipActivityByCorpCode(@Param("corp_code") String corp_code, @Param("activity_state") String activity_state, @Param("run_mode") String run_mode)throws Exception;
 
     List<VipActivity> selectAllActivityByState(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws Exception;
 
+
+    List<VipActivity> exploreExcel(@Param("search_value") String search_value) throws Exception;
+
+
+    List<VipActivity> selectAllCorpScreen(Map<String, Object> params) throws Exception;
 }

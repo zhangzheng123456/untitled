@@ -195,8 +195,7 @@
                 </div>
                 <div class="check_per" id="export_sendee" style="display: none">
                     <span>
-                        <label style="color:#c26555;">接收会员*</label>
-                        <div style="margin:0;position: relative;text-align: center;width:420px;display:inline-block;background-color:#f0f0f0;height:50px;line-height:50px">
+                        <label style="color:#c26555;">接收会员*</label><div style="margin:0;position: relative;text-align: center;width:420px;display:inline-block;background-color:#f0f0f0;height:50px;line-height:50px">
                             <span style="margin-right: 50px">
                             <a href="/ExeclFormwork/importVipByCardno.xls" class="btn-export" style="margin-right: 10px">导出模板</a>
                             <a class="btn-export" style="position: relative">导入文件<input title="导入接收会员列表" name="file" type="file" id="file" style="opacity: 0;position: absolute;
@@ -208,6 +207,7 @@
                                 cursor: pointer;"></a>
                         </span>
                     <span class="export"><a class="btn-export" id="exprot_vips">导出文件</a></span></div>
+                <div style="display:none;margin: 10px 0 -10px 0;padding-left: 125px;" id="export_tip"></div>
                 </span>
         </div>
         <div id="drop_down" class="drop_down item_1">
@@ -4151,6 +4151,10 @@
                 </ul>
             </div>
         </div>
+        <div style="position: absolute;bottom: 10px;width: 250px;">
+            <div class="checkbox1" style="width: 30%;float: left;cursor: pointer;"><input type="checkbox" name="test" class="check" data-count="3" id="checkShopAll" style="visibility: hidden;margin: 0;"><label for="checkShopAll" style="top: 1px;cursor: pointer"></label><span style="margin-left: 20px;" id="toggleCheckAllShop">全选</span></div>
+            <span style="visibility: hidden;display: inline-block;font-size: 12px;float: right;width: 70%;color: rgb(218, 90, 90);">筛选个数过多速度会很慢，建议减少条件或者更换查询方式</span>
+        </div>
         <div class="screen_que" id="screen_que_shop">确定</div>
     </div>
     <!-- 拉取品牌 -->
@@ -4425,8 +4429,8 @@
     <!--<script src="../js/vip_screen.js?2017040170713"></script>-->
     <script src="/js/silide.js?2017040170331"></script>
     <!--<script src="../js/vip/select_new.js?t=20180102"></script>-->
-    <script src="../js/vip/select_independent.js?t=20180131"></script>
-    <script type="text/javascript" src="../js/vip/message_operate.js?20180303"></script>
+    <script src="../js/vip/select_independent.js?t=20180303"></script>
+    <script type="text/javascript" src="../js/vip/message_operate.js?20180311"></script>
 </body>
 <script type="text/javascript">
     $("#content").niceScroll({

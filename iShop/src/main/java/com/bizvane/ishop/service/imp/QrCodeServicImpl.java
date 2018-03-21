@@ -235,6 +235,15 @@ public class QrCodeServicImpl implements QrCodeService {
                         JSONObject jsonObject= JSON.parseObject(vip);
                         t_cr = jsonObject.getString("join_date");
 
+                        //获取user_name
+                        String user=obj.get("user").toString();
+                        String user_name="无";
+                        if(StringUtils.isNotBlank(user)&&user.contains("{")){
+                            JSONObject user_obj=JSONObject.parseObject(user);
+                            user_name=user_obj.getString("user_name");
+                        }
+                        jsonObject.put("user_name",user_name);
+
                         //转换
                         if(jsonObject.containsKey("NAME_VIP")){
                             jsonObject.put("vip_name",jsonObject.getString("NAME_VIP"));

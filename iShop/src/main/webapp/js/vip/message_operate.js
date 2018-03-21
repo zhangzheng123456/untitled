@@ -259,7 +259,9 @@ var message = {
                     $("#sendee").hide();
                     $("#export_sendee").show();
                     $("#file").attr("data-id", sms_vips_edit)
-                    $("#file").attr("title", "已导入会员列表")
+                    $("#file").attr("title", "已导入会员列表");
+                    $("#export_tip").html("导入会员数:" + (message.cardno_num == "" ? 0 : message.cardno_num))
+                    $("#export_tip").show();
                     self.getCorplist(corp_code);
                 }
                 if (message.send_type == "wxmass") {
@@ -2304,13 +2306,15 @@ function uploadFile() {
         var data = JSON.parse(data);
         whir.loading.remove();
         if (data.code == "0") {
+            var msg = JSON.parse(data.message)
             art.dialog({
                 time: 1,
                 lock: true,
                 cancel: false,
                 content: "导入成功"
             });
-            $("#file").attr("data-id", data.message)
+            $("#file").attr("data-id", msg.file_id);
+            $("#export_tip").html("导入会员数:" + msg.cardno_num)
             $("#file").attr("title", "已导入会员列表")
         } else if (data.code == "-1") {
             art.dialog({
@@ -2319,8 +2323,10 @@ function uploadFile() {
                 cancel: false,
                 content: data.message
             });
-            $("#file").attr("data-id", "")
+            $("#file").attr("data-id", "");
+            $("#export_tip").html("导入失败:" + data.message)
         }
+        $("#export_tip").show();
         $('#file').val("");
     }
     xhr.open("post", FileController, true);

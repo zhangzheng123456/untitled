@@ -673,7 +673,8 @@ public class VipActivityDetailController {
                 DBCursor dbObjects = cursor.find(updateCondition);
                 if (dbObjects.hasNext()){
                     DBObject updatedValue = new BasicDBObject();
-                    String status = dbObjects.next().get("status") != null && !dbObjects.next().get("status").equals("") ?dbObjects.next().get("status").toString():"0";
+                    DBObject dbObject=dbObjects.next();
+                    String status = dbObject.get("status") != null && !dbObject.get("status").equals("") ?dbObject.get("status").toString():"0";
 //                    if (!status.equals("1")){
                         updatedValue.put("status", status);
                         updatedValue.put("apply_info", schedule);
@@ -687,7 +688,7 @@ public class VipActivityDetailController {
 //                    }
                 }else {
                     BasicDBObject dbObject = new BasicDBObject();
-                    dbObject.put("_id", app_id + "_" + activity_code + item_id + "_" + open_id);
+//                    dbObject.put("_id", app_id + "_" + activity_code + item_id + "_" + open_id);
                     dbObject.put("corp_code", corp_code);
                     dbObject.put("app_id", app_id);
                     dbObject.put("activity_code", activity_code);
@@ -823,10 +824,18 @@ public class VipActivityDetailController {
             String pay_result = jsonObject.getString("pay_result");
             String pay_time = jsonObject.getString("pay_time");
 
+            System.out.println(".......pay_result........."+pay_result);
+
             DataBox dataBox = iceInterfaceService.getVipByOpenId(corp_code, open_id, "");
+
+
             JSONArray vip_array = JSONArray.parseArray(dataBox.data.get("message").value);
+
+            System.out.println("=========================会员=============="+vip_array.toString());
+
             if (vip_array.size() > 0){
-                System.out.println("==========得到会员信息"+Common.DATETIME_FORMAT.format(new Date()));
+
+                System.out.println("=================获取会员==============");
 
                 JSONObject vip_info = vip_array.getJSONObject(0);
 //                String vip_id = vip_info.getString("vip_id");
