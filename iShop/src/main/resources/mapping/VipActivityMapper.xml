@@ -39,12 +39,13 @@
         <result column="runscope_storecode" property="runscope_storecode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <!--筛选查询selectAllCorpScreen-->
     <select id="selectAllCorpScreen" resultMap="Activity">
         select
-
+        def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
         def_vip_activity.run_mode,
         def_vip_activity.activity_state,
@@ -119,7 +120,7 @@
 
         union ALL
         select
-
+        def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
         def_vip_activity.run_mode,
         def_vip_activity.activity_state,
@@ -194,7 +195,7 @@
 
         union ALL
         select
-
+        def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
         def_vip_activity.run_mode,
         def_vip_activity.activity_state,
@@ -271,7 +272,7 @@
     <!--查询需要导出excel数据-->
     <select id="exploreExcel" resultMap="Activity">
         select
-
+        def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
         def_vip_activity.run_mode,
         def_vip_activity.activity_state,
@@ -296,7 +297,7 @@
 
         UNION  ALL
         select
-
+        def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
         def_vip_activity.run_mode,
         def_vip_activity.activity_state,
@@ -321,7 +322,7 @@
 
         UNION  ALL
         select
-
+        def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
         def_vip_activity.run_mode,
         def_vip_activity.activity_state,
