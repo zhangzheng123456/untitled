@@ -14,6 +14,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.mongodb.*;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -1682,7 +1684,7 @@ public class StoreServiceImpl implements StoreService {
 
 
     public void getStoreBrand(Store store) throws Exception {
-        StringBuilder brand_name = new StringBuilder("");
+        /*StringBuilder brand_name = new StringBuilder("");
         StringBuilder brand_code1 = new StringBuilder("");
         String brand_code = store.getBrand_code();
         String corp_code = store.getCorp_code();
@@ -1719,7 +1721,63 @@ public class StoreServiceImpl implements StoreService {
         } else {
             store.setBrand_name("");
             store.setBrand_code("");
-        }
+        }*/
+    	
+    	 StringBuilder brand_name = new StringBuilder("");
+         StringBuilder brand_code1 = new StringBuilder("");
+         String brand_code = store.getBrand_code();
+         String corp_code = store.getCorp_code();
+
+         if (brand_code != null && !brand_code.equals("")) {
+         	//  SPECIAL_HEAD = "§"
+         	brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+             String[] ids = brand_code.split(",");
+             
+             if(ids.length==0) {
+             	 store.setBrand_name("");
+                  store.setBrand_code("");
+                  return;
+             }
+             
+             Map<String, Object> map = new HashMap<String, Object>();
+             map.put("corp_code", corp_code);
+             map.put("brand_code", ids);
+             map.put("search_value", "");
+             List<Brand> brands = brandMapper.selectBrands(map);
+                                                                    
+             //爱帛服饰  单独进行品牌名称的转化
+         	if("C10183".equals(corp_code) && CollectionUtils.isEmpty(brands)) {
+         		 store.setBrand_name("MO复合店");
+                  store.setBrand_code(brand_code);
+                  return;
+         	}
+         		 if(ids.length>0) {
+                      for (int i = 0; i < brands.size(); i++) {
+                          Brand brand = brands.get(i);
+                          if (brand != null) {
+                              String brand_name1 = brand.getBrand_name();
+                              brand_name.append(brand_name1 + ",");
+                              brand_code1.append(brand.getBrand_code() + ",");
+                          }
+                      }
+                      String brand_name1 = brand_name.toString();
+                      brand_code = brand_code1.toString();
+                      if (brand_name1.endsWith(","))
+                          brand_name1 = brand_name1.substring(0, brand_name1.length() - 1);
+                      store.setBrand_name(brand_name1);
+                      if (brand_code.endsWith(","))
+                          brand_code = brand_code.substring(0, brand_code.length() - 1);
+                      store.setBrand_code(brand_code);
+                      return;
+                  }
+         		         		        		 	
+         } else {
+             store.setBrand_name("");
+             store.setBrand_code("");
+             return;
+         }
+    	
+    	
     }
 
     public void getStoreArea(Store store) throws Exception {

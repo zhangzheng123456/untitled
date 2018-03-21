@@ -3,7 +3,8 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.VIPStoreRelation;
 import org.apache.ibatis.annotations.Param;
 
-import com.bizvane.ishop.entity.VIPEmpRelation;;import java.sql.SQLException;
+import com.bizvane.ishop.entity.VIPEmpRelation;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface VIPRelationMapper {
