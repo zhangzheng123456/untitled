@@ -65,6 +65,31 @@ public class VipActivity {
     private  String qrcode;
 
     private  String qrcode_content;
+    //参与范围-品牌编号
+    private String runscope_branecode;
+
+    //参与范围-店铺编号
+    private String runscope_storecode;
+
+    //参与范围店铺群组编号
+    private String runscope_areacode;
+
+    //赠送券名称
+
+    private String coupon_name;
+
+    //赠送积分
+    private String present_point;
+
+
+    //数据库
+    private String coupon_type;
+
+    private String send_points;
+
+
+
+
 
     private  String select_scope;
 
@@ -334,4 +359,59 @@ public class VipActivity {
         this.vip_task = vip_task;
     }
 
+    public void setRunscope_storecode(String runscope_storecode) {
+        this.runscope_storecode = runscope_storecode;
+    }
+
+    public String getRunscope_areacode() {
+        return runscope_areacode;
+    }
+
+    public void setRunscope_areacode(String runscope_areacode) {
+        this.runscope_areacode = runscope_areacode;
+    }
+
+    public String getRunscope_storecode() {
+        return runscope_storecode;
+    }
+
+    public String getRunscope_branecode() {
+        return runscope_branecode;
+    }
+
+    public void setRunscope_branecode(String runscope_branecode) {
+        this.runscope_branecode = runscope_branecode;
+    }
+
+    public String getCoupon_name() {
+        return coupon_name;
+    }
+
+    public void setCoupon_name(String coupon_name) {
+        this.coupon_name = coupon_name;
+    }
+
+    public String getPresent_point() {
+        return present_point;
+    }
+
+    public void setPresent_point(String present_point) {
+        this.present_point = present_point;
+    }
+
+    public String getCoupon_type() {
+        return coupon_type;
+    }
+
+    public void setCoupon_type(String coupon_type) {
+        this.coupon_type = coupon_type;
+    }
+
+    public String getSend_points() {
+        return send_points;
+    }
+
+    public void setSend_points(String send_points) {
+        this.send_points = send_points;
+    }
 }

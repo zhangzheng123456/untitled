@@ -964,10 +964,10 @@
             <span class="icon-ishop_6-12" id="closeExportVipWrap"></span>
             <div class="into_text">请先下载模板，然后按模板提示规则填入数据并导入文件</div>
             <div class="into_frame_c">
-                <div class="down_load"><a>下载模板</a></div>
+                <div class="down_load"><a href="/ExeclFormwork/importVipByCardno.xls">下载模板</a></div>
                 <div class="down_load_file">
                     <label>导入文件</label>
-                    <input type="file">
+                    <input type="file" id="exportFileBtn">
                 </div>
             </div>
         </div>
@@ -1018,6 +1018,56 @@
     });
     $("#closeExportVipWrap").click(function () {//关闭导入会员弹窗
         $("#exportVipWrap").hide();
+    });
+    $("#exportFileBtn").change(function () {//会员导入
+        whir.loading.add("",0.5);//加载等待框
+        var fileObj = document.getElementById("exportFileBtn").files[0];
+        var FileController = "/vipActivity/excludeMultipart"; //接收上传文件的后台地址
+        var form = new FormData();
+        form.append("file", fileObj); // 文件对象
+        form.append("type", "vip_activity"); // 文件对象
+        form.append("corp_code", $("#OWN_CORP").val()); // 文件对象
+        // XMLHttpRequest 对象
+        var xhr = null;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    doResult(xhr.responseText);
+                } else {
+                    $('#exportFileBtn').val("");
+                }
+            }
+        }
+        function doResult(data) {
+            var data=JSON.parse(data);
+            whir.loading.remove();
+            if(data.code=="0"){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "导入成功"
+                });
+                _param = {};
+                $("#exportFileBtn").attr("data-src",JSON.parse(data.message).file_id);
+                $("#exportVipWrap").hide();
+            }else if(data.code=="-1"){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+            $('#exportFileBtn').val("");
+        }
+        xhr.open("post", FileController, true);
+        xhr.send(form);
     });
 </script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
