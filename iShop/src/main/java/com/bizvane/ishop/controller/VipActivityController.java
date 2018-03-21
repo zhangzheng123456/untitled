@@ -94,6 +94,10 @@ public class VipActivityController {
     @ResponseBody
     @Transactional
     public String addActivity(HttpServletRequest request) {
+
+        MongoTemplate mongoTemplate=this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_batch_import_vip);
+
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
@@ -109,28 +113,42 @@ public class VipActivityController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.getString("activity_code");
             String corp_code = jsonObject.get("corp_code").toString().trim();
+
+            String  select_scope  =jsonObject.getString("select_scope");//选择类型
+
             String result = "";
             String screenJs=jsonObject.getString("screen");
-            if(StringUtils.isNotBlank(screenJs)) {
-                JSONObject objectJson=JSON.parseObject(screenJs);
+            if(select_scope.equals("input_file")){
+                BasicDBObject basicDBObject=new BasicDBObject();
+                basicDBObject.put("_id",screenJs);
+                DBObject dbObject=cursor.findOne(basicDBObject);
+                String cardArray=dbObject.get("cardInfo").toString();
+                int target_vips_count=JSON.parseArray(cardArray).size();
+                jsonObject.put("target_vips_count",String.valueOf(target_vips_count));
+                jsonObject.put("target_vips",screenJs);
+            }else{
+                if(StringUtils.isNotBlank(screenJs)) {
+                    JSONObject objectJson=JSON.parseObject(screenJs);
 
-                //筛选会员的条件
-                JSONArray screen = objectJson.getJSONArray("screen");
-                JSONArray post_array = vipGroupService.vipScreen2Array(screen, corp_code, role_code, brand_code, area_code, store_code, user_id);
+                    //筛选会员的条件
+                    JSONArray screen = objectJson.getJSONArray("screen");
+                    JSONArray post_array = vipGroupService.vipScreen2Array(screen, corp_code, role_code, brand_code, area_code, store_code, user_id);
 //                String  screen_value = post_array.toJSONString();
-                System.out.println("======会员活动筛选======"+post_array.toJSONString());
-                jsonObject.put("target_vips",post_array);
-                //会员总数
+                    System.out.println("======会员活动筛选======"+post_array.toJSONString());
+                    jsonObject.put("target_vips",post_array);
+                    //会员总数
 //                DataBox dataBox = iceInterfaceService.vipScreenMethod2("1","2",corp_code,screen_value,"join_date","desc");
-                DataBox dataBox = vipGroupService.vipScreenBySolr(post_array,corp_code,"1","2",role_code,brand_code,area_code,store_code,user_id,"join_date","desc");
-                if (dataBox.status.toString().equals("SUCCESS")) {
-                    String screenValue = dataBox.data.get("message").value;
-                    JSONObject object=JSON.parseObject(screenValue);
-                    String target_vips_count=object.getString("count");
-                    jsonObject.put("target_vips_count",target_vips_count);
+                    DataBox dataBox = vipGroupService.vipScreenBySolr(post_array,corp_code,"1","2",role_code,brand_code,area_code,store_code,user_id,"join_date","desc");
+                    if (dataBox.status.toString().equals("SUCCESS")) {
+                        String screenValue = dataBox.data.get("message").value;
+                        JSONObject object=JSON.parseObject(screenValue);
+                        String target_vips_count=object.getString("count");
+                        jsonObject.put("target_vips_count",target_vips_count);
+                    }
+                    message=jsonObject.toJSONString();
                 }
-                message=jsonObject.toJSONString();
             }
+
             //根据活动编号判断新增活动或者编辑活动
             if (activity_code == null || activity_code.equals("")) {
                 result = this.vipActivityService.insert(message, user_id);

@@ -33,13 +33,12 @@
         <result column="target_vips_import" property="target_vips_import" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="qrcode" property="qrcode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="qrcode_content" property="qrcode_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="select_scope" property="select_scope" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="runscope_branecode" property="runscope_branecode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
         <result column="runscope_areacode" property="runscope_areacode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="runscope_storecode" property="runscope_storecode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
     </resultMap>
 
     <!--筛选查询selectAllCorpScreen-->
@@ -454,6 +453,9 @@
             <if test="target_vips_import!=null">
                 target_vips_import,
             </if>
+            <if test="select_scope!=null">
+                select_scope,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="run_scope!=null">
@@ -537,6 +539,9 @@
             </if>
             <if test="target_vips_import!=null">
                 #{target_vips_import},
+            </if>
+            <if test="select_scope!=null">
+                #{select_scope},
             </if>
         </trim>
     </insert>
@@ -625,6 +630,9 @@
             </if>
             <if test="qrcode_content!=null">
                 qrcode_content=#{qrcode_content},
+            </if>
+            <if test="select_scope!=null">
+                select_scope=#{select_scope},
             </if>
         </trim>
         WHERE activity_code=#{activity_code};
