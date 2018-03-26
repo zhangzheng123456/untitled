@@ -87,6 +87,9 @@ public class VipActivity {
 
     private String send_points;
 
+    //赠送券类型
+    private String send_coupon_type;
+
 
 
 
@@ -413,5 +416,13 @@ public class VipActivity {
 
     public void setSend_points(String send_points) {
         this.send_points = send_points;
+    }
+
+    public String getSend_coupon_type() {
+        return send_coupon_type;
+    }
+
+    public void setSend_coupon_type(String send_coupon_type) {
+        this.send_coupon_type = send_coupon_type;
     }
 }

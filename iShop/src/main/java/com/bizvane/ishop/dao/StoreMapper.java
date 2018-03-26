@@ -14,7 +14,7 @@ public interface StoreMapper {
 
     Store selStoreByStroeId(@Param("corp_code") String corp_code, @Param("store_id") String store_id, @Param("isactive") String isactive) throws SQLException;
 
-    List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive, @Param("search_area_code") String search_area_code,@Param("offline_area")String offline_area,@Param("store_type")String store_type,@Param("dealer")String dealer,@Param("find_type")String find_type,@Param("manager_corp_arr")String[] manager_corp_arr) throws SQLException;
+    List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive, @Param("search_area_code") String search_area_code,@Param("offline_area")String offline_area,@Param("store_type")String store_type,@Param("dealer")String dealer,@Param("find_type")String find_type,@Param("manager_corp_arr")String... manager_corp_arr) throws SQLException;
 
     List<Store> selectByCorp(@Param("corp_code") String corp_code) throws SQLException;
 

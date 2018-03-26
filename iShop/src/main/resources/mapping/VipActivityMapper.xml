@@ -41,6 +41,8 @@
         <result column="send_points" property="send_points" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="send_coupon_type" property="send_coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <!--筛选查询selectAllCorpScreen-->
@@ -55,7 +57,7 @@
         def_vip_activity.creater,
         def_vip_activity.created_date,
         def_vip_activity.run_scope,
-
+        def_vip_activity_detail. send_coupon_type,
         def_corp.CORP_NAME,
 
         def_vip_activity_detail_consume.coupon_type as coupon_type,
@@ -63,6 +65,7 @@
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
         left join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where  1=1
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_activity.corp_code = #{corp_code}
@@ -130,13 +133,14 @@
         def_vip_activity.creater,
         def_vip_activity.created_date,
         def_vip_activity.run_scope,
-
+        def_vip_activity_detail. send_coupon_type,
         def_corp.CORP_NAME,
 
         def_vip_activity_detail.coupon_type as coupon_type,
         def_vip_activity_detail.present_point as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where 1=1
         <if test="corp_code != null and corp_code !=''">
@@ -205,14 +209,14 @@
         def_vip_activity.creater,
         def_vip_activity.created_date,
         def_vip_activity.run_scope,
-
+        def_vip_activity_detail. send_coupon_type,
         def_corp.CORP_NAME,
 
         def_vip_activity_detail_anniversary.coupon_type as coupon_type,
         def_vip_activity_detail_anniversary.send_points as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         left join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
         where 1=1
         <if test="corp_code != null and corp_code !=''">
@@ -282,7 +286,7 @@
         def_vip_activity.creater,
         def_vip_activity.created_date,
         def_vip_activity.run_scope,
-
+        def_vip_activity_detail. send_coupon_type,
         def_corp.CORP_NAME,
 
         def_vip_activity_detail_consume.coupon_type as coupon_type,
@@ -290,6 +294,7 @@
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
         left join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where  1=1
         <if test="search_value!=null and search_value!=''">
             and  activity_theme like CONCAT('%',#{search_value},'%')
@@ -307,7 +312,7 @@
         def_vip_activity.creater,
         def_vip_activity.created_date,
         def_vip_activity.run_scope,
-
+        def_vip_activity_detail. send_coupon_type,
         def_corp.CORP_NAME,
 
         def_vip_activity_detail.coupon_type as coupon_type,
@@ -332,14 +337,14 @@
         def_vip_activity.creater,
         def_vip_activity.created_date,
         def_vip_activity.run_scope,
-
+        def_vip_activity_detail. send_coupon_type,
         def_corp.CORP_NAME,
 
         def_vip_activity_detail_anniversary.coupon_type as coupon_type,
         def_vip_activity_detail_anniversary.send_points as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-
+        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         left join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
      where 1=1
         <if test="search_value!=null and search_value!=''">

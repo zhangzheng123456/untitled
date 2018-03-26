@@ -2,7 +2,6 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.controller.CorpParamController;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.dao.CorpParamMapper;
 import com.bizvane.ishop.entity.Corp;
@@ -19,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created by ZhouZhou on 2016/8/11.

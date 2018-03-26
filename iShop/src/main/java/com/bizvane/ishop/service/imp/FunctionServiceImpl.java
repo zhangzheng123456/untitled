@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Created by Administrator on 2016/5/24.
@@ -31,6 +32,7 @@ public class FunctionServiceImpl implements FunctionService {
      * 获取user所有列表功能模块
      */
     public JSONArray selectAllFunctions(String corp_code,String user_code, String group_code, String role_code) throws Exception{
+
         List<Function> func_info;
         if (role_code.equals(Common.ROLE_CM)){
             corp_code = "C00000";
@@ -39,6 +41,8 @@ public class FunctionServiceImpl implements FunctionService {
         group_code = corp_code +"G"+group_code;
         //获取user所有功能模块
         func_info = functionMapper.selectAllFun(user_code, group_code, role_code);
+        String  jarr=JSONObject.toJSONString(func_info);
+
         JSONArray modules = new JSONArray();
         for (int i = 0; i < func_info.size(); i++) {
             String module = func_info.get(i).getModule_name();
@@ -95,7 +99,11 @@ public class FunctionServiceImpl implements FunctionService {
                 }
             }
         }
+
+        System.out.println(modules.toString());
+
         return modules;
+
     }
 
     /**

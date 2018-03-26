@@ -56,6 +56,7 @@ public class ActivityServiceimpl implements ActivityService{
                         act.setActivity_state("已结束");
                     }
                 }
+
                 if(act.getCoupon_type()!=null&&!"".equals(act.getCoupon_type())){
                     act.setIsactive(CheckUtils.CheckIsactive(act.getIsactive()));
                     JSONArray jsonobj= JSONArray.parseArray(act.getCoupon_type());
@@ -76,12 +77,29 @@ public class ActivityServiceimpl implements ActivityService{
                 if(act.getSend_points()!=null&&!"".equals(act.getSend_points())){
                     act.setPresent_point(act.getSend_points());
                 }
+
+                //发券类型
+                if(act.getSend_coupon_type()!=null&&!"".equals(act.getSend_coupon_type())){
+                    if(act.getSend_coupon_type().equalsIgnoreCase("batch")){act.setSend_coupon_type("批量发券");
+                    }
+                    if(act.getSend_coupon_type().equalsIgnoreCase("card")){ act.setSend_coupon_type("开卡送券");}
+                    if(act.getSend_coupon_type().equalsIgnoreCase("anniversary")){act.setSend_coupon_type("纪念日发券");}
+                    if(act.getSend_coupon_type().equalsIgnoreCase("consume")){act.setSend_coupon_type("消费后送券");}
+
+
+                }
                 //活动类别(recruit招募,h5,sales促销,coupon优惠券,invite报名,festival节日,register邀请注册)
 
                 if(act.getRun_scope()!=null&&!"".equals(act.getRun_mode())){
+                    if(act.getSend_coupon_type()!=null&&!"".equals(act.getSend_coupon_type())){
+                        act.setRun_mode(CheckUtils.CheckVipActivityType(act.getRun_mode()).equals("优惠券活动")?CheckUtils.CheckVipActivityType(act.getRun_mode())+"-"+act.getSend_coupon_type():CheckUtils.CheckVipActivityType(act.getRun_mode()));
+                    }else{
+                        act.setRun_mode(CheckUtils.CheckVipActivityType(act.getRun_mode()));
+                    }
 
-                    act.setRun_mode(CheckUtils.CheckVipActivityType(act.getRun_mode()));
+
                 }
+
 
             }
             acts = new PageInfo<VipActivity>(vipactivi);

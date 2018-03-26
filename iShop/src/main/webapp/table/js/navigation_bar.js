@@ -31,6 +31,7 @@ $(function(){
     sessionStorage.removeItem("state");
     $('#iframepage').attr("src",url+"?"+$.now());//给获取的src赋值
     oc.postRequire("get","/menu","0","",function(data){//左侧导航栏的循环操作
+
         var str = JSON.stringify(data);
         var key = "key";
         sessionStorage.setItem(key, str);

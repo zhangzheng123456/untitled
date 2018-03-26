@@ -3,6 +3,7 @@ $(function(){
     var _command="/menu";
     oc.postRequire("get", _command,"", "", function(data){
         if(data.code=="0"){
+            console.log(data);
             var message=JSON.parse(data.message);
             var index=0;
             var html =" ";

@@ -3,26 +3,17 @@ package com.bizvane.ishop.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.controller.StoreController;
-import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.CorpService;
-
-import com.bizvane.ishop.service.StoreService;
-import com.bizvane.ishop.service.TaskService;
-import com.bizvane.ishop.service.UserService;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TaskAllocation;
+import com.bizvane.ishop.entity.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
