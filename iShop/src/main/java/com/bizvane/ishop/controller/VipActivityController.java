@@ -1638,12 +1638,7 @@ public class VipActivityController {
         String search_value=jsonobject.get("searchValue").toString();
         String screen=jsonobject.get("list").toString();
         PageInfo<VipActivity> activy=null;
-        if(!role_code.equals(Common.ROLE_SYS)) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("-1");
-            dataBean.setMessage("无导出权限");
-            return dataBean.getJsonStr();
-        }
+
         if (screen.equals("")) {
             activy=activityService.selectAllActivity(1,900,search_value);
         } else {

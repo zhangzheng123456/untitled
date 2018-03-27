@@ -47,6 +47,7 @@
 
     <!--筛选查询selectAllCorpScreen-->
     <select id="selectAllCorpScreen" resultMap="Activity">
+
         select
         def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
@@ -64,8 +65,8 @@
         def_vip_activity_detail_consume.send_points as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-        left join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        INNER join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where  1=1
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_activity.corp_code = #{corp_code}
@@ -122,7 +123,7 @@
         </foreach>
 
 
-        union ALL
+        UNION  ALL
         select
         def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
@@ -140,8 +141,7 @@
         def_vip_activity_detail.present_point as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where 1=1
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_activity.corp_code = #{corp_code}
@@ -197,8 +197,7 @@
             </choose>
         </foreach>
 
-
-        union ALL
+        UNION  ALL
         select
         def_vip_activity.activity_code,
         def_vip_activity.activity_theme,
@@ -216,8 +215,8 @@
         def_vip_activity_detail_anniversary.send_points as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
-        left join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
         where 1=1
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_activity.corp_code = #{corp_code}
@@ -272,7 +271,6 @@
                 </otherwise>
             </choose>
         </foreach>
-
     </select>
     <!--查询需要导出excel数据-->
     <select id="exploreExcel" resultMap="Activity">
@@ -293,8 +291,8 @@
         def_vip_activity_detail_consume.send_points as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-        left join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail_consume on def_vip_activity_detail_consume.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where  1=1
         <if test="search_value!=null and search_value!=''">
             and  activity_theme like CONCAT('%',#{search_value},'%')
@@ -319,7 +317,7 @@
         def_vip_activity_detail.present_point as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
         where 1=1
         <if test="search_value!=null and search_value!=''">
             and  activity_theme like CONCAT('%',#{search_value},'%')
@@ -344,8 +342,8 @@
         def_vip_activity_detail_anniversary.send_points as send_points
 
         from def_vip_activity left join   def_corp   on def_vip_activity.corp_code=def_corp.corp_code
-        left join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
-        left join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail on  def_vip_activity_detail.activity_code=def_vip_activity.activity_code
+        inner join def_vip_activity_detail_anniversary on def_vip_activity_detail_anniversary.activity_code=def_vip_activity.activity_code
      where 1=1
         <if test="search_value!=null and search_value!=''">
             and  activity_theme like CONCAT('%',#{search_value},'%')

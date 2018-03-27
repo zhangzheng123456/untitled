@@ -640,12 +640,8 @@ public class VipFsendServiceImpl implements VipFsendService {
             if (dataBox.status.toString().equals("SUCCESS")) {
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
-                if(screen.size()>0){
-                    count=Integer.parseInt(msg_obj.get("count").toString());
-                }else {
-                    count=0;
-                }
-//                count = Integer.parseInt(msg_obj.get("count").toString());
+
+                count = Integer.parseInt(msg_obj.get("count").toString());
             }
         } else if (send_scope.equals("vip_group") && !sms_vips.equals("")) {
             DataBox dataBox;
